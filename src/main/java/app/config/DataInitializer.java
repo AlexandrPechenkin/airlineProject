@@ -1,10 +1,7 @@
 package app.config;
 
-import app.entities.Category;
-import app.repositories.CategoryRepository;
-import app.services.CategoryService;
-import app.services.CategoryServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
+import app.entities.category.Category;
+import app.services.category.CategoryService;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -17,6 +14,7 @@ import javax.annotation.PostConstruct;
 @Component
 public class DataInitializer {
 
+    /** Создание объекта CategoryService */
     final
     CategoryService categoryService;
 
@@ -24,6 +22,7 @@ public class DataInitializer {
         this.categoryService = categoryService;
     }
 
+    /** Создание объектов категорий мест пассажиров */
     Category categoryEconomy = new Category("Economy");
     Category categoryComfort = new Category("Comfort");
     Category categoryBusiness = new Category("Business");
@@ -33,13 +32,13 @@ public class DataInitializer {
 
     @PostConstruct
     public void init() {
+
+        /** Добавление категорий мест пассажиров */
         categoryService.addCategory(categoryEconomy);
         categoryService.addCategory(categoryComfort);
         categoryService.addCategory(categoryBusiness);
         categoryService.addCategory(categoryFirstClass);
-
         System.out.println("Категории добавлены");
-
 
 
         System.out.println("DataInitializer сработал!");

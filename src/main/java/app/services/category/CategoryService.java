@@ -1,13 +1,13 @@
-package app.services;
+package app.services.category;
 
-import app.entities.Category;
+import app.entities.category.Category;
 
 import java.util.List;
 
 /**
  * Интерфейс Category
- * @Autor Alexandr Pechenkin
- * @version 1.0
+ * @author Alexandr Pechenkin
+ * @version 1.1
  */
 
 public interface CategoryService {
@@ -19,4 +19,5 @@ public interface CategoryService {
 
     /** Метод удаления категории */
     void removeCategory(Category category);
+
 }
