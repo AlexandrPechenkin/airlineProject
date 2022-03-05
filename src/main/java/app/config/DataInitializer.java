@@ -5,7 +5,6 @@ import app.services.TicketService;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.util.GregorianCalendar;
 
 /**
  * В этом классе инициализируются тестовые данные для базы.
@@ -22,15 +21,15 @@ public class DataInitializer {
     }
 
     //создание первого билета
-    Ticket ticketFromNskToMsk = new Ticket("NSK", "MSK", //
-            new GregorianCalendar(2022, 03, 05, 15, 15, 15), //
-            new GregorianCalendar(2022, 03, 06, 14, 13, 12), //
+    Ticket ticketFromNskToMsk = new Ticket("NSK", "MSK",
+            "15.11.2022", "15:30",
+            "16.11.2022", "16:30",
             18500l, "15F");
 
     //создание второго билета
-    Ticket ticketFromTelAvivToNewYork = new Ticket("Tel-Aviv", "New York", //
-            new GregorianCalendar(2022, 11, 15, 01, 16, 15), //
-            new GregorianCalendar(2022, 11, 16, 10, 13, 12), //
+    Ticket ticketFromTelAvivToNewYork = new Ticket("Tel-Aviv", "New York",
+            "03.05.2022", "22:20",
+            "04.05.2022", "04:20",
             68350l, "1A");
 
     @PostConstruct

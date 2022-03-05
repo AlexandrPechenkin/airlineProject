@@ -6,27 +6,18 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDate;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 @Repository
 public interface TicketRepository extends JpaRepository<Ticket, Long> {
 
-    //поиск в бд по месту вылета
-    @Query(value = "select t from Ticket t where (t.origin like concat('%', :origin, '%'))")
-    List<Ticket> findTicketsByOrigin(@Param("origin") String origin);
-
-    //поиск в бд по месту прилета
-    @Query(value = "select t from Ticket t where (t.destination like concat('%', :destination, '%'))")
-    List<Ticket> findTicketsByDestination(@Param("destination") String destination);
-
     //поиск в бд по месту вылета и месту прилета
     @Query(value = "select t from Ticket t where (t.origin like concat('%', :origin, '%')) and t.destination like concat('%', :destination, '%')")
     List<Ticket> findTicketsByOriginAndDestination(String origin, String destination);
 
+    //поиск в бд по месту вылета, месту прилета и дате вылета
     @Query(value = "select t from Ticket t where (t.origin like concat('%', :origin, '%')) " +
             "and t.destination like concat('%', :destination, '%') " +
             "and t.departureDate like concat('%', :departureDate, '%')")
-    List<Ticket> findTickets(String origin, String destination, GregorianCalendar departureDate);
+    List<Ticket> findTickets(String origin, String destination, String departureDate);
 }

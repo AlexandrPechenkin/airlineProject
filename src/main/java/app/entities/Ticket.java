@@ -7,8 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
-import java.time.LocalDate;
-import java.util.GregorianCalendar;
 
 @Data
 @RequiredArgsConstructor
@@ -32,11 +30,19 @@ public class Ticket {
 
     //дата вылета
     @NonNull
-    private GregorianCalendar departureDate;
+    private String departureDate;
+
+    //время вылета
+    @NonNull
+    private String departureTime;
 
     //дата прилета
     @NonNull
-    private GregorianCalendar arrivalDate;
+    private String arrivalDate;
+
+    //время прилета
+    @NonNull
+    private String arrivalTime;
 
     //стоимость билета
     @NonNull
