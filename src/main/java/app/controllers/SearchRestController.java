@@ -26,14 +26,14 @@ public class SearchRestController {
     }
 
     //получение списка всех билетов по месту вылета
-    @GetMapping("/{origin}")
+    @GetMapping("/origin/{origin}")
     public ResponseEntity<List<Ticket>> searchTicketOrigin(@PathVariable("origin") String origin) {
         return ResponseEntity.ok(ticketService.findTicketsByOrigin(origin));
     }
 
 
     //получение списка всех билетов по месту прилета
-    @GetMapping("/{destination}")
+    @GetMapping("/destination/{destination}")
     public ResponseEntity<List<Ticket>> searchTicketDestination(@PathVariable("destination") String destination) {
         return ResponseEntity.ok(ticketService.findTicketsByDestination(destination));
     }
