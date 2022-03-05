@@ -21,22 +21,6 @@ public class Ticket {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //имя пассажира
-    @NonNull
-    private String nameOfPassenger;
-
-    //фамилия пассажира
-    @NonNull
-    private String secondNameOfPassenger;
-
-    //номер паспорта пассажира
-    @NonNull
-    private Long passengersPassportId;
-
-    //пол пассажира
-    @NonNull
-    private String sexOfPassenger;
-
     //место вылета
     @NonNull
     private String origin;

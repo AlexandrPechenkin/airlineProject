@@ -19,21 +19,26 @@ public class SearchRestController {
         this.ticketService = ticketService;
     }
 
+    //получение списка всех билетов
     @GetMapping("/all")
     public ResponseEntity<List<Ticket>> getAllTickets() {
         return ResponseEntity.ok(ticketService.getAllTickets());
     }
 
+    //получение списка всех билетов по месту вылета
     @GetMapping("/{origin}")
     public ResponseEntity<List<Ticket>> searchTicketOrigin(@PathVariable("origin") String origin) {
         return ResponseEntity.ok(ticketService.findTicketsByOrigin(origin));
     }
 
+
+    //получение списка всех билетов по месту прилета
     @GetMapping("/{destination}")
     public ResponseEntity<List<Ticket>> searchTicketDestination(@PathVariable("destination") String destination) {
         return ResponseEntity.ok(ticketService.findTicketsByDestination(destination));
     }
 
+    //получение списка всех билетов по месту вылета и месту прилета
     @GetMapping("/{origin}/{destination}")
     public ResponseEntity<List<Ticket>> searchTickets(@PathVariable("origin") String origin,
                                                       @PathVariable("destination") String destination) {
