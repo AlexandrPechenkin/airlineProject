@@ -5,6 +5,8 @@ import app.repositories.TicketRepository;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 @Service
@@ -66,5 +68,11 @@ public class TicketServiceImpl implements TicketService {
     @Override
     public List<Ticket> findTicketsByOriginAndDestination(String origin, String destination) {
         return ticketRepository.findTicketsByOriginAndDestination(origin, destination);
+    }
+
+    @Transactional
+    @Override
+    public List<Ticket> findTickets(String origin, String destination, GregorianCalendar departureDate) {
+        return ticketRepository.findTickets(origin, destination, departureDate);
     }
 }

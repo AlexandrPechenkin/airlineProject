@@ -6,6 +6,7 @@ import io.swagger.annotations.Api;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.GregorianCalendar;
 import java.util.List;
 
 @RestController
@@ -40,9 +41,18 @@ public class SearchRestController {
 
     //получение списка всех билетов по месту вылета и месту прилета
     @GetMapping("/{origin}/{destination}")
-    public ResponseEntity<List<Ticket>> searchTickets(@PathVariable("origin") String origin,
+    public ResponseEntity<List<Ticket>> searchTicketsByOriginAndDestination(@PathVariable("origin") String origin,
                                                       @PathVariable("destination") String destination) {
         return ResponseEntity.ok(ticketService.findTicketsByOriginAndDestination(origin, destination));
+    }
+
+
+    //Получение списка билетов по месту вылета, месту прилета и времени вылета
+    @GetMapping("/{origin}/{destination}/{departureDate}")
+    public ResponseEntity<List<Ticket>> searchTickets(@PathVariable("origin") String origin,
+                                                      @PathVariable("destination") String destination,
+                                                      @PathVariable("departureDate") GregorianCalendar departureDate) {
+        return ResponseEntity.ok(ticketService.findTickets(origin, destination, departureDate));
     }
 
 }
