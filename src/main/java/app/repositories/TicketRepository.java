@@ -1,2 +1,21 @@
-package app.repositories;public class TicketRepository {
+package app.repositories;
+
+import app.entities.Ticket;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
+@Repository
+public interface TicketRepository extends JpaRepository<Ticket, Long> {
+    @Query(value = "select t from Ticket t where (t.origin like concat('%', :origin, '%'))")
+    List<Ticket> findTicketsByOrigin(@Param("origin") String origin);
+
+    @Query(value = "select t from Ticket t where (t.destination like concat('%', :destination, '%'))")
+    List<Ticket> findTicketsByDestination(@Param("destination") String destination);
+
+    @Query(value = "select t from Ticket t where (t.origin like concat('%', :origin, '%')) and t.destination like concat('%', :destination, '%')")
+    List<Ticket> findTicketsByOriginAndDestination(String origin, String destination);
 }
