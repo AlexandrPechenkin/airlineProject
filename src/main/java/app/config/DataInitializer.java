@@ -16,19 +16,24 @@ import java.util.GregorianCalendar;
 public class DataInitializer {
 
     TicketService ticketService;
+
     public DataInitializer(TicketService ticketService) {
         this.ticketService = ticketService;
     }
 
-    Ticket ticket = new Ticket("NSK", "MSK", new GregorianCalendar(2022, 03, 05, 15, 15, 15)
+    //создание первого билета
+    Ticket ticketFromNskToMsk = new Ticket("NSK", "MSK", new GregorianCalendar(2022, 03, 05, 15, 15, 15)
             , new GregorianCalendar(2022, 03, 06, 14, 13, 12), 18500l, "15F");
+
+    //создание второго билета
+    Ticket ticketFromTelAvivToNewYork = new Ticket("Tel-Aviv", "New York", new GregorianCalendar(2022, 11, 15, 01, 16, 15)
+            , new GregorianCalendar(2022, 11, 16, 10, 13, 12), 68350l, "1A");
 
     @PostConstruct
     public void init() {
 
-
-        ticketService.createTicket(ticket);
-
+        ticketService.createTicket(ticketFromNskToMsk);
+        ticketService.createTicket(ticketFromTelAvivToNewYork);
 
         System.out.println("DataInitializer сработал!");
     }
