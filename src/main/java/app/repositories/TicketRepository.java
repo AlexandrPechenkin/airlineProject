@@ -15,5 +15,4 @@ public interface TicketRepository extends JpaRepository<Ticket, Long> {
             "and t.destination like concat('%', :destination, '%') " +
             "and t.departureDate like concat('%', :departureDate, '%')")
     List<Ticket> findTickets(String origin, String destination, String departureDate);
-
 }
