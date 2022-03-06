@@ -48,8 +48,8 @@ public class TicketServiceImpl implements TicketService {
     //поиск билета по месту вылета и месту прилета
     @Transactional
     @Override
-    public List<Ticket> findTicketsByOriginAndDestination(String origin, String destination) {
-        return ticketRepository.findTicketsByOriginAndDestination(origin, destination);
+    public List<Ticket> findTickets(String origin, String destination) {
+        return ticketRepository.findTickets(origin, destination);
     }
 
     //поиск билета по месту вылета, месту прилета и дате вылета
@@ -57,5 +57,12 @@ public class TicketServiceImpl implements TicketService {
     @Override
     public List<Ticket> findTickets(String origin, String destination, String departureDate) {
         return ticketRepository.findTickets(origin, destination, departureDate);
+    }
+
+    //поиск билета по месту вылета, месту прилета, дате вылета и дате прилета
+    @Transactional
+    @Override
+    public List<Ticket> findTickets(String origin, String destination, String departureDate, String arrivalDate) {
+        return ticketRepository.findTickets(origin, destination, departureDate, arrivalDate);
     }
 }
