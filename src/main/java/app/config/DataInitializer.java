@@ -38,12 +38,20 @@ public class DataInitializer {
             "16.11.2022", "00:20",
             16500l, "22B");
 
+    //создание четвертого билета
+    Ticket ticketFromMskToNsk = new Ticket("MSK", "NSK",
+            "20.11.2022", "15:30",
+            "20.11.2022", "16:50",
+            20500l, "10F");
+
+
     @PostConstruct
     public void init() {
 
         ticketService.createTicket(ticketFromNskToMsk);
         ticketService.createTicket(ticketFromTelAvivToNewYork);
         ticketService.createTicket(ticketFromNskToMsk2);
+        ticketService.createTicket(ticketFromMskToNsk);
 
         System.out.println("DataInitializer сработал!");
     }

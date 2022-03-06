@@ -26,15 +26,8 @@ public class SearchRestController {
     }
 
 
-    //получение списка всех билетов по месту вылета и месту прилета
-    @GetMapping("/{origin}/{destination}")
-    public ResponseEntity<List<Ticket>> searchTickets(@PathVariable("origin") String origin,
-                                                      @PathVariable("destination") String destination) {
-        return ResponseEntity.ok(ticketService.findTickets(origin, destination));
-    }
 
-
-    //Получение списка билетов по месту вылета, месту прилета и времени вылета
+    //Получение списка билетов по месту вылета, месту прилета и дате вылета
     @GetMapping("/{origin}/{destination}/{departureDate}")
     public ResponseEntity<List<Ticket>> searchTickets(@PathVariable("origin") String origin,
                                                       @PathVariable("destination") String destination,
@@ -42,13 +35,15 @@ public class SearchRestController {
         return ResponseEntity.ok(ticketService.findTickets(origin, destination, departureDate));
     }
 
-    //Получение списка билетов по месту вылета, месту прилета, дате вылета и дате прилета
-    @GetMapping("/{origin}/{destination}/{departureDate}/{arrivalDate}")
-    public ResponseEntity<List<Ticket>> searchTickets(@PathVariable("origin") String origin,
+    //Получение списка билетов по месту вылета, месту прилета, дате вылета с возвращением обратно
+    @GetMapping("/{origin}/{destination}/{departureDate}/{arrivalDateReturn}")
+    public ResponseEntity<List<Ticket>> searchTicketsWithReturn(@PathVariable("origin") String origin,
                                                       @PathVariable("destination") String destination,
                                                       @PathVariable("departureDate") String departureDate,
-                                                      @PathVariable("arrivalDate") String arrivalDate) {
-        return ResponseEntity.ok(ticketService.findTickets(origin, destination, departureDate, arrivalDate));
+                                                      @PathVariable("arrivalDateReturn") String arrivalDateReturn) {
+        List<Ticket> ticketList = ticketService.findTickets(origin, destination, departureDate);
+        ticketList.add(ticketService.findTickets(destination, origin, arrivalDateReturn).stream().iterator().next());
+        return ResponseEntity.ok(ticketList);
     }
 
 }

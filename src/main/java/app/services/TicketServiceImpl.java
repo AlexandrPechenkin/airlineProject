@@ -45,24 +45,11 @@ public class TicketServiceImpl implements TicketService {
         return ticketRepository.getById(id);
     }
 
-    //поиск билета по месту вылета и месту прилета
-    @Transactional
-    @Override
-    public List<Ticket> findTickets(String origin, String destination) {
-        return ticketRepository.findTickets(origin, destination);
-    }
 
     //поиск билета по месту вылета, месту прилета и дате вылета
     @Transactional
     @Override
     public List<Ticket> findTickets(String origin, String destination, String departureDate) {
         return ticketRepository.findTickets(origin, destination, departureDate);
-    }
-
-    //поиск билета по месту вылета, месту прилета, дате вылета и дате прилета
-    @Transactional
-    @Override
-    public List<Ticket> findTickets(String origin, String destination, String departureDate, String arrivalDate) {
-        return ticketRepository.findTickets(origin, destination, departureDate, arrivalDate);
     }
 }

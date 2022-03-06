@@ -9,7 +9,5 @@ public interface TicketService {
     void removeTicket(Ticket ticket);
     void createTicket(Ticket ticket);
     Ticket getTicketByID(Long id);
-    List<Ticket> findTickets(String origin, String destination);
     List<Ticket> findTickets(String origin, String destination, String departureDate);
-    List<Ticket> findTickets(String origin, String destination, String departureDate, String arrivalDate);
 }

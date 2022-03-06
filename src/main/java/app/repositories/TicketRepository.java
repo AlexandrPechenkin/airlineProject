@@ -10,20 +10,10 @@ import java.util.List;
 @Repository
 public interface TicketRepository extends JpaRepository<Ticket, Long> {
 
-    //поиск в бд по месту вылета и месту прилета
-    @Query(value = "select t from Ticket t where (t.origin like concat('%', :origin, '%')) and t.destination like concat('%', :destination, '%')")
-    List<Ticket> findTickets(String origin, String destination);
-
     //поиск в бд по месту вылета, месту прилета и дате вылета
     @Query(value = "select t from Ticket t where (t.origin like concat('%', :origin, '%')) " +
             "and t.destination like concat('%', :destination, '%') " +
             "and t.departureDate like concat('%', :departureDate, '%')")
     List<Ticket> findTickets(String origin, String destination, String departureDate);
 
-    //поиск в бд по месту вылета, месту прилета, дате вылета и дате прилета
-    @Query(value = "select t from Ticket t where (t.origin like concat('%', :origin, '%')) " +
-            "and t.destination like concat('%', :destination, '%') " +
-            "and t.departureDate like concat('%', :departureDate, '%')" +
-            "and t.arrivalDate like concat('%', :arrivalDate, '%') ")
-    List<Ticket> findTickets(String origin, String destination, String departureDate, String arrivalDate);
 }
