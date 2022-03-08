@@ -22,9 +22,6 @@ public class DataInitializer {
         this.ticketService = ticketService;
     }
 
-    /**
-     * создание второго билета
-     */
     @PostConstruct
     public void init() {
         /**
