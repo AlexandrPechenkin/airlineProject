@@ -25,7 +25,6 @@ public class TicketServiceImpl implements TicketService {
         return ticketRepository.findAll();
     }
 
-
     /**
      * метод создания билетов
      */
@@ -34,7 +33,6 @@ public class TicketServiceImpl implements TicketService {
     public void createTicket(Ticket ticket) {
         ticketRepository.save(ticket);
     }
-
 
     /**
      * метод удаления билета

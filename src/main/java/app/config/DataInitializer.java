@@ -49,7 +49,7 @@ public class DataInitializer {
                 .aircraft("Boeing 737")
                 .route("NSK-EKB-MSK")
                 .origin("Novosibirsk")
-                .transfer("Ekaterenburg")
+                .transfer("Ekaterinburg")
                 .transferDate(LocalDate.of(2022, 12, 20))
                 .transferTime(LocalTime.of(12, 40))
                 .destination("Moscow")
