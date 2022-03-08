@@ -1,7 +1,7 @@
 package app.config;
 
-import app.entities.Ticket;
-import app.services.TicketService;
+import app.entities.ticket.Ticket;
+import app.services.ticket.TicketService;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;

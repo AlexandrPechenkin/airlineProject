@@ -1,4 +1,4 @@
-package app.entities;
+package app.entities.ticket;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;

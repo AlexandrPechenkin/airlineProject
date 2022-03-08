@@ -1,7 +1,7 @@
-package app.services;
+package app.services.ticket;
 
-import app.entities.Ticket;
-import app.repositories.TicketRepository;
+import app.entities.ticket.Ticket;
+import app.repositories.ticket.TicketRepository;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -57,6 +57,9 @@ public class TicketServiceImpl implements TicketService {
 
     /**
      * поиск билета с пересадками по маршруту дате вылета
+     * @param route маршрут
+     * @param departureDate дата вылета
+     * @return
      */
     @Transactional
     @Override

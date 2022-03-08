@@ -1,6 +1,6 @@
-package app.repositories;
+package app.repositories.ticket;
 
-import app.entities.Ticket;
+import app.entities.ticket.Ticket;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

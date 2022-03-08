@@ -1,6 +1,6 @@
-package app.services;
+package app.services.ticket;
 
-import app.entities.Ticket;
+import app.entities.ticket.Ticket;
 
 import java.time.LocalDate;
 import java.util.List;

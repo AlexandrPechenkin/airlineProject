@@ -1,7 +1,7 @@
 package app.controllers;
 
-import app.entities.Ticket;
-import app.services.TicketService;
+import app.entities.ticket.Ticket;
+import app.services.ticket.TicketService;
 import io.swagger.annotations.Api;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
