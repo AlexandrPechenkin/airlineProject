@@ -2,6 +2,7 @@ package app.services;
 
 import app.entities.Ticket;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface TicketService {
@@ -9,5 +10,5 @@ public interface TicketService {
     void removeTicket(Ticket ticket);
     void createTicket(Ticket ticket);
     Ticket getTicketByID(Long id);
-    List<Ticket> findTickets(String origin, String destination, String departureDate);
+    List<Ticket> findTickets(String route, LocalDate departureDate);
 }

@@ -5,6 +5,7 @@ import app.repositories.TicketRepository;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -16,14 +17,18 @@ public class TicketServiceImpl implements TicketService {
         this.ticketRepository = ticketRepository;
     }
 
-    //метод отображения всех билетов
+    /**
+     * метод отображения всех билетов
+     */
     @Override
     public List<Ticket> getAllTickets() {
         return ticketRepository.findAll();
     }
 
 
-    //метод создания билетов
+    /**
+     * метод создания билетов
+     */
     @Transactional
     @Override
     public void createTicket(Ticket ticket) {
@@ -31,14 +36,18 @@ public class TicketServiceImpl implements TicketService {
     }
 
 
-    //метод удаления билета
+    /**
+     * метод удаления билета
+     */
     @Transactional
     @Override
     public void removeTicket(Ticket ticket) {
         ticketRepository.delete(ticket);
     }
 
-    //поиск билета по id
+    /**
+     * поиск билета по id
+     */
     @Transactional
     @Override
     public Ticket getTicketByID(Long id) {
@@ -46,10 +55,13 @@ public class TicketServiceImpl implements TicketService {
     }
 
 
-    //поиск билета по месту вылета, месту прилета и дате вылета
+    /**
+     * поиск билета с пересадками по маршруту дате вылета
+     */
     @Transactional
     @Override
-    public List<Ticket> findTickets(String origin, String destination, String departureDate) {
-        return ticketRepository.findTickets(origin, destination, departureDate);
+    public List<Ticket> findTickets(String route, LocalDate departureDate) {
+        List<Ticket> ticketList = ticketRepository.findTickets(route, departureDate);
+        return ticketList;
     }
 }

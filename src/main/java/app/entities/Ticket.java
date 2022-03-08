@@ -1,55 +1,110 @@
 package app.entities;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Data
-@RequiredArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "Ticket")
 @Component
+@Builder
 public class Ticket {
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //место вылета
+    /**
+     * самолет
+     */
+    @NonNull
+    private String aircraft;
+
+    /**
+     * маршрут
+     */
+    @NonNull
+    private String route;
+
+    /**
+     * место вылета
+     */
     @NonNull
     private String origin;
 
-    //место прилета
+    /**
+     * пересадка
+     */
+    private String transfer;
+
+    /**
+     * дата пересадки
+     */
+    @DateTimeFormat(pattern = "dd.MM.yyyy")
+    @JsonFormat(pattern = "dd.MM.yyyy")
+    private LocalDate transferDate;
+
+    /**
+     * время пересадки
+     */
+    @DateTimeFormat(pattern = "hh:mm")
+    @JsonFormat(pattern = "hh:mm")
+    private LocalTime transferTime;
+
+    /**
+     * место прилета
+     */
     @NonNull
     private String destination;
 
-    //дата вылета
-    @NonNull
-    private String departureDate;
+    /**
+     * дата вылета
+     */
+    @DateTimeFormat(pattern = "dd.MM.yyyy")
+    @JsonFormat(pattern = "dd.MM.yyyy")
+    private LocalDate departureDate;
 
-    //время вылета
-    @NonNull
-    private String departureTime;
+    /**
+     * время вылета
+     */
+    @DateTimeFormat(pattern = "hh:mm")
+    @JsonFormat(pattern = "hh:mm")
+    private LocalTime departureTime;
 
-    //дата прилета
-    @NonNull
-    private String arrivalDate;
+    /**
+     * дата прилета
+     */
+    @DateTimeFormat(pattern = "dd.MM.yyyy")
+    @JsonFormat(pattern = "dd.MM.yyyy")
+    private LocalDate arrivalDate;
 
-    //время прилета
-    @NonNull
-    private String arrivalTime;
+    /**
+     * время прилета
+     */
+    @DateTimeFormat(pattern = "hh:mm")
+    @JsonFormat(pattern = "hh:mm")
+    private LocalTime arrivalTime;
 
-    //стоимость билета
+
+    /**
+     * стоимость билета
+     */
     @NonNull
     private Long ticketPrice;
 
-    //номер кресла
+    /**
+     * номер кресла
+     */
     @NonNull
-    private String seatNumber;
+    private String seat;
+
 
 }

@@ -5,6 +5,8 @@ import app.services.TicketService;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 /**
  * В этом классе инициализируются тестовые данные для базы.
@@ -20,38 +22,45 @@ public class DataInitializer {
         this.ticketService = ticketService;
     }
 
-    //создание первого билета
-    Ticket ticketFromNskToMsk = new Ticket("NSK", "MSK",
-            "15.11.2022", "15:30",
-            "15.11.2022", "16:50",
-            18500l, "15F");
-
-    //создание второго билета
-    Ticket ticketFromTelAvivToNewYork = new Ticket("Tel-Aviv", "New York",
-            "03.05.2022", "22:20",
-            "04.05.2022", "04:20",
-            68350l, "1A");
-
-    //создание третьего билета
-    Ticket ticketFromNskToMsk2 = new Ticket("NSK", "MSK",
-            "17.11.2022", "23:00",
-            "18.11.2022", "00:20",
-            16500l, "22B");
-
-    //создание четвертого билета
-    Ticket ticketFromMskToNsk = new Ticket("MSK", "NSK",
-            "20.11.2022", "15:30",
-            "20.11.2022", "16:50",
-            20500l, "10F");
-
-
+    /**
+     * создание второго билета
+     */
     @PostConstruct
     public void init() {
+        /**
+         * создание первого билета
+         */
+        ticketService.createTicket(Ticket.builder()
+                .aircraft("Boeing 737")
+                .route("NSK-MSK")
+                .origin("Novosibirsk")
+                .destination("Moscow")
+                .departureDate(LocalDate.of(2022, 12, 20))
+                .departureTime(LocalTime.of(15, 40))
+                .arrivalDate(LocalDate.of(2022, 12, 20))
+                .arrivalTime(LocalTime.of(18, 00))
+                .ticketPrice(19500l)
+                .seat("1A")
+                .build());
+        /**
+         * создание второго билета
+         */
+        ticketService.createTicket(Ticket.builder()
+                .aircraft("Boeing 737")
+                .route("NSK-EKB-MSK")
+                .origin("Novosibirsk")
+                .transfer("Ekaterenburg")
+                .transferDate(LocalDate.of(2022, 12, 20))
+                .transferTime(LocalTime.of(12, 40))
+                .destination("Moscow")
+                .departureDate(LocalDate.of(2022, 12, 20))
+                .departureTime(LocalTime.of(14, 10))
+                .arrivalDate(LocalDate.of(2022, 12, 20))
+                .arrivalTime(LocalTime.of(16, 30))
+                .ticketPrice(16300l)
+                .seat("1A")
+                .build());
 
-        ticketService.createTicket(ticketFromNskToMsk);
-        ticketService.createTicket(ticketFromTelAvivToNewYork);
-        ticketService.createTicket(ticketFromNskToMsk2);
-        ticketService.createTicket(ticketFromMskToNsk);
 
         System.out.println("DataInitializer сработал!");
     }
