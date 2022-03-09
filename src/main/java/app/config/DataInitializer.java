@@ -1,5 +1,6 @@
 package app.config;
 
+import app.entities.flight.Flight;
 import app.entities.route.Route;
 import app.entities.ticket.Ticket;
 import app.services.route.RouteService;
@@ -34,33 +35,38 @@ public class DataInitializer {
          */
         ticketService.createTicket(Ticket.builder()
                 .aircraft("Boeing 737")
-                .departureDate(LocalDate.of(2022, 12, 20))
-                .departureTime(LocalTime.of(15, 40))
-                .arrivalDate(LocalDate.of(2022, 12, 20))
-                .arrivalTime(LocalTime.of(18, 00))
                 .ticketPrice(19500l)
                 .seat("1A")
-                .route(Route.builder()
-                        .route("S455")
-                        .origin("Novosibirsk")
-                        .destination("Moscow")
+                .flight(Flight.builder()
+                        .departureDate(LocalDate.of(2022, 12, 20))
+                        .departureTime(LocalTime.of(15, 40))
+                        .arrivalDate(LocalDate.of(2022, 12, 20))
+                        .arrivalTime(LocalTime.of(18, 00))
+                        .route(Route.builder()
+                                .route("S455")
+                                .origin("Novosibirsk")
+                                .destination("Moscow")
+                                .build())
                         .build())
+
                 .build());
         /**
          * создание второго билета
          */
         ticketService.createTicket(Ticket.builder()
                 .aircraft("Boeing 737")
-                .departureDate(LocalDate.of(2022, 12, 20))
-                .departureTime(LocalTime.of(14, 10))
-                .arrivalDate(LocalDate.of(2022, 12, 20))
-                .arrivalTime(LocalTime.of(16, 30))
                 .ticketPrice(16300l)
                 .seat("1A")
-                .route(Route.builder()
-                        .route("S3557")
-                        .origin("Omsk")
-                        .destination("Barnaul")
+                .flight(Flight.builder()
+                        .departureDate(LocalDate.of(2022, 12, 20))
+                        .departureTime(LocalTime.of(14, 10))
+                        .arrivalDate(LocalDate.of(2022, 12, 20))
+                        .arrivalTime(LocalTime.of(16, 30))
+                        .route(Route.builder()
+                                .route("S3557")
+                                .origin("Omsk")
+                                .destination("Barnaul")
+                                .build())
                         .build())
                 .build());
 

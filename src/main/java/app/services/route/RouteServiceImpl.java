@@ -1,6 +1,7 @@
 package app.services.route;
 
 import app.entities.route.Route;
+import app.repositories.route.RouteRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -8,25 +9,29 @@ import java.util.List;
 @Service
 public class RouteServiceImpl implements RouteService {
 
-    RouteService routeService;
+    RouteRepository routeRepository;
+
+    public RouteServiceImpl(RouteRepository routeRepository) {
+        this.routeRepository = routeRepository;
+    }
 
     @Override
     public List<Route> getAllRoutes() {
-        return routeService.getAllRoutes();
+        return routeRepository.findAll();
     }
 
     @Override
     public void createRoute(Route route) {
-        routeService.createRoute(route);
+        routeRepository.save(route);
     }
 
     @Override
-    public void removeRoute() {
-        routeService.removeRoute();
+    public void removeRoute(Route route) {
+        routeRepository.delete(route);
     }
 
     @Override
     public Route getRouteById(Long id) {
-        return routeService.getRouteById(id);
+        return routeRepository.getById(id);
     }
 }

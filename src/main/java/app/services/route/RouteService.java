@@ -9,7 +9,7 @@ public interface RouteService {
 
     void createRoute(Route route);
 
-    void removeRoute();
+    void removeRoute(Route route);
 
     Route getRouteById(Long id);
 }

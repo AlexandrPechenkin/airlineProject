@@ -14,8 +14,8 @@ public interface TicketRepository extends JpaRepository<Ticket, Long> {
     /**
      *     поиск в бд по маршруту и дате вылета
      */
-    @Query(value = "select t from Ticket t where (t.route.route like concat('%', :route, '%')) " +
-            "and t.departureDate like concat('%', :departureDate, '%')")
+    @Query(value = "select t from Ticket t where (t.flight.route.route like concat('%', :route, '%')) " +
+            "and t.flight.departureDate like concat('%', :departureDate, '%')")
     List<Ticket> findTickets(String route, LocalDate departureDate);
 
 }

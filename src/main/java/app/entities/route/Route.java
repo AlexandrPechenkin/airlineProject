@@ -1,6 +1,7 @@
 package app.entities.route;
 
 
+import app.entities.flight.Flight;
 import lombok.*;
 import org.springframework.stereotype.Component;
 
@@ -36,4 +37,5 @@ public class Route {
      */
     @NonNull
     private String destination;
+
 }
