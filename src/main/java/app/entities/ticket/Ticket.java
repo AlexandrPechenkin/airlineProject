@@ -1,7 +1,9 @@
 package app.entities.ticket;
 
+import app.entities.route.Route;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
+import org.hibernate.annotations.Cascade;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Component;
 
@@ -17,10 +19,20 @@ import java.time.LocalTime;
 @Component
 @Builder
 public class Ticket {
+    /**
+     * id
+     */
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    /**
+     * связь с маршрут id
+     */
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "route_id")
+    private Route route;
 
     /**
      * самолет
@@ -28,42 +40,6 @@ public class Ticket {
     @NonNull
     private String aircraft;
 
-    /**
-     * маршрут
-     */
-    @NonNull
-    private String route;
-
-    /**
-     * место вылета
-     */
-    @NonNull
-    private String origin;
-
-    /**
-     * пересадка
-     */
-    private String transfer;
-
-    /**
-     * дата пересадки
-     */
-    @DateTimeFormat(pattern = "dd.MM.yyyy")
-    @JsonFormat(pattern = "dd.MM.yyyy")
-    private LocalDate transferDate;
-
-    /**
-     * время пересадки
-     */
-    @DateTimeFormat(pattern = "hh:mm")
-    @JsonFormat(pattern = "hh:mm")
-    private LocalTime transferTime;
-
-    /**
-     * место прилета
-     */
-    @NonNull
-    private String destination;
 
     /**
      * дата вылета
@@ -105,6 +81,5 @@ public class Ticket {
      */
     @NonNull
     private String seat;
-
 
 }
