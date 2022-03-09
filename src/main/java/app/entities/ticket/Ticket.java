@@ -1,7 +1,6 @@
 package app.entities.ticket;
 
 import app.entities.flight.Flight;
-import app.entities.route.Route;
 import lombok.*;
 import org.springframework.stereotype.Component;
 
@@ -15,6 +14,7 @@ import javax.persistence.*;
 @Component
 @Builder
 public class Ticket {
+
     /**
      * id
      */

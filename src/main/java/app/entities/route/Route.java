@@ -1,7 +1,5 @@
 package app.entities.route;
 
-
-import app.entities.flight.Flight;
 import lombok.*;
 import org.springframework.stereotype.Component;
 
@@ -15,6 +13,10 @@ import javax.persistence.*;
 @Component
 @Builder
 public class Route {
+
+    /**
+     * id
+     */
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)

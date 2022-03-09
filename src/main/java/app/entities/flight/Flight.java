@@ -22,6 +22,10 @@ import java.time.LocalTime;
 @Component
 @Builder
 public class Flight {
+
+    /**
+     * id
+     */
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
