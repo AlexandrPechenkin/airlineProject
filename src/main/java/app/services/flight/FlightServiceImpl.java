@@ -2,9 +2,11 @@ package app.services.flight;
 
 import app.entities.flight.Flight;
 import app.repositories.flight.FlightRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -30,7 +32,7 @@ public class FlightServiceImpl implements FlightService {
      */
     @Transactional
     @Override
-    public void createFlight(Flight flight) {
+    public void createOrUpdateFlight(Flight flight) {
         flightRepository.save(flight);
     }
 
@@ -51,4 +53,19 @@ public class FlightServiceImpl implements FlightService {
     public Flight getFlightById(Long id) {
         return flightRepository.getById(id);
     }
+
+    /**
+     * поиск перелета с пересадками по маршруту дате вылета
+     *
+     * @param from          место вылета
+     * @param to            место прилета
+     * @param departureDate дата вылета
+     * @return
+     */
+    @Transactional
+    @Override
+    public List<Flight> findFlights(String from, String to, LocalDate departureDate) {
+        return flightRepository.findFlights(from, to, departureDate);
+    }
+
 }

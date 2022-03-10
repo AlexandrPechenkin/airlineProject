@@ -1,6 +1,6 @@
 package app.entities.route;
 
-import app.entities.flight.Flight;
+import app.entities.search.Search;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalTime;
 
 @Data
 @NoArgsConstructor
@@ -29,6 +28,7 @@ public class Route {
 
     /**
      * место вылета
+     * В БУДУЩЕМ УДАЛИТЬ
      */
     @NonNull
     @Column(name = "destinationFrom")
@@ -36,6 +36,7 @@ public class Route {
 
     /**
      * место прилета
+     * В БУДУЩЕМ УДАЛИТЬ
      */
     @NonNull
     @Column(name = "destinationTo")
@@ -49,30 +50,22 @@ public class Route {
     private LocalDate departureDate;
 
     /**
-     * время вылета
-     */
-    @DateTimeFormat(pattern = "hh:mm")
-    @JsonFormat(pattern = "hh:mm")
-    private LocalTime departureTime;
-
-    /**
      * дата прилета
      */
     @DateTimeFormat(pattern = "dd.MM.yyyy")
     @JsonFormat(pattern = "dd.MM.yyyy")
     private LocalDate arrivalDate;
 
-    /**
-     * время прилета
-     */
-    @DateTimeFormat(pattern = "hh:mm")
-    @JsonFormat(pattern = "hh:mm")
-    private LocalTime arrivalTime;
 
     /**
      * количество сидений
      */
+    @NonNull
     private int numberOfSeats;
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = true)
+    @JoinColumn(name = "route_id", nullable = false)
+    private Search search;
 
 
     /**
@@ -81,4 +74,15 @@ public class Route {
 //    @NonNull
 //    private Category category;
 
+    /**
+     * Destination from
+     */
+//    @NonNull
+//    private Destination from;
+
+    /**
+     * Destination to
+     */
+//    @NonNull
+//    private Destination to;
 }
