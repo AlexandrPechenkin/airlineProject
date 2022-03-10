@@ -1,5 +1,6 @@
 package app.entities.route;
 
+import app.entities.flight.Flight;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -30,13 +31,15 @@ public class Route {
      * место вылета
      */
     @NonNull
-    private String destinationFrom;
+    @Column(name = "destinationFrom")
+    private String from;
 
     /**
      * место прилета
      */
     @NonNull
-    private String destinationTo;
+    @Column(name = "destinationTo")
+    private String to;
 
     /**
      * дата вылета
@@ -69,8 +72,7 @@ public class Route {
     /**
      * количество сидений
      */
-    @NonNull
-    private Integer numberOfSeats;
+    private int numberOfSeats;
 
 
     /**
@@ -78,4 +80,5 @@ public class Route {
      */
 //    @NonNull
 //    private Category category;
+
 }

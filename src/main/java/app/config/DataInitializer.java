@@ -3,7 +3,9 @@ package app.config;
 import app.entities.flight.Flight;
 import app.entities.route.Route;
 import app.entities.ticket.Ticket;
+import app.services.flight.FlightService;
 import app.services.route.RouteService;
+import app.services.search.SearchService;
 import app.services.ticket.TicketService;
 import org.springframework.stereotype.Component;
 
@@ -19,54 +21,33 @@ import java.time.LocalTime;
 @Component
 public class DataInitializer {
 
+    SearchService searchService;
     TicketService ticketService;
+    FlightService flightService;
     RouteService routeService;
 
-    public DataInitializer(TicketService ticketService, RouteService routeService) {
-        this.ticketService = ticketService;
+    public DataInitializer(RouteService routeService, SearchService searchService, TicketService ticketService, FlightService flightService) {
         this.routeService = routeService;
+        this.searchService = searchService;
+        this.ticketService = ticketService;
+        this.flightService = flightService;
     }
 
     @PostConstruct
     public void init() {
 
         /**
-         * создание первого билета
+         * создание первого маршрута
          */
-        ticketService.createTicket(Ticket.builder()
-                .seat("1A")
-                .holdNumber(137l)
-                .flight(Flight.builder()
-                        .route(Route.builder()
-                                .destinationFrom("Novosibirsk")
-                                .destinationTo("Moscow")
-                                .departureDate(LocalDate.of(2022, 12, 20))
-                                .departureTime(LocalTime.of(15, 40))
-                                .arrivalDate(LocalDate.of(2022, 12, 20))
-                                .arrivalTime(LocalTime.of(18, 00))
-                                .numberOfSeats(1)
-                                .build())
-                        .build())
+        routeService.createRoute(Route.builder()
+                .from("NSK")
+                .to("MSK")
+                .departureDate(LocalDate.of(2022, 12, 20))
+                .departureTime(LocalTime.of(14, 10))
+                .arrivalDate(LocalDate.of(2022, 12, 20))
+                .arrivalTime(LocalTime.of(16, 30))
+                .numberOfSeats(1)
                 .build());
-        /**
-         * создание второго билета
-         */
-        ticketService.createTicket(Ticket.builder()
-                .seat("1A")
-                .holdNumber(15l)
-                .flight(Flight.builder()
-                        .route(Route.builder()
-                                .destinationFrom("Omsk")
-                                .destinationTo("Barnaul")
-                                .departureDate(LocalDate.of(2022, 12, 20))
-                                .departureTime(LocalTime.of(14, 10))
-                                .arrivalDate(LocalDate.of(2022, 12, 20))
-                                .arrivalTime(LocalTime.of(16, 30))
-                                .numberOfSeats(1)
-                                .build())
-                        .build())
-                .build());
-
 
         System.out.println("DataInitializer сработал!");
     }

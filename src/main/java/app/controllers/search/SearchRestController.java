@@ -1,8 +1,7 @@
 package app.controllers.search;
 
-import app.entities.ticket.Ticket;
+import app.entities.route.Route;
 import app.services.search.SearchService;
-import app.services.ticket.TicketService;
 import io.swagger.annotations.Api;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,28 +14,18 @@ import java.util.List;
 @RequestMapping("/search")
 public class SearchRestController {
 
-    private final TicketService ticketService;
     private final SearchService searchService;
 
-    public SearchRestController(TicketService ticketService, SearchService searchService) {
-        this.ticketService = ticketService;
+    public SearchRestController(SearchService searchService) {
         this.searchService = searchService;
-    }
-
-    /**
-     * получение списка всех билетов
-     */
-    @GetMapping("/all")
-    public ResponseEntity<List<Ticket>> getAllTickets() {
-        return ResponseEntity.ok(ticketService.getAllTickets());
     }
 
     /**
      * Получение списка билетов по месту вылета, месту прилета и дате вылета
      */
-    @GetMapping("/{destinationFrom}/{destinationTo}/{departureDate}")
-    public ResponseEntity<List<Ticket>> searchTickets(@PathVariable("destinationFrom") String destinationFrom, @PathVariable("destinationTo") String destinationTo,
-                                                      @PathVariable("departureDate") LocalDate departureDate) {
-        return ResponseEntity.ok(searchService.findTickets(destinationFrom, destinationTo, departureDate));
+    @GetMapping("/{from}/{to}/{departureDate}")
+    public ResponseEntity<List<Route>> searchTickets(@PathVariable("from") String from, @PathVariable("to") String to,
+                                                     @PathVariable("departureDate") LocalDate departureDate) {
+        return ResponseEntity.ok(searchService.findTickets(from, to, departureDate));
     }
 }

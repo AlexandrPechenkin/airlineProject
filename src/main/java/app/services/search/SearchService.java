@@ -1,10 +1,10 @@
 package app.services.search;
 
-import app.entities.ticket.Ticket;
+import app.entities.route.Route;
 
 import java.time.LocalDate;
 import java.util.List;
 
 public interface SearchService {
-    List<Ticket> findTickets(String destinationFrom, String destinationTo, LocalDate departureDate);
+    List<Route> findTickets(String from, String to, LocalDate departureDate);
 }

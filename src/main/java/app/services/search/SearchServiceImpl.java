@@ -1,5 +1,6 @@
 package app.services.search;
 
+import app.entities.route.Route;
 import app.entities.ticket.Ticket;
 import app.repositories.search.SearchRepository;
 import org.springframework.stereotype.Service;
@@ -20,15 +21,15 @@ public class SearchServiceImpl implements SearchService {
     /**
      * поиск билета с пересадками по маршруту дате вылета
      *
-     * @param destinationFrom место вылета
-     * @param destinationTo   место прилета
+     * @param from место вылета
+     * @param to   место прилета
      * @param departureDate   дата вылета
      * @return
      */
     @Transactional
     @Override
-    public List<Ticket> findTickets(String destinationFrom, String destinationTo, LocalDate departureDate) {
-        List<Ticket> ticketList = searchRepository.findTickets(destinationFrom, destinationTo, departureDate);
+    public List<Route> findTickets(String from, String to, LocalDate departureDate) {
+        List<Route> ticketList = searchRepository.findTickets(from, to, departureDate);
         return ticketList;
     }
 }
