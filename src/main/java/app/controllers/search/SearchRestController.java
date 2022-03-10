@@ -1,4 +1,4 @@
-package app.controllers;
+package app.controllers.search;
 
 import app.entities.ticket.Ticket;
 import app.services.search.SearchService;

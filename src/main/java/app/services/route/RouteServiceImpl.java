@@ -4,6 +4,7 @@ import app.entities.route.Route;
 import app.repositories.route.RouteRepository;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -18,6 +19,7 @@ public class RouteServiceImpl implements RouteService {
     /**
      * получение всех маршрутов
      */
+    @Transactional
     @Override
     public List<Route> getAllRoutes() {
         return routeRepository.findAll();
@@ -26,6 +28,7 @@ public class RouteServiceImpl implements RouteService {
     /**
      * создание маршрута
      */
+    @Transactional
     @Override
     public void createRoute(Route route) {
         routeRepository.save(route);
@@ -34,6 +37,7 @@ public class RouteServiceImpl implements RouteService {
     /**
      * удаление маршрута
      */
+    @Transactional
     @Override
     public void removeRoute(Route route) {
         routeRepository.delete(route);
@@ -42,6 +46,7 @@ public class RouteServiceImpl implements RouteService {
     /**
      * получение маршрута по id
      */
+    @Transactional
     @Override
     public Route getRouteById(Long id) {
         return routeRepository.getById(id);
