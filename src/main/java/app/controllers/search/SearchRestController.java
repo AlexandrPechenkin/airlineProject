@@ -34,9 +34,9 @@ public class SearchRestController {
     /**
      * Получение списка билетов по месту вылета, месту прилета и дате вылета
      */
-    @GetMapping("/{route}/{departureDate}")
-    public ResponseEntity<List<Ticket>> searchTickets(@PathVariable("route") String route,
+    @GetMapping("/{destinationFrom}/{destinationTo}/{departureDate}")
+    public ResponseEntity<List<Ticket>> searchTickets(@PathVariable("destinationFrom") String destinationFrom, @PathVariable("destinationTo") String destinationTo,
                                                       @PathVariable("departureDate") LocalDate departureDate) {
-        return ResponseEntity.ok(searchService.findTickets(route, departureDate));
+        return ResponseEntity.ok(searchService.findTickets(destinationFrom, destinationTo, departureDate));
     }
 }

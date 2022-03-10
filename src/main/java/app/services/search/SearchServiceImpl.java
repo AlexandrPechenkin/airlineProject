@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Service
-public class SearchServiceImpl implements SearchService{
+public class SearchServiceImpl implements SearchService {
 
     private final SearchRepository searchRepository;
 
@@ -19,14 +19,16 @@ public class SearchServiceImpl implements SearchService{
 
     /**
      * поиск билета с пересадками по маршруту дате вылета
-     * @param route маршрут
-     * @param departureDate дата вылета
+     *
+     * @param destinationFrom место вылета
+     * @param destinationTo   место прилета
+     * @param departureDate   дата вылета
      * @return
      */
     @Transactional
     @Override
-    public List<Ticket> findTickets(String route, LocalDate departureDate) {
-        List<Ticket> ticketList = searchRepository.findTickets(route, departureDate);
+    public List<Ticket> findTickets(String destinationFrom, String destinationTo, LocalDate departureDate) {
+        List<Ticket> ticketList = searchRepository.findTickets(destinationFrom, destinationTo, departureDate);
         return ticketList;
     }
 }

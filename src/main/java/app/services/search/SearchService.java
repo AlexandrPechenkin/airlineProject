@@ -6,5 +6,5 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface SearchService {
-    List<Ticket> findTickets(String route, LocalDate departureDate);
+    List<Ticket> findTickets(String destinationFrom, String destinationTo, LocalDate departureDate);
 }

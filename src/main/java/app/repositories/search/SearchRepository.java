@@ -9,9 +9,10 @@ import java.util.List;
 
 public interface SearchRepository extends JpaRepository<Ticket, Long> {
     /**
-     *     поиск в бд по маршруту и дате вылета
+     * поиск в бд по маршруту и дате вылета
      */
-    @Query(value = "select t from Ticket t where (t.flight.route.route like concat('%', :route, '%')) " +
-            "and t.flight.departureDate like concat('%', :departureDate, '%')")
-    List<Ticket> findTickets(String route, LocalDate departureDate);
+    @Query(value = "select t from Ticket t where (t.flight.route.destinationFrom like concat('%', :destinationFrom, '%')) " +
+            "and t.flight.route.destinationTo like  concat('%', :destinationTo, '%') " +
+            "and t.flight.route.departureDate like concat('%', :departureDate, '%')")
+    List<Ticket> findTickets(String destinationFrom, String destinationTo, LocalDate departureDate);
 }

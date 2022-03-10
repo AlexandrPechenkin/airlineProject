@@ -1,10 +1,13 @@
 package app.entities.ticket;
 
 import app.entities.flight.Flight;
+import app.entities.route.Route;
 import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
+import java.util.Random;
 
 @Data
 @NoArgsConstructor
@@ -24,16 +27,10 @@ public class Ticket {
     private Long id;
 
     /**
-     * самолет
+     * пассажир
      */
-    @NonNull
-    private String aircraft;
-
-    /**
-     * стоимость билета
-     */
-    @NonNull
-    private Long ticketPrice;
+//    @NonNull
+//    private Passenger passenger;
 
     /**
      * номер кресла
@@ -42,9 +39,17 @@ public class Ticket {
     private String seat;
 
     /**
+     * номер бронирования
+     */
+    @NonNull
+    private Long holdNumber;
+
+    /**
      * связь с перелетом id
      */
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "flight_id")
     private Flight flight;
+
+
 }
