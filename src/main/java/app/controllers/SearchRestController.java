@@ -1,6 +1,7 @@
 package app.controllers;
 
 import app.entities.ticket.Ticket;
+import app.services.search.SearchService;
 import app.services.ticket.TicketService;
 import io.swagger.annotations.Api;
 import org.springframework.http.ResponseEntity;
@@ -15,9 +16,11 @@ import java.util.List;
 public class SearchRestController {
 
     private final TicketService ticketService;
+    private final SearchService searchService;
 
-    public SearchRestController(TicketService ticketService) {
+    public SearchRestController(TicketService ticketService, SearchService searchService) {
         this.ticketService = ticketService;
+        this.searchService = searchService;
     }
 
     /**
@@ -34,6 +37,6 @@ public class SearchRestController {
     @GetMapping("/{route}/{departureDate}")
     public ResponseEntity<List<Ticket>> searchTickets(@PathVariable("route") String route,
                                                       @PathVariable("departureDate") LocalDate departureDate) {
-        return ResponseEntity.ok(ticketService.findTickets(route, departureDate));
+        return ResponseEntity.ok(searchService.findTickets(route, departureDate));
     }
 }

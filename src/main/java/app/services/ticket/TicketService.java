@@ -13,6 +13,4 @@ public interface TicketService {
     void createTicket(Ticket ticket);
 
     Ticket getTicketByID(Long id);
-
-    List<Ticket> findTickets(String route, LocalDate departureDate);
 }

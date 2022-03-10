@@ -5,7 +5,6 @@ import app.repositories.ticket.TicketRepository;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -50,19 +49,5 @@ public class TicketServiceImpl implements TicketService {
     @Override
     public Ticket getTicketByID(Long id) {
         return ticketRepository.getById(id);
-    }
-
-
-    /**
-     * поиск билета с пересадками по маршруту дате вылета
-     * @param route маршрут
-     * @param departureDate дата вылета
-     * @return
-     */
-    @Transactional
-    @Override
-    public List<Ticket> findTickets(String route, LocalDate departureDate) {
-        List<Ticket> ticketList = ticketRepository.findTickets(route, departureDate);
-        return ticketList;
     }
 }
