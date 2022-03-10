@@ -64,7 +64,7 @@ public class Route {
     private int numberOfSeats;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = true)
-    @JoinColumn(name = "route_id", nullable = false)
+    @JoinColumn(name = "search_id", nullable = false)
     private Search search;
 
 
