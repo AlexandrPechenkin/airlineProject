@@ -4,6 +4,7 @@ import app.entities.passenger.Passenger;
 import app.repositories.passenger.PassengerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -24,6 +25,7 @@ public class PassengerServiceImpl implements PassengerService {
      * @return {@link Passenger}
      */
     @Override
+    @Transactional
     public Passenger createOrUpdatePassenger(Passenger passenger) {
         return passengerRepository.save(passenger);
     }
@@ -34,6 +36,7 @@ public class PassengerServiceImpl implements PassengerService {
      * @return {@link Passenger}
      */
     @Override
+    @Transactional(readOnly = true)
     public Optional<Passenger> findById(Long id) {
         return passengerRepository.findById(id);
     }

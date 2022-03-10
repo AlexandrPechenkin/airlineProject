@@ -53,7 +53,7 @@ public class Passenger {
     private LocalDate dateOfBirth;
 
     /**
-     * Связь с passportPassenger
+     * Связь с Passport
      */
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "passport_id")

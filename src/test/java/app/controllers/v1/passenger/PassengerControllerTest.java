@@ -120,7 +120,7 @@ class PassengerControllerTest {
 
     //
     @Test
-    void givenPassengerExist_whenGetWithoutIdPassenger_thenStatus200() throws Exception {
+    void givenPassengerExist_whenGetWithoutIdPassenger_thenStatus404() throws Exception {
         Passenger passenger = passengerService.createOrUpdatePassenger(createPassenger());
 
         mvc.perform(get(api + "/{id}", 228)
