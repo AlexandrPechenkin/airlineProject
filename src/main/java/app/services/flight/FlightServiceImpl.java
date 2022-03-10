@@ -2,7 +2,6 @@ package app.services.flight;
 
 import app.entities.flight.Flight;
 import app.repositories.flight.FlightRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
