@@ -1,18 +1,18 @@
 package app.repositories.search;
 
-import app.entities.ticket.Ticket;
+import app.entities.route.Route;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalDate;
 import java.util.List;
 
-public interface SearchRepository extends JpaRepository<Ticket, Long> {
+public interface SearchRepository extends JpaRepository<Route, Long> {
     /**
      * поиск в бд по маршруту и дате вылета
      */
-    @Query(value = "select t from Ticket t where (t.flight.route.destinationFrom like concat('%', :destinationFrom, '%')) " +
-            "and t.flight.route.destinationTo like  concat('%', :destinationTo, '%') " +
-            "and t.flight.route.departureDate like concat('%', :departureDate, '%')")
-    List<Ticket> findTickets(String destinationFrom, String destinationTo, LocalDate departureDate);
+    @Query(value = "select r from Route r where (r.from like concat('%', :from, '%')) " +
+            "and r.to like  concat('%', :to, '%') " +
+            "and r.departureDate like concat('%', :departureDate, '%')")
+    List<Route> findTickets(String from, String to, LocalDate departureDate);
 }

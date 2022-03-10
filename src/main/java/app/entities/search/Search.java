@@ -1,4 +1,4 @@
-package app.entities.flight;
+package app.entities.search;
 
 
 import app.entities.route.Route;
@@ -9,22 +9,24 @@ import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "Flight")
+@Table(name = "Search")
 @Component
 @Builder
-public class Flight {
-
-    /**
-     * id
-     */
+public class Search {
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @ManyToMany(cascade = {CascadeType.REFRESH, CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinTable(name = "search_routes", joinColumns = @JoinColumn(name = "route_id"),
+            inverseJoinColumns = @JoinColumn(name = "search_id"))
+    private List<Route> routes;
 
 }
