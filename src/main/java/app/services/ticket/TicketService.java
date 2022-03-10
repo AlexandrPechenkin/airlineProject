@@ -2,7 +2,6 @@ package app.services.ticket;
 
 import app.entities.ticket.Ticket;
 
-import java.time.LocalDate;
 import java.util.List;
 
 public interface TicketService {

@@ -1,17 +1,19 @@
 package app.config;
 
+
 import app.entities.flight.Flight;
-import app.entities.route.Route;
-import app.entities.ticket.Ticket;
+import app.entities.flight.FlightStatus;
 import app.services.flight.FlightService;
-import app.services.route.RouteService;
 import app.services.search.SearchService;
 import app.services.ticket.TicketService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+
 
 /**
  * В этом классе инициализируются тестовые данные для базы.
@@ -24,10 +26,9 @@ public class DataInitializer {
     SearchService searchService;
     TicketService ticketService;
     FlightService flightService;
-    RouteService routeService;
 
-    public DataInitializer(RouteService routeService, SearchService searchService, TicketService ticketService, FlightService flightService) {
-        this.routeService = routeService;
+    @Autowired
+    public DataInitializer(SearchService searchService, TicketService ticketService, FlightService flightService) {
         this.searchService = searchService;
         this.ticketService = ticketService;
         this.flightService = flightService;
@@ -36,18 +37,13 @@ public class DataInitializer {
     @PostConstruct
     public void init() {
 
-        /**
-         * создание первого маршрута
-         */
-        routeService.createRoute(Route.builder()
+        flightService.createOrUpdateFlight(Flight.builder()
                 .from("NSK")
                 .to("MSK")
                 .departureDate(LocalDate.of(2022, 12, 20))
-                .departureTime(LocalTime.of(14, 10))
-                .arrivalDate(LocalDate.of(2022, 12, 20))
-                .arrivalTime(LocalTime.of(16, 30))
-                .numberOfSeats(1)
-                .build());
+                .departureTime(LocalTime.of(15, 30))
+                .arrivalDateTime(LocalDateTime.of(2022, 12, 20, 17, 10))
+                .flightStatus(FlightStatus.ACCORDING_TO_PLAN).build());
 
         System.out.println("DataInitializer сработал!");
     }
