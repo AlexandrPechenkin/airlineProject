@@ -2,6 +2,7 @@ package app.entities.searchResult;
 
 import app.entities.flight.Flight;
 import lombok.*;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
@@ -26,7 +27,7 @@ public class SearchResult {
     @JoinColumn(name = "search_result_depart")
     private List<Flight> depart;
 
-    @NonNull
+    @Nullable
     @OneToMany
     @JoinColumn(name = "search_result_arrive")
     private List<Flight> arrive;
