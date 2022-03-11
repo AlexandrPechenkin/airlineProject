@@ -27,7 +27,7 @@ public class FlightRestController {
      * @param flight
      * @return
      */
-    @PostMapping("/new")
+    @PostMapping("/")
     public ResponseEntity addFlight(@RequestBody Flight flight) {
         flightService.createOrUpdateFlight(flight);
         return new ResponseEntity(HttpStatus.OK);
@@ -40,7 +40,7 @@ public class FlightRestController {
      * @param flight
      * @return
      */
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity updateFlight(@PathVariable("id") Long id, @RequestBody Flight flight) {
         flightService.createOrUpdateFlight(flight);
         return new ResponseEntity(HttpStatus.OK);
