@@ -102,7 +102,7 @@ Dev-stand будем поднимать и разворачивать через
 <li><code>Cross-review </code> задачи на этапе перекрёстной проверки студентами</li>
 <li><code>Final Review</code> задачи на проверке у техлида</li>
 <li><code>In Reworking</code> задачи, направленные на доработку</li>
-<li><code>Done</code> выполненные задачи</li>
+<li><code>Closed</code> выполненные задачи</li>
 </ul>
 
 
