@@ -19,6 +19,13 @@ import java.util.stream.Collectors;
 /**
  * Глобальный обработчик ошибок
  */
+
+/*
+ TODO: Нужно в Readme расписать подробно для всех остальных участников команды, как с этим работать.
+ TODO: перенести в пакет util - он как раз для таких вещей.
+ TODO: подумать над созданием кастомных исключений для наших целей
+ */
+
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 

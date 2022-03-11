@@ -14,6 +14,8 @@ import java.util.Optional;
  * @version 0.1
  */
 
+//TODO: Пересмотреть структуру пакета services. Вместо отдельных пакетов для сущностей создать пакеты interfaces и impl. Раскладывать сервисы туда по типу.
+
 @Service
 @RequiredArgsConstructor
 public class PassengerServiceImpl implements PassengerService {
