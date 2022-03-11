@@ -7,17 +7,24 @@ import app.services.category.CategoryService;
 import app.services.flight.FlightService;
 import app.services.seat.SeatService;
 import org.springframework.beans.factory.annotation.Autowired;
+import app.entities.passenger.Passenger;
+import app.entities.passenger.Passport;
+import app.services.passenger.PassengerService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.time.LocalDate;
 
 /**
  * В этом классе инициализируются тестовые данные для базы.
  * Эти данные будут каждый раз создаваться заново при поднятии SessionFactory и удаляться из БД при её остановке.
  * Инжектьте и используйте здесь соответствующие сервисы ваших сущностей."
  */
+@RequiredArgsConstructor
 @Component
 public class DataInitializer {
+    private final PassengerService passengerService;
 
     @Autowired
     SeatService seatService;
@@ -64,6 +71,33 @@ public class DataInitializer {
 
         System.out.println("DataInitializer сработал!");
 
+        createPassenger();
+        System.out.println("Пассажир был создан.");
+    }
+
+    private void createPassenger() {
+        passengerService.createOrUpdatePassenger(
+                Passenger.builder()
+                        .firstName("Dereck")
+                        .lastName("Storm")
+                        .middleName("Totoro")
+                        .dateOfBirth(LocalDate.of(1992, 2, 15))
+                        .email("Airlines@test.com")
+                        .passport(
+                                Passport.builder()
+                                        .firstName("Dereck")
+                                        .lastName("Storm")
+                                        .middleName("Totoro")
+                                        .dateOfBirth(LocalDate.of(1990, 2, 15))
+                                        .gender("Male")
+                                        .birthplace("US")
+                                        .residenceRegistration("New York")
+                                        .seriesAndNumber("3333 123456")
+                                        .build()
+                        )
+                        .build()
+        );
+
 
         /** добавление мест */
 
@@ -74,7 +108,7 @@ public class DataInitializer {
             System.out.println("Flight not added :(");
             System.out.println();
         }
-        
+
         try {
             seatService.addSeat(seat1);
             seatService.addSeat(seat2);
