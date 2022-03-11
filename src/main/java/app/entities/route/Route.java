@@ -27,22 +27,6 @@ public class Route {
     private Long id;
 
     /**
-     * место вылета
-     * В БУДУЩЕМ УДАЛИТЬ
-     */
-    @NonNull
-    @Column(name = "destinationFrom")
-    private String from;
-
-    /**
-     * место прилета
-     * В БУДУЩЕМ УДАЛИТЬ
-     */
-    @NonNull
-    @Column(name = "destinationTo")
-    private String to;
-
-    /**
      * дата вылета
      */
     @DateTimeFormat(pattern = "dd.MM.yyyy")
