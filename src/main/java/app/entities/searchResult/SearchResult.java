@@ -18,15 +18,24 @@ import java.util.List;
 @Component
 public class SearchResult {
 
+    /**
+     * уникальный идентификатор результата поиска рейсов
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    /**
+     * список рейсов from
+     */
     @NonNull
     @OneToMany
     @JoinColumn(name = "search_result_depart")
     private List<Flight> depart;
 
+    /**
+     * список рейсов to
+     */
     @Nullable
     @OneToMany
     @JoinColumn(name = "search_result_arrive")
