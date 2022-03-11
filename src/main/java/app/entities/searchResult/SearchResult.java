@@ -26,7 +26,7 @@ public class SearchResult {
     private Long id;
 
     /**
-     * список рейсов from
+     * список рейсов from-to
      */
     @NonNull
     @OneToMany
@@ -34,7 +34,7 @@ public class SearchResult {
     private List<Flight> depart;
 
     /**
-     * список рейсов to
+     * список рейсов to-from
      */
     @Nullable
     @OneToMany
