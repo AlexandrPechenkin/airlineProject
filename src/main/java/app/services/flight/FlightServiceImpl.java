@@ -28,11 +28,13 @@ public class FlightServiceImpl implements FlightService {
 
     /**
      * создание перелета
+     * @return
      */
     @Transactional
     @Override
-    public void createOrUpdateFlight(Flight flight) {
+    public Flight createOrUpdateFlight(Flight flight) {
         flightRepository.save(flight);
+        return flight;
     }
 
     /**

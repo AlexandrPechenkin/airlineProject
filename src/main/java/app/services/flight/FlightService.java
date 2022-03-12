@@ -8,7 +8,7 @@ import java.util.List;
 public interface FlightService {
     List<Flight> getAllFlights();
 
-    void createOrUpdateFlight(Flight flight);
+    Flight createOrUpdateFlight(Flight flight);
 
     void removeFlight(Flight flight);
 
