@@ -30,14 +30,14 @@ public class SearchResult {
      */
     @NonNull
     @OneToMany
-    @JoinColumn(name = "search_result_depart")
-    private List<Flight> depart;
+//    @JoinColumn(name = "search_result_depart")
+    private List<Flight> departFlights;
 
     /**
      * список рейсов to-from
      */
     @Nullable
     @OneToMany
-    @JoinColumn(name = "search_result_arrive")
-    private List<Flight> arrive;
+//    @JoinColumn(name = "search_result_return")
+    private List<Flight> returnFlights;
 }
