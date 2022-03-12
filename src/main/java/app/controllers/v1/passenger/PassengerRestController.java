@@ -3,12 +3,11 @@ package app.controllers.v1.passenger;
 import app.entities.passenger.Passenger;
 import app.entities.passenger.dto.PassengerDTO;
 import app.mappers.passenger.PassengerMapper;
-import app.services.passenger.PassengerService;
+import app.services.interfaces.PassengerService;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -22,8 +21,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Api(tags = "PassengerController")
 @RequestMapping("/api/v1/passenger")
-@Validated
-public class PassengerController {
+public class PassengerRestController {
     private final PassengerService passengerService;
     private final PassengerMapper passengerMapper;
 
