@@ -1,12 +1,9 @@
 package app.entities.registration;
 
-import app.entities.aircraft.Aircraft;
 import app.entities.booking.Booking;
-import app.entities.flight.Flight;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;

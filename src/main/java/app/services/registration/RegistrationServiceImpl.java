@@ -17,12 +17,12 @@ public class RegistrationServiceImpl implements RegistrationService {
     private final RegistrationRepository registrationRepository;
 
     @Override
-    public Registration createOrUpdateBooking(Registration registration) {
+    public Registration createOrUpdateRegistration(Registration registration) {
         return registrationRepository.save(registration);
     }
 
     @Override
-    public void deleteBooking(Registration registration) {
+    public void deleteRegistration(Registration registration) {
         registrationRepository.delete(registration);
     }
 
