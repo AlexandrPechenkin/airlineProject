@@ -1,4 +1,4 @@
-package app.services.passenger;
+package app.services.interfaces;
 
 import app.entities.passenger.Passenger;
 

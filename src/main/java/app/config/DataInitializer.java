@@ -2,7 +2,7 @@ package app.config;
 
 import app.entities.passenger.Passenger;
 import app.entities.passenger.Passport;
-import app.services.passenger.PassengerService;
+import app.services.interfaces.PassengerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

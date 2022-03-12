@@ -19,24 +19,32 @@ import java.time.LocalDate;
 @ApiModel
 public class PassportDTO {
     private Long id;
+
     @NotEmpty(message = "Поле паспортных данных: firstName не должно быть пустым")
     private String firstName;
+
     @NotEmpty(message = "Поле паспортных данных: lastName не должно быть пустым")
     private String lastName;
+
     @NotEmpty(message = "Поле паспортных данных: middleName не должно быть пустым")
     private String middleName;
+
     @NotEmpty(message = "Поле паспортных данных: gender не должно быть пустым")
     private String gender;
+
     @NotEmpty(message = "Поле паспортных данных: birthplace не должно быть пустым")
     private String birthplace;
+
     @NotEmpty(message = "Поле паспортных данных: residenceRegistration не должно быть пустым")
     private String residenceRegistration;
+
     @NotNull(message = "Поле паспортных данных: dateOfBirth не должно быть пустым")
     @PastOrPresent
     @DateTimeFormat(pattern = "dd.MM.yyyy")
     @JsonFormat(pattern = "dd.MM.yyyy")
     private LocalDate dateOfBirth;
-    @NotNull(message = "Поле паспортных данных: seriesAndNumber не должно быть пустым")
+
+    @NotEmpty(message = "Поле паспортных данных: seriesAndNumber не должно быть пустым")
     @Pattern(regexp = "\\d{4}\\s\\d{6}")
     private String seriesAndNumber;
 }
