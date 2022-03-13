@@ -18,9 +18,7 @@ public class BookingDTO {
 
     private String paymentMethod;
 
-    private Boolean isSold;
-
-    private String status = "IN_PROGRESS";
+    private String status;
 
     private LocalDateTime initialBookingDateTime;
 }

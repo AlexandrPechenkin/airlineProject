@@ -1,4 +1,4 @@
-package app.entities;
+package app.entities.seat;
 
 import app.entities.flight.Flight;
 import lombok.*;

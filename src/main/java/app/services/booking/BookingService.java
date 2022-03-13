@@ -6,8 +6,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface BookingService {
-    Booking createOrUpdateBooking(Booking booking);
+    Booking createOrUpdate(Booking booking);
     Optional<Booking> findById(Long id);
-    void deleteBooking(Booking booking);
-    List<Booking> findAllBookings();
+    void delete(Booking booking);
+    void deleteIfExpired(Booking booking);
+    List<Booking> findAll();
 }

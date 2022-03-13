@@ -1,6 +1,6 @@
 package app.entities.aircraft;
 
-import app.entities.Seat;
+import app.entities.seat.Seat;
 import app.entities.category.Category;
 import lombok.*;
 import org.springframework.stereotype.Component;

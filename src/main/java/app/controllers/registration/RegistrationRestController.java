@@ -21,9 +21,15 @@ import java.util.Optional;
 @RequestMapping("/registration")
 @Validated
 public class RegistrationRestController {
-    private RegistrationService registrationService;
-    private RegistrationMapper registrationMapper;
+    private final RegistrationService registrationService;
+    private final RegistrationMapper registrationMapper;
 
+    /**
+     * Создание регистрирования
+     *
+     * @param registration
+     * @return
+     */
     @ApiOperation(value = "Запрос для создания регистрации пассажира на рейс",
                   notes = "Создание регистрации пассажира на рейс")
     @ApiResponses(value = {
@@ -31,16 +37,22 @@ public class RegistrationRestController {
             @ApiResponse(code = 400, message = "Переданы неверные данные")
     })
     @PostMapping
-    public ResponseEntity<RegistrationDTO> createBooking(@ApiParam(value = "Registration DTO")
+    public ResponseEntity<RegistrationDTO> createOrUpdate(@ApiParam(value = "Registration DTO")
                                                     @RequestBody @Valid RegistrationDTO registration) {
         if (Objects.nonNull(registration.getId())) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>
-                (registrationMapper.toDto(registrationService.createOrUpdateRegistration(registrationMapper.toEntity(registration))),
+                (registrationMapper.toDto(registrationService.createOrUpdate(registrationMapper.toEntity(registration))),
                         HttpStatus.CREATED);
     }
 
+    /**
+     * Найти регистрацию пассажира по id.
+     *
+     * @param id
+     * @return
+     */
     @ApiOperation(value = "Запрос для получения регистрации на рейс пассажира по id регистрации",
             notes = "Получение регистрации на рейс пассажира по id")
     @ApiResponses(value = {
@@ -48,13 +60,29 @@ public class RegistrationRestController {
             @ApiResponse(code = 404, message = "Регистрирование на рейс пассажира не найдено")
     })
     @GetMapping("/{id}")
-    public ResponseEntity<RegistrationDTO> getBookingById(@ApiParam(value = "id регистрирования на рейс пассажира")
+    public ResponseEntity<RegistrationDTO> getById(@ApiParam(value = "id регистрирования на рейс пассажира")
                                                               @PathVariable Long id) {
-        Optional<Registration> booking = registrationService.findById(id);
+        Optional<Registration> registration = registrationService.findById(id);
 
-        if (booking.isEmpty()) {
+        if (registration.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(registrationMapper.toDto(booking.get()), HttpStatus.OK);
+        return new ResponseEntity<>(registrationMapper.toDto(registration.get()), HttpStatus.OK);
+    }
+
+    /**
+     * Удаление регистрации.
+     *
+     * @param registration
+     * @return
+     */
+    @ApiOperation(value = "Запрос на удаление регистрации пассажира")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Регистрация пассажира успешно удалена")
+    })
+    @DeleteMapping()
+    public ResponseEntity delete(Registration registration) {
+        registrationService.delete(registration);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

@@ -1,18 +1,21 @@
 package app.entities.registration;
 
-import app.entities.booking.Booking;
+import app.entities.passenger.Passenger;
+import app.entities.ticket.Ticket;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
 
 /**
- * Класс, описывающий процесс регистрирования пользователем,
- * а также передаёт данные о времени сущности Booking для расчёта доступного времени
- * бронирования билета в зависимости от выбранного пользователем способа оплаты.
+ * Класс, описывающий процесс регистрирования на рейс (выбор конкретного билета из
+ * забронированного пассажиром рейса) и условия, при которых возможна регистрация
  */
 @Entity
 @Table(name = "Registration")
@@ -32,10 +35,18 @@ public class Registration {
     private Long id;
 
     /**
-     * Регистрация на рейс происходит, если у пользователя есть бронирование этого рейса.
+     * Выбранные пассажиром билеты на забронированные рейсы.
      */
-    @OneToOne
-    private Booking booking;
+    @OneToMany(targetEntity = Ticket.class, cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private Map<Passenger, List<Ticket>> passengerTickets;
+
+    /**
+     * Статус регистрации.
+     * "OK" - регистрация на рейс успешно выполнена.
+     */
+    @Column(name = "status")
+    @Value("IN_PROGRESS")
+    private String status;
 
     /**
      * Время регистрации пассажира на рейс.

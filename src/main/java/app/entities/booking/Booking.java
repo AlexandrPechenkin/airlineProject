@@ -7,6 +7,7 @@ import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -16,6 +17,7 @@ import java.util.Map;
 /**
  * Класс, описывающий процесс бронирования рейса пользователем,
  * расчёта доступного времени оплаты бронирования рейса в зависимости от выбранного пользователем метода оплаты.
+ * Экземпляр сущности создаётся при событии "клик на кнопку 'выбрать' из списка рейсов из SearchResult".
  */
 @Entity
 @Table(name = "Booking")
@@ -39,8 +41,8 @@ public class Booking {
      * Один пассажир может бронировать несколько depart-рейсов.
      * Выбирается обязательно (non-null).
      */
-    @NonNull
-    @OneToMany(targetEntity=Flight.class,cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+//    @NonNull
+    @OneToMany(targetEntity=Flight.class, cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private Map<Passenger, List<Flight>> passengerFlightsDepart;
 
     /**
@@ -49,7 +51,7 @@ public class Booking {
      * Может быть не выбран (nullable).
      */
     @Nullable
-    @OneToMany(targetEntity = Flight.class, cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(targetEntity = Flight.class, cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private Map<Passenger, List<Flight>> passengerFlightsReturn;
 
     /**
@@ -61,31 +63,36 @@ public class Booking {
     @Column(name = "payment_method")
     private String paymentMethod;
 
-    /**
-     * Оплатил ли пользователь билет по истечении времени бронирования рейса.
-     * Если не оплатил, бронирование рейса удаляется, если оплатил, то получает статус "PAID".
-     * Бронирование рейса со статусом далее может изменяться в зависимости от статуса.
-     */
-    @NonNull
-    @Column(name = "is_sold")
-    private Boolean isSold;
+//    /**
+//     * Оплатил ли пользователь билет по истечении времени бронирования рейса.
+//     * Если не оплатил, бронирование рейса удаляется, если оплатил, то получает статус "PAID".
+//     * Бронирование рейса со статусом далее может изменяться в зависимости от статуса.
+//     */
+//    @NonNull
+//    @Column(name = "is_sold")
+//    private Boolean isSold;
 
     /**
      * Статус бронирования.
      * "IN_PROGRESS" - процесс бронирования рейса пассажиром. Значение по умолчанию при инициации бронирования.
+     * "PAYMENT" - происходит оплата бронирования каким-либо способом оплаты.
      * "PAID" - бронирование оплачено.
+     * "BOOKED" - покупка бронирования забронирована ("оплата позже")
      * "CANCELLED" - бронирование отменено (пассажиром, компанией); в зависимости от ситуации:
      * 1) отмена за 24 часа до вылета - полный возврат;
      * 2) https://www.s7.ru/ru/fares/ - как пример для остальных случаев.
+     *
+     * Влияет на время, которое даётся пассажиру на оплату рейса в зависимости от выбранного статуса.
      */
     @NonNull
     @Column(name = "status")
-    private String status = "IN_PROGRESS";
+    @Value("IN_PROGRESS")
+    private String status;
 
     /**
-     * Время начала бронирования рейса пользователем (событие "нажатие на кнопку 'выбрать'" из списка
-     * рейсов, предоставленных SearchResult), нужное для высчитывания количества времени,
-     * отведённого на покупку рейса пассажиром.
+     * Время начала процесса покупки бронирования рейса пользователем
+     * (событие "нажатие на кнопку 'перейти к оплате'" из списка рейсов, предоставленных SearchResult),
+     * нужное для высчитывания количества времени, отведённого на покупку рейса пассажиром.
      * Если paymentMethod - "оплатить позже", то даётся время:
      * 1) +3 часа от времени в этом поле, если до вылета больше 24 часов;
      * 2) +1 час от времени в этом поле, если до вылета меньше 24 часов.
@@ -93,6 +100,7 @@ public class Booking {
      */
     @DateTimeFormat(pattern = "dd.MM.yyyy hh:mm")
     @JsonFormat(pattern = "dd.MM.yyyy hh:mm")
+    @Nullable
     private LocalDateTime initialBookingDateTime;
 
 
