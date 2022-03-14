@@ -1,4 +1,4 @@
-package app.controllers;
+package app.util;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -6,34 +6,40 @@ import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
 /**
  * Глобальный обработчик ошибок
+ * Как с ним работать.
+ * https://www.baeldung.com/global-error-handler-in-a-spring-rest-api
+ * https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/bind/annotation/ControllerAdvice.html
+ * https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/bind/annotation/ExceptionHandler.html
+ *
+ * Создаем метод, а над ним ставим аннотацию @ExceptionHandler в ней указываем класс обрабатываемых исключений.
+ * В методе компонуем в {@link ApiError} и возвращаем HTTP ответ.
  */
 @ControllerAdvice
-public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
+public class GlobalExceptionHandler {
 
     /**
-     * Обрабатывает ошибки валидации {@link ConstraintViolationException}
+     * Обрабатывает ошибки валидации аргументов метода {@link MethodArgumentNotValidException}
+     *
      * @return - 400
      */
-    @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<ApiError> handleConstraintViolationException(ConstraintViolationException ex) {
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ApiError> handleConstraintViolationException(MethodArgumentNotValidException ex) {
         ApiError err = new ApiError(LocalDateTime.now(),
                 "Ошибка валидации",
-                List.of(ex.getConstraintViolations()
+                ex.getFieldErrors()
                         .stream()
-                        .map(ConstraintViolation::getMessageTemplate)
-                        .collect(Collectors.joining(", "))));
+                        .map(it -> it.getField() + ": " + it.getDefaultMessage())
+                        .collect(Collectors.toList()));
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
     }
 

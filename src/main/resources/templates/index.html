@@ -1,12 +1,584 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:http="http://www.w3.org/1999/xhtml">
 
 <head>
     <meta charset="UTF-8">
-    <title>S7 Airlines Main Page</title>
+    <title>S7 Airlines by Kata</title>
     <link rel="shortcut icon" type="image/x-icon" th:href="@{/img/favicon.ico}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/global.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/mainpage.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/app.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bot.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/slider.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/offers_block.css}"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no,user-scalable=no">
 </head>
-<body>
-<h1>Application has successfully started!</h1>
+
+<body style="min-height: inherit;">
+<div id="root">
+    <div class="App page">
+        <div class="header-container">
+            <div class="header-menu">
+                <div class="container">
+                    <div class="left">
+                        <button class="menu-icon">
+                            <span class="icon"></span>
+                        </button>
+                        <a class="logo-s7" href="index.html" title="Авиабилеты от S7 Airlines. Купить онлайн"></a>
+                        <nav class="navigation">
+                            <p class="nav-text"><span>Покупка и управление</span></p>
+                            <p class="nav-text"><span>S7 Priority</span></p>
+                            <p class="nav-text"><span>Информация</span></p>
+                            <p class="nav-text"><span>Бизнесу</span></p>
+                            <p class="nav-text"><span>Путешественникам</span></p>
+                        </nav>
+                    </div>
+                    <div class="right">
+                        <div class="search-form search-logo">
+                            <div class="search-form__logo"></div>
+                            <div class="search-form__mobile-select">
+                                <form action="https://localhost:8888/search" class="search-form__form">
+                                    <button class="search-form__submit" type="submit"></button>
+                                    <input name="q" autocomplete="off" class="search-form__input" placeholder="Поиск"
+                                           value="">
+                                </form>
+                            </div>
+                            <div class="search-form__popover"></div>
+                            <div class="search-form__popover_mobile"></div>
+                        </div>
+                        <div class="language-logo item">
+                            <div class="DS__Popover__Popover DS__Popover__isMobileFixed">
+                                <button type="button" class="DS__Popover__BtnContainer">
+                                    <div class="DS__LanguageSelect__root">
+                                        <div class="DS__LanguageSelect__button">
+                                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                                <path fill="#F1F3F8" d="M0 4h20v4H0z"></path>
+                                                <path fill="#3367D6" d="M0 8h20v4H0z"></path>
+                                                <path fill="#D22630" d="M0 12h20v4H0z"></path>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="currency-logo">
+                            <div class="DS__Popover__Popover DS__Popover__isMobileFixed">
+                                <button type="button" class="DS__Popover__BtnContainer">
+                                    <div class="DS__CurrencySelect__root">RUB</div>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="login-form ">
+                            <div class="login-form__select">Войти</div>
+                            <div class="login-form__mobile-select">
+                                <button class="btn login-form__open-button default-btn ">Войти</button>
+                            </div>
+                            <div class="login-form__popover">
+                            </div>
+                        </div>
+                        <div></div>
+                        <div class="logo-oneworld item">
+                            <a class="" href="#" title="Альянс Oneworld">
+                                <img width="32" height="32"
+                                     src="data:image/jpeg;base64,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"
+                                     alt="OneWorld">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="page-content" style="min-height: initial;">
+            <div class="mainpage">
+                <!--        МЕСТО СЛАЙДЕРА  -->
+                <div class="mainpage-slider-wrapper">
+                    <div class="main-slider__banner-container___1U6dr main-slider__mainpage-carousel___1ELIr" th:style="'background: url(/img/img_01.png)'">
+
+                    </div>
+                </div>
+                <!--        ОКНО ПОИСКА БИЛЕТОВ -->
+                <div class="mainpage-bot">
+                    <div class="_2wRqi-Dt HnqBWxqa">
+                        <ul class="_2wCVJsyn">
+                            <li class="_25Nj7LXf _1T77MOCn" role="tab">Покупка</li>
+                            <li class="_25Nj7LXf" role="tab">Регистрация на рейс</li>
+                            <li class="_25Nj7LXf" role="tab">Мои бронирования</li>
+                            <li class="_25Nj7LXf" role="tab">Статус рейса</li>
+                        </ul>
+                        <div class="_3vxsBP7v">
+                            <div class="zCQuGUY7">
+                                <div class="fTMw7MVc"></div>
+                                <div class="IgP9Lsir">
+                                    <ul class="A75sGA2n">
+                                        <li class="_25h7No4L _37hzAnHH" role="tab">Авиабилеты</li>
+                                        <li class="_25h7No4L _2-x8fJfd" role="tab">Отели
+                                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" class="rVHnvb8W">
+                                                <path fill-rule="evenodd" clip-rule="evenodd" d="M3.067 2.8a.8.8 0 01.8-.8H9.2a.8.8 0 01.8.8v5.333a.8.8 0 11-1.6 0V4.731L3.366 9.766a.8.8 0 01-1.132-1.132L7.27 3.6H3.867a.8.8 0 01-.8-.8z" fill="currentColor"></path>
+                                            </svg>
+                                        </li>
+                                        <li class="_25h7No4L _2-x8fJfd" role="tab">Трансфер
+                                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
+                                                 class="rVHnvb8W">
+                                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                                      d="M3.067 2.8a.8.8 0 01.8-.8H9.2a.8.8 0 01.8.8v5.333a.8.8 0 11-1.6 0V4.731L3.366 9.766a.8.8 0 01-1.132-1.132L7.27 3.6H3.867a.8.8 0 01-.8-.8z"
+                                                      fill="currentColor"></path>
+                                            </svg>
+                                        </li>
+                                        <li class="_25h7No4L _2-x8fJfd" role="tab">Экскурсии
+                                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
+                                                 class="rVHnvb8W">
+                                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                                      d="M3.067 2.8a.8.8 0 01.8-.8H9.2a.8.8 0 01.8.8v5.333a.8.8 0 11-1.6 0V4.731L3.366 9.766a.8.8 0 01-1.132-1.132L7.27 3.6H3.867a.8.8 0 01-.8-.8z"
+                                                      fill="currentColor"></path>
+                                            </svg>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="_1YXwWzlF" id="bot-avia-js">
+                                <form class="VMV4PIP2">
+                                    <div class="_21sbWC6o" id="avia-controls">
+                                        <div class="I5YTs3m2 _1kiOyM6J _361w4O7W _3Dbox2Ke">
+                                            <div class="_1G-8inlW">
+                                                <div><label
+                                                        class="_2gBQjtZn TuPk5qeB _31Ft0Yn7 _35jdMK9A _1605ozhZ _2_piJ0Jp _3mh498_u sDZPTMsH _6AUfP-Nk _2VXqKGJZ TrU-Ts4n _3CFEopiy _1yJByOzm _1EeGlJBb _1rfy66XH _2G-XYnL7 _3LhrabYa _3n_DUhtS _3WT6dx7i _28IVP4Uf _1zrlazVu"><input
+                                                        class="_1_1Rhm09" placeholder="Откуда" autocomplete="off"
+                                                        data-test=""
+                                                        value="Москва"><span
+                                                        class="D_oa8YDU juEjHmlC">MOW</span></label></div>
+                                            </div>
+                                        </div>
+                                        <div class="_3tCR_nWI _1f1ryyMK MqCuRL60 _3Dbox2Ke">
+                                            <div class="_1VMzEETv">
+                                                <div><label
+                                                        class="_2gBQjtZn TuPk5qeB _31Ft0Yn7 _35jdMK9A _1605ozhZ _2_piJ0Jp _3mh498_u sDZPTMsH _6AUfP-Nk _2VXqKGJZ TrU-Ts4n _3CFEopiy _1yJByOzm _1EeGlJBb _1rfy66XH _2G-XYnL7 _3LhrabYa _3n_DUhtS _3WT6dx7i _28IVP4Uf _1zrlazVu"><input
+                                                        class="_1_1Rhm09" placeholder="Откуда" autocomplete="off"
+                                                        data-test=""
+                                                        value="Москва"><span
+                                                        class="D_oa8YDU juEjHmlC">MOW</span></label></div>
+                                            </div>
+                                        </div>
+                                        <button class="_34NRHCCs _3DtvD63-">
+                                            <svg class="_3QqWcI-d _3wusUrHy" width="20" height="20"
+                                                 xmlns="http://www.w3.org/2000/svg">
+                                                <g fill="none" fill-rule="evenodd">
+                                                    <path d="M0 0h20v20H0z"></path>
+                                                    <path d="M6.648 10.287a1 1 0 01.095 1.319l-.082.095L5.383 13H17a1 1 0 010 2H5.415l1.292 1.293a1 1 0 01-1.32 1.497l-.094-.083-3-3a1 1 0 01-.088-1.314l.082-.094 2.947-3a1 1 0 011.414-.012zm8.118-7.988l2.947 3a1 1 0 01-.006 1.408l-3 3a1 1 0 01-1.414-1.414L14.584 7H3a1 1 0 110-2h11.616l-1.277-1.3a1 1 0 011.427-1.4z"
+                                                          class="_3KYkUQgg"></path>
+                                                </g>
+                                            </svg>
+                                        </button>
+                                        <div class="I5YTs3m2 _1kiOyM6J _361w4O7W _44IHwQM1">
+                                            <div class="_1G-8inlW">
+                                                <div><label
+                                                        class="_2gBQjtZn TuPk5qeB _31Ft0Yn7 _3mh498_u sDZPTMsH _1cZkIPW2 _2_ojnm5s _37aZJARW _3CFEopiy _1yJByOzm _1EeGlJBb _1rfy66XH _2G-XYnL7 _3LhrabYa _3n_DUhtS _3WT6dx7i _28IVP4Uf _1zrlazVu"><input
+                                                        class="_1_1Rhm09" placeholder="Куда" autocomplete="off"
+                                                        data-test=""
+                                                        value=""><span class="D_oa8YDU juEjHmlC"></span></label></div>
+                                            </div>
+                                        </div>
+                                        <div class="_3tCR_nWI _1f1ryyMK MqCuRL60 _44IHwQM1">
+                                            <div class="_1VMzEETv">
+                                                <div><label
+                                                        class="_2gBQjtZn TuPk5qeB _31Ft0Yn7 _3mh498_u sDZPTMsH _1cZkIPW2 _2_ojnm5s _37aZJARW _3CFEopiy _1yJByOzm _1EeGlJBb _1rfy66XH _2G-XYnL7 _3LhrabYa _3n_DUhtS _3WT6dx7i _28IVP4Uf _1zrlazVu"><input
+                                                        class="_1_1Rhm09" placeholder="Куда" autocomplete="off"
+                                                        data-test=""
+                                                        value=""><span class="D_oa8YDU juEjHmlC"></span></label></div>
+                                            </div>
+                                        </div>
+                                        <div class="_18TKAEyO _11jhO-VH">
+                                            <div class="_1cD2Iyc6 _1Ta4j6hR _1tACkGx3 _3npr7eNs _24raRyxU"
+                                                 data-test="input_component"><label class="_2Q1Q3T3Z">
+                                                <div class="_3pBKKUE5"><input class="_1Zankvd6" readonly=""
+                                                                              aria-required="false"
+                                                                              data-test="input_component__input date-range-input "
+                                                                              value=""><span
+                                                        class="AfJS6A5g _1iuoRFXU">Туда</span></div>
+                                                <i class="CvcVPWq1" data-test="input_component__icon">
+                                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                                        <path fill-rule="evenodd" clip-rule="evenodd"
+                                                              d="M4 10h3V7H4v3zm-2 4V5h12l.002 9H2zM14 2h-1V1a1 1 0 00-2 0v1H5V1a1 1 0 00-2 0v1H2C.897 2 0 2.897 0 4v10c0 1.103.897 2 2 2h12c1.103 0 2-.897 2-2V4c0-1.103-.897-2-2-2z"
+                                                              fill="currentColor"></path>
+                                                    </svg>
+                                                </i></label></div>
+                                            <div class="_1cD2Iyc6 _1Ta4j6hR _1tACkGx3 _3npr7eNs TGu7qrBL"
+                                                 data-test="input_component"><label class="_2Q1Q3T3Z">
+                                                <div class="_3pBKKUE5"><input class="_1Zankvd6" readonly=""
+                                                                              aria-required="false"
+                                                                              data-test="input_component__input date-range-input "
+                                                                              value=""><span
+                                                        class="AfJS6A5g _1iuoRFXU">Обратно</span></div>
+                                            </label></div>
+                                        </div>
+                                        <div class="_2xFnBBmU _373YDRWN">
+                                            <div class="_1cD2Iyc6 _1ZPFwwnn" data-test="input_component"><label
+                                                    class="_2Q1Q3T3Z _2_evT-AF">
+                                                <div class="_3pBKKUE5"><input class="_1Zankvd6" readonly=""
+                                                                              aria-required="false"
+                                                                              data-test="input_component__input amount_passengers_input "
+                                                                              value="1, Эконом"><span
+                                                        class="AfJS6A5g"></span>
+                                                </div>
+                                                <i class="CvcVPWq1" data-test="input_component__icon">
+                                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                                        <path fill-rule="evenodd" clip-rule="evenodd"
+                                                              d="M1 13.834c0-2.334 4.667-3.617 7-3.617 2.334 0 7 1.283 7 3.617V15H1v-1.166zM11.5 4.5C11.5 6.437 9.937 8 8 8a3.495 3.495 0 01-3.5-3.5C4.5 2.563 6.064 1 8 1c1.937 0 3.5 1.563 3.5 3.5z"
+                                                              fill="currentColor"></path>
+                                                    </svg>
+                                                </i></label></div>
+                                        </div>
+                                        <label class="_2Tr_L2jH">
+                                            <ul class="_1TwUaHJR _2K2i9K-K">
+                                                <li class="_1JtK5SaH _3k8gxdS6"><span class="_2fjHNiXt">Эконом</span>
+                                                </li>
+                                                <li class="_1JtK5SaH"><span class="_2fjHNiXt">Бизнес</span></li>
+                                            </ul>
+                                        </label>
+                                        <div class="_3bnnnpzx">
+                                            <button data-test="avia-bot-submit"
+                                                    class="DS__Button__root DS__Button__theme_b2c DS__Button__size_medium"
+                                                    type="button"><span class="DS__Button__content"><svg
+                                                    xmlns="http://www.w3.org/2000/svg" width="1024" height="1024"
+                                                    viewBox="0 0 1024 1024" fill="#c4d600"><path
+                                                    d="M736.531 689.775l132.583 132.583c19.995 19.995 19.995 52.413 0 72.408s-52.413 19.995-72.408 0l-136.27-136.27C603.383 796.832 534.704 819.2 460.8 819.2c-197.939 0-358.4-160.461-358.4-358.4s160.461-358.4 358.4-358.4c197.939 0 358.4 160.461 358.4 358.4 0 87.065-31.045 166.879-82.669 228.975zM460.8 716.8c141.385 0 256-114.615 256-256s-114.615-256-256-256-256 114.615-256 256 114.615 256 256 256z"></path></svg></span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="_3LWGa8l6">
+                                        <div class="_18TKAEyO _391gvdvU"><a class="_1NLf8QUI"
+                                                                            href="https://ibe.s7.ru/air?id=multiSearch&amp;amp;locale=ru"
+                                                                            data-test="multi-search-link"><i
+                                                class="rx0ITPMy">
+                                            <svg width="20" height="20" viewBox="0 0 20 20">
+                                                <path d="M16 16a1 1 0 1 1 0-2 1 1 0 0 1 0 2M4 16a1 1 0 1 1 0-2 1 1 0 0 1 0 2m6-12a1 1 0 1 1 0 2 1 1 0 0 1 0-2m-3.682 9.119l3.064-5.184a3 3 0 0 0 1.236 0l3.064 5.184c-.23.282-.407.605-.522.958H6.84a2.965 2.965 0 0 0-.522-.958M16 12c-.212 0-.419.023-.618.065l-3.064-5.184A2.97 2.97 0 0 0 13 5c0-1.654-1.346-3-3-3S7 3.346 7 5c0 .716.262 1.364.682 1.881l-3.064 5.184A3.004 3.004 0 0 0 1 15c0 1.654 1.346 3 3 3a3 3 0 0 0 2.792-1.923h6.416A3 3 0 0 0 16 18c1.654 0 3-1.346 3-3s-1.346-3-3-3"></path>
+                                            </svg>
+                                        </i><span class="_1MRQhNGq">Составить сложный маршрут</span></a></div>
+                                        <div class="_2kWs8KEn"><label bottheme="Light"
+                                                                      class="DS__Checkbox__root _3ZV3_LI1"><span
+                                                class="DS__CheckboxBase__root DS__CheckboxBase__theme_b2c DS__Checkbox__checkbox zDhP6T4Z"><input
+                                                class="DS__CheckboxBase__input" type="checkbox" value=""><span
+                                                class="DS__CheckboxBase__box"><svg width="10" height="8"
+                                                                                   viewBox="0 0 10 8"
+                                                                                   fill="none"><path fill-rule="evenodd"
+                                                                                                     clip-rule="evenodd"
+                                                                                                     d="M.133 4.44a.506.506 0 010-.684l.643-.683a.437.437 0 01.642 0l2.219 2.392L8.58.14a.437.437 0 01.643 0l.643.684a.504.504 0 010 .682l-5.91 6.351a.437.437 0 01-.642 0L.133 4.44z"
+                                                                                                     fill="currentColor"></path></svg></span></span><span
+                                                class="DS__Checkbox__text"><span
+                                                class="DS__TextBase__root DS__CssUtils__color_N900 DS__TextBase__size_m">Лечу по работе</span></span></label><label
+                                                bottheme="Light" class="DS__Checkbox__root _3ZV3_LI1"><span
+                                                class="DS__CheckboxBase__root DS__CheckboxBase__theme_b2c DS__Checkbox__checkbox zDhP6T4Z"><input
+                                                class="DS__CheckboxBase__input" type="checkbox" value=""><span
+                                                class="DS__CheckboxBase__box"><svg width="10" height="8"
+                                                                                   viewBox="0 0 10 8"
+                                                                                   fill="none"><path fill-rule="evenodd"
+                                                                                                     clip-rule="evenodd"
+                                                                                                     d="M.133 4.44a.506.506 0 010-.684l.643-.683a.437.437 0 01.642 0l2.219 2.392L8.58.14a.437.437 0 01.643 0l.643.684a.504.504 0 010 .682l-5.91 6.351a.437.437 0 01-.642 0L.133 4.44z"
+                                                                                                     fill="currentColor"></path></svg></span></span><span
+                                                class="DS__Checkbox__text"><span
+                                                class="DS__TextBase__root DS__CssUtils__color_N900 DS__TextBase__size_m">Лечу с питомцем</span></span></label>
+                                            <div class="_3H-W9nRK"><label class="DS__Checkbox__root"><span
+                                                    class="DS__CheckboxBase__root DS__CheckboxBase__theme_b2c DS__Checkbox__checkbox _1kcE7Is8"><input
+                                                    class="DS__CheckboxBase__input" type="checkbox" value="false"><span
+                                                    class="DS__CheckboxBase__box"><svg width="10" height="8"
+                                                                                       viewBox="0 0 10 8"
+                                                                                       fill="none"><path
+                                                    fill-rule="evenodd"
+                                                    clip-rule="evenodd"
+                                                    d="M.133 4.44a.506.506 0 010-.684l.643-.683a.437.437 0 01.642 0l2.219 2.392L8.58.14a.437.437 0 01.643 0l.643.684a.504.504 0 010 .682l-5.91 6.351a.437.437 0 01-.642 0L.133 4.44z"
+                                                    fill="currentColor"></path></svg></span></span><span
+                                                    class="DS__Checkbox__text"><span
+                                                    class="DS__TextBase__root DS__CssUtils__color_N900 DS__TextBase__size_m">Оплата милями</span></span></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="_3bnnnpzx _2y8lOxNk">
+                                        <button data-test="avia-bot-submit"
+                                                class="DS__Button__root DS__Button__theme_b2c DS__Button__size_large DS__Button__disabled"
+                                                disabled="" type="submit"><span
+                                                class="DS__Button__content"><span>Найти</span></span></button>
+                                    </div>
+                                    <div class="_18TKAEyO _2ulaouN-"><a class="_1NLf8QUI" data-test="multi-search-link"><i
+                                            class="rx0ITPMy">
+                                        <svg width="20" height="20" viewBox="0 0 20 20">
+                                            <path d="M16 16a1 1 0 1 1 0-2 1 1 0 0 1 0 2M4 16a1 1 0 1 1 0-2 1 1 0 0 1 0 2m6-12a1 1 0 1 1 0 2 1 1 0 0 1 0-2m-3.682 9.119l3.064-5.184a3 3 0 0 0 1.236 0l3.064 5.184c-.23.282-.407.605-.522.958H6.84a2.965 2.965 0 0 0-.522-.958M16 12c-.212 0-.419.023-.618.065l-3.064-5.184A2.97 2.97 0 0 0 13 5c0-1.654-1.346-3-3-3S7 3.346 7 5c0 .716.262 1.364.682 1.881l-3.064 5.184A3.004 3.004 0 0 0 1 15c0 1.654 1.346 3 3 3a3 3 0 0 0 2.792-1.923h6.416A3 3 0 0 0 16 18c1.654 0 3-1.346 3-3s-1.346-3-3-3"></path>
+                                        </svg>
+                                    </i><span class="_1MRQhNGq">Составить сложный маршрут</span></a></div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--        СЕКЦИЯ АКЦИЙ -->
+                <div class="mainpage-holder">
+                    <div class="mainpage__offers">
+                        <section class="offers-block">
+                            <div>
+                                <div class="offers-block-header"><h2 class="offers-block-header-title">Акции</h2><a
+                                        class="offers-block-link" href="#"><p
+                                        class="offers-block-link-text">Смотреть все</p>
+                                    <div class="offers-block-arrow">
+                                        <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
+                                            <g id="Asset-Artboard-Page" stroke="none" stroke-width="1" fill="none"
+                                               fill-rule="evenodd">
+                                                <g id="icon-Common-/-16-/-ChevronRight" fill="#505F79">
+                                                    <path d="M10 9.664l2.793 2.793a1 1 0 001.414-1.414l-3.5-3.5a1 1 0 00-1.414 0l-3.5 3.5a1 1 0 001.414 1.414L10 9.664z"
+                                                          id="ChevronRight" transform="rotate(90 10 10)"></path>
+                                                </g>
+                                            </g>
+                                        </svg>
+                                    </div>
+                                </a></div>
+                                <div class="offers-block-holder">
+                                    <div class="offers-block-item"><a href="/ru/offers/luchshie-predlozheniya-nedeli"
+                                                                      class="card__card___1Nzae card__card-lg-s___lhrSl card__card-md-s___3kPhj card__card-offers___3f0AY offers-block-holder-item">
+                                        <div class="card__card-img___oI_18"
+                                             style="background-image: url(&quot;https://portal.s7cdn.online/S7WImageResizeService/webp/portal.s7cdn.online/S7PCabinService/media/97dbbc78-c0ec-44ae-bb97-7f8836fb6c91&quot;);"></div>
+                                        <div class="card__card-info___2paYq">
+                                            <div class="card__card-info-text___2NIsy"><p
+                                                    class="card__card-title___2mrjG">Актуальные
+                                                тарифы</p>
+                                                <div class="LinesEllipsis  card__card-text___280pZ">
+                                                    <div>Здесь авиабилеты с&nbsp;лучшими ценами по&nbsp;направлениям
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <span href="/ru/offers/luchshie-predlozheniya-nedeli"
+                                               class="card__card-link___3uKnQ">Подробнее</span>
+                                        </div>
+                                    </a></div>
+                                    <div class="offers-block-item"><a href="/ru/offers/semeynyy-schet"
+                                                                      class="card__card___1Nzae card__card-lg-s___lhrSl card__card-md-s___3kPhj card__card-offers___3f0AY offers-block-holder-item">
+                                        <div class="card__card-img___oI_18"
+                                             style="background-image: url(&quot;https://portal.s7cdn.online/S7WImageResizeService/webp/portal.s7cdn.online/S7PCabinService/media/293bc24d-68cc-48f7-9747-00796775b949&quot;);"></div>
+                                        <div class="card__card-info___2paYq">
+                                            <div class="card__card-info-text___2NIsy"><p
+                                                    class="card__card-title___2mrjG">Семейный
+                                                счет</p>
+                                                <div class="LinesEllipsis  card__card-text___280pZ">
+                                                    <div>Копите мили S7&nbsp;Priority вместе</div>
+                                                </div>
+                                            </div>
+                                            <span href="/ru/offers/semeynyy-schet" class="card__card-link___3uKnQ">Подробнее</span>
+                                        </div>
+                                    </a></div>
+
+                                    <div class="offers-block-news-subscription">
+                                        <form class="subscription-form subscription-form-compact"
+                                              data-test="news-subscription">
+                                            <div class="subscription-form-container-compact">
+                                                <div class="subscription-form-container-compact-wrap"><h3
+                                                        class="subscription-form-compact-title">Подписка на акции</h3>
+                                                    <p class="subscription-form-compact-text">
+                                                    <p><span style="background-color: initial;">Скидки на&nbsp;авиабилеты и&nbsp;предложения S7&nbsp;Airlines придут на&nbsp;вашу почту:</span>
+                                                    </p></p>
+                                                    <div class="subscription-form-fields">
+                                                        <div class="subscription-form-email input-wrapper"
+                                                             data-test="email-root">
+                                                            <div style="position: relative;">
+                                                                <div class="undefined input-placeholder">Email*</div>
+                                                                <input class="input subscription-form-compact-email-input"
+                                                                       type="text" name="email" data-test="email-field"
+                                                                       autocomplete="true" value=""></div>
+                                                        </div>
+                                                        <div class="input-agreement-check"><label class="c011"><input
+                                                                class="c012"
+                                                                type="checkbox"
+                                                                data-test="checkbox "><span
+                                                                class="input-agreement-check-text">Я подтверждаю согласие с <a
+                                                                href="https://www.s7.ru/about/confidentiality.dot"
+                                                                target="_blank">условиями</a> обработки персональных данных.</span></label>
+                                                        </div>
+                                                        <button class="subscription-form-button" disabled="">
+                                                            Подписаться
+                                                        </button>
+                                                        <div class="preloader preloader--hidden preloader--small">
+                                                            <div class="preloader-overlay">&nbsp;</div>
+                                                            <div class="preloader-wrapper">
+                                                                <div class="preloader-spinner"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="subscription-form-error-container"></div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="offers-block-mobile"><a class="offers-block-link"
+                                                                    href="https://www.s7.ru/ru/offers/"><p
+                                        class="offers-block-link-text">Смотреть все</p>
+                                    <div class="offers-block-arrow">
+                                        <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
+                                            <g id="Asset-Artboard-Page" stroke="none" stroke-width="1" fill="none"
+                                               fill-rule="evenodd">
+                                                <g id="icon-Common-/-16-/-ChevronRight" fill="#505F79">
+                                                    <path d="M10 9.664l2.793 2.793a1 1 0 001.414-1.414l-3.5-3.5a1 1 0 00-1.414 0l-3.5 3.5a1 1 0 001.414 1.414L10 9.664z"
+                                                          id="ChevronRight" transform="rotate(90 10 10)"></path>
+                                                </g>
+                                            </g>
+                                        </svg>
+                                    </div>
+                                </a></div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer class="main-footer-white">
+            <div class="main-footer">
+                <div class="main-footer__top">
+                    <ul class="main-footer__links">
+                        <li class="main-footer__link"><a class="" href="#" title=""><span>О компании S7 Airlines</span></a>
+                        </li>
+                        <li class="main-footer__link"><a class="" href="#" title=""><span>Устойчивое развитие</span></a>
+                        </li>
+                        <li class="main-footer__link"><a class="" href="#"
+                                                         title=""><span>Альянс <strong>one</strong>world</span></a>
+                        </li>
+                        <li class="main-footer__link"><a class="" href="#"
+                                                         title=""><span>Партнеры</span></a></li>
+                        <li class="main-footer__link"><a class="" href="#"
+                                                         title=""><span>Контакты</span></a></li>
+                        <li class="main-footer__link"><a class="" href="#"
+                                                         title=""><span>Направления</span></a></li>
+                        <li class="main-footer__link"><a class="" href="#" title=""><span>Страны</span></a>
+                        </li>
+                        <li class="main-footer__link"><a class="" href="#" title=""><span>Рейсы</span></a>
+                        </li>
+                        <li class="main-footer__link"><a class="" href="#"
+                                                         title=""><span>Вакансии</span></a></li>
+                        <li class="main-footer__link"><a class="" href="#"
+                                                         title=""><span>Офисы продаж и представительства</span></a>
+                        </li>
+                        <li class="main-footer__link"><a class="" href="#"
+                                                         title=""><span>Закупки</span></a></li>
+                        <li class="main-footer__link"><a class="" href="#" title=""><span>Новости</span></a>
+                        </li>
+                        <li class="main-footer__link"><a class="" href="#" title=""><span>Возвраты для особых категорий&nbsp;граждан</span></a>
+                        </li>
+                        <li class="main-footer__link"><a class="" href="#"
+                                                         title=""><span>Приложение S7 Airlines в SberBox</span></a>
+                        </li>
+                        <li class="main-footer__link"><a class="" href="#" title=""><span>Обратная связь</span></a>
+                        </li>
+                        <li class="main-footer__link"><a class="" href="#" title=""><span>Справочный центр</span></a>
+                        </li>
+                        <li class="main-footer__link"><a class="" href="#" title=""><span>Конфиденциальность </span></a>
+                        </li>
+                        <li class="main-footer__link"><a class="" href="#"
+                                                         title=""><span>Мы — Сибирь</span></a></li>
+                        <li class="main-footer__link"><a class="" href="#"
+                                                         title=""><span>Летать безопасно</span></a></li>
+                        <li class="main-footer__link"><a class="" href="#" title=""><span>Врачи на борту</span></a>
+                        </li>
+                        <li class="main-footer__link"><a class="" href="#"
+                                                         title=""><span>Подготовка груза к перевозке</span></a></li>
+                    </ul>
+                    <div class="main-footer__phones "><p class="main-footer__tollfree-line"><span
+                            class="main-footer__tollfree">Бесплатно по России</span><span
+                            class="main-footer__tollfree-phone"><a href="tel:88007000707">8 800 700–0707</a></span></p>
+                        <p class="main-footer__tollfree-line"><span class="main-footer__tollfree">Москва</span><a
+                                class="main-footer__tollfree-phone" href="tel:+74957830707">+7 495 783-0707</a></p>
+                        <p class="main-footer__online-services">
+                            <button class="main-footer__online-action">
+                            <span class="DS__IconRound__root">
+                                <svg width="20" height="20" viewBox="0 0 16 16" fill="none" class="root">
+                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                          d="M3.816 7.059a11.742 11.742 0 005.125 5.125l1.711-1.71a.78.78 0 01.794-.195 8.835 8.835 0 002.776.443c.43 0 .778.348.778.778v2.722c0 .43-.348.778-.778.778C6.92 15 1 9.08 1 1.778A.778.778 0 011.778 1H4.5c.43 0 .778.348.778.778 0 .972.155 1.905.443 2.776a.78.78 0 01-.194.794l-1.711 1.71z"
+                                          fill="currentColor">
+                                    </path>
+                                </svg>
+                            </span>
+                        <p>Звонок онлайн</p>
+                        </button>
+                        <button class="main-footer__online-action">
+                            <span class="DS__IconRound__root">
+                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" class="root">
+                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                          d="M11 8V2a1 1 0 00-1-1H1a1 1 0 00-1 1v10l3-3h7a1 1 0 001-1zm5-2.5v10l-3-3H6a1 1 0 01-1-1V10h5c1.103 0 2-.898 2-2V4.5h3a1 1 0 011 1z"
+                                          fill="currentColor">
+                                    </path>
+                                </svg>
+                            </span>
+                            <p>Чат</p>
+                        </button>
+                        </p>
+                    </div>
+                    <div class="main-footer__subscribe">
+                        <div class="main-footer__email">Новостная рассылка</div>
+                        <form class="main-footer__subscribe-form"><label class=" input-wrapper   ">
+                            <div style="position: relative;"><input class="input" type="text" autocomplete="off"
+                                                                    data-test="input-field" value="">
+                                <div class="input-placeholder">Электронная почта</div>
+                                <button class="input__email">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+                                        <g fill="none" fill-rule="evenodd">
+                                            <path d="M0 0h20v20H0z"></path>
+                                            <path fill="#000" fill-opacity=".38"
+                                                  d="M17.707 9.293l-5-5a.999.999 0 1 0-1.414 1.414L14.586 9H3a1 1 0 1 0 0 2h11.586l-3.293 3.293a.999.999 0 1 0 1.414 1.414l5-5a.999.999 0 0 0 0-1.414"></path>
+                                        </g>
+                                    </svg>
+                                </button>
+                            </div>
+                        </label></form>
+                    </div>
+                </div>
+                <div class="main-footer__bottom">
+                    <div class="main-footer__bottom-content">
+                        <div class="main-footer__social"><a href="https://www.facebook.com/S7AirlinesOfficial"
+                                                            target="_blank" rel="noopener noreferrer"
+                                                            class="main-footer__social-link" aria-label="Facebook"><span
+                                class="main-footer__social-icon"><svg width="20" height="20" viewBox="0 0 20 20"
+                                                                      fill="none" class="root"><path fill-rule="evenodd"
+                                                                                                     clip-rule="evenodd"
+                                                                                                     d="M11.873 20v-9.123h3.121l.468-3.555h-3.59v-2.27c0-1.03.292-1.731 1.797-1.731h1.92V.14A26.149 26.149 0 0012.79 0c-2.766 0-4.66 1.657-4.66 4.7v2.622H5v3.555h3.13V20h3.743z"
+                                                                                                     fill="currentColor"></path></svg></span></a><a
+                                href="https://vk.com/s7airlines" target="_blank" rel="noopener noreferrer"
+                                class="main-footer__social-link" aria-label="VK"><span class="main-footer__social-icon"><svg
+                                width="20" height="20" viewBox="0 0 20 20" fill="none" class="root"><path
+                                fill-rule="evenodd" clip-rule="evenodd"
+                                d="M19.541 4.804c.14-.463 0-.804-.662-.804h-2.188c-.556 0-.812.294-.951.619 0 0-1.113 2.712-2.69 4.474-.51.51-.741.672-1.02.672-.138 0-.34-.162-.34-.626V4.804c0-.556-.161-.804-.625-.804H7.627c-.348 0-.557.258-.557.503 0 .527.788.649.87 2.133v3.222c0 .706-.128.834-.406.834-.742 0-2.546-2.724-3.617-5.841-.21-.606-.42-.851-.979-.851H.75C.125 4 0 4.294 0 4.619c0 .58.742 3.454 3.454 7.255 1.808 2.596 4.355 4.004 6.673 4.004 1.391 0 1.563-.313 1.563-.851v-1.962c0-.625.132-.75.572-.75.325 0 .881.162 2.18 1.414 1.483 1.483 1.727 2.149 2.562 2.149h2.188c.625 0 .938-.313.757-.93-.197-.614-.905-1.506-1.845-2.564-.51-.603-1.275-1.252-1.507-1.576-.324-.417-.232-.603 0-.974 0 0 2.666-3.755 2.944-5.03z"
+                                fill="currentColor"></path></svg></span></a><a href="https://ok.ru/s7airlines"
+                                                                               target="_blank" rel="noopener noreferrer"
+                                                                               class="main-footer__social-link"
+                                                                               aria-label="Odnoklassniki"><span
+                                class="main-footer__social-icon"><svg width="20" height="20" viewBox="0 0 20 20"
+                                                                      fill="none" class="root"><path fill-rule="evenodd"
+                                                                                                     clip-rule="evenodd"
+                                                                                                     d="M13.536 10.833a1.41 1.41 0 011.763 2.198c-.066.053-1.31 1.036-3.384 1.458l3.132 3.104a1.41 1.41 0 01-1.992 1.995l-3.04-2.96-2.762 2.94a1.405 1.405 0 01-1.992.037 1.41 1.41 0 01-.037-1.992l2.973-3.107c-2.133-.413-3.428-1.421-3.494-1.475a1.41 1.41 0 011.763-2.198c.013.01 1.367 1.027 3.549 1.029 2.182-.002 3.508-1.019 3.52-1.03zM10.086 0a5.183 5.183 0 11-.001 10.365 5.183 5.183 0 010-10.365zm0 3.04a2.142 2.142 0 100 4.285 2.142 2.142 0 000-4.285z"
+                                                                                                     fill="currentColor"></path></svg></span></a><a
+                                href="https://www.instagram.com/s7airlines/" target="_blank" rel="noopener noreferrer"
+                                class="main-footer__social-link" aria-label="Instagram"><span
+                                class="main-footer__social-icon"><svg width="20" height="20" viewBox="0 0 20 20"
+                                                                      fill="none" class="root"><path fill-rule="evenodd"
+                                                                                                     clip-rule="evenodd"
+                                                                                                     d="M8.969 0h2.054c1.8.003 2.18.018 3.095.06 1.064.048 1.79.217 2.426.464a4.901 4.901 0 011.771 1.153 4.9 4.9 0 011.153 1.77c.247.637.416 1.363.465 2.427.043.952.057 1.326.06 3.327v1.59c-.003 2.001-.017 2.375-.06 3.327-.049 1.064-.218 1.79-.465 2.426a5.112 5.112 0 01-2.924 2.924c-.635.247-1.362.416-2.426.465-.952.043-1.325.057-3.327.06h-1.59c-2.001-.003-2.374-.017-3.326-.06-1.064-.049-1.791-.218-2.427-.465a4.9 4.9 0 01-1.77-1.153 4.9 4.9 0 01-1.154-1.77c-.247-.637-.416-1.363-.464-2.427-.042-.914-.057-1.295-.06-3.095V8.97c.003-1.8.018-2.18.06-3.095.048-1.064.217-1.79.464-2.426a4.9 4.9 0 011.153-1.77A4.9 4.9 0 013.447.523C4.085.277 4.81.108 5.876.06 6.788.018 7.168.003 8.969 0zm2.069 1.801H8.954c-1.738.003-2.1.017-2.999.058-.974.044-1.504.207-1.856.344-.434.16-.827.416-1.15.748a3.097 3.097 0 00-.747 1.15c-.137.352-.3.88-.344 1.856C1.81 7.01 1.8 7.327 1.8 9.997c0 2.669.01 2.985.059 4.039.044.975.207 1.504.344 1.856.16.434.416.827.748 1.15.322.332.715.587 1.15.747.351.137.88.3 1.855.345.937.042 1.291.055 3.233.058h1.614c1.942-.003 2.296-.016 3.233-.058.974-.045 1.504-.208 1.856-.345a3.31 3.31 0 001.897-1.897c.137-.352.3-.881.345-1.856.044-.976.056-1.32.058-3.484V9.44c-.002-2.164-.014-2.507-.058-3.483-.045-.975-.208-1.504-.345-1.857a3.098 3.098 0 00-.748-1.15 3.098 3.098 0 00-1.149-.747c-.352-.137-.882-.3-1.856-.344-.898-.041-1.26-.055-2.998-.058zM9.995 4.863a5.133 5.133 0 110 10.267 5.133 5.133 0 010-10.267zm0 1.8a3.332 3.332 0 100 6.665 3.332 3.332 0 000-6.664zm5.336-3.203a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z"
+                                                                                                     fill="currentColor"></path></svg></span></a><a
+                                href="https://www.youtube.com/user/S7Group" target="_blank" rel="noopener noreferrer"
+                                class="main-footer__social-link" aria-label="YouTube"><span
+                                class="main-footer__social-icon"><svg width="20" height="20" viewBox="0 0 20 20"
+                                                                      fill="none" class="root"><path fill-rule="evenodd"
+                                                                                                     clip-rule="evenodd"
+                                                                                                     d="M10.046 3c.568.001 6.292.021 7.78.428.856.23 1.531.906 1.762 1.763.411 1.502.412 4.566.412 4.811v.05c-.002.353-.025 3.306-.412 4.777a2.506 2.506 0 01-1.763 1.762c-1.471.387-7.09.41-7.76.412h-.13c-.668-.001-6.274-.026-7.76-.428a2.506 2.506 0 01-1.763-1.763C.025 13.357.002 10.391 0 10.036v-.07c.001-.352.025-3.305.412-4.775a2.557 2.557 0 011.763-1.78c1.486-.39 7.21-.41 7.78-.411h.09zm-2.04 4.003V13l5.206-2.998-5.206-2.999z"
+                                                                                                     fill="currentColor"></path></svg></span></a>
+                        </div>
+                        <div class="main-footer__apps"><a
+                                href="https://click.google-analytics.com/redirect?tid=UA-30023455-1&amp;url=https%3A%2F%2Fitunes.apple.com%2Fru%2Fapp%2Fs7-airlines%2Fid552920434&amp;aid=ru.s7.s7app&amp;idfa=%{idfa}&amp;cs=portal&amp;cm=badge&amp;cn=app_download"
+                                class="main-footer__app main-footer__app_apple main-footer__app_apple_ru"
+                                rel="noopener noreferrer" target="_blank"></a><a
+                                href="https://play.google.com/store/apps/details?id=ru.s7.android&amp;referrer=utm_source%3Dportal%26utm_medium%3Dbadge%26utm_campaign%3Dapp_download"
+                                class="main-footer__app main-footer__app_google main-footer__app_google_ru"
+                                rel="noopener noreferrer" target="_blank"></a><a
+                                href="https://appgallery.huawei.com/#/app/C101255277"
+                                class="main-footer__app main-footer__app_huawei main-footer__app_huawei_ru"
+                                rel="noopener noreferrer" target="_blank"></a></div>
+                        <p class="main-footer__copyright">© 2022. S7 Airlines — Все пpава защищены</p></div>
+                </div>
+            </div>
+        </footer>
+    </div>
+</div>
 </body>
 </html>
