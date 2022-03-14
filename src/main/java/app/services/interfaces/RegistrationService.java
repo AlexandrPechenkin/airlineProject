@@ -1,4 +1,4 @@
-package app.services.registration;
+package app.services.interfaces;
 
 import app.entities.registration.Registration;
 

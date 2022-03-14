@@ -1,4 +1,4 @@
-package app.services.booking;
+package app.services.interfaces;
 
 import app.entities.booking.Booking;
 

@@ -1,9 +1,9 @@
-package app.controllers.registration;
+package app.controllers.rest;
 
 import app.entities.registration.Registration;
 import app.entities.registration.dto.RegistrationDTO;
 import app.mappers.registration.RegistrationMapper;
-import app.services.registration.RegistrationService;
+import app.services.interfaces.RegistrationService;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

@@ -10,15 +10,14 @@ import app.entities.passenger.Passenger;
 import app.entities.passenger.Passport;
 import app.entities.seat.Seat;
 import app.entities.ticket.Ticket;
-import app.services.booking.BookingService;
+import app.services.interfaces.BookingService;
 import app.services.category.CategoryService;
 import app.services.flight.FlightService;
-import app.services.passenger.PassengerService;
-import app.services.registration.RegistrationService;
+import app.services.interfaces.PassengerService;
+import app.services.interfaces.RegistrationService;
 import app.services.search.SearchService;
 import app.services.ticket.TicketService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;

@@ -1,7 +1,8 @@
-package app.services.registration;
+package app.services.impl;
 
 import app.entities.registration.Registration;
 import app.repositories.registration.RegistrationRepository;
+import app.services.interfaces.RegistrationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

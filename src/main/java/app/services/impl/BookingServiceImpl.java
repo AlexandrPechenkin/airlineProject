@@ -1,7 +1,8 @@
-package app.services.booking;
+package app.services.impl;
 
 import app.entities.booking.Booking;
 import app.repositories.booking.BookingRepository;
+import app.services.interfaces.BookingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
