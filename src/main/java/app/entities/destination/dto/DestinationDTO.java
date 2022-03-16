@@ -4,6 +4,7 @@ import app.util.CountryCode;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import java.util.TimeZone;
 
@@ -13,10 +14,6 @@ import java.util.TimeZone;
 @Data
 @ApiModel
 public class DestinationDTO {
-    /**
-     * ID аэропорта
-     */
-    private Long id;
     /**
      * Город, в котором находится аэропорт
      */
@@ -45,6 +42,6 @@ public class DestinationDTO {
     /**
      * Часовой пояс аэропорта
      */
-//    @NotEmpty(message = "Поле timeZone не должно быть пустым")
+//    @NotBlank(message = "Поле timeZone не должно быть пустым")
     private TimeZone timeZone;
 }

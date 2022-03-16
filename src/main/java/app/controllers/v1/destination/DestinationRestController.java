@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -49,8 +48,9 @@ public class DestinationRestController {
             @ApiResponse(code = 404, message = "Аэропорт не найден")
     })
     @GetMapping("/{id}")
-    public ResponseEntity<DestinationDTO> getDestinationById(@ApiParam(value = "ID аэропорта")
-                                                                 @PathVariable Long id) {
+    public ResponseEntity<DestinationDTO> getDestinationById(
+            @ApiParam(value = "ID аэропорта") @PathVariable Long id) {
+
         Optional<Destination> destination = destinationService.getDestinationById(id);
 
         if (destination.isEmpty()) {
@@ -72,8 +72,9 @@ public class DestinationRestController {
             @ApiResponse(code = 404, message = "Аэропорты не найдены")
     })
     @GetMapping("/city/{city}")
-    public ResponseEntity<List<DestinationDTO>> getDestinationListByCity(@ApiParam(value = "Название города")
-                                                                         @PathVariable String city) {
+    public ResponseEntity<List<DestinationDTO>> getDestinationListByCity(
+            @ApiParam(value = "Название города") @PathVariable String city) {
+
         List<Destination> destinationList = destinationService.getDestinationListByCity(city);
 
         if (destinationList.isEmpty()) {
@@ -95,8 +96,9 @@ public class DestinationRestController {
             @ApiResponse(code = 404, message = "Аэропорты не найдены")
     })
     @GetMapping("/country/{country}")
-    public ResponseEntity<List<DestinationDTO>> getDestinationListByCountryName(@ApiParam(value = "Название страны")
-                                                                         @PathVariable String country) {
+    public ResponseEntity<List<DestinationDTO>> getDestinationListByCountryName(
+            @ApiParam(value = "Название страны") @PathVariable String country) {
+
         List<Destination> destinationList = destinationService.getDestinationListByCountryName(country);
 
         if (destinationList.isEmpty()) {
@@ -106,11 +108,45 @@ public class DestinationRestController {
         }
     }
 
+    /**
+     * Создает аэропорт
+     * @param destinationDTO - DTO аэропорта
+     * @return - DTO аэропорта
+     */
+    @ApiOperation(value = "Запрос для создания аэропорта", notes = "Создание аэропорта")
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "Аэропорт успешно создан"),
+            @ApiResponse(code = 400, message = "Переданы неверные данные")
+    })
     @PostMapping
-    public ResponseEntity<DestinationDTO> createDestination(@ApiParam(value = "DTO аэропорта")
-                                                            @RequestBody @Valid DestinationDTO destinationDTO) {
+    public ResponseEntity<DestinationDTO> createDestination(
+            @ApiParam(value = "DTO аэропорта") @RequestBody @Valid DestinationDTO destinationDTO) {
+
+            Destination destination = destinationMapper.toEntity(destinationDTO);
+            destinationService.createOrUpdateDestination(destination);
+            return new ResponseEntity<>(destinationDTO, HttpStatus.CREATED);
+    }
+
+    /**
+     * Обновляет аэропорт
+     * @param destinationDTO - DTO аэропорта
+     * @param id - ID аэропорта
+     * @return - DTO аэропорта
+     */
+    @ApiOperation(value = "Запрос для обновления аэропорта", notes = "Обновление аэропорта")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Аэропорт успешно обновлен"),
+            @ApiResponse(code = 400, message = "Переданы неверные данные"),
+            @ApiResponse(code = 404, message = "Аэропорт не найден"),
+    })
+    @PutMapping("/{id}")
+    public ResponseEntity<DestinationDTO> updateDestinationById(
+            @ApiParam(value = "DTO аэропорта") @RequestBody @Valid DestinationDTO destinationDTO,
+            @ApiParam(value = "ID аэропорта") @PathVariable Long id) {
+
         Destination destination = destinationMapper.toEntity(destinationDTO);
+        destination.setId(id);
         destinationService.createOrUpdateDestination(destination);
-        return null;
+        return new ResponseEntity<>(destinationDTO, HttpStatus.OK);
     }
 }

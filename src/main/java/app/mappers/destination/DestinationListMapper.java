@@ -13,8 +13,7 @@ import java.util.List;
  */
 @Component
 @Mapper(componentModel = "spring",
-        injectionStrategy = InjectionStrategy.CONSTRUCTOR,
-        uses = DestinationMapper.class)
+        injectionStrategy = InjectionStrategy.CONSTRUCTOR)
 public interface DestinationListMapper {
 
     /**
