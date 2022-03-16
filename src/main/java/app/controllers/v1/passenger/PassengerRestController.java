@@ -1,7 +1,7 @@
 package app.controllers.v1.passenger;
 
-import app.entities.clients.passenger.Passenger;
-import app.entities.clients.passenger.dto.PassengerDTO;
+import app.entities.users.passenger.Passenger;
+import app.entities.users.passenger.dto.PassengerDTO;
 import app.mappers.passenger.PassengerMapper;
 import app.services.interfaces.PassengerService;
 import io.swagger.annotations.*;

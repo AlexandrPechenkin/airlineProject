@@ -1,12 +1,12 @@
-package app.entities.clients.airlineManager;
+package app.entities.users.airlineManager;
 
-import app.entities.clients.user.User;
+import app.entities.users.user.User;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 
-@Entity
+@Entity(name = "AirlineManager")
 @Table(name = "Airline_manager")
 @Getter
 @Setter

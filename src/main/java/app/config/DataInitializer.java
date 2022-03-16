@@ -1,8 +1,8 @@
 package app.config;
 
-import app.entities.clients.admin.Admin;
-import app.entities.clients.passenger.Passenger;
-import app.entities.clients.passenger.Passport;
+import app.entities.users.admin.Admin;
+import app.entities.users.passenger.Passenger;
+import app.entities.users.passenger.Passport;
 import app.services.interfaces.AdminService;
 import app.services.interfaces.PassengerService;
 import lombok.RequiredArgsConstructor;
@@ -54,6 +54,7 @@ public class DataInitializer {
                                         .seriesAndNumber("3333 123456")
                                         .build()
                         )
+                        .role("passenger")
                         .build()
         );
     }
@@ -62,6 +63,8 @@ public class DataInitializer {
         adminService.createOrUpdateAdmin(Admin.builder()
                         .email("email_admin")
                         .password("password_admin")
+                        .nickname("admin_nickname")
+                        .role("admin")
                 .build());
     }
 }

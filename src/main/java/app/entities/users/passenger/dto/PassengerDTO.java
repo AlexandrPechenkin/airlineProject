@@ -1,4 +1,4 @@
-package app.entities.clients.passenger.dto;
+package app.entities.users.passenger.dto;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;

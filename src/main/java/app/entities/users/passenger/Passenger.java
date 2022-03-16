@@ -1,7 +1,7 @@
-package app.entities.clients.passenger;
+package app.entities.users.passenger;
 
 
-import app.entities.clients.user.User;
+import app.entities.users.user.User;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -13,7 +13,7 @@ import java.time.LocalDate;
  * @author Александр Данилов
  * @version 0.1
  */
-@Entity
+@Entity(name = "Passenger")
 @Getter
 @Setter
 @NoArgsConstructor

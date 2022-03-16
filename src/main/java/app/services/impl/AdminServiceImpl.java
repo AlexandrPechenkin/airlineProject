@@ -1,6 +1,6 @@
 package app.services.impl;
 
-import app.entities.clients.admin.Admin;
+import app.entities.users.admin.Admin;
 import app.repositories.admin.AdminRepository;
 import app.services.interfaces.AdminService;
 import lombok.RequiredArgsConstructor;
