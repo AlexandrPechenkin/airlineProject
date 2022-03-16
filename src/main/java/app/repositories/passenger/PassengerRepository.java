@@ -1,6 +1,6 @@
 package app.repositories.passenger;
 
-import app.entities.passenger.Passenger;
+import app.entities.clients.passenger.Passenger;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

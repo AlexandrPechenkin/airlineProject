@@ -1,7 +1,8 @@
-package app.entities.passenger;
+package app.entities.clients.passenger;
 
 
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -14,7 +15,7 @@ import java.time.LocalDate;
 @Entity
 @Getter
 @Setter
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "passenger_passport")

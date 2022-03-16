@@ -1,7 +1,9 @@
 package app.config;
 
-import app.entities.passenger.Passenger;
-import app.entities.passenger.Passport;
+import app.entities.clients.admin.Admin;
+import app.entities.clients.passenger.Passenger;
+import app.entities.clients.passenger.Passport;
+import app.services.interfaces.AdminService;
 import app.services.interfaces.PassengerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -18,6 +20,7 @@ import java.time.LocalDate;
 @Component
 public class DataInitializer {
     private final PassengerService passengerService;
+    private final AdminService adminService;
 
     @PostConstruct
     public void init() {
@@ -25,6 +28,9 @@ public class DataInitializer {
 
         createPassenger();
         System.out.println("Пассажир был создан.");
+
+        createAdmin();
+        System.out.println("Админ был создан");
     }
 
     private void createPassenger() {
@@ -35,6 +41,7 @@ public class DataInitializer {
                         .middleName("Totoro")
                         .dateOfBirth(LocalDate.of(1992, 2, 15))
                         .email("Airlines@test.com")
+                        .password("password")
                         .passport(
                                 Passport.builder()
                                         .firstName("Dereck")
@@ -49,5 +56,12 @@ public class DataInitializer {
                         )
                         .build()
         );
+    }
+
+    private void createAdmin() {
+        adminService.createOrUpdateAdmin(Admin.builder()
+                        .email("email_admin")
+                        .password("password_admin")
+                .build());
     }
 }

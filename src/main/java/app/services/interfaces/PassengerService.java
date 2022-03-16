@@ -1,6 +1,6 @@
 package app.services.interfaces;
 
-import app.entities.passenger.Passenger;
+import app.entities.clients.passenger.Passenger;
 
 import java.util.Optional;
 

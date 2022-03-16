@@ -1,7 +1,9 @@
-package app.entities.passenger;
+package app.entities.clients.passenger;
 
 
+import app.entities.clients.user.User;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -14,23 +16,12 @@ import java.time.LocalDate;
 @Entity
 @Getter
 @Setter
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@SuperBuilder
 @Table(name = "passengers")
-public class Passenger {
-    /**
-     * Уникальный идентификатор пассажира
-     */
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Passenger extends User {
 
-    /**
-     * Электронная почта пассажира
-     */
-    @Column(name = "email")
-    private String email;
     /**
      * Имя пассажира
      */

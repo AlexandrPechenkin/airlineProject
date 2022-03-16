@@ -1,6 +1,6 @@
 package app.services.impl;
 
-import app.entities.passenger.Passenger;
+import app.entities.clients.passenger.Passenger;
 import app.repositories.passenger.PassengerRepository;
 import app.services.interfaces.PassengerService;
 import lombok.RequiredArgsConstructor;
