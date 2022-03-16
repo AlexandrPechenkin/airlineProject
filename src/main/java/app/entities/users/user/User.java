@@ -13,7 +13,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-
+/**
+ * Базовый абстрактный класс пользователя сайта.
+ * От него наследуются остальные классы, специализирующиеся на своей области:
+ * Admin, Passenger, AirlineManager.
+ */
 @Getter
 @Setter
 @SuperBuilder
@@ -49,6 +53,9 @@ public abstract class User implements UserDetails, Serializable {
     @Nullable
     protected String password;
 
+    /**
+     * Временное поле для обозначения роли пользователя.
+     */
     @Column(name = "role")
     private String role;
 
