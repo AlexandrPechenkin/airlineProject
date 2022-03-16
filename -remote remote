@@ -1,0 +1,17 @@
+[33m986c4a8[m[33m ([m[1;36mHEAD -> [m[1;32m15_add_seat[m[33m, [m[1;32mmain[m[33m, [m[1;32mdev[m[33m)[m HEAD@{0}: checkout: moving from 15_Seat to 15_add_seat
+[33m4e4083d[m[33m ([m[1;32m14_add_Class_Category[m[33m)[m HEAD@{1}: checkout: moving from 14_add_Class_Category to 15_Seat
+[33m4e4083d[m[33m ([m[1;32m14_add_Class_Category[m[33m)[m HEAD@{2}: pull --no-stat -v --progress origin dev: Merge made by the 'ort' strategy.
+[33m1bdde2e[m[33m ([m[1;31morigin/14_add_Class_Category[m[33m)[m HEAD@{3}: commit: Создана сущности Category
+[33mff79f96[m HEAD@{4}: commit (merge): Merge branch 'dev' of https://gitlab.com/devs_hub/airline_project into 14_add_Class_Category
+[33ma27090d[m HEAD@{5}: reset: moving to HEAD
+[33ma27090d[m HEAD@{6}: commit: test1
+[33m3091a7f[m HEAD@{7}: commit: Добавление категорий конкретного места на рейсе.
+[33mf6d805c[m HEAD@{8}: commit: Добавление категорий конкретного места на рейсе
+[33m986c4a8[m[33m ([m[1;36mHEAD -> [m[1;32m15_add_seat[m[33m, [m[1;32mmain[m[33m, [m[1;32mdev[m[33m)[m HEAD@{9}: Branch: renamed refs/heads/14_add_Category to refs/heads/14_add_Class_Category
+[33m986c4a8[m[33m ([m[1;36mHEAD -> [m[1;32m15_add_seat[m[33m, [m[1;32mmain[m[33m, [m[1;32mdev[m[33m)[m HEAD@{11}: checkout: moving from dev to 14_add_Category
+[33m986c4a8[m[33m ([m[1;36mHEAD -> [m[1;32m15_add_seat[m[33m, [m[1;32mmain[m[33m, [m[1;32mdev[m[33m)[m HEAD@{12}: checkout: moving from qweqeq to dev
+[33m72e0026[m HEAD@{13}: Branch: renamed refs/heads/14_add_Category to refs/heads/qweqeq
+[33m72e0026[m HEAD@{15}: checkout: moving from 14_add_Catogory to 14_add_Category
+[33m72e0026[m HEAD@{16}: commit: test commit
+[33m986c4a8[m[33m ([m[1;36mHEAD -> [m[1;32m15_add_seat[m[33m, [m[1;32mmain[m[33m, [m[1;32mdev[m[33m)[m HEAD@{17}: checkout: moving from main to 14_add_Catogory
+[33m986c4a8[m[33m ([m[1;36mHEAD -> [m[1;32m15_add_seat[m[33m, [m[1;32mmain[m[33m, [m[1;32mdev[m[33m)[m HEAD@{18}: clone: from https://gitlab.com/devs_hub/airline_project.git
