@@ -6,8 +6,10 @@ import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 /**
- * Маппер MapStruct для аэропорта
+ * Маппер для аэропорта
  */
 @Component
 @Mapper(componentModel = "spring",
@@ -15,16 +17,16 @@ import org.springframework.stereotype.Component;
 public interface DestinationMapper {
 
     /**
-     * Возвращает объект DTO аэропорта по объекту аэропорта
-     * @param destination - объект аэропорта
-     * @return - объект DTO аэропорта
+     * Возвращает DTO аэропорта по аэропорту
+     * @param destination - аэропорт
+     * @return - DTO аэропорта
      */
     DestinationDTO toDTO(Destination destination);
 
     /**
-     * Возвращает объект аэропорта по объекту DTO аэропорта
-     * @param destinationDTO - объект DTO аэропорта
-     * @return - объект аэропорта
+     * Возвращает аэропорт по DTO аэропорта
+     * @param destinationDTO - DTO аэропорта
+     * @return - аэропорт
      */
     Destination toEntity(DestinationDTO destinationDTO);
 }

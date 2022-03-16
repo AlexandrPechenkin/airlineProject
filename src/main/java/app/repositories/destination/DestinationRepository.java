@@ -14,24 +14,24 @@ import java.util.Optional;
 public interface DestinationRepository extends JpaRepository<Destination, Long> {
 
     /**
-     * Возвращает объект Optional с аэропортом или null по ID
+     * Возвращает аэропорт по ID
      * @param id - ID аэропорта
-     * @return - объект Optional с аэропортом или null
+     * @return - аэропорт
      */
     @Override
     Optional<Destination> findById(Long id);
 
     /**
-     * Возвращает коллекцию аэропортов по названию города
+     * Возвращает список аэропортов по названию города
      * @param city - город, в котором находится аэропорт
-     * @return - коллекция аэропортов
+     * @return - список аэропортов
      */
-    List<Destination> getDestinationsByCity(String city);
+    List<Destination> getDestinationListByCity(String city);
 
     /**
-     * Возвращает коллекцию аэропортов по названию страны
+     * Возвращает список аэропортов по названию страны
      * @param countryName - страна, в которой находится аэропорт
-     * @return - коллекция аэропортов
+     * @return - список аэропортов
      */
-    List<Destination> getDestinationsByCountryName(String countryName);
+    List<Destination> getDestinationListByCountryName(String countryName);
 }

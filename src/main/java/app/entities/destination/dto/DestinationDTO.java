@@ -25,7 +25,7 @@ public class DestinationDTO {
     /**
      * Код страны, в которой находится аэропорт
      */
-    @NotEmpty(message = "Поле countryCode не должно быть пустым")
+//    @NotEmpty(message = "Поле countryCode не должно быть пустым")
     private CountryCode countryCode;
     /**
      * Название страны, в которой находится аэропорт
@@ -45,6 +45,6 @@ public class DestinationDTO {
     /**
      * Часовой пояс аэропорта
      */
-    @NotEmpty(message = "Поле timeZone не должно быть пустым")
+//    @NotEmpty(message = "Поле timeZone не должно быть пустым")
     private TimeZone timeZone;
 }
