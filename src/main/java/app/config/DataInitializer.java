@@ -5,7 +5,9 @@ import app.entities.users.passenger.Passenger;
 import app.entities.users.passenger.Passport;
 import app.services.interfaces.AdminService;
 import app.services.interfaces.PassengerService;
+import app.services.interfaces.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -21,6 +23,7 @@ import java.time.LocalDate;
 public class DataInitializer {
     private final PassengerService passengerService;
     private final AdminService adminService;
+    private final UserService userService;
 
     @PostConstruct
     public void init() {
@@ -54,17 +57,22 @@ public class DataInitializer {
                                         .seriesAndNumber("3333 123456")
                                         .build()
                         )
-                        .role("passenger")
+                        .roles("passenger")
                         .build()
         );
     }
 
     private void createAdmin() {
-        adminService.createOrUpdateAdmin(Admin.builder()
+        adminService.createOrUpdateAdmin(
+                Admin.builder()
                         .email("email_admin")
                         .password("password_admin")
                         .nickname("admin_nickname")
-                        .role("admin")
+                        .roles("admin")
                 .build());
     }
+
+//    private void createUser() {
+//        userService.
+//    }
 }

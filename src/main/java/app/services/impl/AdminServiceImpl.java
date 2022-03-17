@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -27,8 +28,12 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
+    public List<Admin> findAll() {
+        return adminRepository.findAll();
+    }
+
+    @Override
     public void deleteAdmin(Admin admin) {
         adminRepository.delete(admin);
     }
-
 }
