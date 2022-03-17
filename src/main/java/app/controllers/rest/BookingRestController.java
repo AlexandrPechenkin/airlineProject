@@ -2,7 +2,6 @@ package app.controllers.rest;
 
 import app.entities.booking.Booking;
 import app.entities.booking.dto.BookingDTO;
-import app.entities.searchResult.SearchResult;
 import app.mappers.booking.BookingMapper;
 import app.services.interfaces.BookingService;
 import io.swagger.annotations.*;
