@@ -24,7 +24,6 @@ import java.util.Optional;
 public class BookingRestController {
     private final BookingService bookingService;
     private final BookingMapper bookingMapper;
-    private final SearchResult searchResult;
 
     /**
      * Бронирование создаётся, когда пользователь нажимает на кнопку "Выбрать" из списка рейсов.
