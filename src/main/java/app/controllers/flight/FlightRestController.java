@@ -7,6 +7,7 @@ import app.exception.ObjectIncorrectData;
 import app.mappers.flight.FlightMapper;
 import app.services.flight.FlightService;
 import io.swagger.annotations.*;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -27,11 +28,6 @@ import javax.validation.Valid;
 public class FlightRestController {
     private final FlightService flightService;
     private final FlightMapper flightMapper;
-
-    public FlightRestController(FlightService flightService, FlightMapper flightMapper) {
-        this.flightService = flightService;
-        this.flightMapper = flightMapper;
-    }
 
 
     /**
@@ -68,7 +64,7 @@ public class FlightRestController {
     })
     @PutMapping("/{id}")
     public ResponseEntity<FlightDTO> updateFlight(@PathVariable("id") Long id,
-                                                            @Valid @RequestBody FlightDTO flight) {
+                                                  @Valid @RequestBody FlightDTO flight) {
         try {
             return new ResponseEntity<>(flightMapper.toDTO(flightService.createOrUpdateFlight(flightMapper.toEntity(flight))), HttpStatus.OK);
         } catch (DataIntegrityViolationException e) {

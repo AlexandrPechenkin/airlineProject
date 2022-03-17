@@ -6,6 +6,7 @@ import app.entities.flight.FlightStatus;
 import app.services.flight.FlightService;
 import app.services.search.SearchService;
 import app.services.ticket.TicketService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -21,18 +22,12 @@ import java.time.LocalTime;
  * Инжектьте и используйте здесь соответствующие сервисы ваших сущностей."
  */
 @Component
+@RequiredArgsConstructor
 public class DataInitializer {
 
-    SearchService searchService;
-    TicketService ticketService;
-    FlightService flightService;
-
-    @Autowired
-    public DataInitializer(SearchService searchService, TicketService ticketService, FlightService flightService) {
-        this.searchService = searchService;
-        this.ticketService = ticketService;
-        this.flightService = flightService;
-    }
+    private final SearchService searchService;
+    private final TicketService ticketService;
+    private final FlightService flightService;
 
     @PostConstruct
     public void init() {

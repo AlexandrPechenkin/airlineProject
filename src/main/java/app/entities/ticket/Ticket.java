@@ -2,6 +2,7 @@ package app.entities.ticket;
 
 import app.entities.flight.Flight;
 import lombok.*;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
@@ -32,7 +33,7 @@ public class Ticket {
     /**
      * номер кресла
      */
-    @NonNull
+    @Nullable
     private String seat;
 
     /**
