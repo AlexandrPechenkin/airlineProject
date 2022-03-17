@@ -1,7 +1,5 @@
 package app.entities.registration;
 
-import app.entities.passenger.Passenger;
-import app.entities.ticket.Ticket;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,8 +8,6 @@ import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Класс, описывающий процесс регистрирования на рейс (выбор конкретного билета из
@@ -35,14 +31,17 @@ public class Registration {
     private Long id;
 
     /**
-     * Выбранные пассажиром билеты на забронированные рейсы.
+     * Выбранное пассажиром место на забронированный рейс.
      */
-    @OneToMany(targetEntity = Ticket.class, cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private Map<Passenger, List<Ticket>> passengerTickets;
+//    @OneToOne
+//    private Seat seat;
 
     /**
      * Статус регистрации.
      * "OK" - регистрация на рейс успешно выполнена.
+     * "CANCELLED" - пассажир не зарегистрировался или отменил регистрацию.
+     *
+     * Регистрация происходит в том случае, если билет забронирован (т.е. куплен - "PAID" в Booking).
      */
     @Column(name = "status")
     @Value("IN_PROGRESS")

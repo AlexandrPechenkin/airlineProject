@@ -1,6 +1,5 @@
 package app.entities.booking;
 
-import app.entities.flight.Flight;
 import app.entities.passenger.Passenger;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
@@ -11,8 +10,6 @@ import org.springframework.beans.factory.annotation.Value;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Класс, описывающий процесс бронирования рейса пользователем,
@@ -37,22 +34,22 @@ public class Booking {
     private Long id;
 
     /**
-     * Список забронированных пассажиром рейсов depart/from-to, выбранных из предоставленных SearchResult рейсов.
+     * Забронированные пассажиром рейсов depart/from-to, выбранных из предоставленных SearchResult рейсов.
      * Один пассажир может бронировать несколько depart-рейсов.
      * Выбирается обязательно (non-null).
      */
 //    @NonNull
-    @OneToMany(targetEntity=Flight.class, cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    private Map<Passenger, List<Flight>> passengerFlightsDepart;
+//    @OneToOne
+//    private Ticket departFlight;
 
     /**
      * Список забронированных пассажиром рейсов return/to-from, выбранных из предоставленных SearchResult рейсов.
      * Один пассажир может бронировать несколько return-рейсов.
      * Может быть не выбран (nullable).
      */
-    @Nullable
-    @OneToMany(targetEntity = Flight.class, cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    private Map<Passenger, List<Flight>> passengerFlightsReturn;
+//    @Nullable
+//    @OneToOne
+//    private Ticket returnFlight;
 
     /**
      * Метод оплаты билета пассажиром: "оплатить позже" и "оплатить сейчас".
@@ -60,17 +57,16 @@ public class Booking {
      * "Оплатить позже" - позже надо выбрать способ оплаты, которым позже будет совершена оплата.
      * Влияет на время, которое даётся пассажиру на оплату рейса в зависимости от выбранного метода.
      */
+    @Nullable
     @Column(name = "payment_method")
     private String paymentMethod;
 
-//    /**
-//     * Оплатил ли пользователь билет по истечении времени бронирования рейса.
-//     * Если не оплатил, бронирование рейса удаляется, если оплатил, то получает статус "PAID".
-//     * Бронирование рейса со статусом далее может изменяться в зависимости от статуса.
-//     */
-//    @NonNull
-//    @Column(name = "is_sold")
-//    private Boolean isSold;
+    /**
+     * Пассажир, забронировавший рейс.
+     */
+    @NonNull
+    @OneToOne
+    private Passenger passenger;
 
     /**
      * Статус бронирования.
