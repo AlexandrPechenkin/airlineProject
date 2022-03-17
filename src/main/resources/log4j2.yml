@@ -1,0 +1,40 @@
+Configuration:
+  Properties:
+    Property:
+      - name: log-path
+        value: "logs"
+      - name: project-name
+        value: "airline"
+      - name: log-size
+        value: "3 MB"
+      - name: message-pattern
+        value: "[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n"
+      - name: file-pattern
+        value: "${log-path}/${date:yyyy-MM-dd}/${project-name}-%d{yyyy-MM-dd}-%i.log.gz"
+
+  Appenders:
+    Console:
+      name: Console
+      target: SYSTEM_OUT
+      PatternLayout:
+        pattern: ${message-pattern}
+
+    RollingFile:
+      name: File
+      fileName: ${log-path}/${project-name}.log
+      filePattern: ${file-pattern}
+      PatternLayout:
+        pattern: ${message-pattern}
+      Policies:
+        TimeBasedTriggeringPolicy:
+          modulate: true
+          interval: 12
+        SizeBasedTriggeringPolicy:
+          size: ${log-size}
+
+  Loggers:
+    Root:
+      level: info
+      AppenderRef:
+        - ref: Console
+        - ref: File
