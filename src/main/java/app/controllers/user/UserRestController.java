@@ -30,9 +30,6 @@ import java.util.Objects;
 public class UserRestController {
     private final UserService userService;
     UserMapper userMapper;
-//    PassengerMapper passengerMapper;
-//    @Qualifier("AirlineManagerMapperImpl") AirlineManagerMapper airlineManagerMapper;
-//    @Qualifier("AdminMapperImpl") AdminMapper adminMapper;
 
     @ApiOperation(value = "Запрос для создания пассажира", notes = "Создание пассажира")
     @ApiResponses(value = {
