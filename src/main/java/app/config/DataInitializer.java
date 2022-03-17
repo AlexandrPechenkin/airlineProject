@@ -7,7 +7,7 @@ import app.services.interfaces.AdminService;
 import app.services.interfaces.PassengerService;
 import app.services.interfaces.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.User;
+
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -71,8 +71,4 @@ public class DataInitializer {
                         .roles("admin")
                 .build());
     }
-
-//    private void createUser() {
-//        userService.
-//    }
 }

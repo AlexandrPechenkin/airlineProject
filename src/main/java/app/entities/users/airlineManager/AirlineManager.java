@@ -13,8 +13,11 @@ import javax.persistence.*;
 @Table(name = "Airline_manager")
 @Getter
 @Setter
+@NoArgsConstructor
 @AllArgsConstructor
 @SuperBuilder
 public class AirlineManager extends User {
 
+    @Column(name = "fleet")
+    private String fleetName;
 }

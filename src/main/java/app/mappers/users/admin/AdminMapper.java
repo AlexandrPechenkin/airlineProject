@@ -1,7 +1,8 @@
-package app.mappers.admin;
+package app.mappers.users.admin;
 
 import app.entities.users.admin.Admin;
 import app.entities.users.admin.dto.AdminDTO;
+import app.mappers.users.user.UserMapper;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.springframework.stereotype.Component;
@@ -11,8 +12,9 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Mapper(componentModel = "spring",
-        injectionStrategy = InjectionStrategy.CONSTRUCTOR)
-public interface AdminMapper {
+        injectionStrategy = InjectionStrategy.CONSTRUCTOR,
+        implementationName = "AdminMapperImpl")
+public interface AdminMapper extends UserMapper {
 
     /**
      * Метод приводит Admin к AdminDTO.
@@ -20,7 +22,7 @@ public interface AdminMapper {
      * @param admin
      * @return
      */
-    AdminDTO toDto(Admin admin);
+    AdminDTO adminEntityToAdminDto(Admin admin);
 
     /**
      * Метод приводит AdminDTO к Admin.
@@ -28,6 +30,6 @@ public interface AdminMapper {
      * @param adminDTO
      * @return
      */
-    Admin toEntity(AdminDTO adminDTO);
+    Admin adminDtoToAdminEntity(AdminDTO adminDTO);
 
 }

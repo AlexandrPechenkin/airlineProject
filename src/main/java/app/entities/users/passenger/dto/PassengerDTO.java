@@ -1,9 +1,11 @@
 package app.entities.users.passenger.dto;
 
 
+import app.entities.users.user.dto.UserDTO;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.Email;
@@ -17,9 +19,10 @@ import java.time.LocalDate;
  * @author Александр Данилов
  * @version 0.1
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 @ApiModel
-public class PassengerDTO {
+public class PassengerDTO extends UserDTO {
     private Long id;
 
     @NotEmpty(message = "Поле email не должно быть пустым")
