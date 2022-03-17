@@ -1,6 +1,5 @@
 package app.services.impl;
 
-import app.entities.category.Category;
 import app.entities.seat.Seat;
 import app.repositories.flight.FlightRepository;
 import app.repositories.seat.SeatRepository;

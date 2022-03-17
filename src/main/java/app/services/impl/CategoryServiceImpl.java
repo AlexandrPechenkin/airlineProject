@@ -1,7 +1,8 @@
-package app.services.category;
+package app.services.impl;
 
 import app.entities.category.Category;
 import app.repositories.category.CategoryRepository;
+import app.services.interfaces.CategoryService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

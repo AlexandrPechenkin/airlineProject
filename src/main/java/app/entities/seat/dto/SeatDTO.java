@@ -18,16 +18,16 @@ public class SeatDTO {
     private Long id;
 
     @NotEmpty(message = "Поле seatNumber не должно быть пустым")
-    private String seatNumber;  //номер сиденья
+    private String seatNumber;
 
     @NonNull
-    private Integer fare; //плата за проезд
+    private Integer fare;
 
     @NonNull
-    private Boolean isRegistered;  //регистрация
+    private Boolean isRegistered;
 
     @NonNull
-    private Boolean isSold;     //продано
+    private Boolean isSold;
 
     private Category category;
 

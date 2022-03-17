@@ -1,7 +1,8 @@
-package app.services.passenger;
+package app.services.impl;
 
 import app.entities.passenger.Passenger;
 import app.repositories.passenger.PassengerRepository;
+import app.services.interfaces.PassengerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

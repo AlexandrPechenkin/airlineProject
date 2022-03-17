@@ -77,9 +77,10 @@ public class SeatRestController {
     public ResponseEntity<SeatDTO> createSeat(@ApiParam(value = "DTO места")
                                               @RequestBody @Valid SeatDTO seat) {
         return new ResponseEntity<>(
-                seatMapper.toDto(
-                        seatService.createOrUpdate(
-                                seatMapper.toEntity(seat))), HttpStatus.CREATED);
+                    seatMapper.toDto(
+                            seatService.createOrUpdate(
+                                    seatMapper.toEntity(seat))), HttpStatus.CREATED);
+
     }
 
 
@@ -89,8 +90,8 @@ public class SeatRestController {
             @ApiResponse(code = 400, message = "Переданы неверные данные"),
     })
     @PutMapping()
-    public ResponseEntity<SeatDTO> updateSeat(@ApiParam(value = "DTO места")
-                                              @RequestBody @Valid SeatDTO seat) {
+    public ResponseEntity<SeatDTO> updateSeat(@ApiParam(value = "DTO места") @RequestBody @Valid SeatDTO seat) {
+
         return new ResponseEntity<>(
                 seatMapper.toDto(
                         seatService.createOrUpdate(

@@ -19,7 +19,7 @@ public class FligthServiceImpl implements FlightService {
 
 
     @Override
-    public Flight addFlight(Flight flight) {
+    public Flight createOrUpdate(Flight flight) {
         return flightRepository.save(flight);
     }
 

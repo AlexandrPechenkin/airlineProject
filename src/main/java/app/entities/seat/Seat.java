@@ -63,7 +63,7 @@ public class Seat {
      * Рейс
      */
     @NonNull
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "flight_id")
     private Flight flight;
 

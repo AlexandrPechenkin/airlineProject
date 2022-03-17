@@ -3,7 +3,7 @@ package app.controllers.category;
 import app.entities.category.Category;
 import app.entities.category.dto.CategoryDTO;
 import app.mappers.category.CategoryMapper;
-import app.services.category.CategoryService;
+import app.services.interfaces.CategoryService;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
