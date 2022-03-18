@@ -1,8 +1,8 @@
-package app.controllers.v1.passenger;
+package app.controllers.rest;
 
-import app.entities.passenger.Passenger;
-import app.entities.passenger.dto.PassengerDTO;
-import app.mappers.passenger.PassengerMapper;
+import app.entities.Passenger;
+import app.entities.dtos.PassengerDTO;
+import app.entities.mappers.passenger.PassengerMapper;
 import app.services.interfaces.PassengerService;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;

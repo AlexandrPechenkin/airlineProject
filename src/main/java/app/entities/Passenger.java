@@ -1,4 +1,4 @@
-package app.entities.passenger;
+package app.entities;
 
 
 import lombok.*;

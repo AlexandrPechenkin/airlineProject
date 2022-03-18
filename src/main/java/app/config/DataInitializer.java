@@ -4,6 +4,14 @@ import app.entities.destination.Destination;
 import app.entities.passenger.Passenger;
 import app.entities.passenger.Passport;
 import app.services.interfaces.DestinationService;
+import app.entities.Category;
+import app.entities.Flight;
+import app.entities.Seat;
+import app.services.interfaces.CategoryService;
+import app.entities.Passenger;
+import app.entities.Passport;
+import app.services.interfaces.FlightService;
+import app.services.interfaces.SeatService;
 import app.services.interfaces.PassengerService;
 import app.util.CountryCode;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +26,7 @@ import java.util.TimeZone;
  * Эти данные будут каждый раз создаваться заново при поднятии SessionFactory и удаляться из БД при её остановке.
  * Инжектьте и используйте здесь соответствующие сервисы ваших сущностей."
  */
+
 @RequiredArgsConstructor
 @Component
 public class DataInitializer {
@@ -26,6 +35,12 @@ public class DataInitializer {
      * Интерфейс сервиса для работы с аэропортом
      */
     private final DestinationService destinationService;
+
+    private final CategoryService categoryService;
+
+    private final SeatService seatService;
+
+    private final FlightService flightService;
 
     @PostConstruct
     public void init() {
@@ -36,6 +51,15 @@ public class DataInitializer {
 
         createDestinations();
         System.out.println("Аэропорты были созданы.");
+
+        createCategory();
+        System.out.println("Категории были созданы");
+
+        createSeat();
+        System.out.println("Места были созданы");
+
+        createFlight();
+        System.out.println("Рейс был добавлен");
     }
 
     private void createPassenger() {
@@ -98,5 +122,47 @@ public class DataInitializer {
                         .timeZone(TimeZone.getTimeZone("Europe/Moscow"))
                         .build()
         );
+
     }
+
+    private void createCategory() {
+
+        Category categoryEconomy = new Category("Economy");
+        Category categoryComfort = new Category("Comfort");
+        Category categoryBusiness = new Category("Business");
+        Category categoryFirstClass = new Category("First class");
+
+        categoryService.createOrUpdate(categoryEconomy);
+        categoryService.createOrUpdate(categoryComfort);
+        categoryService.createOrUpdate(categoryBusiness);
+        categoryService.createOrUpdate(categoryFirstClass);
+    }
+
+    private void createSeat() {
+        seatService.createOrUpdate(
+                Seat.builder()
+                        .seatNumber("1A")
+                        .fare(800)
+                        .isRegistered(true)
+                        .isSold(true)
+                        .category(Category.builder()
+                                .id(1L)
+                                .category("testCategory")
+                                .build())
+                        .flight(Flight.builder()
+//                                .id(1L)
+                                .destinationFrom("Moscow")
+                                .destinationTo("Tomsk")
+                                .build()
+                        ).build());
+    }
+
+    private void createFlight() {
+        flightService.createOrUpdate(
+                Flight.builder()
+                        .destinationFrom("Moscow")
+                        .destinationTo("Tomsk")
+                        .build());
+    }
+
 }
