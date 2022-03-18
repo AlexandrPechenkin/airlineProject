@@ -1,7 +1,7 @@
 package app.services.impl;
 
-import app.entities.destination.Destination;
-import app.repositories.destination.DestinationRepository;
+import app.entities.Destination;
+import app.repositories.DestinationRepository;
 import app.services.interfaces.DestinationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

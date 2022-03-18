@@ -1,8 +1,6 @@
 package app.config;
 
-import app.entities.destination.Destination;
-import app.entities.passenger.Passenger;
-import app.entities.passenger.Passport;
+import app.entities.Destination;
 import app.services.interfaces.DestinationService;
 import app.entities.Category;
 import app.entities.Flight;
@@ -13,7 +11,7 @@ import app.entities.Passport;
 import app.services.interfaces.FlightService;
 import app.services.interfaces.SeatService;
 import app.services.interfaces.PassengerService;
-import app.util.CountryCode;
+import app.entities.CountryCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -31,9 +29,7 @@ import java.util.TimeZone;
 @Component
 public class DataInitializer {
     private final PassengerService passengerService;
-    /**
-     * Интерфейс сервиса для работы с аэропортом
-     */
+
     private final DestinationService destinationService;
 
     private final CategoryService categoryService;

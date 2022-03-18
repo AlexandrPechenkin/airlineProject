@@ -1,57 +1,50 @@
-package app.entities.destination;
+package app.entities.dtos;
 
-import app.util.CountryCode;
-import lombok.*;
+import app.entities.CountryCode;
+import io.swagger.annotations.ApiModel;
+import lombok.Data;
 
-import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.util.TimeZone;
 
 /**
- * Аэропорт (пункт вылета и/или прилёта)
+ * DTO аэропорта
  */
-@Entity
-@Getter
-@Setter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-@Table(name = "destination")
-public class Destination {
+@Data
+@ApiModel
+public class DestinationDTO {
     /**
      * ID аэропорта
      */
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     /**
      * Город, в котором находится аэропорт
      */
-    @Column(name = "city")
+    @NotEmpty(message = "Поле city не должно быть пустым")
     private String city;
     /**
      * Код страны, в которой находится аэропорт
      */
-    @Column(name = "country_code")
-    @Enumerated(EnumType.STRING)
+//    @NotEmpty(message = "Поле countryCode не должно быть пустым")
     private CountryCode countryCode;
     /**
      * Название страны, в которой находится аэропорт
      */
-    @Column(name = "country_name")
+    @NotEmpty(message = "Поле countryName не должно быть пустым")
     private String countryName;
     /**
      * Название аэропорта
      */
-    @Column(name = "airport_name")
+    @NotEmpty(message = "Поле airportName не должно быть пустым")
     private String airportName;
     /**
      * Код аэропорта
      */
-    @Column(name = "airport_code")
+    @NotEmpty(message = "Поле airportCode не должно быть пустым")
     private String airportCode;
     /**
      * Часовой пояс аэропорта
      */
-    @Column(name = "time_zone")
+//    @NotBlank(message = "Поле timeZone не должно быть пустым")
     private TimeZone timeZone;
 }

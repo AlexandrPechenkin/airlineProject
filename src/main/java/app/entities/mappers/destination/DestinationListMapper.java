@@ -1,7 +1,7 @@
-package app.mappers.destination;
+package app.entities.mappers.destination;
 
-import app.entities.destination.Destination;
-import app.entities.destination.dto.DestinationDTO;
+import app.entities.Destination;
+import app.entities.dtos.DestinationDTO;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.springframework.stereotype.Component;

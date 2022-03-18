@@ -1,9 +1,9 @@
 package app.controllers.v1.destination;
 
 import app.AirlineApplication;
-import app.entities.destination.Destination;
+import app.entities.Destination;
 import app.services.interfaces.DestinationService;
-import app.util.CountryCode;
+import app.entities.CountryCode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.AccessLevel;
@@ -17,8 +17,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.TimeZone;
 
 import static org.hamcrest.Matchers.is;

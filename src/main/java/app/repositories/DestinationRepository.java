@@ -1,6 +1,6 @@
-package app.repositories.destination;
+package app.repositories;
 
-import app.entities.destination.Destination;
+import app.entities.Destination;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

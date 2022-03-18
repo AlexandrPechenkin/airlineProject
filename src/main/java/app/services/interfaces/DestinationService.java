@@ -1,6 +1,6 @@
 package app.services.interfaces;
 
-import app.entities.destination.Destination;
+import app.entities.Destination;
 
 import java.util.List;
 import java.util.Optional;

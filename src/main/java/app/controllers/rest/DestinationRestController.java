@@ -1,9 +1,9 @@
-package app.controllers.v1.destination;
+package app.controllers.rest;
 
-import app.entities.destination.Destination;
-import app.entities.destination.dto.DestinationDTO;
-import app.mappers.destination.DestinationListMapper;
-import app.mappers.destination.DestinationMapper;
+import app.entities.Destination;
+import app.entities.dtos.DestinationDTO;
+import app.entities.mappers.destination.DestinationListMapper;
+import app.entities.mappers.destination.DestinationMapper;
 import app.services.interfaces.DestinationService;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
