@@ -1,7 +1,7 @@
 package app.services.impl;
 
-import app.entities.users.user.User;
-import app.repositories.user.UserRepository;
+import app.entities.User;
+import app.repositories.UserRepository;
 import app.services.interfaces.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -11,12 +11,12 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl<T extends User> implements UserService {
     private final UserRepository userRepository;
 
     @Override
-    public User createOrUpdateUser(User user) {
-        return userRepository.save(user);
+    public T createOrUpdateUser(User user) {
+        return (T) userRepository.save(user);
     }
 
     @Override

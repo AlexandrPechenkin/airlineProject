@@ -1,7 +1,7 @@
 package app.services.interfaces;
 
 
-import app.entities.users.admin.Admin;
+import app.entities.Admin;
 
 import java.util.List;
 import java.util.Optional;

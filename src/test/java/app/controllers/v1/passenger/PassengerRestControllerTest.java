@@ -1,8 +1,8 @@
 package app.controllers.v1.passenger;
 
 import app.AirlineApplication;
-import app.entities.users.passenger.Passenger;
-import app.entities.users.passenger.Passport;
+import app.entities.Passenger;
+import app.entities.Passport;
 import app.services.interfaces.PassengerService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -10,6 +10,7 @@ import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
@@ -35,7 +36,7 @@ class PassengerRestControllerTest {
 
     @Autowired
     MockMvc mvc;
-    @Autowired
+    @Autowired @Qualifier("passengerServiceImpl")
     PassengerService passengerService;
 
     final String api = "/api/v1/passenger";
@@ -49,6 +50,8 @@ class PassengerRestControllerTest {
                 .middleName("Totoro")
                 .dateOfBirth(LocalDate.of(1992, 2, 15))
                 .email("Airlines@test.com")
+                .password("password_airlines")
+                .roles("passenger")
                 .passport(
                         Passport.builder()
                                 .firstName("Dereck")
@@ -118,7 +121,6 @@ class PassengerRestControllerTest {
                 .andExpect(jsonPath("$.id", is(1)));
     }
 
-    //
     @Test
     void givenPassengerExist_whenGetWithoutIdPassenger_thenStatus404() throws Exception {
         Passenger passenger = passengerService.createOrUpdatePassenger(createPassenger());

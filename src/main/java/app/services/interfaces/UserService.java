@@ -1,7 +1,6 @@
 package app.services.interfaces;
 
-import app.entities.users.user.User;
-import org.springframework.stereotype.Service;
+import app.entities.User;
 
 import java.util.List;
 import java.util.Optional;

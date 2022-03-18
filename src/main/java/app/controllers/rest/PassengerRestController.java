@@ -1,8 +1,8 @@
-package app.controllers.v1.passenger;
+package app.controllers.rest;
 
-import app.entities.users.passenger.Passenger;
-import app.entities.users.passenger.dto.PassengerDTO;
-import app.mappers.users.passenger.PassengerMapper;
+import app.entities.Passenger;
+import app.entities.dtos.PassengerDTO;
+import app.entities.mappers.PassengerMapper;
 import app.services.interfaces.PassengerService;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
@@ -42,9 +42,9 @@ public class PassengerRestController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(
-                passengerMapper.passengerEntityToPassengerDto(
+                passengerMapper.toDto(
                         passengerService.createOrUpdatePassenger(
-                                passengerMapper.passengerDtoToPassengerEntity(passenger))), HttpStatus.CREATED);
+                                passengerMapper.toEntity(passenger))), HttpStatus.CREATED);
     }
 
     /**
@@ -61,9 +61,9 @@ public class PassengerRestController {
     @PutMapping
     public ResponseEntity<PassengerDTO> updatePassenger(@ApiParam(value = "DTO Пассажира") @RequestBody @Valid PassengerDTO passenger) {
         return new ResponseEntity<>(
-                passengerMapper.passengerEntityToPassengerDto(
+                passengerMapper.toDto(
                         passengerService.createOrUpdatePassenger(
-                                passengerMapper.passengerDtoToPassengerEntity(passenger))), HttpStatus.OK);
+                                passengerMapper.toEntity(passenger))), HttpStatus.OK);
 
     }
 
@@ -85,7 +85,7 @@ public class PassengerRestController {
         if (passenger.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
-            return new ResponseEntity<>(passengerMapper.passengerEntityToPassengerDto(passenger.get()), HttpStatus.OK);
+            return new ResponseEntity<>(passengerMapper.toDto(passenger.get()), HttpStatus.OK);
         }
     }
 

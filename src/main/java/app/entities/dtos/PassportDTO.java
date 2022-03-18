@@ -1,4 +1,4 @@
-package app.entities.users.passenger.dto;
+package app.entities.dtos;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;

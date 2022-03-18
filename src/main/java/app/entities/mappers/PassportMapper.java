@@ -1,7 +1,7 @@
-package app.mappers.users.passenger;
+package app.entities.mappers;
 
-import app.entities.users.passenger.Passport;
-import app.entities.users.passenger.dto.PassportDTO;
+import app.entities.Passport;
+import app.entities.dtos.PassportDTO;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.springframework.stereotype.Component;

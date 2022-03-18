@@ -1,9 +1,7 @@
-package app.entities.users.airlineManager;
+package app.entities;
 
-import app.entities.users.user.User;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-
 import javax.persistence.*;
 
 /**
@@ -18,6 +16,9 @@ import javax.persistence.*;
 @SuperBuilder
 public class AirlineManager extends User {
 
-    @Column(name = "fleet")
-    private String fleetName;
+    /**
+     * Название авиапарка, которым заведует менеджер.
+     */
+    @Column(name = "fleetName")
+    private String parkName;
 }

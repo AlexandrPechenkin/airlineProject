@@ -1,7 +1,6 @@
-package app.entities.users.passenger;
+package app.entities;
 
 
-import app.entities.users.user.User;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 

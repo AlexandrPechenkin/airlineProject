@@ -1,6 +1,5 @@
-package app.entities.users.admin;
+package app.entities;
 
-import app.entities.users.user.User;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 

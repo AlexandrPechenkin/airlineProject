@@ -1,7 +1,7 @@
 package app.services.impl;
 
-import app.entities.users.admin.Admin;
-import app.repositories.admin.AdminRepository;
+import app.entities.Admin;
+import app.repositories.AdminRepository;
 import app.services.interfaces.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

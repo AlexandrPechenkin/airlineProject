@@ -1,8 +1,7 @@
-package app.mappers.users.passenger;
+package app.entities.mappers;
 
-import app.entities.users.passenger.Passenger;
-import app.entities.users.passenger.dto.PassengerDTO;
-import app.mappers.users.user.UserMapper;
+import app.entities.Passenger;
+import app.entities.dtos.PassengerDTO;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.springframework.stereotype.Component;
@@ -15,18 +14,17 @@ import org.springframework.stereotype.Component;
 @Component
 @Mapper(componentModel = "spring",
         injectionStrategy = InjectionStrategy.CONSTRUCTOR,
-        uses = { PassportMapper.class },
-        implementationName = "PassengerMapperImpl")
-public interface PassengerMapper extends UserMapper {
+        uses = { PassportMapper.class })
+public interface PassengerMapper {
     /**
      * Метод сопоставляет Passenger c PassengerDTO
      * @param passenger - Пассажир
      */
-    PassengerDTO passengerEntityToPassengerDto(Passenger passenger);
+    PassengerDTO toDto(Passenger passenger);
 
     /**
      * Метод сопоставляет PassengerDTO c Passenger
      * @param passengerDTO - Поля пассажира которые отдаются наружу
      */
-    Passenger passengerDtoToPassengerEntity(PassengerDTO passengerDTO);
+    Passenger toEntity(PassengerDTO passengerDTO);
 }

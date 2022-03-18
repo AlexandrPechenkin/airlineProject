@@ -1,7 +1,7 @@
 package app.services.impl;
 
-import app.entities.users.passenger.Passenger;
-import app.repositories.passenger.PassengerRepository;
+import app.entities.Passenger;
+import app.repositories.PassengerRepository;
 import app.services.interfaces.PassengerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
