@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -122,30 +123,30 @@ public class DestinationRestController {
     public ResponseEntity<DestinationDTO> createDestination(
             @ApiParam(value = "DTO аэропорта") @RequestBody @Valid DestinationDTO destinationDTO) {
 
-            Destination destination = destinationMapper.toEntity(destinationDTO);
-            destinationService.createOrUpdateDestination(destination);
-            return new ResponseEntity<>(destinationDTO, HttpStatus.CREATED);
+        if (Objects.nonNull(destinationDTO.getId())) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        Destination destination = destinationMapper.toEntity(destinationDTO);
+        destinationService.createOrUpdateDestination(destination);
+        return new ResponseEntity<>(destinationDTO, HttpStatus.CREATED);
     }
 
     /**
      * Обновляет аэропорт
      * @param destinationDTO - DTO аэропорта
-     * @param id - ID аэропорта
      * @return - DTO аэропорта
      */
     @ApiOperation(value = "Запрос для обновления аэропорта", notes = "Обновление аэропорта")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Аэропорт успешно обновлен"),
-            @ApiResponse(code = 400, message = "Переданы неверные данные"),
-            @ApiResponse(code = 404, message = "Аэропорт не найден"),
+            @ApiResponse(code = 400, message = "Переданы неверные данные")
     })
-    @PutMapping("/{id}")
+    @PutMapping
     public ResponseEntity<DestinationDTO> updateDestinationById(
-            @ApiParam(value = "DTO аэропорта") @RequestBody @Valid DestinationDTO destinationDTO,
-            @ApiParam(value = "ID аэропорта") @PathVariable Long id) {
+            @ApiParam(value = "DTO аэропорта") @RequestBody @Valid DestinationDTO destinationDTO) {
 
         Destination destination = destinationMapper.toEntity(destinationDTO);
-        destination.setId(id);
         destinationService.createOrUpdateDestination(destination);
         return new ResponseEntity<>(destinationDTO, HttpStatus.OK);
     }
