@@ -45,14 +45,14 @@ public class DataInitializer {
         createAirlineManager();
         System.out.println("AirlineManager был создан c AirlineManagerService, AirlineManagerRepository, AirlineMapper, AirlineManagerDTO.");
 
-        createAdminWithUserService();
+        Admin admin = createAdminWithUserService();
         System.out.println("Администратор был создан при помощи UserService, UserRepository, AdminMapper, AdminDTO.");
 
         createPassengerAndPassportWithUserService();
         System.out.println("Пассажир и его паспорт был создан при помощи UserService, UserRepository, PassengerMapper, PassengerDTO.");
 
         createAirlineManagerWithUserService();
-        System.out.println("AirlineManager был создан при помощи UserService, UserRepository, AirlineManagerMapper, AirlineManagerDTO");
+        System.out.println("AirlineManager был создан при помощи UserService, UserRepository, AirlineManagerMapper, AirlineManagerDTO.");
     }
 
     private void createPassenger() {
@@ -142,8 +142,8 @@ public class DataInitializer {
                         .build());
     }
 
-    private void createAdminWithUserService() {
-        userService.createOrUpdateUser(
+    private Admin createAdminWithUserService() {
+        return (Admin) userService.createOrUpdateUser(
                 Admin.builder().email("admin_user@mail.com")
                         .password("password_admin_user")
                         .nickname("nickname_admin_user")

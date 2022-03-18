@@ -21,7 +21,7 @@ public class AdminDTO {
     @Email(message = "Пожалуйста, введите корректный email-адрес")
     private String email;
 
-    private String role;
+    private String roles;
 
     private String nickname;
 }

@@ -35,11 +35,11 @@ public class AdminRestController {
      */
     @ApiOperation(value = "Запрос для получения всех записей об администраторах", notes = "Получение всех записей об администраторах")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Записи об администраторах успешно получены"),
+            @ApiResponse(code = 200, message = "Записи об администраторах успешно получены"),
             @ApiResponse(code = 404, message = "Записи об администраторах не найдены")
     })
     @GetMapping
-    public ResponseEntity<List<AdminDTO>> findAllAdmins() {
+    public ResponseEntity<List<AdminDTO>> getAllAdmin() {
         List<Admin> adminList = adminService.findAll();
         if (adminList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -80,7 +80,7 @@ public class AdminRestController {
      */
     @ApiOperation(value = "Запрос для обновления данных администратора", notes = "Обновление администратора")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Администратор успешно обновлён"),
+            @ApiResponse(code = 204, message = "Администратор успешно обновлён"),
             @ApiResponse(code = 400, message = "Переданы неверные данные")
     })
     @PutMapping
@@ -88,7 +88,7 @@ public class AdminRestController {
         return new ResponseEntity<>(
                 adminMapper.toDto(
                         adminService.createOrUpdateAdmin(
-                                adminMapper.toEntity(adminDTO))), HttpStatus.CREATED);
+                                adminMapper.toEntity(adminDTO))), HttpStatus.NO_CONTENT);
     }
 
     /**
@@ -99,7 +99,7 @@ public class AdminRestController {
      */
     @ApiOperation(value = "Запрос для получения записи об администраторе по id", notes = "Получение администратора по id")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Администратор успешно получен"),
+            @ApiResponse(code = 200, message = "Администратор успешно получен"),
             @ApiResponse(code = 404, message = "Запись об администраторе не найдена")
     })
     @GetMapping("/{id}")
@@ -119,7 +119,7 @@ public class AdminRestController {
      */
     @ApiOperation(value = "Запрос для удаления записи об администраторе из таблицы в БД", notes = "Удаление записи об администраторе")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Администратор успешно удалён"),
+            @ApiResponse(code = 200, message = "Администратор успешно удалён"),
             @ApiResponse(code = 404, message = "Запись об администраторе не найдена; возможно, запись перемещена или удалена")
     })
     @DeleteMapping("/{id}")

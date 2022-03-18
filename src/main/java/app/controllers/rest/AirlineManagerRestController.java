@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequiredArgsConstructor
 @Api(tags = "AirlineManagerRestController")
+@RequestMapping("/airlineManager")
 public class AirlineManagerRestController {
     private final AirlineManagerMapper airlineManagerMapper;
     private final AirlineManagerService airlineManagerService;
@@ -33,11 +34,11 @@ public class AirlineManagerRestController {
      */
     @ApiOperation(value = "Запрос для получения всех записей о менеджерах", notes = "Получение всех записей о менеджерах")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Записи о менеджерах успешно получены"),
+            @ApiResponse(code = 200, message = "Записи о менеджерах успешно получены"),
             @ApiResponse(code = 404, message = "Записи о менеджерах не найдены")
     })
     @GetMapping
-    public ResponseEntity<List<AirlineManagerDTO>> findAllAdmins() {
+    public ResponseEntity<List<AirlineManagerDTO>> findAllAdmin() {
         List<AirlineManager> airlineManagerList = airlineManagerService.findAll();
         if (airlineManagerList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -78,7 +79,7 @@ public class AirlineManagerRestController {
      */
     @ApiOperation(value = "Запрос для обновления данных менеджера", notes = "Обновление менеджера")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Менеджер успешно обновлён"),
+            @ApiResponse(code = 204, message = "Менеджер успешно обновлён"),
             @ApiResponse(code = 400, message = "Переданы неверные данные")
     })
     @PutMapping
@@ -86,7 +87,7 @@ public class AirlineManagerRestController {
         return new ResponseEntity<>(
                 airlineManagerMapper.toDto(
                         airlineManagerService.createOrUpdateAirlineManager(
-                                airlineManagerMapper.toEntity(airlineManagerDTO))), HttpStatus.CREATED);
+                                airlineManagerMapper.toEntity(airlineManagerDTO))), HttpStatus.NO_CONTENT);
     }
 
     /**
@@ -97,7 +98,7 @@ public class AirlineManagerRestController {
      */
     @ApiOperation(value = "Запрос для получения записи об менеджере по id", notes = "Получение менеджера по id")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Менеджер успешно получен"),
+            @ApiResponse(code = 200, message = "Менеджер успешно получен"),
             @ApiResponse(code = 404, message = "Запись о менеджере не найдена; возможно, запись была перемещена или была удалена")
     })
     @GetMapping("/{id}")
@@ -117,7 +118,7 @@ public class AirlineManagerRestController {
      */
     @ApiOperation(value = "Запрос для удаления записи об менеджере из таблицы в БД", notes = "Удаление записи о менеджере")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Менеджер успешно удалён"),
+            @ApiResponse(code = 200, message = "Менеджер успешно удалён"),
             @ApiResponse(code = 404, message = "Запись о менеджере не найдена; возможно, запись перемещена или была удалена")
     })
     @DeleteMapping("/{id}")
