@@ -1,5 +1,9 @@
 package app.config;
 
+import app.entities.category.Category;
+import app.services.category.CategoryService;
+import app.services.flight.FlightService;
+import app.services.seat.SeatService;
 import app.entities.passenger.Passenger;
 import app.entities.passenger.Passport;
 import app.services.interfaces.PassengerService;
@@ -14,15 +18,26 @@ import java.time.LocalDate;
  * Эти данные будут каждый раз создаваться заново при поднятии SessionFactory и удаляться из БД при её остановке.
  * Инжектьте и используйте здесь соответствующие сервисы ваших сущностей."
  */
+
 @RequiredArgsConstructor
 @Component
 public class DataInitializer {
     private final PassengerService passengerService;
 
+    private final CategoryService categoryService;
+
+
+    /**
+     * Создание объектов категорий мест пассажиров
+     */
+    Category categoryEconomy = new Category("Economy");
+    Category categoryComfort = new Category("Comfort");
+    Category categoryBusiness = new Category("Business");
+    Category categoryFirstClass = new Category("First class");
+
+
     @PostConstruct
     public void init() {
-        System.out.println("DataInitializer сработал!");
-
         createPassenger();
         System.out.println("Пассажир был создан.");
     }
@@ -49,5 +64,13 @@ public class DataInitializer {
                         )
                         .build()
         );
+
+        /** Добавление категорий мест пассажиров */
+        categoryService.createOrUpdate(categoryEconomy);
+        categoryService.createOrUpdate(categoryComfort);
+        categoryService.createOrUpdate(categoryBusiness);
+        categoryService.createOrUpdate(categoryFirstClass);
+        System.out.println("Категории добавлены");
     }
+
 }
