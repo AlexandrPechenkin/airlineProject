@@ -16,6 +16,7 @@ import java.util.Set;
  */
 
 @Data
+@Builder
 @RequiredArgsConstructor
 @NoArgsConstructor
 @AllArgsConstructor

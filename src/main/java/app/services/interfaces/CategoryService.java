@@ -1,4 +1,4 @@
-package app.services.category;
+package app.services.interfaces;
 
 import app.entities.category.Category;
 

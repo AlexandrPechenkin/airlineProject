@@ -1,11 +1,13 @@
 package app.config;
 
 import app.entities.category.Category;
-import app.services.category.CategoryService;
-import app.services.flight.FlightService;
-import app.services.seat.SeatService;
+import app.entities.flight.Flight;
+import app.entities.seat.Seat;
+import app.services.interfaces.CategoryService;
 import app.entities.passenger.Passenger;
 import app.entities.passenger.Passport;
+import app.services.interfaces.FlightService;
+import app.services.interfaces.SeatService;
 import app.services.interfaces.PassengerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -26,20 +28,23 @@ public class DataInitializer {
 
     private final CategoryService categoryService;
 
+    private final SeatService seatService;
 
-    /**
-     * Создание объектов категорий мест пассажиров
-     */
-    Category categoryEconomy = new Category("Economy");
-    Category categoryComfort = new Category("Comfort");
-    Category categoryBusiness = new Category("Business");
-    Category categoryFirstClass = new Category("First class");
-
+    private final FlightService flightService;
 
     @PostConstruct
     public void init() {
         createPassenger();
         System.out.println("Пассажир был создан.");
+
+        createCategory();
+        System.out.println("Категории были созданы");
+
+        createSeat();
+        System.out.println("Места были созданы");
+
+        createFlight();
+        System.out.println("Рейс был добавлен");
     }
 
     private void createPassenger() {
@@ -65,12 +70,46 @@ public class DataInitializer {
                         .build()
         );
 
-        /** Добавление категорий мест пассажиров */
+    }
+
+    private void createCategory() {
+
+        Category categoryEconomy = new Category("Economy");
+        Category categoryComfort = new Category("Comfort");
+        Category categoryBusiness = new Category("Business");
+        Category categoryFirstClass = new Category("First class");
+
         categoryService.createOrUpdate(categoryEconomy);
         categoryService.createOrUpdate(categoryComfort);
         categoryService.createOrUpdate(categoryBusiness);
         categoryService.createOrUpdate(categoryFirstClass);
-        System.out.println("Категории добавлены");
+    }
+
+    private void createSeat() {
+        seatService.createOrUpdate(
+                Seat.builder()
+                        .seatNumber("1A")
+                        .fare(800)
+                        .isRegistered(true)
+                        .isSold(true)
+                        .category(Category.builder()
+                                .id(1L)
+                                .category("testCategory")
+                                .build())
+                        .flight(Flight.builder()
+//                                .id(1L)
+                                .destinationFrom("Moscow")
+                                .destinationTo("Tomsk")
+                                .build()
+                        ).build());
+    }
+
+    private void createFlight() {
+        flightService.createOrUpdate(
+                Flight.builder()
+                        .destinationFrom("Moscow")
+                        .destinationTo("Tomsk")
+                        .build());
     }
 
 }

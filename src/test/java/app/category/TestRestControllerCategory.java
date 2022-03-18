@@ -1,7 +1,8 @@
-package app;
+package app.category;
 
+import app.AirlineApplication;
 import app.entities.category.Category;
-import app.services.category.CategoryService;
+import app.services.interfaces.CategoryService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.AccessLevel;
