@@ -1,7 +1,7 @@
 package app.category;
 
 import app.AirlineApplication;
-import app.entities.category.Category;
+import app.entities.Category;
 import app.services.interfaces.CategoryService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;

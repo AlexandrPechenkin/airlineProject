@@ -1,6 +1,6 @@
 package app.services.interfaces;
 
-import app.entities.category.Category;
+import app.entities.Category;
 
 import java.util.List;
 import java.util.Optional;

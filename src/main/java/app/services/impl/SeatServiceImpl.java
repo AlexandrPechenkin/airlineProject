@@ -1,8 +1,8 @@
 package app.services.impl;
 
-import app.entities.seat.Seat;
-import app.repositories.flight.FlightRepository;
-import app.repositories.seat.SeatRepository;
+import app.entities.Seat;
+import app.repositories.FlightRepository;
+import app.repositories.SeatRepository;
 import app.services.interfaces.SeatService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

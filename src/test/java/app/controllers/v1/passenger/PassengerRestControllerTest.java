@@ -1,8 +1,8 @@
 package app.controllers.v1.passenger;
 
 import app.AirlineApplication;
-import app.entities.passenger.Passenger;
-import app.entities.passenger.Passport;
+import app.entities.Passenger;
+import app.entities.Passport;
 import app.services.interfaces.PassengerService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;

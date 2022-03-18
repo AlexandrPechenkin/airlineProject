@@ -1,11 +1,11 @@
 package app.config;
 
-import app.entities.category.Category;
-import app.entities.flight.Flight;
-import app.entities.seat.Seat;
+import app.entities.Category;
+import app.entities.Flight;
+import app.entities.Seat;
 import app.services.interfaces.CategoryService;
-import app.entities.passenger.Passenger;
-import app.entities.passenger.Passport;
+import app.entities.Passenger;
+import app.entities.Passport;
 import app.services.interfaces.FlightService;
 import app.services.interfaces.SeatService;
 import app.services.interfaces.PassengerService;

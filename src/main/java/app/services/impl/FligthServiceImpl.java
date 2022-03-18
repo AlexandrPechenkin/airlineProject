@@ -1,7 +1,7 @@
 package app.services.impl;
 
-import app.entities.flight.Flight;
-import app.repositories.flight.FlightRepository;
+import app.entities.Flight;
+import app.repositories.FlightRepository;
 import app.services.interfaces.FlightService;
 import org.springframework.stereotype.Service;
 

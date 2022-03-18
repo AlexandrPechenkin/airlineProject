@@ -1,6 +1,6 @@
 package app.services.interfaces;
 
-import app.entities.seat.Seat;
+import app.entities.Seat;
 
 import java.util.List;
 

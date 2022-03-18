@@ -1,6 +1,6 @@
 package app.services.interfaces;
 
-import app.entities.flight.Flight;
+import app.entities.Flight;
 
 import java.util.Optional;
 

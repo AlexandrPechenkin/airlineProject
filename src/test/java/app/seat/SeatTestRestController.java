@@ -1,9 +1,9 @@
 package app.seat;
 
 import app.AirlineApplication;
-import app.entities.category.Category;
-import app.entities.flight.Flight;
-import app.entities.seat.Seat;
+import app.entities.Category;
+import app.entities.Flight;
+import app.entities.Seat;
 import app.services.interfaces.SeatService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
