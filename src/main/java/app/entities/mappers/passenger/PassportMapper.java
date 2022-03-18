@@ -1,4 +1,4 @@
-package app.entities.mappers;
+package app.entities.mappers.passenger;
 
 import app.entities.Passport;
 import app.entities.dtos.PassportDTO;

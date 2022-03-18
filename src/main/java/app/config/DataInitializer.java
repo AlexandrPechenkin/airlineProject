@@ -1,15 +1,8 @@
 package app.config;
 
-import app.entities.Admin;
-import app.entities.AirlineManager;
-import app.entities.Passenger;
-import app.entities.Passport;
-import app.services.interfaces.AdminService;
-import app.services.interfaces.AirlineManagerService;
-import app.services.interfaces.PassengerService;
-import app.services.interfaces.UserService;
+import app.entities.*;
+import app.services.interfaces.*;
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -20,20 +13,31 @@ import java.time.LocalDate;
  * Эти данные будут каждый раз создаваться заново при поднятии SessionFactory и удаляться из БД при её остановке.
  * Инжектьте и используйте здесь соответствующие сервисы ваших сущностей."
  */
+
 @RequiredArgsConstructor
 @Component
 public class DataInitializer {
     private final PassengerService passengerService;
+    private final CategoryService categoryService;
+    private final SeatService seatService;
+    private final FlightService flightService;
     private final AdminService adminService;
     private final AirlineManagerService airlineManagerService;
     private final UserService userService;
 
     @PostConstruct
     public void init() {
-        System.out.println("DataInitializer сработал!");
-
         createPassenger();
         System.out.println("Пассажир был создан.");
+
+        createCategory();
+        System.out.println("Категории были созданы");
+
+        createSeat();
+        System.out.println("Места были созданы");
+
+        createFlight();
+        System.out.println("Рейс был добавлен");
 
         createAdmin();
         System.out.println("Администратор был создан с AdminService, AdminRepository, AdminMapper, AdminDTO.");
@@ -49,19 +53,18 @@ public class DataInitializer {
 
         createAirlineManagerWithUserService();
         System.out.println("AirlineManager был создан при помощи UserService, UserRepository, AirlineManagerMapper, AirlineManagerDTO");
-
-
     }
 
     private void createPassenger() {
         passengerService.createOrUpdatePassenger(
                 Passenger.builder()
+                        .password("password_passenger")
+                        .roles("passenger")
                         .firstName("Dereck")
                         .lastName("Storm")
                         .middleName("Totoro")
                         .dateOfBirth(LocalDate.of(1992, 2, 15))
                         .email("Airlines@test.com")
-                        .password("passenger_password")
                         .passport(
                                 Passport.builder()
                                         .firstName("Dereck")
@@ -74,9 +77,49 @@ public class DataInitializer {
                                         .seriesAndNumber("3333 123456")
                                         .build()
                         )
-                        .roles("passenger")
                         .build()
         );
+
+    }
+
+    private void createCategory() {
+
+        Category categoryEconomy = new Category("Economy");
+        Category categoryComfort = new Category("Comfort");
+        Category categoryBusiness = new Category("Business");
+        Category categoryFirstClass = new Category("First class");
+
+        categoryService.createOrUpdate(categoryEconomy);
+        categoryService.createOrUpdate(categoryComfort);
+        categoryService.createOrUpdate(categoryBusiness);
+        categoryService.createOrUpdate(categoryFirstClass);
+    }
+
+    private void createSeat() {
+        seatService.createOrUpdate(
+                Seat.builder()
+                        .seatNumber("1A")
+                        .fare(800)
+                        .isRegistered(true)
+                        .isSold(true)
+                        .category(Category.builder()
+                                .id(1L)
+                                .category("testCategory")
+                                .build())
+                        .flight(Flight.builder()
+//                                .id(1L)
+                                .destinationFrom("Moscow")
+                                .destinationTo("Tomsk")
+                                .build()
+                        ).build());
+    }
+
+    private void createFlight() {
+        flightService.createOrUpdate(
+                Flight.builder()
+                        .destinationFrom("Moscow")
+                        .destinationTo("Tomsk")
+                        .build());
     }
 
     private void createAdmin() {
@@ -86,7 +129,7 @@ public class DataInitializer {
                         .password("password_admin")
                         .nickname("admin_nickname")
                         .roles("admin")
-                .build());
+                        .build());
     }
 
     private void createAirlineManager() {
@@ -94,7 +137,7 @@ public class DataInitializer {
                 AirlineManager.builder()
                         .email("airlinemanager@mail.com")
                         .parkName("park_name")
-                        .password("airline_manager_password_user")
+                        .password("password_airline_manager")
                         .roles("airline_manager")
                         .build());
     }
@@ -116,7 +159,7 @@ public class DataInitializer {
                         .middleName("Totoro_user")
                         .dateOfBirth(LocalDate.of(1992, 2, 15))
                         .email("Airlines_user@test.com")
-                        .password("passenger_password_user")
+                        .password("password_passenger_user")
                         .passport(
                                 Passport.builder()
                                         .firstName("Dereck_user")
@@ -138,9 +181,10 @@ public class DataInitializer {
         userService.createOrUpdateUser(
                 AirlineManager.builder()
                         .email("airline_manager_user@mail.com")
-                        .password("airline_manager_password_user")
+                        .password("password_airline_manager_user")
                         .roles("airline_manager_user")
                         .parkName("park_name_user")
                         .build());
     }
+
 }

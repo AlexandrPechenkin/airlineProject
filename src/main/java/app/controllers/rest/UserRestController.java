@@ -4,7 +4,7 @@ import app.entities.Admin;
 import app.entities.dtos.AdminDTO;
 import app.entities.Passenger;
 import app.entities.dtos.PassengerDTO;
-import app.entities.mappers.UserMapper;
+import app.entities.mappers.user.UserMapper;
 
 import app.services.interfaces.UserService;
 import io.swagger.annotations.*;

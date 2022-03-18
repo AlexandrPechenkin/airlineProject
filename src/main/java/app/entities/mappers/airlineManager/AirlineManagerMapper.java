@@ -1,4 +1,4 @@
-package app.entities.mappers;
+package app.entities.mappers.airlineManager;
 
 import app.entities.AirlineManager;
 import app.entities.dtos.AirlineManagerDTO;

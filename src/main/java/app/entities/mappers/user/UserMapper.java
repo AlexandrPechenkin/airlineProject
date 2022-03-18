@@ -1,4 +1,4 @@
-package app.entities.mappers;
+package app.entities.mappers.user;
 
 import app.entities.Admin;
 import app.entities.dtos.AdminDTO;
@@ -6,6 +6,9 @@ import app.entities.AirlineManager;
 import app.entities.dtos.AirlineManagerDTO;
 import app.entities.Passenger;
 import app.entities.dtos.PassengerDTO;
+import app.entities.mappers.admin.AdminMapper;
+import app.entities.mappers.airlineManager.AirlineManagerMapper;
+import app.entities.mappers.passenger.PassengerMapper;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.springframework.stereotype.Component;

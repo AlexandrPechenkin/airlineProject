@@ -2,7 +2,7 @@ package app.controllers.rest;
 
 import app.entities.Admin;
 import app.entities.dtos.AdminDTO;
-import app.entities.mappers.AdminMapper;
+import app.entities.mappers.admin.AdminMapper;
 import app.services.interfaces.AdminService;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;

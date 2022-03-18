@@ -1,4 +1,4 @@
-package app.entities.mappers;
+package app.entities.mappers.admin;
 
 import app.entities.Admin;
 import app.entities.dtos.AdminDTO;

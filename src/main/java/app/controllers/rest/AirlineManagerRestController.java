@@ -2,7 +2,7 @@ package app.controllers.rest;
 
 import app.entities.AirlineManager;
 import app.entities.dtos.AirlineManagerDTO;
-import app.entities.mappers.AirlineManagerMapper;
+import app.entities.mappers.airlineManager.AirlineManagerMapper;
 import app.services.interfaces.AirlineManagerService;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
