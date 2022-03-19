@@ -3,11 +3,9 @@ package app.controllers.flight;
 import app.entities.flight.Flight;
 import app.entities.flight.dto.FlightDTO;
 import app.exception.NoSuchObjectException;
-import app.exception.ObjectIncorrectData;
 import app.mappers.flight.FlightMapper;
 import app.services.flight.FlightService;
 import io.swagger.annotations.*;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -17,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import javax.validation.Valid;
 
 
@@ -42,10 +42,16 @@ public class FlightRestController {
             @ApiResponse(code = 400, message = "Переданы неверные данные")
     })
     @PostMapping
-    public ResponseEntity<FlightDTO> createFlight(@ApiParam(value = "DTO вылета") @Valid @RequestBody FlightDTO flight) {
+    public ResponseEntity<FlightDTO> createFlight(@ApiParam(value = "DTO вылета")
+                                                  @Valid @RequestBody FlightDTO flight) {
+        if (Objects.nonNull(flight.getId())) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+
+        }
         try {
-            return new ResponseEntity<>(flightMapper.toDTO(flightService.createOrUpdateFlight(flightMapper.toEntity(flight))), HttpStatus.OK);
-        } catch (DataIntegrityViolationException e) {
+            return new ResponseEntity<>(flightMapper.toDTO(flightService.createOrUpdateFlight(flightMapper.toEntity(flight))), HttpStatus.CREATED);
+        } catch
+        (DataIntegrityViolationException e) {
             throw new NoSuchObjectException("Error");
         }
     }
@@ -53,7 +59,6 @@ public class FlightRestController {
     /**
      * обновление нового перелета по id
      *
-     * @param id
      * @param flight
      * @return
      */
@@ -63,7 +68,7 @@ public class FlightRestController {
             @ApiResponse(code = 400, message = "Перелет неверные данные"),
     })
     @PutMapping("/{id}")
-    public ResponseEntity<FlightDTO> updateFlight(@PathVariable("id") Long id,
+    public ResponseEntity<FlightDTO> updateFlight(@ApiParam(value = "DTO перелета")
                                                   @Valid @RequestBody FlightDTO flight) {
         try {
             return new ResponseEntity<>(flightMapper.toDTO(flightService.createOrUpdateFlight(flightMapper.toEntity(flight))), HttpStatus.OK);
@@ -88,10 +93,21 @@ public class FlightRestController {
             @ApiResponse(code = 404, message = "Перелет не найден")
     })
     @GetMapping("/{from}/{to}/{departureDate}")
-    public ResponseEntity<List<Flight>> searchFlights(@PathVariable("from") String from,
-                                                      @PathVariable("to") String to,
-                                                      @PathVariable("departureDate") LocalDate departureDate) {
-        return new ResponseEntity<>(flightService.findFlights(from, to, departureDate), HttpStatus.OK);
+    public ResponseEntity<List<FlightDTO>> searchFlights(@ApiParam(value = "место вылета")
+                                                         @PathVariable("from") String from,
+                                                         @ApiParam(value = "место прилета")
+                                                         @PathVariable("to") String to,
+                                                         @ApiParam(value = "дата вылета")
+                                                         @PathVariable("departureDate") LocalDate departureDate) {
+        List<Flight> flightList = flightService.findFlights(from, to, departureDate);
+        if (flightList.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        try {
+            return new ResponseEntity(flightMapper.listToDTO(flightList), HttpStatus.OK);
+        } catch (DataIntegrityViolationException e) {
+            throw new NoSuchObjectException("Error");
+        }
     }
 
     /**
@@ -106,7 +122,16 @@ public class FlightRestController {
             @ApiResponse(code = 404, message = "Перелет не найден")
     })
     @GetMapping("/{id}")
-    public ResponseEntity<Flight> searchFlightById(@PathVariable("id") Long id) {
-        return new ResponseEntity<>(flightService.getFlightById(id), HttpStatus.OK);
+    public ResponseEntity<Flight> searchFlightById(@ApiParam(value = "Id перелета")
+                                                   @PathVariable("id") Long id) {
+        Optional<Flight> flight = flightService.getFlightById(id);
+        if (flight.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        try {
+            return new ResponseEntity(flightService.getFlightById(id), HttpStatus.OK);
+        } catch (DataIntegrityViolationException e) {
+            throw new NoSuchObjectException("Error");
+        }
     }
 }

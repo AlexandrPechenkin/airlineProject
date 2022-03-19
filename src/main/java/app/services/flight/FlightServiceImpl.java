@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class FlightServiceImpl implements FlightService {
@@ -51,8 +52,8 @@ public class FlightServiceImpl implements FlightService {
      */
     @Transactional
     @Override
-    public Flight getFlightById(Long id) {
-        return flightRepository.getById(id);
+    public Optional<Flight> getFlightById(Long id) {
+        return flightRepository.findById(id);
     }
 
     /**

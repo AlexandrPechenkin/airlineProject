@@ -4,6 +4,7 @@ import app.entities.flight.Flight;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public interface FlightService {
     List<Flight> getAllFlights();
@@ -12,7 +13,7 @@ public interface FlightService {
 
     void removeFlight(Flight flight);
 
-    Flight getFlightById(Long id);
+    Optional<Flight> getFlightById(Long id);
 
     List<Flight> findFlights(String destinationFrom, String destinationTo, LocalDate departureDate);
 
