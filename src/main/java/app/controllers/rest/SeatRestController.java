@@ -40,7 +40,7 @@ public class SeatRestController {
             @ApiResponse(code = 400, message = "Переданы неверные данные")
     })
     @GetMapping("/{id}")
-    public ResponseEntity<List<Seat>> getAllSeat(@PathVariable long id) {
+    public ResponseEntity<List<Seat>> getAllSeat(@ApiParam(example = "1") @PathVariable long id) {
         List<Seat> seat = seatService.getAllSeatByFlightId(id);
 
         if (seat.isEmpty()) {
@@ -57,7 +57,7 @@ public class SeatRestController {
     })
     @GetMapping("/{flight}/{category}")
     public ResponseEntity<List<Seat>> getSeatByFlightAndCategory(
-            @PathVariable long flight, @PathVariable long category) {
+            @ApiParam(example = "1") @PathVariable long flight, @ApiParam(example = "1") @PathVariable long category) {
 
         List<Seat> seat = seatService.getSeatByFlightAndCategory(flight, category);
 
@@ -105,7 +105,7 @@ public class SeatRestController {
             @ApiResponse(code = 400, message = "Переданы неверные данные")
     })
     @GetMapping("/no-sold/{id}")
-    public ResponseEntity<Long> getCountNoSoldSeat(@PathVariable long id) {
+    public ResponseEntity<Long> getCountNoSoldSeat(@ApiParam(example = "1") @PathVariable long id) {
         Optional<Flight> flight = flightService.findById(id);
 
         if (flight.isEmpty()) {
@@ -122,7 +122,7 @@ public class SeatRestController {
             @ApiResponse(code = 400, message = "Переданы неверные данные")
     })
     @GetMapping("/sold/{id}")
-    public ResponseEntity<Long> getCountSoldSeat(@PathVariable long id) {
+    public ResponseEntity<Long> getCountSoldSeat(@ApiParam(example = "1") @PathVariable long id) {
         Optional<Flight> flight = flightService.findById(id);
 
         if (flight.isEmpty()) {
@@ -139,7 +139,7 @@ public class SeatRestController {
             @ApiResponse(code = 400, message = "Переданы неверные данные")
     })
     @GetMapping("/registered/{id}")
-    public ResponseEntity<Long> getCountRegisteredPassenger(@PathVariable long id) {
+    public ResponseEntity<Long> getCountRegisteredPassenger(@ApiParam(example = "1") @PathVariable long id) {
         Optional<Flight> flight = flightService.findById(id);
 
         if (flight.isEmpty()) {

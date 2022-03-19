@@ -79,7 +79,8 @@ public class PassengerRestController {
             @ApiResponse(code = 404, message = "Пассажир не найден")
     })
     @GetMapping("/{id}")
-    public ResponseEntity<PassengerDTO> getPassengerById(@ApiParam(value = "ID Пассажира") @PathVariable Long id) {
+    public ResponseEntity<PassengerDTO> getPassengerById(
+            @ApiParam(value = "ID Пассажира", example = "1") @PathVariable Long id) {
         Optional<Passenger> passenger = passengerService.findById(id);
 
         if (passenger.isEmpty()) {

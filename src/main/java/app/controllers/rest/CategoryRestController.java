@@ -60,7 +60,8 @@ public class CategoryRestController {
             @ApiResponse(code = 400, message = "Переданы неверные данные"),
     })
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCategory(@ApiParam(value = "Id категории") @PathVariable long id) {
+    public ResponseEntity<Void> deleteCategory(
+            @ApiParam(value = "Id категории", example = "1") @PathVariable long id) {
         Optional<Category> category = categoryService.getOne(id);
 
         if (category.isEmpty()) {
@@ -93,7 +94,8 @@ public class CategoryRestController {
             @ApiResponse(code = 400, message = "Категория не найдена"),
     })
     @GetMapping("/{id}")
-    public ResponseEntity<Category> getCategiryById(@ApiParam(value = "Id Категории") @PathVariable long id) {
+    public ResponseEntity<Category> getCategiryById(
+            @ApiParam(value = "Id Категории", example = "1") @PathVariable long id) {
         Optional<Category> category = categoryService.getOne(id);
 
         if (category.isEmpty()) {
