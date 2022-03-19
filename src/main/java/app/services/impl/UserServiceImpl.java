@@ -10,13 +10,16 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
-public class UserServiceImpl<T extends User> implements UserService {
+public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
+    public UserServiceImpl(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
     @Override
-    public T createOrUpdateUser(User user) {
-        return (T) userRepository.save(user);
+    public User createOrUpdateUser(User user) {
+        return userRepository.save(user);
     }
 
     @Override
