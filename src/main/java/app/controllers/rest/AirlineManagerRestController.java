@@ -12,12 +12,11 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
- * RestController для управления записями об AirlineManager в БД.
+ * RestController для управления записями о классе {@link AirlineManager} в БД.
  */
 @RestController
 @RequiredArgsConstructor
@@ -38,7 +37,7 @@ public class AirlineManagerRestController {
             @ApiResponse(code = 404, message = "Записи о менеджерах не найдены")
     })
     @GetMapping
-    public ResponseEntity<List<AirlineManagerDTO>> findAllAdmin() {
+    public ResponseEntity<List<AirlineManagerDTO>> findAllAirlineManager() {
         List<AirlineManager> airlineManagerList = airlineManagerService.findAll();
         if (airlineManagerList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -61,10 +60,7 @@ public class AirlineManagerRestController {
             @ApiResponse(code = 400, message = "Переданы неверные данные")
     })
     @PostMapping
-    public ResponseEntity<AirlineManagerDTO> createAdmin(@ApiParam(value = "DTO менеджера") @RequestBody @Valid AirlineManagerDTO airlineManagerDTO) {
-        if (Objects.nonNull(airlineManagerDTO.getId())) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+    public ResponseEntity<AirlineManagerDTO> createAirlineManager(@ApiParam(value = "DTO менеджера") @RequestBody @Valid AirlineManagerDTO airlineManagerDTO) {
         return new ResponseEntity<>(
                 airlineManagerMapper.toDto(
                         airlineManagerService.createOrUpdateAirlineManager(
@@ -79,15 +75,15 @@ public class AirlineManagerRestController {
      */
     @ApiOperation(value = "Запрос для обновления данных менеджера", notes = "Обновление менеджера")
     @ApiResponses(value = {
-            @ApiResponse(code = 204, message = "Менеджер успешно обновлён"),
+            @ApiResponse(code = 200, message = "Менеджер успешно обновлён"),
             @ApiResponse(code = 400, message = "Переданы неверные данные")
     })
     @PutMapping
-    public ResponseEntity<AirlineManagerDTO> updateAdmin(@ApiParam(value = "DTO менеджера") @RequestBody @Valid AirlineManagerDTO airlineManagerDTO) {
+    public ResponseEntity<AirlineManagerDTO> updateAirlineManager(@ApiParam(value = "DTO менеджера") @RequestBody @Valid AirlineManagerDTO airlineManagerDTO) {
         return new ResponseEntity<>(
                 airlineManagerMapper.toDto(
                         airlineManagerService.createOrUpdateAirlineManager(
-                                airlineManagerMapper.toEntity(airlineManagerDTO))), HttpStatus.NO_CONTENT);
+                                airlineManagerMapper.toEntity(airlineManagerDTO))), HttpStatus.OK);
     }
 
     /**
@@ -102,7 +98,7 @@ public class AirlineManagerRestController {
             @ApiResponse(code = 404, message = "Запись о менеджере не найдена; возможно, запись была перемещена или была удалена")
     })
     @GetMapping("/{id}")
-    public ResponseEntity<AirlineManagerDTO> getAdminById(@ApiParam(value = "ID менеджера") @PathVariable Long id) {
+    public ResponseEntity<AirlineManagerDTO> getAirlineManagerById(@ApiParam(value = "ID менеджера") @PathVariable long id) {
         Optional<AirlineManager> airlineManager = airlineManagerService.findById(id);
         if (airlineManager.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -122,9 +118,9 @@ public class AirlineManagerRestController {
             @ApiResponse(code = 404, message = "Запись о менеджере не найдена; возможно, запись перемещена или была удалена")
     })
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteAdmin(@ApiParam(value = "ID менеджера") @PathVariable Long id) {
-        Optional<AirlineManager> admin = airlineManagerService.findById(id);
-        if (admin.isEmpty()) {
+    public ResponseEntity<Void> deleteAirlineManagerById(@ApiParam(value = "ID менеджера") @PathVariable long id) {
+        Optional<AirlineManager> airlineManager = airlineManagerService.findById(id);
+        if (airlineManager.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(HttpStatus.OK);

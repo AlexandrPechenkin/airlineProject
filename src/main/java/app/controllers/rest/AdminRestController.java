@@ -12,12 +12,11 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
- * RestController для управления записями об Admin в БД.
+ * RestController для управления записями о классе {@link Admin} в БД.
  */
 @RestController
 @RequiredArgsConstructor
@@ -63,9 +62,6 @@ public class AdminRestController {
     })
     @PostMapping
     public ResponseEntity<AdminDTO> createAdmin(@ApiParam(value = "DTO администратора") @RequestBody @Valid AdminDTO adminDTO) {
-        if (Objects.nonNull(adminDTO.getId())) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
         return new ResponseEntity<>(
                 adminMapper.toDto(
                         adminService.createOrUpdateAdmin(
@@ -80,7 +76,7 @@ public class AdminRestController {
      */
     @ApiOperation(value = "Запрос для обновления данных администратора", notes = "Обновление администратора")
     @ApiResponses(value = {
-            @ApiResponse(code = 204, message = "Администратор успешно обновлён"),
+            @ApiResponse(code = 200, message = "Администратор успешно обновлён"),
             @ApiResponse(code = 400, message = "Переданы неверные данные")
     })
     @PutMapping
@@ -88,7 +84,7 @@ public class AdminRestController {
         return new ResponseEntity<>(
                 adminMapper.toDto(
                         adminService.createOrUpdateAdmin(
-                                adminMapper.toEntity(adminDTO))), HttpStatus.NO_CONTENT);
+                                adminMapper.toEntity(adminDTO))), HttpStatus.OK);
     }
 
     /**
@@ -103,7 +99,7 @@ public class AdminRestController {
             @ApiResponse(code = 404, message = "Запись об администраторе не найдена")
     })
     @GetMapping("/{id}")
-    public ResponseEntity<AdminDTO> getAdminById(@ApiParam(value = "ID администратора") @PathVariable Long id) {
+    public ResponseEntity<AdminDTO> getAdminById(@ApiParam(value = "ID администратора") @PathVariable long id) {
         Optional<Admin> admin = adminService.findById(id);
         if (admin.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -119,15 +115,16 @@ public class AdminRestController {
      */
     @ApiOperation(value = "Запрос для удаления записи об администраторе из таблицы в БД", notes = "Удаление записи об администраторе")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Администратор успешно удалён"),
+            @ApiResponse(code = 204, message = "Администратор успешно удалён"),
             @ApiResponse(code = 404, message = "Запись об администраторе не найдена; возможно, запись перемещена или удалена")
     })
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteAdmin(@ApiParam(value = "ID администратора") @PathVariable Long id) {
+    public ResponseEntity<Void> deleteAdminById(@ApiParam(value = "ID администратора") @PathVariable long id) {
         Optional<Admin> admin = adminService.findById(id);
         if (admin.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(HttpStatus.OK);
+        adminService.deleteAdminById(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

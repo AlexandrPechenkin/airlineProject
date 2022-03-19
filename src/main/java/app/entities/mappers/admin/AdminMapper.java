@@ -18,6 +18,7 @@ public interface AdminMapper {
      * Приведение Admin к AdminDTO.
      *
      * @param admin - данные, которые передаются с бэкенда.
+     * return {@link AdminDTO}
      */
     AdminDTO toDto(Admin admin);
 
@@ -25,6 +26,7 @@ public interface AdminMapper {
      * Приведение AdminDTO к Admin.
      *
      * @param adminDTO - данные, которые передаются с фронтенда.
+     * return {@link Admin}
      */
     Admin toEntity(AdminDTO adminDTO);
 

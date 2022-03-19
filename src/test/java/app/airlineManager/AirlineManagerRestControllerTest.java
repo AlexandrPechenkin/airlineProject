@@ -64,7 +64,6 @@ public class AirlineManagerRestControllerTest {
                 .andExpect(jsonPath("$.email", is(airlineManager.getEmail())))
                 .andExpect(jsonPath("$.password", is(airlineManager.getPassword())))
                 .andExpect(jsonPath("$.parkName", is(airlineManager.getParkName())));
-        airlineManagerService.deleteAirlineManager(airlineManager);
     }
 
     @Test
@@ -83,7 +82,6 @@ public class AirlineManagerRestControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(airlineManager.getId().intValue())));
-        airlineManagerService.deleteAirlineManager(airlineManager);
     }
 
     @Test
@@ -93,19 +91,17 @@ public class AirlineManagerRestControllerTest {
                         .content(objectMapper.writeValueAsString(airlineManager))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
-        airlineManagerService.deleteAirlineManager(airlineManager);
     }
 
     @Test
-    void givenAirlineManagerExist_whenUpdateAirlineManager_thenStatus204() throws Exception {
+    void givenAirlineManagerExist_whenUpdateAirlineManager_thenStatus200() throws Exception {
         AirlineManager airlineManager = airlineManagerService.createOrUpdateAirlineManager(createAirlineManager());
         airlineManager.setParkName("new_park_name");
         mvc.perform(put(api)
                         .content(objectMapper.writeValueAsString(airlineManager))
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNoContent())
+                .andExpect(status().isOk())
                 .andExpect(jsonPath("$.parkName", is(airlineManager.getParkName())));
-        airlineManagerService.deleteAirlineManager(airlineManager);
     }
 
     @Test
@@ -130,26 +126,22 @@ public class AirlineManagerRestControllerTest {
         mvc.perform(delete(api + "/{id}", 12310123)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
-        airlineManagerService.deleteAirlineManager(airlineManager);
     }
 
     @Test
     void whenGetAllAirlineManagerListExist_thenStatus200() throws Exception {
-        List<AirlineManager> airlineManagerList = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
-            airlineManagerList.add(airlineManagerService.createOrUpdateAirlineManager(createAirlineManager()));
+            airlineManagerService.createOrUpdateAirlineManager(createAirlineManager());
         }
         mvc.perform(get(api)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
-        airlineManagerList.forEach(airlineManager -> airlineManagerService.deleteAirlineManager(airlineManager));
-        airlineManagerList.clear();
     }
 
     @Test
     void whenGetAllAirlineManagerListNotExist_thenStatus404() throws Exception {
         List<AirlineManager> airlineManagerList = airlineManagerService.findAll();
-        airlineManagerList.forEach(airlineManagerService::deleteAirlineManager);
+        airlineManagerList.forEach(airlineManager -> airlineManagerService.deleteAirlineManagerById(airlineManager.getId()));
         mvc.perform(get(api)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());

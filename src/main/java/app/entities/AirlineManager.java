@@ -19,6 +19,6 @@ public class AirlineManager extends User {
     /**
      * Название авиапарка, которым заведует менеджер.
      */
-    @Column(name = "fleetName")
+    @Column(name = "parkName")
     private String parkName;
 }

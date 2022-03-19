@@ -12,7 +12,7 @@ import javax.validation.constraints.NotEmpty;
 @Data
 @ApiModel
 public class AirlineManagerDTO {
-    private Long id;
+    private long id;
 
     @NotEmpty(message = "Пожалуйста, заполните поле.")
     @Email(message = "Пожалуйста, введите корректный адрес почты.")
@@ -22,7 +22,6 @@ public class AirlineManagerDTO {
     private String password;
 
     private String roles;
-
 
     @NotEmpty(message = "Пожалуйста, заполните поле.")
     private String parkName;

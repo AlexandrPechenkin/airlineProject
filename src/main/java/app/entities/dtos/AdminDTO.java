@@ -12,7 +12,7 @@ import javax.validation.constraints.NotEmpty;
 @Data
 @ApiModel
 public class AdminDTO {
-    private Long id;
+    private long id;
 
     @NotEmpty(message = "Пожалуйста, заполните поле.")
     private String password;

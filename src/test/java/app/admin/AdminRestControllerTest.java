@@ -62,7 +62,6 @@ public class AdminRestControllerTest {
                 .andExpect(jsonPath("$.email", is(admin.getEmail())))
                 .andExpect(jsonPath("$.password", is(admin.getPassword())))
                 .andExpect(jsonPath("$.nickname", is(admin.getNickname())));
-        adminService.deleteAdmin(admin);
     }
 
     @Test
@@ -81,7 +80,6 @@ public class AdminRestControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(admin.getId().intValue())));
-        adminService.deleteAdmin(admin);
     }
 
     @Test
@@ -91,19 +89,17 @@ public class AdminRestControllerTest {
                         .content(objectMapper.writeValueAsString(admin))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
-        adminService.deleteAdmin(admin);
     }
 
     @Test
-    void givenAdminExist_whenUpdateAdmin_thenStatus204() throws Exception {
+    void givenAdminExist_whenUpdateAdmin_thenStatus200() throws Exception {
         Admin admin = adminService.createOrUpdateAdmin(createAdmin());
         admin.setNickname("new_admin_nickname");
         mvc.perform(put(api)
                         .content(objectMapper.writeValueAsString(admin))
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNoContent())
+                .andExpect(status().isOk())
                 .andExpect(jsonPath("$.nickname", is(admin.getNickname())));
-        adminService.deleteAdmin(admin);
     }
 
     @Test
@@ -119,7 +115,7 @@ public class AdminRestControllerTest {
         Admin admin = adminService.createOrUpdateAdmin(createAdmin());
         mvc.perform(delete(api + "/{id}", admin.getId())
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
     }
 
     @Test
@@ -128,26 +124,22 @@ public class AdminRestControllerTest {
         mvc.perform(delete(api + "/{id}", 12310123)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
-        adminService.deleteAdmin(admin);
     }
 
     @Test
     void whenGetAllAdminListExist_thenStatus200() throws Exception {
-        List<Admin> adminList = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
-            adminList.add(adminService.createOrUpdateAdmin(createAdmin()));
+            adminService.createOrUpdateAdmin(createAdmin());
         }
         mvc.perform(get(api)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
-        adminList.forEach(admin -> adminService.deleteAdmin(admin));
-        adminList.clear();
     }
 
     @Test
     void whenGetAllAdminListNotExist_thenStatus404() throws Exception {
         List<Admin> adminList = adminService.findAll();
-        adminList.forEach(adminService::deleteAdmin);
+        adminList.forEach(admin -> adminService.deleteAdminById(admin.getId()));
         mvc.perform(get(api)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());

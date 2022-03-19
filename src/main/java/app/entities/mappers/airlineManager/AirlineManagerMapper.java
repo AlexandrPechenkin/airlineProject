@@ -6,6 +6,9 @@ import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.springframework.stereotype.Component;
 
+/**
+ * Класс для преобразования классов AirlineManager и AirlineManagerDTO друг в друга.
+ */
 @Component
 @Mapper(componentModel = "spring",
         injectionStrategy = InjectionStrategy.CONSTRUCTOR)
