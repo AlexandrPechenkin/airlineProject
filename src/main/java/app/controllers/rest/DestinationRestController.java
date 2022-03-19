@@ -50,7 +50,7 @@ public class DestinationRestController {
     })
     @GetMapping("/{id}")
     public ResponseEntity<DestinationDTO> getDestinationById(
-            @ApiParam(value = "ID аэропорта") @PathVariable Long id) {
+            @ApiParam(value = "ID аэропорта", example = "1") @PathVariable Long id) {
 
         Optional<Destination> destination = destinationService.getDestinationById(id);
 
