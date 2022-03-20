@@ -42,7 +42,6 @@ public class UserRestControllerTest {
     UserService userService;
 
     final String api = "/user";
-
     final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
     Admin createAdmin() {

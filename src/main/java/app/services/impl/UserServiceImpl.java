@@ -3,7 +3,6 @@ package app.services.impl;
 import app.entities.User;
 import app.repositories.UserRepository;
 import app.services.interfaces.UserService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

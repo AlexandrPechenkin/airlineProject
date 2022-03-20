@@ -22,6 +22,6 @@ public class Admin extends User {
     /**
      * Никнейм администратора.
      */
-    @Column(name = "nickanme")
+    @Column(name = "nickname")
     private String nickname;
 }

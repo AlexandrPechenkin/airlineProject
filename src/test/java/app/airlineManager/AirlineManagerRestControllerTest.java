@@ -112,11 +112,11 @@ public class AirlineManagerRestControllerTest {
     }
 
     @Test
-    void givenAirlineManagerExist_whenDeleteByIdExistedAirlineManager_thenStatus200() throws Exception {
+    void givenAirlineManagerExist_whenDeleteByIdExistedAirlineManager_thenStatus204() throws Exception {
         AirlineManager airlineManager = airlineManagerService.createOrUpdateAirlineManager(createAirlineManager());
         mvc.perform(delete(api + "/{id}", airlineManager.getId())
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
     }
 
     @Test

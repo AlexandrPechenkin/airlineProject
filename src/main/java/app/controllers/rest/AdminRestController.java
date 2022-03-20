@@ -32,7 +32,8 @@ public class AdminRestController {
      *
      * @return List of {@link AdminDTO} - список всех записей об администраторах в БД.
      */
-    @ApiOperation(value = "Запрос для получения всех записей об администраторах", notes = "Получение всех записей об администраторах")
+    @ApiOperation(value = "Запрос для получения всех записей об администраторах",
+            notes = "Получение всех записей об администраторах")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Записи об администраторах успешно получены"),
             @ApiResponse(code = 404, message = "Записи об администраторах не найдены")
@@ -61,7 +62,8 @@ public class AdminRestController {
             @ApiResponse(code = 400, message = "Переданы неверные данные")
     })
     @PostMapping
-    public ResponseEntity<AdminDTO> createAdmin(@ApiParam(value = "DTO администратора") @RequestBody @Valid AdminDTO adminDTO) {
+    public ResponseEntity<AdminDTO> createAdmin(@ApiParam(value = "DTO администратора")
+                                                    @RequestBody @Valid AdminDTO adminDTO) {
         return new ResponseEntity<>(
                 adminMapper.toDto(
                         adminService.createOrUpdateAdmin(
@@ -80,7 +82,8 @@ public class AdminRestController {
             @ApiResponse(code = 400, message = "Переданы неверные данные")
     })
     @PutMapping
-    public ResponseEntity<AdminDTO> updateAdmin(@ApiParam(value = "DTO администратора") @RequestBody @Valid AdminDTO adminDTO) {
+    public ResponseEntity<AdminDTO> updateAdmin(@ApiParam(value = "DTO администратора")
+                                                    @RequestBody @Valid AdminDTO adminDTO) {
         return new ResponseEntity<>(
                 adminMapper.toDto(
                         adminService.createOrUpdateAdmin(
@@ -93,13 +96,15 @@ public class AdminRestController {
      * @param id - уникальный идентификатор администратора, по которому ищется запись из таблицы в БД.
      * @return {@link AdminDTO}
      */
-    @ApiOperation(value = "Запрос для получения записи об администраторе по id", notes = "Получение администратора по id")
+    @ApiOperation(value = "Запрос для получения записи об администраторе по id",
+            notes = "Получение администратора по id")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Администратор успешно получен"),
             @ApiResponse(code = 404, message = "Запись об администраторе не найдена")
     })
     @GetMapping("/{id}")
-    public ResponseEntity<AdminDTO> getAdminById(@ApiParam(value = "ID администратора") @PathVariable long id) {
+    public ResponseEntity<AdminDTO> getAdminById(@ApiParam(example = "1", value = "ID администратора")
+                                                     @PathVariable long id) {
         Optional<Admin> admin = adminService.findById(id);
         if (admin.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -113,13 +118,15 @@ public class AdminRestController {
      * @param id - уникальный идентификатор администратора, по которому ищется запись из таблицы в БД.
      * @return void
      */
-    @ApiOperation(value = "Запрос для удаления записи об администраторе из таблицы в БД", notes = "Удаление записи об администраторе")
+    @ApiOperation(value = "Запрос для удаления записи об администраторе из таблицы в БД",
+            notes = "Удаление записи об администраторе")
     @ApiResponses(value = {
             @ApiResponse(code = 204, message = "Администратор успешно удалён"),
-            @ApiResponse(code = 404, message = "Запись об администраторе не найдена; возможно, запись перемещена или удалена")
+            @ApiResponse(code = 404, message = "Запись об администраторе не найден")
     })
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteAdminById(@ApiParam(value = "ID администратора") @PathVariable long id) {
+    public ResponseEntity<Void> deleteAdminById(@ApiParam(example = "1", value = "ID администратора")
+                                                    @PathVariable long id) {
         Optional<Admin> admin = adminService.findById(id);
         if (admin.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

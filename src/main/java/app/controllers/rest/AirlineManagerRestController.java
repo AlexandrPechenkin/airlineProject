@@ -31,7 +31,8 @@ public class AirlineManagerRestController {
      *
      * @return List of {@link AirlineManagerDTO} - список всех записей о менеджерах в БД.
      */
-    @ApiOperation(value = "Запрос для получения всех записей о менеджерах", notes = "Получение всех записей о менеджерах")
+    @ApiOperation(value = "Запрос для получения всех записей о менеджерах",
+            notes = "Получение всех записей о менеджерах")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Записи о менеджерах успешно получены"),
             @ApiResponse(code = 404, message = "Записи о менеджерах не найдены")
@@ -60,7 +61,8 @@ public class AirlineManagerRestController {
             @ApiResponse(code = 400, message = "Переданы неверные данные")
     })
     @PostMapping
-    public ResponseEntity<AirlineManagerDTO> createAirlineManager(@ApiParam(value = "DTO менеджера") @RequestBody @Valid AirlineManagerDTO airlineManagerDTO) {
+    public ResponseEntity<AirlineManagerDTO> createAirlineManager(@ApiParam(value = "DTO менеджера") @RequestBody
+                                                                      @Valid AirlineManagerDTO airlineManagerDTO) {
         return new ResponseEntity<>(
                 airlineManagerMapper.toDto(
                         airlineManagerService.createOrUpdateAirlineManager(
@@ -79,7 +81,8 @@ public class AirlineManagerRestController {
             @ApiResponse(code = 400, message = "Переданы неверные данные")
     })
     @PutMapping
-    public ResponseEntity<AirlineManagerDTO> updateAirlineManager(@ApiParam(value = "DTO менеджера") @RequestBody @Valid AirlineManagerDTO airlineManagerDTO) {
+    public ResponseEntity<AirlineManagerDTO> updateAirlineManager(@ApiParam(value = "DTO менеджера") @RequestBody
+                                                                      @Valid AirlineManagerDTO airlineManagerDTO) {
         return new ResponseEntity<>(
                 airlineManagerMapper.toDto(
                         airlineManagerService.createOrUpdateAirlineManager(
@@ -95,10 +98,11 @@ public class AirlineManagerRestController {
     @ApiOperation(value = "Запрос для получения записи об менеджере по id", notes = "Получение менеджера по id")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Менеджер успешно получен"),
-            @ApiResponse(code = 404, message = "Запись о менеджере не найдена; возможно, запись была перемещена или была удалена")
+            @ApiResponse(code = 404, message = "Запись о менеджере не найдена")
     })
     @GetMapping("/{id}")
-    public ResponseEntity<AirlineManagerDTO> getAirlineManagerById(@ApiParam(value = "ID менеджера") @PathVariable long id) {
+    public ResponseEntity<AirlineManagerDTO> getAirlineManagerById(@ApiParam(example = "1", value = "ID менеджера")
+                                                                       @PathVariable long id) {
         Optional<AirlineManager> airlineManager = airlineManagerService.findById(id);
         if (airlineManager.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -112,17 +116,20 @@ public class AirlineManagerRestController {
      * @param id - уникальный идентификатор менеджера, по которому ищется запись из таблицы в БД.
      * @return void
      */
-    @ApiOperation(value = "Запрос для удаления записи об менеджере из таблицы в БД", notes = "Удаление записи о менеджере")
+    @ApiOperation(value = "Запрос для удаления записи об менеджере из таблицы в БД",
+            notes = "Удаление записи о менеджере")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Менеджер успешно удалён"),
-            @ApiResponse(code = 404, message = "Запись о менеджере не найдена; возможно, запись перемещена или была удалена")
+            @ApiResponse(code = 204, message = "Менеджер успешно удалён"),
+            @ApiResponse(code = 404, message = "Запись о менеджере не найдена")
     })
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteAirlineManagerById(@ApiParam(value = "ID менеджера") @PathVariable long id) {
+    public ResponseEntity<Void> deleteAirlineManagerById(@ApiParam(example = "1", value = "ID менеджера")
+                                                             @PathVariable long id) {
         Optional<AirlineManager> airlineManager = airlineManagerService.findById(id);
         if (airlineManager.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(HttpStatus.OK);
+        airlineManagerService.deleteAirlineManagerById(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
