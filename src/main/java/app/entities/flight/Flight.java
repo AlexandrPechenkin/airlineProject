@@ -70,6 +70,7 @@ public class Flight {
      * Enum со статусами полета - "По плану", "Задержан", "Отменён".
      */
     @NonNull
+    @Enumerated(EnumType.STRING)
     private FlightStatus flightStatus;
 
     /**

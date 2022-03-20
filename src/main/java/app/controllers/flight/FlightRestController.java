@@ -67,7 +67,7 @@ public class FlightRestController {
             @ApiResponse(code = 200, message = "Перелет успешно обновлен"),
             @ApiResponse(code = 400, message = "Перелет неверные данные"),
     })
-    @PutMapping("/{id}")
+    @PutMapping("")
     public ResponseEntity<FlightDTO> updateFlight(@ApiParam(value = "DTO перелета")
                                                   @Valid @RequestBody FlightDTO flight) {
         try {
@@ -122,7 +122,7 @@ public class FlightRestController {
             @ApiResponse(code = 404, message = "Перелет не найден")
     })
     @GetMapping("/{id}")
-    public ResponseEntity<Flight> searchFlightById(@ApiParam(value = "Id перелета")
+    public ResponseEntity<Flight> searchFlightById(@ApiParam(value = "Id перелета", example = "1")
                                                    @PathVariable("id") Long id) {
         Optional<Flight> flight = flightService.getFlightById(id);
         if (flight.isEmpty()) {
