@@ -2,6 +2,7 @@ package app.services.flight;
 
 import app.entities.flight.Flight;
 import app.repositories.flight.FlightRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -9,19 +10,16 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+@RequiredArgsConstructor
+@Transactional
 @Service
 public class FlightServiceImpl implements FlightService {
-
     private final FlightRepository flightRepository;
 
-    public FlightServiceImpl(FlightRepository flightRepository) {
-        this.flightRepository = flightRepository;
-    }
 
     /**
      * получение всех перелетов
      */
-    @Transactional
     @Override
     public List<Flight> getAllFlights() {
         return flightRepository.findAll();
@@ -31,7 +29,6 @@ public class FlightServiceImpl implements FlightService {
      * создание перелета
      * @return
      */
-    @Transactional
     @Override
     public Flight createOrUpdateFlight(Flight flight) {
         flightRepository.save(flight);
@@ -41,7 +38,6 @@ public class FlightServiceImpl implements FlightService {
     /**
      * удаление перелета
      */
-    @Transactional
     @Override
     public void removeFlight(Flight flight) {
         flightRepository.delete(flight);
@@ -50,7 +46,6 @@ public class FlightServiceImpl implements FlightService {
     /**
      * получение перелета по id
      */
-    @Transactional
     @Override
     public Optional<Flight> getFlightById(Long id) {
         return flightRepository.findById(id);
@@ -64,7 +59,6 @@ public class FlightServiceImpl implements FlightService {
      * @param departureDate дата вылета
      * @return
      */
-    @Transactional
     @Override
     public List<Flight> findFlights(String from, String to, LocalDate departureDate) {
         return flightRepository.findFlights(from, to, departureDate);

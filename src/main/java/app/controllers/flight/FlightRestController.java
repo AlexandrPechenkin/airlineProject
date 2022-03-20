@@ -44,14 +44,12 @@ public class FlightRestController {
     @PostMapping
     public ResponseEntity<FlightDTO> createFlight(@ApiParam(value = "DTO вылета")
                                                   @Valid @RequestBody FlightDTO flight) {
-        if (Objects.nonNull(flight.getId())) {
+        if (Objects.isNull(flight.getId())) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-
         }
         try {
             return new ResponseEntity<>(flightMapper.toDTO(flightService.createOrUpdateFlight(flightMapper.toEntity(flight))), HttpStatus.CREATED);
-        } catch
-        (DataIntegrityViolationException e) {
+        } catch (DataIntegrityViolationException e) {
             throw new NoSuchObjectException("Error");
         }
     }
@@ -67,7 +65,7 @@ public class FlightRestController {
             @ApiResponse(code = 200, message = "Перелет успешно обновлен"),
             @ApiResponse(code = 400, message = "Перелет неверные данные"),
     })
-    @PutMapping("")
+    @PutMapping("/")
     public ResponseEntity<FlightDTO> updateFlight(@ApiParam(value = "DTO перелета")
                                                   @Valid @RequestBody FlightDTO flight) {
         try {
@@ -75,7 +73,6 @@ public class FlightRestController {
         } catch (DataIntegrityViolationException e) {
             throw new NoSuchObjectException("Error");
         }
-
     }
 
     /**
