@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 @Data
 @NoArgsConstructor
@@ -37,18 +36,11 @@ public class Flight {
     private LocalDate departureDate;
 
     /**
-     * время вылета
+     * дата прилета
      */
-    @DateTimeFormat(pattern = "hh:mm")
-    @JsonFormat(pattern = "hh:mm")
-    private LocalTime departureTime;
-
-    /**
-     * дата и время прилета
-     */
-    @DateTimeFormat(pattern = "dd.MM.yyyy hh:mm")
-    @JsonFormat(pattern = "dd.MM.yyyy hh:mm")
-    private LocalDateTime arrivalDateTime;
+    @DateTimeFormat(pattern = "dd.MM.yyyy")
+    @JsonFormat(pattern = "dd.MM.yyyy")
+    private LocalDate arrivalDate;
 
     /**
      * место вылета

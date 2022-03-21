@@ -1,6 +1,6 @@
 package app.controllers.ticket;
 
-import app.entities.ticket.DTO.TicketDTO;
+import app.entities.ticket.dto.TicketDTO;
 import app.entities.ticket.Ticket;
 import app.exception.NoSuchObjectException;
 import app.mappers.ticket.TicketMapper;

@@ -1,6 +1,6 @@
 package app.mappers.ticket;
 
-import app.entities.ticket.DTO.TicketDTO;
+import app.entities.ticket.dto.TicketDTO;
 import app.entities.ticket.Ticket;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;

@@ -36,8 +36,7 @@ public class DataInitializer {
                 .from("NSK")
                 .to("MSK")
                 .departureDate(LocalDate.of(2022, 12, 20))
-                .departureTime(LocalTime.of(15, 30))
-                .arrivalDateTime(LocalDateTime.of(2022, 12, 20, 17, 10))
+                .arrivalDate(LocalDate.of(2022, 12, 20))
                 .flightStatus(FlightStatus.ACCORDING_TO_PLAN).build());
 
         System.out.println("DataInitializer сработал!");
