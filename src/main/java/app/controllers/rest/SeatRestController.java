@@ -105,7 +105,7 @@ public class SeatRestController {
             @ApiResponse(code = 400, message = "Переданы неверные данные")
     })
     @GetMapping("/no-sold/{id}")
-    public ResponseEntity<Long> getCountNoSoldSeat(@PathVariable long id) {
+    public ResponseEntity<Long> getCountNoSoldSeat(@PathVariable @ApiParam(example = "1") long id) {
         Optional<Flight> flight = flightService.findById(id);
 
         if (flight.isEmpty()) {
@@ -122,7 +122,7 @@ public class SeatRestController {
             @ApiResponse(code = 400, message = "Переданы неверные данные")
     })
     @GetMapping("/sold/{id}")
-    public ResponseEntity<Long> getCountSoldSeat(@PathVariable long id) {
+    public ResponseEntity<Long> getCountSoldSeat(@PathVariable @ApiParam(example = "1") long id) {
         Optional<Flight> flight = flightService.findById(id);
 
         if (flight.isEmpty()) {
@@ -139,7 +139,7 @@ public class SeatRestController {
             @ApiResponse(code = 400, message = "Переданы неверные данные")
     })
     @GetMapping("/registered/{id}")
-    public ResponseEntity<Long> getCountRegisteredPassenger(@PathVariable long id) {
+    public ResponseEntity<Long> getCountRegisteredPassenger(@PathVariable @ApiParam(example = "1") long id) {
         Optional<Flight> flight = flightService.findById(id);
 
         if (flight.isEmpty()) {

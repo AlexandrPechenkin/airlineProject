@@ -2,6 +2,7 @@ package app.entities;
 
 
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -11,10 +12,10 @@ import java.time.LocalDate;
  * @author Александр Данилов
  * @version 0.1
  */
-@Entity
+@Entity(name = "Passport")
 @Getter
 @Setter
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "passenger_passport")
