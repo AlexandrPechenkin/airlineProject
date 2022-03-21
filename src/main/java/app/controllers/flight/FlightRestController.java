@@ -101,7 +101,7 @@ public class FlightRestController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         try {
-            return new ResponseEntity(flightMapper.listToDTO(flightList), HttpStatus.OK);
+            return new ResponseEntity(flightList, HttpStatus.OK);
         } catch (DataIntegrityViolationException e) {
             throw new NoSuchObjectException("Error");
         }

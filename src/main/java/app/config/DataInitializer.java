@@ -39,7 +39,7 @@ public class DataInitializer {
                         .from("NSK")
                         .to("MSK")
                         .departureDate(LocalDate.of(2022, 12, 20))
-                        .arrivalDate(LocalDate.of(2022, 12, 20))
+                        .arrivalDate(LocalDate.of(2022, 12, 21))
                         .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
                         .build())
                 .build());
