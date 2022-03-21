@@ -8,13 +8,10 @@ import app.services.flight.FlightService;
 import app.services.search.SearchService;
 import app.services.ticket.TicketService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 
 /**
