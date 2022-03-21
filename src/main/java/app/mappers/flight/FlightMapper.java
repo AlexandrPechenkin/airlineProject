@@ -27,20 +27,5 @@ public interface FlightMapper {
      * @param flightDTO - Поля перелета, которые отдаются наружу
      */
     Flight toEntity(FlightDTO flightDTO);
-
-    /**
-     * Метод сопоставляет List Flight с List FlightDTO
-     *
-     * @param flight - лист перелетов
-     * @return
-     */
-    List<FlightDTO> listToDTO(List<Flight> flight);
-
-    /**
-     * Метод сопоставляет List FlightDTO с Flight
-     *
-     * @param flightDTOS - лист с полями перелета, которые отдаются наружу
-     * @return
-     */
-    List<Flight> listToEntity(List<FlightDTO> flightDTOS);
+    
 }
