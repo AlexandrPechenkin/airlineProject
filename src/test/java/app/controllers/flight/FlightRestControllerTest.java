@@ -18,8 +18,6 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -114,7 +112,7 @@ public class FlightRestControllerTest {
     void givenFlightExist_whenGetWithoutIdFlight_thenStatus404() throws Exception {
         Flight flight = flightService.createOrUpdateFlight(createFlight());
 
-        mvc.perform(get(api + "/{id}", 228)
+        mvc.perform(get(api + "/{id}", 420)
                         .content(objectMapper.writeValueAsString(flight))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());

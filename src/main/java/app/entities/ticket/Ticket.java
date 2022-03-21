@@ -39,7 +39,7 @@ public class Ticket {
     /**
      * номер бронирования
      */
-    @NonNull
+    @Nullable
     private Long holdNumber;
 
     /**

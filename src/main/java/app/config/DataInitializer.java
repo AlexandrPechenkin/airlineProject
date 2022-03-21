@@ -3,6 +3,7 @@ package app.config;
 
 import app.entities.flight.Flight;
 import app.entities.flight.FlightStatus;
+import app.entities.ticket.Ticket;
 import app.services.flight.FlightService;
 import app.services.search.SearchService;
 import app.services.ticket.TicketService;
@@ -32,12 +33,19 @@ public class DataInitializer {
     @PostConstruct
     public void init() {
 
-        flightService.createOrUpdateFlight(Flight.builder()
-                .from("NSK")
-                .to("MSK")
-                .departureDate(LocalDate.of(2022, 12, 20))
-                .arrivalDate(LocalDate.of(2022, 12, 20))
-                .flightStatus(FlightStatus.ACCORDING_TO_PLAN).build());
+
+        ticketService.createOrUpdateTicket(Ticket.builder()
+                .seat("5A")
+                .holdNumber(420l)
+                .price(15000l)
+                .flight(Flight.builder()
+                        .from("NSK")
+                        .to("MSK")
+                        .departureDate(LocalDate.of(2022, 12, 20))
+                        .arrivalDate(LocalDate.of(2022, 12, 20))
+                        .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
+                        .build())
+                .build());
 
         System.out.println("DataInitializer сработал!");
     }
