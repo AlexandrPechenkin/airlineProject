@@ -20,7 +20,7 @@ import java.util.Optional;
 @RestController
 @RequiredArgsConstructor
 @Api(tags = "TicketController")
-@RequestMapping("/api/ticket")
+@RequestMapping("api/ticket")
 @Validated
 public class TicketRestController {
     private final TicketService ticketService;
@@ -87,7 +87,7 @@ public class TicketRestController {
             @ApiResponse(code = 200, message = "Билет успешно обновлен"),
             @ApiResponse(code = 400, message = "Билет неверные данные"),
     })
-    @PutMapping("/")
+    @PutMapping
     public ResponseEntity<TicketDTO> updateTicket(@ApiParam(value = "DTO билета")
                                                   @Valid @RequestBody TicketDTO ticket) {
         try {

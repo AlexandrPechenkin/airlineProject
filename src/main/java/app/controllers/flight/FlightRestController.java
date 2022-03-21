@@ -65,7 +65,7 @@ public class FlightRestController {
             @ApiResponse(code = 200, message = "Перелет успешно обновлен"),
             @ApiResponse(code = 400, message = "Перелет неверные данные"),
     })
-    @PutMapping("/")
+    @PutMapping
     public ResponseEntity<FlightDTO> updateFlight(@ApiParam(value = "DTO перелета")
                                                   @Valid @RequestBody FlightDTO flight) {
         try {

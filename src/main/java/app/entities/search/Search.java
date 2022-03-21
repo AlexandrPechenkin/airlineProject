@@ -2,10 +2,7 @@ package app.entities.search;
 
 
 import app.entities.route.Route;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
@@ -27,4 +24,7 @@ public class Search {
     @OneToMany(targetEntity = Route.class, mappedBy = "search", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Route> routes;
 
+    @NonNull
+    @Enumerated(EnumType.STRING)
+    private SearchStatus searchStatus;
 }
