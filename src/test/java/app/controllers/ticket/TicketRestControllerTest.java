@@ -19,6 +19,8 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -54,7 +56,8 @@ public class TicketRestControllerTest {
                         .from("NSK")
                         .to("MSK")
                         .departureDate(LocalDate.of(2022, 12, 20))
-                        .arrivalDate(LocalDate.of(2022, 12, 20))
+                        .departureTime(LocalTime.of(10, 20))
+                        .arrivalDateTime(LocalDateTime.of(2022, 12, 20, 15, 40))
                         .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
                         .build())
                 .build());

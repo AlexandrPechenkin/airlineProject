@@ -12,6 +12,8 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 
 /**
@@ -39,7 +41,8 @@ public class DataInitializer {
                         .from("NSK")
                         .to("MSK")
                         .departureDate(LocalDate.of(2022, 12, 20))
-                        .arrivalDate(LocalDate.of(2022, 12, 21))
+                        .departureTime(LocalTime.of(10, 20))
+                        .arrivalDateTime(LocalDateTime.of(2022, 12, 21, 14, 40))
                         .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
                         .build())
                 .build());
