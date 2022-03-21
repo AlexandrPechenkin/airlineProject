@@ -21,7 +21,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -76,5 +76,47 @@ public class FlightRestControllerTest {
                 .andExpect(jsonPath("$.from", is(flight.getFrom())))
                 .andExpect(jsonPath("$.to", is(flight.getTo())));
 
+    }
+
+    @Test
+    void givenFlightExist_whenUpdateFlight_thenStatus200() throws Exception {
+        Flight flight = flightService.createOrUpdateFlight(createFlight());
+        flight.setFrom("Omsk");
+        flight.setTo("Barnaul");
+        mvc.perform(put(api)
+                        .content(objectMapper.writeValueAsString(flight))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.from", is(flight.getFrom())))
+                .andExpect(jsonPath("$.to", is(flight.getTo())));
+    }
+
+    @Test
+    void whenUpdateFlightWithEmptyBody_thenStatus400() throws Exception {
+        mvc.perform(put(api)
+                        .content("{}")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void givenFlightExist_whenGetByIdFlight_thenStatus200() throws Exception {
+        Flight flight = flightService.createOrUpdateFlight(createFlight());
+
+        mvc.perform(get(api + "/{id}", 1)
+                        .content(objectMapper.writeValueAsString(flight))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id", is(1)));
+    }
+
+    @Test
+    void givenFlightExist_whenGetWithoutIdFlight_thenStatus404() throws Exception {
+        Flight flight = flightService.createOrUpdateFlight(createFlight());
+
+        mvc.perform(get(api + "/{id}", 228)
+                        .content(objectMapper.writeValueAsString(flight))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
     }
 }
