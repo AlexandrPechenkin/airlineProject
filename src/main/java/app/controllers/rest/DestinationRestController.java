@@ -22,7 +22,7 @@ import java.util.Optional;
 @RestController
 @RequiredArgsConstructor
 @Api(tags = "DestinationController")
-@RequestMapping("/api/v1/destinations")
+@RequestMapping("/destinations")
 public class DestinationRestController {
     /**
      * Интерфейс сервиса для работы с аэропортом

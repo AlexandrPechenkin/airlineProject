@@ -25,6 +25,7 @@ public class DataInitializer {
     private final AdminService adminService;
     private final AirlineManagerService airlineManagerService;
     private final UserService userService;
+    private final DestinationService destinationService;
 
     @PostConstruct
     public void init() {
