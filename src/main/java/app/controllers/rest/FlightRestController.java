@@ -121,12 +121,12 @@ public class FlightRestController {
     @GetMapping("/{id}")
     public ResponseEntity<Flight> searchFlightById(@ApiParam(value = "Id перелета", example = "1")
                                                    @PathVariable("id") Long id) {
-        Optional<Flight> flight = flightService.getFlightById(id);
+        Optional<Flight> flight = flightService.findById(id);
         if (flight.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         try {
-            return new ResponseEntity(flightService.getFlightById(id), HttpStatus.OK);
+            return new ResponseEntity(flightService.findById(id), HttpStatus.OK);
         } catch (DataIntegrityViolationException e) {
             throw new NoSuchObjectException("Error");
         }
