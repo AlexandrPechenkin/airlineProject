@@ -1,12 +1,12 @@
 package app.config;
 
 
-import app.entities.flight.Flight;
-import app.entities.flight.FlightStatus;
-import app.entities.ticket.Ticket;
-import app.services.flight.FlightService;
-import app.services.search.SearchService;
-import app.services.ticket.TicketService;
+import app.entities.Flight;
+import app.entities.FlightStatus;
+import app.entities.Ticket;
+import app.services.interfaces.FlightService;
+import app.services.interfaces.SearchService;
+import app.services.interfaces.TicketService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

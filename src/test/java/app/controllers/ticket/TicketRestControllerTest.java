@@ -1,10 +1,10 @@
 package app.controllers.ticket;
 
 import app.AirlineApplication;
-import app.entities.flight.Flight;
-import app.entities.flight.FlightStatus;
-import app.entities.ticket.Ticket;
-import app.services.ticket.TicketService;
+import app.entities.Flight;
+import app.entities.FlightStatus;
+import app.entities.Ticket;
+import app.services.interfaces.TicketService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.AccessLevel;

@@ -1,9 +1,9 @@
 package app.controllers.flight;
 
 import app.AirlineApplication;
-import app.entities.flight.Flight;
-import app.entities.flight.FlightStatus;
-import app.services.flight.FlightService;
+import app.entities.Flight;
+import app.entities.FlightStatus;
+import app.services.interfaces.FlightService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.AccessLevel;
