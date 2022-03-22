@@ -202,13 +202,13 @@ public class DataInitializer {
 
     private void createFlight() {
         flightService.createOrUpdateFlight(Flight.builder()
-                .destinationFrom("NSK")
-                .destinationTo("MSK")
-                .departureDate(LocalDate.of(2022, 12, 20))
-                .departureTime(LocalTime.of(10, 20))
-                .arrivalDateTime(LocalDateTime.of(2022, 12, 21, 14, 40))
-                .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
-                .build());
+                        .destinationFrom("NSK")
+                        .destinationTo("MSK")
+                        .departureDate(LocalDate.of(2022, 12, 20))
+                        .departureTime(LocalTime.of(10, 20))
+                        .arrivalDateTime(LocalDateTime.of(2022, 12, 21, 14, 40))
+                        .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
+                        .build());
     }
 
     private void createAdmin() {
