@@ -30,5 +30,5 @@ spring:
         jdbc:
           time_zone: Europe/Moscow
 
-#logging:
-
+logging:
+  config: classpath:log4j2.yml
