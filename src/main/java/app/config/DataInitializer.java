@@ -190,10 +190,13 @@ public class DataInitializer {
                                 .category("testCategory")
                                 .build())
                         .flight(Flight.builder()
-//                                .id(1L)
-                                        .destinationFrom("Moscow")
-                                        .destinationTo("Tomsk")
-                                        .build()
+                                .destinationFrom("NSK")
+                                .destinationTo("MSK")
+                                .departureDate(LocalDate.of(2022, 12, 20))
+                                .departureTime(LocalTime.of(10, 20))
+                                .arrivalDateTime(LocalDateTime.of(2022, 12, 21, 14, 40))
+                                .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
+                                .build()
                         ).build());
     }
 
