@@ -1,29 +1,29 @@
-package app.entities.mappers.flight;
+package app.entities.mappers.ticket;
 
-import app.entities.Flight;
-import app.entities.dtos.FlightDTO;
+import app.entities.dtos.TicketDTO;
+import app.entities.Ticket;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.springframework.stereotype.Component;
 
-
 @Component
 @Mapper(componentModel = "spring",
         injectionStrategy = InjectionStrategy.CONSTRUCTOR,
-        uses = {FlightMapper.class})
-public interface FlightMapper {
+        uses = {TicketMapper.class})
+public interface TicketMapper {
+
     /**
      * Метод сопоставляет Flight c FlightDTO
      *
-     * @param flight - перелет
+     * @param ticket - билет
      */
-    FlightDTO toDTO(Flight flight);
+    TicketDTO toDTO(Ticket ticket);
 
     /**
      * Метод сопоставляет FlightDTO c Flight
      *
-     * @param flightDTO - Поля перелета, которые отдаются наружу
+     * @param ticketDTO - Поля билета, которые отдаются наружу
      */
-    Flight toEntity(FlightDTO flightDTO);
-    
+    Ticket toEntity(TicketDTO ticketDTO);
+
 }
