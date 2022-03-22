@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add new flight</title>
+</head>
+<body>
+
+<h2>Flight info</h2>
+
+<br>
+
+<form th:method="POST" th:action="@{/airline_manager/flights}" th:object="${flight}">
+
+    <label for="destinationFrom">From: </label>
+    <input type="text" th:field="*{destinationFrom}" id="destinationFrom"/>
+    <br/>
+
+    <label for="destinationTo">To: </label>
+    <input type="text" th:field="*{destinationTo}" id="destinationTo"/>
+    <br/>
+
+    <input type="submit" value="Add new flight"/>
+
+</form>
+
+</body>
+</html>
