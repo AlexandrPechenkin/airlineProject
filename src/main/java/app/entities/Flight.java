@@ -55,16 +55,14 @@ public class Flight {
      * В БУДУЩЕМ УДАЛИТЬ
      */
     @NonNull
-    @Column(name = "destinationFrom")
-    private String from;
+    private String destinationFrom;
 
     /**
      * место прилета
      * В БУДУЩЕМ УДАЛИТЬ
      */
     @NonNull
-    @Column(name = "destinationTo")
-    private String to;
+    private String destinationTo;
 
     /**
      * Enum со статусами полета - "По плану", "Задержан", "Отменён".
@@ -77,13 +75,13 @@ public class Flight {
      * Destination from
      */
 //    @NonNull
-//    private Destination from;
+//    private Destination destinationFrom;
 
     /**
      * Destination to
      */
 //    @NonNull
-//    private Destination to;
+//    private Destination destinationTo;
 
     /**
      * места на рейса

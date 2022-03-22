@@ -14,14 +14,14 @@ public interface FlightRepository extends JpaRepository<Flight, Long> {
     /**
      * поиск по месту вылета, месту прилета и дате вылета
      *
-     * @param from          место вылета
-     * @param to            место прилета
-     * @param departureDate дата вылета
+     * @param destinationFrom место вылета
+     * @param destinationTo   место прилета
+     * @param departureDate   дата вылета
      * @return
      */
-    @Query(value = "select f from Flight f where (f.from like concat('%', :from, '%')) " +
-            "and f.to like  concat('%', :to, '%') " +
+    @Query(value = "select f from Flight f where (f.destinationFrom like concat('%', :destinationFrom, '%')) " +
+            "and f.destinationTo like  concat('%', :destinationTo, '%') " +
             "and f.departureDate like concat('%', :departureDate, '%')")
-    List<Flight> findFlights(String from, String to, LocalDate departureDate);
+    List<Flight> findFlights(String destinationFrom, String destinationTo, LocalDate departureDate);
 
 }

@@ -58,8 +58,8 @@ public class DataInitializer {
                 .holdNumber(420L)
                 .price(15000L)
                 .flight(Flight.builder()
-                        .from("NSK")
-                        .to("MSK")
+                        .destinationFrom("NSK")
+                        .destinationTo("MSK")
                         .departureDate(LocalDate.of(2022, 12, 20))
                         .departureTime(LocalTime.of(10, 20))
                         .arrivalDateTime(LocalDateTime.of(2022, 12, 21, 14, 40))
@@ -190,18 +190,24 @@ public class DataInitializer {
                                 .category("testCategory")
                                 .build())
                         .flight(Flight.builder()
-//                                .id(1L)
-                                .destinationFrom("Moscow")
-                                .destinationTo("Tomsk")
+                                .destinationFrom("NSK")
+                                .destinationTo("MSK")
+                                .departureDate(LocalDate.of(2022, 12, 20))
+                                .departureTime(LocalTime.of(10, 20))
+                                .arrivalDateTime(LocalDateTime.of(2022, 12, 21, 14, 40))
+                                .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
                                 .build()
                         ).build());
     }
 
     private void createFlight() {
-        flightService.createOrUpdate(
-                Flight.builder()
-                        .destinationFrom("Moscow")
-                        .destinationTo("Tomsk")
+        flightService.createOrUpdateFlight(Flight.builder()
+                        .destinationFrom("NSK")
+                        .destinationTo("MSK")
+                        .departureDate(LocalDate.of(2022, 12, 20))
+                        .departureTime(LocalTime.of(10, 20))
+                        .arrivalDateTime(LocalDateTime.of(2022, 12, 21, 14, 40))
+                        .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
                         .build());
     }
 

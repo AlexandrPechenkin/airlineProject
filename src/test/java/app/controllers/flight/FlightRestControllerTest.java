@@ -47,8 +47,8 @@ public class FlightRestControllerTest {
 
     Flight createFlight() {
         return flightService.createOrUpdateFlight(Flight.builder()
-                .from("NSK")
-                .to("MSK")
+                .destinationFrom("NSK")
+                .destinationTo("MSK")
                 .departureDate(LocalDate.of(2022, 12, 20))
                 .departureTime(LocalTime.of(10, 20))
                 .arrivalDateTime(LocalDateTime.of(2022, 12, 20, 15, 40))
@@ -74,22 +74,22 @@ public class FlightRestControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.from", is(flight.getFrom())))
-                .andExpect(jsonPath("$.to", is(flight.getTo())));
+                .andExpect(jsonPath("$.destinationFrom", is(flight.getDestinationFrom())))
+                .andExpect(jsonPath("$.destinationTo", is(flight.getDestinationTo())));
 
     }
 
     @Test
     void givenFlightExist_whenUpdateFlight_thenStatus200() throws Exception {
         Flight flight = flightService.createOrUpdateFlight(createFlight());
-        flight.setFrom("Omsk");
-        flight.setTo("Barnaul");
+        flight.setDestinationFrom("Omsk");
+        flight.setDestinationTo("Barnaul");
         mvc.perform(put(api)
                         .content(objectMapper.writeValueAsString(flight))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.from", is(flight.getFrom())))
-                .andExpect(jsonPath("$.to", is(flight.getTo())));
+                .andExpect(jsonPath("$.destinationFrom", is(flight.getDestinationFrom())))
+                .andExpect(jsonPath("$.destinationTo", is(flight.getDestinationTo())));
     }
 
     @Test
