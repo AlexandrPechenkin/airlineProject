@@ -1,0 +1,78 @@
+@charset "UTF-8";
+/*брекпоинты для новой главной*/
+/* violet */
+/* green */
+/* red */
+/* turquoise */
+/* blue */
+/* orange */
+/* neutrals */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend, input, button,
+caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif !important; }
+
+.App {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif; }
+
+.App-logo {
+    /*animation: App-logo-spin infinite 20s linear;*/
+    height: 80px; }
+
+.App-header {
+    height: 150px;
+    padding: 20px;
+    color: white; }
+
+.App-title {
+    font-size: 1.5em; }
+
+.App-intro {
+    font-size: large; }
+
+@keyframes App-logo-spin {
+    from {
+        transform: rotate(0deg); }
+    to {
+        transform: rotate(360deg); } }
+
+.page {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; }
+
+.page-content {
+    flex-grow: 1;
+    min-height: 100vh; }
+
+.video-container {
+    border-radius: 16px;
+    overflow: hidden;
+    position: relative;
+    padding: 0 15px 56.25% 15px;
+    height: 0;
+    -webkit-mask-image: -webkit-radial-gradient(white, black); }
+.video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 16px;
+    border: 0; }
+
+body input::-webkit-input-placeholder {
+    font-weight: inherit; }
+
+body input:-ms-input-placeholder {
+    font-weight: inherit; }

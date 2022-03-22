@@ -2,6 +2,8 @@ package app.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -10,6 +12,7 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 
 @Configuration
+@Import(BeanValidatorPluginsConfiguration.class)
 public class SwaggerConfig {
 
     public static final String BASE_PACKAGE = "app.controllers";
@@ -22,8 +25,7 @@ public class SwaggerConfig {
                 .apis(RequestHandlerSelectors.basePackage(BASE_PACKAGE))
                 .paths(PathSelectors.any())
                 .build()
-                .apiInfo(apiInfo())
-                ;
+                .apiInfo(apiInfo());
     }
 
     private ApiInfo apiInfo() {

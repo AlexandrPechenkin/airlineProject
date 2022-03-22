@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
  * https://www.baeldung.com/global-error-handler-in-a-spring-rest-api
  * https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/bind/annotation/ControllerAdvice.html
  * https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/bind/annotation/ExceptionHandler.html
- * <p>
+ *
  * Создаем метод, а над ним ставим аннотацию @ExceptionHandler в ней указываем класс обрабатываемых исключений.
  * В методе компонуем в {@link ApiError} и возвращаем HTTP ответ.
  */
