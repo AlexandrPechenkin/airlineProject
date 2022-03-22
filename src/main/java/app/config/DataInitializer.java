@@ -1,12 +1,26 @@
 package app.config;
 
 
+import app.entities.Admin;
+import app.entities.AirlineManager;
+import app.entities.Category;
+import app.entities.CountryCode;
+import app.entities.Destination;
 import app.entities.Flight;
 import app.entities.FlightStatus;
+import app.entities.Passenger;
+import app.entities.Passport;
+import app.entities.Seat;
 import app.entities.Ticket;
+import app.services.interfaces.AdminService;
+import app.services.interfaces.AirlineManagerService;
+import app.services.interfaces.CategoryService;
+import app.services.interfaces.DestinationService;
 import app.services.interfaces.FlightService;
-import app.services.interfaces.SearchService;
+import app.services.interfaces.PassengerService;
+import app.services.interfaces.SeatService;
 import app.services.interfaces.TicketService;
+import app.services.interfaces.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -14,6 +28,7 @@ import javax.annotation.PostConstruct;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.TimeZone;
 
 
 /**
@@ -22,7 +37,6 @@ import java.time.LocalTime;
  * Инжектьте и используйте здесь соответствующие сервисы ваших сущностей."
  */
 
-@RequiredArgsConstructor
 @Component
 @RequiredArgsConstructor
 public class DataInitializer {
@@ -34,19 +48,15 @@ public class DataInitializer {
     private final AirlineManagerService airlineManagerService;
     private final UserService userService;
     private final DestinationService destinationService;
-
-    private final SearchService searchService;
     private final TicketService ticketService;
-    private final FlightService flightService;
 
     @PostConstruct
     public void init() {
 
-
         ticketService.createOrUpdateTicket(Ticket.builder()
                 .seat("5A")
-                .holdNumber(420l)
-                .price(15000l)
+                .holdNumber(420L)
+                .price(15000L)
                 .flight(Flight.builder()
                         .from("NSK")
                         .to("MSK")
