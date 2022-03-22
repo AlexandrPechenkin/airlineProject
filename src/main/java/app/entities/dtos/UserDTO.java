@@ -16,6 +16,7 @@ public class UserDTO {
     @Email(message = "Введите корректный email адрес")
     protected String email;
 
+    @NotEmpty(message = "Поле password не должно быть пустым")
     protected String password;
 
     protected Set<Role> roles;
