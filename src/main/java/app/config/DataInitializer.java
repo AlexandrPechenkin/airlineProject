@@ -1,26 +1,8 @@
 package app.config;
 
 
-import app.entities.Admin;
-import app.entities.AirlineManager;
-import app.entities.Category;
-import app.entities.CountryCode;
-import app.entities.Destination;
-import app.entities.Flight;
-import app.entities.FlightStatus;
-import app.entities.Passenger;
-import app.entities.Passport;
-import app.entities.Seat;
-import app.entities.Ticket;
-import app.services.interfaces.AdminService;
-import app.services.interfaces.AirlineManagerService;
-import app.services.interfaces.CategoryService;
-import app.services.interfaces.DestinationService;
-import app.services.interfaces.FlightService;
-import app.services.interfaces.PassengerService;
-import app.services.interfaces.SeatService;
-import app.services.interfaces.TicketService;
-import app.services.interfaces.UserService;
+import app.entities.*;
+import app.services.interfaces.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -49,6 +31,7 @@ public class DataInitializer {
     private final UserService userService;
     private final DestinationService destinationService;
     private final TicketService ticketService;
+    private final RegistrationService registrationService;
 
     @PostConstruct
     public void init() {
@@ -98,6 +81,9 @@ public class DataInitializer {
 
         createAirlineManagerWithUserService();
         System.out.println("AirlineManager был создан при помощи UserService, UserRepository, AirlineManagerMapper, AirlineManagerDTO.");
+
+        createRegistration();
+        System.out.println("Регистрация пассажира на рейс создана.");
     }
 
     private void createPassenger() {
@@ -190,18 +176,20 @@ public class DataInitializer {
                                 .category("testCategory")
                                 .build())
                         .flight(Flight.builder()
+                                .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
 //                                .id(1L)
-                                .destinationFrom("Moscow")
-                                .destinationTo("Tomsk")
+                                .from("Moscow")
+                                .to("Tomsk")
                                 .build()
                         ).build());
     }
 
     private void createFlight() {
-        flightService.createOrUpdate(
+        flightService.createOrUpdateFlight(
                 Flight.builder()
-                        .destinationFrom("Moscow")
-                        .destinationTo("Tomsk")
+                        .from("Moscow")
+                        .to("Tomsk")
+                        .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
                         .build());
     }
 
@@ -267,6 +255,32 @@ public class DataInitializer {
                         .password("password_airline_manager_user")
                         .roles("airline_manager_user")
                         .parkName("park_name_user")
+                        .build());
+    }
+
+    private void createRegistration() {
+        registrationService.createOrUpdateRegistration(
+                Registration.builder()
+                        .status("OK")
+                        .seat(
+                                seatService.createOrUpdate(
+                                        Seat.builder()
+                                                .seatNumber("1A_registration")
+                                                .fare(800)
+                                                .isRegistered(true)
+                                                .isSold(true)
+                                                .category(Category.builder()
+                                                        .id(1L)
+                                                        .category("testCategory_registration")
+                                                        .build())
+                                                .flight(Flight.builder()
+                                                                .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
+                                                                .from("Moscow")
+                                                                .to("Tomsk")
+                                                                .build()
+                                                ).build())
+                                )
+                        .registrationDateTime(LocalDateTime.now())
                         .build());
     }
 
