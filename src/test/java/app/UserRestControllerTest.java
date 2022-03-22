@@ -1,9 +1,9 @@
-package app.controllers.v1.passenger;
+package app;
 
-import app.AirlineApplication;
+import app.entities.Admin;
 import app.entities.Passenger;
 import app.entities.Passport;
-import app.services.interfaces.PassengerService;
+import app.services.interfaces.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.AccessLevel;
@@ -21,27 +21,36 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.time.LocalDate;
 
 import static org.hamcrest.Matchers.is;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @SpringBootTest(
         webEnvironment = SpringBootTest.WebEnvironment.MOCK,
-        classes = AirlineApplication.class)
+        classes = AirlineApplication.class
+)
 @AutoConfigureMockMvc
 @TestPropertySource(locations = "classpath:application-integrationtest.yml")
 @ActiveProfiles("integrationtest")
 @FieldDefaults(level = AccessLevel.PRIVATE)
-class PassengerRestControllerTest {
+public class UserRestControllerTest {
 
     @Autowired
     MockMvc mvc;
-    @Autowired @Qualifier("passengerServiceImpl")
-    PassengerService passengerService;
 
-    final String api = "/api/v1/passenger";
+    @Autowired @Qualifier("userServiceImpl")
+    UserService userService;
 
+    final String api = "/user";
     final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
+
+    Admin createAdmin() {
+        return Admin.builder().email("admin_user@mail.com")
+                .password("password_admin_user")
+                .nickname("nickname_admin_user")
+                .roles("admin_user")
+                .build();
+    }
 
     Passenger createPassenger() {
         return Passenger.builder()
@@ -68,13 +77,13 @@ class PassengerRestControllerTest {
     }
 
 
+
     @Test
     void whenCreatePassenger_thenStatus201() throws Exception {
         Passenger passenger = createPassenger();
-
-        mvc.perform(post(api)
-                        .content(objectMapper.writeValueAsString(passenger))
-                        .contentType(MediaType.APPLICATION_JSON))
+        mvc.perform(post(api+"/passenger")
+                    .content(objectMapper.writeValueAsString(passenger))
+                    .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.firstName", is(passenger.getFirstName())))
@@ -82,52 +91,14 @@ class PassengerRestControllerTest {
     }
 
     @Test
-    void whenCreatePassengerWithEmptyBody_thenStatus400() throws Exception {
-        mvc.perform(post(api)
-                        .content("{}")
+    void whenCreateAdmin_thenStatus201() throws Exception {
+        Admin admin = createAdmin();
+        mvc.perform(post(api + "/admin")
+                        .content(objectMapper.writeValueAsString(admin))
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
-    }
-
-    @Test
-    void givenPassengerExist_whenUpdatePassenger_thenStatus200() throws Exception {
-        Passenger passenger = passengerService.createOrUpdatePassenger(createPassenger());
-        passenger.setFirstName("Lol");
-        passenger.setLastName("Loooool");
-        mvc.perform(put(api)
-                        .content(objectMapper.writeValueAsString(passenger))
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.firstName", is(passenger.getFirstName())))
-                .andExpect(jsonPath("$.lastName", is(passenger.getLastName())));
-    }
-
-    @Test
-    void whenUpdatePassengerWithEmptyBody_thenStatus400() throws Exception {
-        mvc.perform(put(api)
-                        .content("{}")
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
-    }
-
-    @Test
-    void givenPassengerExist_whenGetByIdPassenger_thenStatus200() throws Exception {
-        Passenger passenger = passengerService.createOrUpdatePassenger(createPassenger());
-
-        mvc.perform(get(api + "/{id}", 1)
-                        .content(objectMapper.writeValueAsString(passenger))
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", is(1)));
-    }
-
-    @Test
-    void givenPassengerExist_whenGetWithoutIdPassenger_thenStatus404() throws Exception {
-        Passenger passenger = passengerService.createOrUpdatePassenger(createPassenger());
-
-        mvc.perform(get(api + "/{id}", 228)
-                        .content(objectMapper.writeValueAsString(passenger))
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isCreated())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.nickname", is(admin.getNickname())))
+                .andExpect(jsonPath("$.email", is(admin.getEmail())));
     }
 }
