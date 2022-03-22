@@ -74,8 +74,8 @@ public class FlightRestControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.from", is(flight.getDestinationFrom())))
-                .andExpect(jsonPath("$.to", is(flight.getDestinationTo())));
+                .andExpect(jsonPath("$.destinationFrom", is(flight.getDestinationFrom())))
+                .andExpect(jsonPath("$.destinationTo", is(flight.getDestinationTo())));
 
     }
 
@@ -88,8 +88,8 @@ public class FlightRestControllerTest {
                         .content(objectMapper.writeValueAsString(flight))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.from", is(flight.getDestinationFrom())))
-                .andExpect(jsonPath("$.to", is(flight.getDestinationTo())));
+                .andExpect(jsonPath("$.destinationFrom", is(flight.getDestinationFrom())))
+                .andExpect(jsonPath("$.destinationTo", is(flight.getDestinationTo())));
     }
 
     @Test
