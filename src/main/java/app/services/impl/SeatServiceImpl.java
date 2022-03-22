@@ -108,7 +108,7 @@ public class SeatServiceImpl implements SeatService {
         return seatRepository.findAll()
                 .stream()
                 .filter(seat -> seat.getFlight().getId() == flightId)
-                .filter(seat -> seat.getCategory().getId() == categoryId)
+//                .filter(seat -> seat.getCategory().getId() == categoryId)
                 .collect(Collectors.toList());
     }
 }
