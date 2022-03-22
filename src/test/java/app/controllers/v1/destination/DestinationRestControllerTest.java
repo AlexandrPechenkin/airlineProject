@@ -35,7 +35,7 @@ public class DestinationRestControllerTest {
     MockMvc mvc;
     @Autowired
     DestinationService destinationService;
-    final String api = "/api/v1/destinations";
+    final String api = "/destinations";
     final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
     Destination createDestination1() {

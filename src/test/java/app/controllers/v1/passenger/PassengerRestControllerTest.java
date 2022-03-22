@@ -39,7 +39,7 @@ class PassengerRestControllerTest {
     @Autowired @Qualifier("passengerServiceImpl")
     PassengerService passengerService;
 
-    final String api = "/api/v1/passenger";
+    final String api = "/passenger";
 
     final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
 

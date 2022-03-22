@@ -1,26 +1,8 @@
 package app.config;
 
 
-import app.entities.Admin;
-import app.entities.AirlineManager;
-import app.entities.Category;
-import app.entities.CountryCode;
-import app.entities.Destination;
-import app.entities.Flight;
-import app.entities.FlightStatus;
-import app.entities.Passenger;
-import app.entities.Passport;
-import app.entities.Seat;
-import app.entities.Ticket;
-import app.services.interfaces.AdminService;
-import app.services.interfaces.AirlineManagerService;
-import app.services.interfaces.CategoryService;
-import app.services.interfaces.DestinationService;
-import app.services.interfaces.FlightService;
-import app.services.interfaces.PassengerService;
-import app.services.interfaces.SeatService;
-import app.services.interfaces.TicketService;
-import app.services.interfaces.UserService;
+import app.entities.*;
+import app.services.interfaces.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -49,6 +31,7 @@ public class DataInitializer {
     private final UserService userService;
     private final DestinationService destinationService;
     private final TicketService ticketService;
+    private final BookingService bookingService;
 
     @PostConstruct
     public void init() {
@@ -98,6 +81,9 @@ public class DataInitializer {
 
         createAirlineManagerWithUserService();
         System.out.println("AirlineManager был создан при помощи UserService, UserRepository, AirlineManagerMapper, AirlineManagerDTO.");
+
+        createBooking();
+        System.out.println("Бронирование билета на рейс было создано");
     }
 
     private void createPassenger() {
@@ -191,17 +177,19 @@ public class DataInitializer {
                                 .build())
                         .flight(Flight.builder()
 //                                .id(1L)
-                                .destinationFrom("Moscow")
-                                .destinationTo("Tomsk")
+                                .from("Moscow")
+                                .to("Tomsk")
+                                .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
                                 .build()
                         ).build());
     }
 
     private void createFlight() {
-        flightService.createOrUpdate(
+        flightService.createOrUpdateFlight(
                 Flight.builder()
-                        .destinationFrom("Moscow")
-                        .destinationTo("Tomsk")
+                        .from("Moscow")
+                        .to("Tomsk")
+                        .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
                         .build());
     }
 
@@ -268,6 +256,56 @@ public class DataInitializer {
                         .roles("airline_manager_user")
                         .parkName("park_name_user")
                         .build());
+    }
+
+    private void createBooking() {
+        bookingService.createOrUpdateBooking(
+                Booking.builder()
+                        .departTicket(
+                                ticketService.createOrUpdateTicket(
+                                Ticket.builder()
+                                        .flight(
+                                                Flight.builder()
+                                                        .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
+                                                        .from("MSK")
+                                                        .to("NSK")
+                                                        .arrivalDateTime(LocalDateTime.now())
+                                                        .departureDate(LocalDate.of(2022, 3, 12))
+                                                        .departureTime(LocalTime.of(12, 6, 0))
+                                                        .build())
+                                        .seat("5A")
+                                        .holdNumber(420L)
+                                        .price(15000L)
+                                        .build()))
+                        .initialBookingDateTime(LocalDateTime.now())
+                        .paymentMethod("CARD")
+                        .status("PAID")
+                        .passenger(
+                                passengerService.createOrUpdatePassenger(
+                                Passenger.builder()
+                                        .email("passenger_booking@mail.ru")
+                                        .password("password_passenger_booking")
+                                        .roles("passenger_booking")
+                                        .firstName("passenger_booking")
+                                        .middleName("passenger_middle_name_passenger_booking")
+                                        .lastName("passenger_last_name_passenger_booking")
+                                        .dateOfBirth(LocalDate.now())
+                                        .passport(
+                                                Passport.builder()
+                                                        .dateOfBirth(LocalDate.now())
+                                                        .gender("passport_gender_booking")
+                                                        .firstName("passport_first_name_booking")
+                                                        .middleName("passport_middle_name_booking")
+                                                        .lastName("passport_last_name_booking")
+                                                        .birthplace("passport_birthplace_booking")
+                                                        .residenceRegistration("passport_residence_registration_booking")
+                                                        .seriesAndNumber("passport_series_and_number_booking")
+                                                        .build()
+                                        )
+                                        .build()
+                        ))
+                        .build()
+        );
     }
 
 }

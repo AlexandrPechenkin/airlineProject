@@ -54,8 +54,8 @@ public class SeatTestRestController {
                         .build())
                 .flight(Flight.builder()
                         .id(1L)
-                        .destinationFrom("Moscow")
-                        .destinationTo("Tomsk")
+                        .from("Moscow")
+                        .to("Tomsk")
                         .build()
                 ).build();
     }
@@ -73,8 +73,8 @@ public class SeatTestRestController {
                         .build())
                 .flight(Flight.builder()
                         .id(1L)
-                        .destinationFrom("Moscow")
-                        .destinationTo("Tomsk")
+                        .from("Moscow")
+                        .to("Tomsk")
                         .build()
                 ).build();
     }
