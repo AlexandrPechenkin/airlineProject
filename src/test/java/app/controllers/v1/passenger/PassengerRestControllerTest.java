@@ -3,6 +3,8 @@ package app.controllers.v1.passenger;
 import app.AirlineApplication;
 import app.entities.Passenger;
 import app.entities.Passport;
+import app.entities.Role;
+import app.entities.mappers.passenger.PassengerMapper;
 import app.services.interfaces.PassengerService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -14,11 +16,13 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -32,6 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestPropertySource(locations = "classpath:application-integrationtest.yml")
 @ActiveProfiles("integrationtest")
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@WithMockUser(username = "admin@mai.ru", password = "123", roles = "ADMIN")
 class PassengerRestControllerTest {
 
     @Autowired
@@ -39,7 +44,10 @@ class PassengerRestControllerTest {
     @Autowired @Qualifier("passengerServiceImpl")
     PassengerService passengerService;
 
-    final String api = "/api/v1/passenger";
+    @Autowired
+    PassengerMapper passengerMapper;
+
+    static final String api = "/api/v1/passenger";
 
     final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
@@ -50,8 +58,8 @@ class PassengerRestControllerTest {
                 .middleName("Totoro")
                 .dateOfBirth(LocalDate.of(1992, 2, 15))
                 .email("Airlines@test.com")
-                .password("password_airlines")
-                .roles("passenger")
+                .password("123")
+                .roles(Set.of(new Role("ADMIN")))
                 .passport(
                         Passport.builder()
                                 .firstName("Dereck")
@@ -73,7 +81,7 @@ class PassengerRestControllerTest {
         Passenger passenger = createPassenger();
 
         mvc.perform(post(api)
-                        .content(objectMapper.writeValueAsString(passenger))
+                        .content(objectMapper.writeValueAsString(passengerMapper.toDto(passenger)))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
