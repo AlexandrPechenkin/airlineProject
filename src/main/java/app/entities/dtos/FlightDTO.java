@@ -36,11 +36,6 @@ public class FlightDTO {
     //    @NotEmpty(message = "Нужно указать самолет")
     //    private Aircraft aircraft;
 
-    /**
-     * в будущем удалить
-     */
-//    private String to;
-//    private String from;
 
     private Destination to;
     private Destination from;
