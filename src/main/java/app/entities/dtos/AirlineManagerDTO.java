@@ -1,10 +1,12 @@
 package app.entities.dtos;
 
+import app.entities.Role;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import java.util.Set;
 
 /**
  * DTO для класса AirlineManager.
@@ -21,7 +23,7 @@ public class AirlineManagerDTO {
     @NotEmpty(message = "Пожалуйста, заполните поле.")
     private String password;
 
-    private String roles;
+    private Set<Role> roles;
 
     @NotEmpty(message = "Пожалуйста, заполните поле.")
     private String parkName;

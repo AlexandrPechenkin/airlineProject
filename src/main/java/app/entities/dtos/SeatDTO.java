@@ -1,6 +1,5 @@
 package app.entities.dtos;
 
-import app.entities.Category;
 import app.entities.Flight;
 import lombok.Data;
 import lombok.NonNull;
@@ -28,8 +27,6 @@ public class SeatDTO {
 
     @NonNull
     private Boolean isSold;
-
-    private Category category;
 
     private Flight flight;
 }

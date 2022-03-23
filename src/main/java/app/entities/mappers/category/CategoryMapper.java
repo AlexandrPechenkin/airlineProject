@@ -3,6 +3,7 @@ package app.entities.mappers.category;
 
 import app.entities.Category;
 import app.entities.dtos.CategoryDTO;
+import app.entities.mappers.seat.SeatMapper;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.springframework.stereotype.Component;
@@ -15,7 +16,8 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Mapper(componentModel = "spring",
-        injectionStrategy = InjectionStrategy.CONSTRUCTOR)
+        injectionStrategy = InjectionStrategy.CONSTRUCTOR,
+        uses = {SeatMapper.class})
 public interface CategoryMapper {
     /**
      * Метод сопоставляет Category c CategoryDTO

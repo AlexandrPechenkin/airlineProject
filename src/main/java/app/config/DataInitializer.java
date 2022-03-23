@@ -1,26 +1,8 @@
 package app.config;
 
 
-import app.entities.Admin;
-import app.entities.AirlineManager;
-import app.entities.Category;
-import app.entities.CountryCode;
-import app.entities.Destination;
-import app.entities.Flight;
-import app.entities.FlightStatus;
-import app.entities.Passenger;
-import app.entities.Passport;
-import app.entities.Seat;
-import app.entities.Ticket;
-import app.services.interfaces.AdminService;
-import app.services.interfaces.AirlineManagerService;
-import app.services.interfaces.CategoryService;
-import app.services.interfaces.DestinationService;
-import app.services.interfaces.FlightService;
-import app.services.interfaces.PassengerService;
-import app.services.interfaces.SeatService;
-import app.services.interfaces.TicketService;
-import app.services.interfaces.UserService;
+import app.entities.*;
+import app.services.interfaces.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -28,8 +10,11 @@ import javax.annotation.PostConstruct;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
+import java.util.Set;
 import java.util.TimeZone;
-
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * В этом классе инициализируются тестовые данные для базы.
@@ -41,6 +26,7 @@ import java.util.TimeZone;
 @RequiredArgsConstructor
 public class DataInitializer {
     private final PassengerService passengerService;
+    private final AircraftService aircraftService;
     private final CategoryService categoryService;
     private final SeatService seatService;
     private final FlightService flightService;
@@ -75,6 +61,9 @@ public class DataInitializer {
         createDestinations();
         System.out.println("Аэропорты были созданы.");
 
+        createAircraft();
+        System.out.println("Воздушное судно было создано.");
+
         createCategory();
         System.out.println("Категории были созданы");
 
@@ -104,7 +93,7 @@ public class DataInitializer {
         passengerService.createOrUpdatePassenger(
                 Passenger.builder()
                         .password("password_passenger")
-                        .roles("passenger")
+                        .roles(Set.of(new Role("ADMIN")))
                         .firstName("Dereck")
                         .lastName("Storm")
                         .middleName("Totoro")
@@ -122,6 +111,43 @@ public class DataInitializer {
                                         .seriesAndNumber("3333 123456")
                                         .build()
                         )
+                        .build()
+        );
+
+    }
+
+    private void createAircraft() {
+        List<Category> categories = IntStream.rangeClosed(1, 3)
+                .mapToObj(it -> Category.builder()
+                        .category("K" + it * 5)
+                        .seats(IntStream.rangeClosed(0, 10)
+                                .mapToObj(it1 ->
+                                        Seat.builder()
+                                                .seatNumber(it1 + "F")
+                                                .fare(it1)
+                                                .isRegistered(true)
+                                                .isSold(true)
+                                                .flight(Flight.builder()
+                                                        .destinationFrom("Moscow")
+                                                        .destinationTo("Moon")
+                                                        .departureDate(LocalDate.of(2022, 12, 20))
+                                                        .departureTime(LocalTime.of(10, 20))
+                                                        .arrivalDateTime(LocalDateTime.of(2022, 12, 21, 14, 40))
+                                                        .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
+                                                        .build())
+                                                .build()
+                                ).collect(Collectors.toList()))
+                        .build()
+                ).collect(Collectors.toList());
+
+        aircraftService.createOrUpdateAircraft(
+                Aircraft.builder()
+                        .categories(categories)
+                        .brand("Air")
+                        .boardNumber("RA-3030")
+                        .model("1058NS")
+                        .flyingRange(2974)
+                        .productionYear(LocalDate.of(1998, 5, 24))
                         .build()
         );
     }
@@ -166,16 +192,18 @@ public class DataInitializer {
     }
 
     private void createCategory() {
-
-        Category categoryEconomy = new Category("Economy");
-        Category categoryComfort = new Category("Comfort");
-        Category categoryBusiness = new Category("Business");
-        Category categoryFirstClass = new Category("First class");
-
-        categoryService.createOrUpdate(categoryEconomy);
-        categoryService.createOrUpdate(categoryComfort);
-        categoryService.createOrUpdate(categoryBusiness);
-        categoryService.createOrUpdate(categoryFirstClass);
+        categoryService.createOrUpdate(Category.builder()
+                .category("Economy")
+                .build());
+        categoryService.createOrUpdate(Category.builder()
+                .category("Comfort")
+                .build());
+        categoryService.createOrUpdate(Category.builder()
+                .category("Business")
+                .build());
+        categoryService.createOrUpdate(Category.builder()
+                .category("First class")
+                .build());
     }
 
     private void createSeat() {
@@ -185,10 +213,6 @@ public class DataInitializer {
                         .fare(800)
                         .isRegistered(true)
                         .isSold(true)
-                        .category(Category.builder()
-                                .id(1L)
-                                .category("testCategory")
-                                .build())
                         .flight(Flight.builder()
                                 .destinationFrom("NSK")
                                 .destinationTo("MSK")
@@ -217,26 +241,26 @@ public class DataInitializer {
                         .email("admin@mail.com")
                         .password("password_admin")
                         .nickname("admin_nickname")
-                        .roles("admin")
+                        .roles(Set.of(new Role("ROLE_ADMIN")))
                         .build());
     }
 
     private void createAirlineManager() {
         airlineManagerService.createOrUpdateAirlineManager(
                 AirlineManager.builder()
-                        .email("airlinemanager@mail.com")
+                        .email("user@mail.ru")
                         .parkName("park_name")
-                        .password("password_airline_manager")
-                        .roles("airline_manager")
+                        .password("123")
+                        .roles(Set.of(new Role("ROLE_USER")))
                         .build());
     }
 
     private Admin createAdminWithUserService() {
         return (Admin) userService.createOrUpdateUser(
-                Admin.builder().email("admin_user@mail.com")
-                        .password("password_admin_user")
+                Admin.builder().email("admin@mail.ru")
+                        .password("123")
                         .nickname("nickname_admin_user")
-                        .roles("admin_user")
+                        .roles(Set.of(new Role("ROLE_ADMIN")))
                         .build());
     }
 
@@ -261,7 +285,7 @@ public class DataInitializer {
                                         .seriesAndNumber("3333 123456_user")
                                         .build()
                         )
-                        .roles("passenger_user")
+                        .roles(Set.of(new Role("USER")))
                         .build()
         );
     }
@@ -271,7 +295,7 @@ public class DataInitializer {
                 AirlineManager.builder()
                         .email("airline_manager_user@mail.com")
                         .password("password_airline_manager_user")
-                        .roles("airline_manager_user")
+                        .roles(Set.of(new Role("ADMIN")))
                         .parkName("park_name_user")
                         .build());
     }

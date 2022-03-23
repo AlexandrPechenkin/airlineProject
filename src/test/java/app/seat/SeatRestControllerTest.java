@@ -1,8 +1,8 @@
 package app.seat;
 
 import app.AirlineApplication;
-import app.entities.Category;
 import app.entities.Flight;
+import app.entities.FlightStatus;
 import app.entities.Seat;
 import app.services.interfaces.SeatService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
@@ -29,16 +30,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestPropertySource(locations = "classpath:application-integrationtest.yml")
 @ActiveProfiles("integrationtest")
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class SeatTestRestController {
+@WithMockUser(username = "admin@mai.ru", password = "123", roles = "ADMIN")
+public class SeatRestControllerTest {
 
     @Autowired
     MockMvc mvc;
     @Autowired
     SeatService seatService;
 
-    final String api = "/seat";
+    static final String api = "/seat";
 
-    final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
+    static final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
 
     Seat createSeat1() {
@@ -48,12 +50,13 @@ public class SeatTestRestController {
                 .fare(800)
                 .isRegistered(true)
                 .isSold(true)
-                .category(Category.builder()
-                        .id(1L)
-                        .category("testCategory")
-                        .build())
+//                .category(Category.builder()
+//                        .id(1L)
+//                        .category("testCategory")
+//                        .build())
                 .flight(Flight.builder()
                         .id(1L)
+                        .flightStatus(FlightStatus.DELAY)
                         .destinationFrom("Moscow")
                         .destinationTo("Tomsk")
                         .build()
@@ -67,12 +70,13 @@ public class SeatTestRestController {
                 .fare(1100)
                 .isRegistered(false)
                 .isSold(true)
-                .category(Category.builder()
-                        .id(1L)
-                        .category("testCategory")
-                        .build())
+//                .category(Category.builder()
+//                        .id(1L)
+//                        .category("testCategory")
+//                        .build())
                 .flight(Flight.builder()
                         .id(1L)
+                        .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
                         .destinationFrom("Moscow")
                         .destinationTo("Tomsk")
                         .build()
