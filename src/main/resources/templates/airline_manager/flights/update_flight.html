@@ -2,14 +2,17 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Add new flight</title>
+    <title>Update Flight</title>
 </head>
 <body>
 
 <h2>Flight info</h2>
 <br>
 
-<form th:method="POST" th:action="@{/airline_manager/flights}" th:object="${flight}">
+<form th:method="PUT" th:action="@{/airline_manager/flights}" th:object="${flight}">
+
+    <input type="hidden" th:field="*{id}" id="id"/>
+    <br><br>
 
     <label for="destinationFrom">From: </label>
     <input type="text" th:field="*{destinationFrom}" id="destinationFrom"/>
@@ -19,7 +22,7 @@
     <input type="text" th:field="*{destinationTo}" id="destinationTo"/>
     <br><br>
 
-    <input type="submit" value="Add new flight"/>
+    <input type="submit" value="Update"/>
 
 </form>
 

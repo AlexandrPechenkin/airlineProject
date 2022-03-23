@@ -6,12 +6,16 @@
 </head>
 <body>
 
+<h2>Flights</h2>
+<br>
+
 <table>
     <thead>
     <tr>
         <th> ID </th>
         <th> From </th>
         <th> To </th>
+        <th> Operations </th>
     </tr>
     </thead>
     <tbody>
@@ -19,11 +23,20 @@
         <td><span th:text="${flight.id}"> ID </span></td>
         <td><span th:text="${flight.destinationFrom}"> From </span></td>
         <td><span th:text="${flight.destinationTo}"> To </span></td>
+        <td>
+            <a th:href="@{/airline_manager/flights/update/{id}(id=${flight.id})}">
+            <input type="button" value="Update"/>
+            </a>
+
+<!--            <a th:href="@{/airline_manager/flights/{id}(id=${flight.id})}">-->
+                <input type="button" value="Delete"/>
+<!--            </a>-->
+        </td>
     </tr>
     </tbody>
 </table>
 
-<br>
+<br><br>
 
 <input type="button" value="Add new flight" onclick="window.location.href = '/airline_manager/flights/add'"/>
 
