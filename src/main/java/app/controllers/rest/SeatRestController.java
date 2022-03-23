@@ -106,7 +106,7 @@ public class SeatRestController {
     })
     @GetMapping("/no-sold/{id}")
     public ResponseEntity<Long> getCountNoSoldSeat(@ApiParam(example = "1") @PathVariable long id) {
-        Optional<Flight> flight = flightService.findById(id);
+        Optional<Flight> flight = flightService.getFlightById(id);
 
         if (flight.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -123,7 +123,7 @@ public class SeatRestController {
     })
     @GetMapping("/sold/{id}")
     public ResponseEntity<Long> getCountSoldSeat(@ApiParam(example = "1") @PathVariable long id) {
-        Optional<Flight> flight = flightService.findById(id);
+        Optional<Flight> flight = flightService.getFlightById(id);
 
         if (flight.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -140,7 +140,7 @@ public class SeatRestController {
     })
     @GetMapping("/registered/{id}")
     public ResponseEntity<Long> getCountRegisteredPassenger(@ApiParam(example = "1") @PathVariable long id) {
-        Optional<Flight> flight = flightService.findById(id);
+        Optional<Flight> flight = flightService.getFlightById(id);
 
         if (flight.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

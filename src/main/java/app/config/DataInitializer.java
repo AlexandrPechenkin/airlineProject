@@ -58,8 +58,25 @@ public class DataInitializer {
                 .holdNumber(420L)
                 .price(15000L)
                 .flight(Flight.builder()
-                        .from("NSK")
-                        .to("MSK")
+                        .from(destinationService.createOrUpdateDestination(
+                                Destination.builder()
+                                        .countryName("Russia")
+                                        .city("Norilsk")
+                                        .countryCode(CountryCode.RUS)
+                                        .airportName("Alykel")
+                                        .airportCode("NSK")
+                                        .timeZone(TimeZone.getTimeZone("Europe/KRAT"))
+                                        .build()))
+                        .to(destinationService.createOrUpdateDestination(
+                                Destination.builder()
+                                        .countryName("Russia")
+                                        .city("Moscow")
+                                        .countryCode(CountryCode.RUS)
+                                        .airportName("Domodedovo")
+                                        .airportCode("DME")
+                                        .timeZone(TimeZone.getTimeZone("Europe/Moscow"))
+                                        .build()
+                        ))
                         .departureDate(LocalDate.of(2022, 12, 20))
                         .departureTime(LocalTime.of(10, 20))
                         .arrivalDateTime(LocalDateTime.of(2022, 12, 21, 14, 40))
@@ -191,17 +208,53 @@ public class DataInitializer {
                                 .build())
                         .flight(Flight.builder()
 //                                .id(1L)
-                                .destinationFrom("Moscow")
-                                .destinationTo("Tomsk")
+                                        .from(destinationService.createOrUpdateDestination(
+                                                Destination.builder()
+                                                        .countryName("Russia")
+                                                        .city("Moscow")
+                                                        .countryCode(CountryCode.RUS)
+                                                        .airportName("Domodedovo")
+                                                        .airportCode("DME")
+                                                        .timeZone(TimeZone.getTimeZone("Europe/Moscow"))
+                                                        .build()))
+                                        .to(destinationService.createOrUpdateDestination(
+                                                Destination.builder()
+                                                        .countryName("Russia")
+                                                        .city("Tomsk")
+                                                        .countryCode(CountryCode.RUS)
+                                                        .airportName("Bogashevo")
+                                                        .airportCode("TOF")
+                                                        .timeZone(TimeZone.getTimeZone("Europe/Tomsk"))
+                                                        .build()
+                                        ))
+                                .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
                                 .build()
                         ).build());
     }
 
     private void createFlight() {
-        flightService.createOrUpdate(
+        flightService.createOrUpdateFlight(
                 Flight.builder()
-                        .destinationFrom("Moscow")
-                        .destinationTo("Tomsk")
+                        .from(destinationService.createOrUpdateDestination(
+                                Destination.builder()
+                                        .countryName("Russia")
+                                        .city("Norilsk")
+                                        .countryCode(CountryCode.RUS)
+                                        .airportName("Alykel")
+                                        .airportCode("NSK")
+                                        .timeZone(TimeZone.getTimeZone("Europe/KRAT"))
+                                        .build()))
+                        .to(destinationService.createOrUpdateDestination(
+                                Destination.builder()
+                                        .countryName("Russia")
+                                        .city("Tomsk")
+                                        .countryCode(CountryCode.RUS)
+                                        .airportName("Bogashevo")
+                                        .airportCode("TOF")
+                                        .timeZone(TimeZone.getTimeZone("Europe/Tomsk"))
+                                        .build()
+                        ))
+                        .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
                         .build());
     }
 

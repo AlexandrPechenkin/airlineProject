@@ -1,9 +1,8 @@
 package app.seat;
 
 import app.AirlineApplication;
-import app.entities.Category;
-import app.entities.Flight;
-import app.entities.Seat;
+import app.entities.*;
+import app.services.interfaces.DestinationService;
 import app.services.interfaces.SeatService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -17,6 +16,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.TimeZone;
 
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -35,6 +36,8 @@ public class SeatTestRestController {
     MockMvc mvc;
     @Autowired
     SeatService seatService;
+    @Autowired
+    DestinationService destinationService;
 
     final String api = "/seat";
 
@@ -54,8 +57,25 @@ public class SeatTestRestController {
                         .build())
                 .flight(Flight.builder()
                         .id(1L)
-                        .destinationFrom("Moscow")
-                        .destinationTo("Tomsk")
+                        .from(destinationService.createOrUpdateDestination(
+                                Destination.builder()
+                                        .countryName("Russia")
+                                        .city("Moscow")
+                                        .countryCode(CountryCode.RUS)
+                                        .airportName("Domodedovo")
+                                        .airportCode("DME")
+                                        .timeZone(TimeZone.getTimeZone("Europe/Moscow"))
+                                        .build()))
+                        .to(destinationService.createOrUpdateDestination(
+                                Destination.builder()
+                                        .countryName("Russia")
+                                        .city("Tomsk")
+                                        .countryCode(CountryCode.RUS)
+                                        .airportName("Bogashevo")
+                                        .airportCode("TOF")
+                                        .timeZone(TimeZone.getTimeZone("Europe/Tomsk"))
+                                        .build()
+                        ))
                         .build()
                 ).build();
     }
@@ -73,8 +93,25 @@ public class SeatTestRestController {
                         .build())
                 .flight(Flight.builder()
                         .id(1L)
-                        .destinationFrom("Moscow")
-                        .destinationTo("Tomsk")
+                        .from(destinationService.createOrUpdateDestination(
+                                Destination.builder()
+                                        .countryName("Russia")
+                                        .city("Moscow")
+                                        .countryCode(CountryCode.RUS)
+                                        .airportName("Domodedovo")
+                                        .airportCode("DME")
+                                        .timeZone(TimeZone.getTimeZone("Europe/Moscow"))
+                                        .build()))
+                        .to(destinationService.createOrUpdateDestination(
+                                Destination.builder()
+                                        .countryName("Russia")
+                                        .city("Tomsk")
+                                        .countryCode(CountryCode.RUS)
+                                        .airportName("Bogashevo")
+                                        .airportCode("TOF")
+                                        .timeZone(TimeZone.getTimeZone("Europe/Tomsk"))
+                                        .build()
+                        ))
                         .build()
                 ).build();
     }

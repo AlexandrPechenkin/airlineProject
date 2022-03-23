@@ -1,9 +1,8 @@
 package app.controllers.ticket;
 
 import app.AirlineApplication;
-import app.entities.Flight;
-import app.entities.FlightStatus;
-import app.entities.Ticket;
+import app.entities.*;
+import app.services.interfaces.DestinationService;
 import app.services.interfaces.TicketService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -21,6 +20,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.TimeZone;
 
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -42,6 +42,8 @@ public class TicketRestControllerTest {
     MockMvc mvc;
     @Autowired
     TicketService ticketService;
+    @Autowired
+    DestinationService destinationService;
 
     final String api = "/api/ticket";
 
@@ -53,8 +55,25 @@ public class TicketRestControllerTest {
                 .holdNumber(420l)
                 .price(15000l)
                 .flight(Flight.builder()
-                        .from("NSK")
-                        .to("MSK")
+                        .from(destinationService.createOrUpdateDestination(
+                                Destination.builder()
+                                        .countryName("Russia")
+                                        .city("Norilsk")
+                                        .countryCode(CountryCode.RUS)
+                                        .airportName("Alykel")
+                                        .airportCode("NSK")
+                                        .timeZone(TimeZone.getTimeZone("Europe/KRAT"))
+                                        .build()))
+                        .to(destinationService.createOrUpdateDestination(
+                                Destination.builder()
+                                        .countryName("Russia")
+                                        .city("Moscow")
+                                        .countryCode(CountryCode.RUS)
+                                        .airportName("Domodedovo")
+                                        .airportCode("DME")
+                                        .timeZone(TimeZone.getTimeZone("Europe/Moscow"))
+                                        .build()
+                        ))
                         .departureDate(LocalDate.of(2022, 12, 20))
                         .departureTime(LocalTime.of(10, 20))
                         .arrivalDateTime(LocalDateTime.of(2022, 12, 20, 15, 40))

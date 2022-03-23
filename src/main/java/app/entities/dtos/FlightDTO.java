@@ -1,5 +1,6 @@
 package app.entities.dtos;
 
+import app.entities.Destination;
 import app.entities.FlightStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
@@ -38,6 +39,9 @@ public class FlightDTO {
     /**
      * в будущем удалить
      */
-    private String to;
-    private String from;
+//    private String to;
+//    private String from;
+
+    private Destination to;
+    private Destination from;
 }

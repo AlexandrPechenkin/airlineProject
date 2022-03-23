@@ -1,5 +1,6 @@
 package app.services.impl;
 
+import app.entities.Destination;
 import app.entities.Flight;
 import app.repositories.FlightRepository;
 import app.services.interfaces.FlightService;

@@ -1,8 +1,11 @@
 package app.controllers.flight;
 
 import app.AirlineApplication;
+import app.entities.CountryCode;
+import app.entities.Destination;
 import app.entities.Flight;
 import app.entities.FlightStatus;
+import app.services.interfaces.DestinationService;
 import app.services.interfaces.FlightService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -20,6 +23,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.TimeZone;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -40,6 +44,8 @@ public class FlightRestControllerTest {
     MockMvc mvc;
     @Autowired
     FlightService flightService;
+    @Autowired
+    DestinationService destinationService;
 
     final String api = "/api/flight";
 
@@ -47,8 +53,25 @@ public class FlightRestControllerTest {
 
     Flight createFlight() {
         return flightService.createOrUpdateFlight(Flight.builder()
-                .from("NSK")
-                .to("MSK")
+                .from(destinationService.createOrUpdateDestination(
+                                Destination.builder()
+                                        .countryName("Russia")
+                                        .city("Norilsk")
+                                        .countryCode(CountryCode.RUS)
+                                        .airportName("Alykel")
+                                        .airportCode("NSK")
+                                        .timeZone(TimeZone.getTimeZone("Europe/KRAT"))
+                                        .build()))
+                .to(destinationService.createOrUpdateDestination(
+                        Destination.builder()
+                                .countryName("Russia")
+                                .city("Moscow")
+                                .countryCode(CountryCode.RUS)
+                                .airportName("Domodedovo")
+                                .airportCode("DME")
+                                .timeZone(TimeZone.getTimeZone("Europe/Moscow"))
+                                .build()
+                ))
                 .departureDate(LocalDate.of(2022, 12, 20))
                 .departureTime(LocalTime.of(10, 20))
                 .arrivalDateTime(LocalDateTime.of(2022, 12, 20, 15, 40))
@@ -69,27 +92,47 @@ public class FlightRestControllerTest {
     void whenCreateFlight_thenStatus201() throws Exception {
         Flight flight = createFlight();
 
+        assert flight.getTo() != null;
         mvc.perform(post(api)
                         .content(objectMapper.writeValueAsString(flight))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.from", is(flight.getFrom())))
-                .andExpect(jsonPath("$.to", is(flight.getTo())));
+                .andExpect(jsonPath("$.from.city", is(flight.getFrom().getCity())))
+                .andExpect(jsonPath("$.to.city", is(flight.getTo().getCity())));
 
     }
 
     @Test
     void givenFlightExist_whenUpdateFlight_thenStatus200() throws Exception {
         Flight flight = flightService.createOrUpdateFlight(createFlight());
-        flight.setFrom("Omsk");
-        flight.setTo("Barnaul");
+        flight.setFrom(destinationService.createOrUpdateDestination(
+                Destination.builder()
+                        .countryName("Russia")
+                        .countryCode(CountryCode.RUS)
+                        .airportName("Omsk Tsentralny")
+                        .airportCode("OMS")
+                        .city("Omsk")
+                        .timeZone(TimeZone.getTimeZone("Europe/OMST"))
+                        .build()
+        ));
+        flight.setTo(destinationService.createOrUpdateDestination(
+                Destination.builder()
+                        .city("Barnaul")
+                        .countryName("Russia")
+                        .countryCode(CountryCode.RUS)
+                        .airportName("German Titov")
+                        .airportCode("BAX")
+                        .timeZone(TimeZone.getTimeZone("MSK+4"))
+                        .build()
+        ));
+        assert flight.getTo() != null;
         mvc.perform(put(api)
                         .content(objectMapper.writeValueAsString(flight))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.from", is(flight.getFrom())))
-                .andExpect(jsonPath("$.to", is(flight.getTo())));
+                .andExpect(jsonPath("$.from.city", is(flight.getFrom().getCity())))
+                .andExpect(jsonPath("$.to.city", is(flight.getTo().getCity())));
     }
 
     @Test

@@ -3,6 +3,7 @@ package app.entities;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
@@ -53,18 +54,21 @@ public class Route {
     /**
      * категория билета
      */
-//    @NonNull
-//    private Category category;
+    @NonNull
+    @OneToOne
+    private Category category;
 
     /**
      * Destination from
      */
-//    @NonNull
-//    private Destination from;
+    @NonNull
+    @OneToOne
+    private Destination from;
 
     /**
      * Destination to
      */
-//    @NonNull
-//    private Destination to;
+    @Nullable
+    @OneToOne
+    private Destination to;
 }

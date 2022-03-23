@@ -1,6 +1,5 @@
-package app.entities.searchResult;
+package app.entities;
 
-import app.entities.flight.Flight;
 import lombok.*;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
@@ -28,7 +27,7 @@ public class SearchResult {
     /**
      * список рейсов from-to
      */
-    @NonNull
+    @Nullable
     @OneToMany
 //    @JoinColumn(name = "search_result_depart")
     private List<Flight> departFlights;
