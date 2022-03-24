@@ -1,4 +1,4 @@
-package app.seat;
+package app.controllers.rest;
 
 import app.AirlineApplication;
 import app.entities.Flight;
@@ -38,7 +38,7 @@ public class SeatRestControllerTest {
     @Autowired
     SeatService seatService;
 
-    static final String api = "/seat";
+    static final String api = "/api/seat";
 
     static final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
@@ -50,10 +50,6 @@ public class SeatRestControllerTest {
                 .fare(800)
                 .isRegistered(true)
                 .isSold(true)
-//                .category(Category.builder()
-//                        .id(1L)
-//                        .category("testCategory")
-//                        .build())
                 .flight(Flight.builder()
                         .id(1L)
                         .flightStatus(FlightStatus.DELAY)
@@ -70,10 +66,6 @@ public class SeatRestControllerTest {
                 .fare(1100)
                 .isRegistered(false)
                 .isSold(true)
-//                .category(Category.builder()
-//                        .id(1L)
-//                        .category("testCategory")
-//                        .build())
                 .flight(Flight.builder()
                         .id(1L)
                         .flightStatus(FlightStatus.ACCORDING_TO_PLAN)

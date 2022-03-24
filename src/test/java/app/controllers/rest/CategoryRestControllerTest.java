@@ -1,4 +1,4 @@
-package app.category;
+package app.controllers.rest;
 
 import app.AirlineApplication;
 import app.entities.Category;
@@ -36,7 +36,7 @@ public class CategoryRestControllerTest {
     @Autowired
     CategoryService categoryService;
 
-    final String api = "/category";
+    final String api = "/api/category";
 
     final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
 

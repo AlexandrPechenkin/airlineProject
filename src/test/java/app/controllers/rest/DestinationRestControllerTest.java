@@ -1,4 +1,4 @@
-package app.controllers.v1.destination;
+package app.controllers.rest;
 
 import app.AirlineApplication;
 import app.entities.CountryCode;
@@ -39,7 +39,7 @@ public class DestinationRestControllerTest {
     @Autowired
     DestinationService destinationService;
 
-    static final String api = "/destinations";
+    static final String api = "/api/destinations";
     static final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
     Destination createDestination1() {

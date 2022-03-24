@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequiredArgsConstructor
 @Api(tags = "AdminRestController")
-@RequestMapping("/admin")
+@RequestMapping("/api/admin")
 public class AdminRestController {
 
     private final AdminService adminService;

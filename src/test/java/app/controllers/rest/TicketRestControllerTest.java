@@ -1,4 +1,4 @@
-package app.controllers.ticket;
+package app.controllers.rest;
 
 import app.AirlineApplication;
 import app.entities.Flight;

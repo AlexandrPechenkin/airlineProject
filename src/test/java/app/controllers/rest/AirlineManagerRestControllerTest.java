@@ -1,4 +1,4 @@
-package app.airlineManager;
+package app.controllers.rest;
 
 import app.AirlineApplication;
 import app.entities.AirlineManager;
@@ -47,7 +47,7 @@ public class AirlineManagerRestControllerTest {
     @Autowired
     PasswordEncoder passwordEncoder;
 
-    final String api = "/airlineManager";
+    final String api = "/api/airlineManager";
     final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
     AirlineManager createAirlineManager() {

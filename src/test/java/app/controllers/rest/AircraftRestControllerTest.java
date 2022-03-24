@@ -1,4 +1,4 @@
-package app.controllers.v1.aircraft;
+package app.controllers.rest;
 
 import app.AirlineApplication;
 import app.entities.*;
@@ -46,7 +46,7 @@ class AircraftRestControllerTest {
     @Autowired
     AircraftMapper aircraftMapper;
 
-    static final String api = "/api/v1/aircraft";
+    static final String api = "/api/aircraft";
 
     static final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
 

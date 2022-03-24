@@ -1,5 +1,6 @@
-package app;
+package app.controllers.rest;
 
+import app.AirlineApplication;
 import app.entities.Admin;
 import app.entities.Passenger;
 import app.entities.Passport;
@@ -44,7 +45,7 @@ public class UserRestControllerTest {
     @Autowired @Qualifier("userServiceImpl")
     UserService userService;
 
-    final String api = "/user";
+    final String api = "/api/user";
     final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
     Admin createAdmin() {
