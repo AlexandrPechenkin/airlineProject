@@ -19,13 +19,6 @@ public class AirlineManagerController {
     private final FlightService flightService;
     private final TicketService ticketService;
 
-//    // Страница Один
-//    @GetMapping("/flights/{id}")
-//    public String showFlightById(@PathVariable("id") Long id, Model model) {
-//        model.addAttribute("flight", flightService.findById(id));
-//        return null;
-//    }
-
     // Страница Все
     @GetMapping("/flights")
     public String showAllFlights(Model model) {
@@ -60,6 +53,13 @@ public class AirlineManagerController {
     @PutMapping("/flights")
     public String updateFlight(@ModelAttribute("flight") Flight flight) {
         flightService.createOrUpdateFlight(flight);
+        return "redirect:/airline_manager/flights";
+    }
+
+    // Метод Удалить
+    @RequestMapping("/flights/delete/{id}")
+    public String deleteFlight(@PathVariable("id") Long id) {
+        flightService.removeFlight((flightService.findById(id)).get());
         return "redirect:/airline_manager/flights";
     }
 

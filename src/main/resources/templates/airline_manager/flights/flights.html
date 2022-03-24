@@ -25,12 +25,13 @@
         <td><span th:text="${flight.destinationTo}"> To </span></td>
         <td>
             <a th:href="@{/airline_manager/flights/update/{id}(id=${flight.id})}">
-            <input type="button" value="Update"/>
+                <input type="button" value="Update"/>
             </a>
 
-<!--            <a th:href="@{/airline_manager/flights/{id}(id=${flight.id})}">-->
+            <a th:href="@{/airline_manager/flights/delete/{id}(id=${flight.id})}">
                 <input type="button" value="Delete"/>
-<!--            </a>-->
+            </a>
+
         </td>
     </tr>
     </tbody>
