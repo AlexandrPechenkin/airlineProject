@@ -2,12 +2,9 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Flights</title>
+    <title>Show Flight</title>
 </head>
 <body>
-
-<h2>Flights</h2>
-<br>
 
 <table>
     <thead>
@@ -15,26 +12,27 @@
         <th> ID </th>
         <th> From </th>
         <th> To </th>
-        <th> Operations </th>
     </tr>
     </thead>
     <tbody>
-    <tr th:each="flight : ${flightList}">
         <td><span th:text="${flight.id}"> ID </span></td>
         <td><span th:text="${flight.destinationFrom}"> From </span></td>
         <td><span th:text="${flight.destinationTo}"> To </span></td>
-        <td>
-            <a th:href="@{/airline_manager/flights/{id}(id=${flight.id})}">
-                <input type="button" value="Show"/>
-            </a>
-        </td>
     </tr>
     </tbody>
 </table>
 
-<br><br>
+<br>
 
-<input type="button" value="Add new flight" onclick="window.location.href = '/airline_manager/flights/add'"/>
+<a th:href="@{/airline_manager/flights/{id}/edit(id=${flight.id})}">
+    <input type="button" value="Edit"/>
+</a>
+
+<br>
+
+<form th:method="DELETE" th:action="@{/airline_manager/flights/{id}(id=${flight.id})}">
+    <input type="submit" value="Delete"/>
+</form>
 
 </body>
 </html>

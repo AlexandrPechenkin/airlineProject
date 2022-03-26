@@ -6,9 +6,6 @@
 </head>
 <body>
 
-<h2>Flight info</h2>
-<br>
-
 <form th:method="POST" th:action="@{/airline_manager/flights}" th:object="${flight}">
 
     <label for="destinationFrom">From: </label>
@@ -20,7 +17,6 @@
     <br><br>
 
     <input type="submit" value="Add new flight"/>
-
 </form>
 
 </body>

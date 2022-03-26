@@ -1,6 +1,7 @@
 package app.controllers;
 
 import app.entities.Flight;
+import app.entities.FlightStatus;
 import app.services.interfaces.FlightService;
 import app.services.interfaces.TicketService;
 import io.swagger.annotations.Api;
@@ -9,11 +10,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @Controller
 @RequestMapping("/airline_manager")
-@Api(tags = "AirlineManagerController")
+//@Api(tags = "AirlineManagerController")
 @AllArgsConstructor
 public class AirlineManagerController {
     private final FlightService flightService;
@@ -21,25 +20,24 @@ public class AirlineManagerController {
 
     // Страница Все
     @GetMapping("/flights")
-    public String showAllFlights(Model model) {
-        List<Flight> flightList = flightService.getAllFlights();
-        model.addAttribute(flightList);
+    public String AllFlightsPage(Model model) {
+        model.addAttribute(flightService.getAllFlights());
         return "airline_manager/flights/flights";
+    }
+
+    // Страница Один
+    @GetMapping("/flights/{id}")
+    public String FlightPage(@PathVariable("id") Long id, Model model) {
+        model.addAttribute("flight", (flightService.findById(id)).get());
+        return "airline_manager/flights/show_flight";
     }
 
     // Страница Добавить
     @GetMapping("/flights/add")
-    public String addNewFlightPage(Model model) {
+    public String CreateFlightPage(Model model) {
         Flight flight = new Flight();
         model.addAttribute("flight", flight);
         return "airline_manager/flights/add_new_flight";
-    }
-
-    // Страница Обновить
-    @GetMapping("/flights/update/{id}")
-    public String updateFlightPage(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("flight", flightService.findById(id));
-        return "airline_manager/flights/update_flight";
     }
 
     // Метод Добавить
@@ -47,6 +45,13 @@ public class AirlineManagerController {
     public String addNewFlight(@ModelAttribute("flight") Flight flight) {
         flightService.createOrUpdateFlight(flight);
         return "redirect:/airline_manager/flights";
+    }
+
+    // Страница Обновить
+    @GetMapping("/flights/{id}/edit")
+    public String UpdateFlightPage(@PathVariable("id") Long id, Model model) {
+        model.addAttribute("flight", (flightService.findById(id)).get());
+        return "airline_manager/flights/update_flight";
     }
 
     // Метод Обновить
@@ -57,7 +62,7 @@ public class AirlineManagerController {
     }
 
     // Метод Удалить
-    @RequestMapping("/flights/delete/{id}")
+    @DeleteMapping("/flights/{id}")
     public String deleteFlight(@PathVariable("id") Long id) {
         flightService.removeFlight((flightService.findById(id)).get());
         return "redirect:/airline_manager/flights";
