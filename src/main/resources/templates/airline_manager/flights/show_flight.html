@@ -10,14 +10,22 @@
     <thead>
     <tr>
         <th> ID </th>
-        <th> From </th>
-        <th> To </th>
+        <th> Departure Date </th>
+        <th> Departure Time </th>
+        <th> Arrival Date and Time </th>
+        <th> Destination From </th>
+        <th> Destination To </th>
+        <th> Flight Status </th>
     </tr>
     </thead>
     <tbody>
         <td><span th:text="${flight.id}"> ID </span></td>
-        <td><span th:text="${flight.destinationFrom}"> From </span></td>
-        <td><span th:text="${flight.destinationTo}"> To </span></td>
+        <td><span th:text="${flight.departureDate}"> Departure Date </span></td>
+        <td><span th:text="${flight.departureTime}"> Departure Time </span></td>
+        <td><span th:text="${flight.arrivalDateTime}"> Arrival Date and Time </span></td>
+        <td><span th:text="${flight.destinationFrom}"> Destination From </span></td>
+        <td><span th:text="${flight.destinationTo}"> Destination To </span></td>
+        <td><span th:text="${flight.flightStatus}"> Flight Status </span></td>
     </tr>
     </tbody>
 </table>

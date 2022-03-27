@@ -8,12 +8,30 @@
 
 <form th:method="POST" th:action="@{/airline_manager/flights}" th:object="${flight}">
 
-    <label for="destinationFrom">From: </label>
+    <label for="departureDate"> Departure Date: </label>
+    <input type="date" th:field="*{departureDate}" id="departureDate"/>
+    <br><br>
+
+    <label for="departureTime"> Departure Time: </label>
+    <input type="time" th:field="*{departureTime}" id="departureTime"/>
+    <br><br>
+
+    <label for="arrivalDateTime"> Arrival Date and Time: </label>
+    <input type="datetime-local" th:field="*{arrivalDateTime}" id="arrivalDateTime"/>
+    <br><br>
+
+    <label for="destinationFrom"> Destination From: </label>
     <input type="text" th:field="*{destinationFrom}" id="destinationFrom"/>
     <br><br>
 
-    <label for="destinationTo">To: </label>
+    <label for="destinationTo"> Destination To: </label>
     <input type="text" th:field="*{destinationTo}" id="destinationTo"/>
+    <br><br>
+
+    <select name="flightStatus">
+        <option th:each="flightStatus : ${T(app.entities.FlightStatus).values()}"
+                th:value="${flightStatus}" th:text="${flightStatus}"></option>
+    </select>
     <br><br>
 
     <input type="submit" value="Add new flight"/>
