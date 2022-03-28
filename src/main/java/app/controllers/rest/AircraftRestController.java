@@ -23,7 +23,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Slf4j
 @Api(tags = "AircraftController")
-@RequestMapping("/api/v1/aircraft")
+@RequestMapping("/api/aircraft")
 public class AircraftRestController {
     private final AircraftService aircraftService;
     private final AircraftMapper aircraftMapper;

@@ -1,4 +1,4 @@
-package app.controllers.v1.passenger;
+package app.controllers.rest;
 
 import app.AirlineApplication;
 import app.entities.Passenger;
@@ -47,7 +47,7 @@ class PassengerRestControllerTest {
     @Autowired
     PassengerMapper passengerMapper;
 
-    static final String api = "/api/v1/passenger";
+    static final String api = "/api/passenger";
 
     final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
 

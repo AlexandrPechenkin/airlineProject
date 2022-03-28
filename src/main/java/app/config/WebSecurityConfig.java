@@ -22,8 +22,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/", "/login", "/css/**").permitAll()
                 .antMatchers("/swagger-ui.html/**",
-                        "/admin", "/airlineManager",
-                        "/api/v1/passenger", "/user").hasRole("ADMIN")
+                        "/api/admin", "/api/aircraft",
+                        "/api/airlineManager", "/api/category",
+                        "/api/destinations", "/api/flight",
+                        "/api/passenger", "/api/search",
+                        "/api/seat", "/api/ticket",
+                        "/api/user").hasRole("ADMIN")
                 .anyRequest().authenticated();
         http.formLogin()
                 .successHandler(successUserHandler)

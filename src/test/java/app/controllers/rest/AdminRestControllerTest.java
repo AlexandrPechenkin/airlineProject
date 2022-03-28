@@ -1,4 +1,4 @@
-package app.admin;
+package app.controllers.rest;
 
 import app.AirlineApplication;
 import app.entities.Admin;
@@ -48,7 +48,7 @@ public class AdminRestControllerTest {
     @Autowired
     PasswordEncoder passwordEncoder;
 
-    final String api = "/admin";
+    final String api = "/api/admin";
     final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
     Admin createAdmin() {
