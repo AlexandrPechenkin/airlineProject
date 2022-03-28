@@ -21,13 +21,6 @@ public class AirlineManagerFlightController {
     private final FlightService flightService;
 
     // Страница Все
-    @GetMapping("/bs")
-    public String BsPage(Model model) {
-        model.addAttribute("flightList", flightService.getAllFlights());
-        return "airline_manager/flights/flights_new";
-    }
-
-    // Страница Все
     @GetMapping
     public String AllFlightsPage(Model model) {
         model.addAttribute("flightList", flightService.getAllFlights());

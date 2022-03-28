@@ -1,47 +1,80 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <!-- Стили -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <!-- Table -->
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.19.1/dist/bootstrap-table.min.css">
+    <!-- Filter -->
+    <link rel="stylesheet" type="text/css" href="extensions/filter-control/bootstrap-table-filter-control.css">
+
     <title>Flights</title>
+
 </head>
+
 <body>
 
-<h2>Flights</h2>
+<h2> Flights </h2>
 <br>
 
-<table>
+<table class="table"
+       data-filter-control="true"
+       data-show-search-clear-button="true">
     <thead>
-    <tr>
-        <th> ID </th>
-        <th> Departure Date </th>
-        <th> Departure Time </th>
-        <th> Arrival Date and Time </th>
-        <th> Destination From </th>
-        <th> Destination To </th>
-        <th> Flight Status </th>
-    </tr>
+        <tr>
+            <th scope="col"> ID </th>
+            <th scope="col"> Departure Date </th>
+            <th scope="col"> Departure Time </th>
+            <th scope="col"> Arrival Date and Time </th>
+            <th scope="col"
+                data-field="destinationFrom"
+                data-filter-control="input"> Destination From </th>
+            <th scope="col"> Destination To </th>
+            <th scope="col"> Flight Status </th>
+            <th scope="col"> Operations </th>
+        </tr>
     </thead>
     <tbody>
-    <tr th:each="flight : ${flightList}">
-        <td><span th:text="${flight.id}"> ID </span></td>
-        <td><span th:text="${flight.departureDate}"> Departure Date </span></td>
-        <td><span th:text="${flight.departureTime}"> Departure Time </span></td>
-        <td><span th:text="${flight.arrivalDateTime}"> Arrival Date and Time </span></td>
-        <td><span th:text="${flight.destinationFrom}"> Destination From </span></td>
-        <td><span th:text="${flight.destinationTo}"> Destination To </span></td>
-        <td><span th:text="${flight.flightStatus}"> Flight Status </span></td>
-        <td>
-            <a th:href="@{/airline_manager/flights/{id}(id=${flight.id})}">
-                <input type="button" value="Show"/>
-            </a>
-        </td>
-    </tr>
+        <tr th:each="flight : ${flightList}">
+            <td><span th:text="${flight.id}"> ID </span></td>
+            <td><span th:text="${flight.departureDate}"> Departure Date </span></td>
+            <td><span th:text="${flight.departureTime}"> Departure Time </span></td>
+            <td><span th:text="${flight.arrivalDateTime}"> Arrival Date and Time </span></td>
+            <td><span th:text="${flight.destinationFrom}"> Destination From </span></td>
+            <td><span th:text="${flight.destinationTo}"> Destination To </span></td>
+            <td><span th:text="${flight.flightStatus}"> Flight Status </span></td>
+            <td>
+                <a th:href="@{/airline_manager/flights/{id}(id=${flight.id})}">
+                    <input type="button" value="Show"/>
+                </a>
+            </td>
+        </tr>
     </tbody>
 </table>
 
 <br><br>
 
 <input type="button" value="Add new flight" onclick="window.location.href = '/airline_manager/flights/add'"/>
+
+<!-- Optional JavaScript -->
+
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+<!-- Table -->
+<script src="https://unpkg.com/bootstrap-table@1.19.1/dist/bootstrap-table.min.js"></script>
+<!-- Filter -->
+<script src="extensions/filter-control/bootstrap-table-filter-control.js"></script>
 
 </body>
 </html>
