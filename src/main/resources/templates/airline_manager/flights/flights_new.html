@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Flights</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css"
+          integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF"
+            crossorigin="anonymous"></script>
+
+    <script>
+        $("#getJsonSrc").click(function() {
+            $("#dataTable thead").show();
+            var $table = $("#dataTable"),
+                $startDate = new Date($("#dateFrom").val()),
+                $endDate = new Date($("#dateTo").val()),
+                $jsonSrc = "https://s3-us-west-2.amazonaws.com/s.cdpn.io/77979/demo.json";
+
+            var my_array;
+            $.getJSON($jsonSrc).success(function(data) {
+                my_array = [];
+
+                for (var i = 0; i < data.length; i++) {
+                    var this_date = new Date(data[i].date);
+                    if ((this_date >= $startDate) && (this_date <= $endDate)) {
+                        my_array.push(data[i]);
+
+                    }
+                }
+                my_array = JSON.stringify(my_array);
+                alert(my_array);
+            });
+            $table.bootstrapTable("load", my_array);
+        });
+    </script>
+
+    <style>
+        #dataTable thead {
+            display: none;
+        }
+    </style>
+
+</head>
+<body>
+
+<div class="container">
+    <div class="row">
+        <form id="search" role="form" style="border:0">
+            <div class="col-md-3">
+                <ul class="nav nav-stacked">
+                    <li><strong>From Date</strong></li>
+                    <li>
+                        <input type="text" class="form-control" value="2015-06-17" id="dateFrom" />
+                    </li>
+                </ul>
+            </div>
+
+            <div class="col-md-3">
+                <ul class="nav nav-stacked">
+                    <li><strong>To Date</strong></li>
+                    <li>
+                        <input type="text" class="form-control" value="2015-06-19" id="dateTo" />
+                    </li>
+                </ul>
+            </div>
+
+            <div class="col-md-3">
+                <ul class="nav nav-stacked">
+                    <li>&nbsp;</li>
+                    <li>
+                        <button class="btn btn-primary" type="button" id="getJsonSrc">Search</button>
+                    </li>
+                </ul>
+            </div>
+        </form>
+    </div>
+    <!-- Row -->
+
+    <div class="row">
+        <div class="col-md-12">
+            <table id="dataTable" data-pagination="true" data-page-size="5" data-page-list="5, 10, All" data-search="true" data-search-align="left" data-striped="true" data-show-refresh="true" data-sort-name="date" data-sort-order="desc" data-search-text="Narrow results">
+                <thead>
+                <tr>
+                    <th class="col-xs-1" data-field="date">Date</th>
+                    <th class="col-xs-1" data-field="operator">Operator</th>
+                    <th class="col-xs-2" data-field="type">Type</th>
+                    <th class="col-xs-2" data-field="subType">Sub Type</th>
+                    <th class="col-xs-5" data-field="message">Message</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
+

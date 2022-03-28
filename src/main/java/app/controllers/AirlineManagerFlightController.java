@@ -2,9 +2,8 @@ package app.controllers;
 
 import app.entities.Flight;
 import app.services.interfaces.FlightService;
-import app.services.interfaces.TicketService;
 import io.swagger.annotations.Api;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -12,14 +11,26 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequestMapping("/airline_manager/flights")
 @Api(tags = "AirlineManagerFlightController")
-@AllArgsConstructor
+@RequiredArgsConstructor
+// Проверки на null
+// Валидация
+// Отображение по дням календаря
+// Не работает удаление
+// Комментарии к коду
 public class AirlineManagerFlightController {
     private final FlightService flightService;
 
     // Страница Все
+    @GetMapping("/bs")
+    public String BsPage(Model model) {
+        model.addAttribute("flightList", flightService.getAllFlights());
+        return "airline_manager/flights/flights_new";
+    }
+
+    // Страница Все
     @GetMapping
     public String AllFlightsPage(Model model) {
-        model.addAttribute(flightService.getAllFlights());
+        model.addAttribute("flightList", flightService.getAllFlights());
         return "airline_manager/flights/flights";
     }
 
@@ -60,6 +71,10 @@ public class AirlineManagerFlightController {
     }
 
     // Метод Удалить
+    // java.sql.SQLIntegrityConstraintViolationException:
+    // Cannot delete or update a parent row: a foreign key constraint fails
+    // (`airline_db`.`ticket`, CONSTRAINT `FKfju27cbcbl1w16qeora1r636q`
+    // FOREIGN KEY (`flight_id`) REFERENCES `flight` (`id`))
     @DeleteMapping("/{id}")
     public String deleteFlight(@PathVariable("id") Long id) {
         flightService.removeFlight((flightService.findById(id)).get());

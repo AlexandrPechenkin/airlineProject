@@ -6,18 +6,23 @@
 </head>
 <body>
 
+<h2>Tickets</h2>
+<br>
+
 <table>
     <thead>
     <tr>
         <th> ID </th>
-        <th> HoldNumber </th>
+        <th> Seat </th>
+        <th> Hold Number </th>
         <th> Price </th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="ticket : ${ticketList}">
         <td><span th:text="${ticket.id}"> ID </span></td>
-        <td><span th:text="${ticket.holdNumber}"> HoldNumber </span></td>
+        <td><span th:text="${ticket.seat}"> Seat </span></td>
+        <td><span th:text="${ticket.holdNumber}"> Hold Number </span></td>
         <td><span th:text="${ticket.price}"> Price </span></td>
     </tr>
     </tbody>
