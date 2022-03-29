@@ -130,10 +130,10 @@ public class DataInitializer {
                                                 .flight(Flight.builder()
                                                         .destinationFrom("Moscow")
                                                         .destinationTo("Moon")
-                                                        .departureDate(LocalDate.of(2022, 12, 20))
+                                                        .departureDate(LocalDate.of(2022, 5, 10))
                                                         .departureTime(LocalTime.of(10, 20))
                                                         .arrivalDateTime(LocalDateTime.of(2022, 12, 21, 14, 40))
-                                                        .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
+                                                        .flightStatus(FlightStatus.CANCELLATION)
                                                         .build())
                                                 .build()
                                 ).collect(Collectors.toList()))
@@ -214,12 +214,12 @@ public class DataInitializer {
                         .isRegistered(true)
                         .isSold(true)
                         .flight(Flight.builder()
-                                .destinationFrom("NSK")
-                                .destinationTo("MSK")
-                                .departureDate(LocalDate.of(2022, 12, 20))
+                                .destinationFrom("Москва")
+                                .destinationTo("Петербург")
+                                .departureDate(LocalDate.of(2022, 10, 15))
                                 .departureTime(LocalTime.of(10, 20))
                                 .arrivalDateTime(LocalDateTime.of(2022, 12, 21, 14, 40))
-                                .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
+                                .flightStatus(FlightStatus.DELAY)
                                 .build()
                         ).build());
     }
@@ -231,7 +231,7 @@ public class DataInitializer {
                         .departureDate(LocalDate.of(2022, 12, 20))
                         .departureTime(LocalTime.of(10, 20))
                         .arrivalDateTime(LocalDateTime.of(2022, 12, 21, 14, 40))
-                        .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
+                        .flightStatus(FlightStatus.CANCELLATION)
                         .build());
     }
 
