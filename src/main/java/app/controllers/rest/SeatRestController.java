@@ -4,7 +4,7 @@ package app.controllers.rest;
 import app.entities.Flight;
 import app.entities.Seat;
 import app.entities.dtos.SeatDTO;
-import app.entities.mappers.ticket.seat.SeatMapper;
+import app.entities.mappers.seat.SeatMapper;
 import app.services.interfaces.FlightService;
 import app.services.interfaces.SeatService;
 import io.swagger.annotations.*;
@@ -27,7 +27,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @RestController
 @Api(tags = "SeatRestController")
-@RequestMapping("/seat")
+@RequestMapping("/api/seat")
 public class SeatRestController {
 
     private final SeatService seatService;

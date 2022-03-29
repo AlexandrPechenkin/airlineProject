@@ -1,11 +1,12 @@
-package app.airlineManager;
+package app.controllers.rest;
 
 import app.AirlineApplication;
-
 import app.entities.AirlineManager;
+import app.entities.Role;
 import app.services.interfaces.AirlineManagerService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.jayway.jsonpath.JsonPath;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.junit.jupiter.api.Test;
@@ -14,17 +15,20 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
 import java.util.List;
+import java.util.Set;
 
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(
         webEnvironment = SpringBootTest.WebEnvironment.MOCK,
@@ -34,19 +38,22 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestPropertySource(locations = "classpath:application-integrationtest.yml")
 @ActiveProfiles("integrationtest")
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@WithMockUser(username = "admin@mai.ru", password = "123", roles = "ADMIN")
 public class AirlineManagerRestControllerTest {
     @Autowired
     MockMvc mvc;
     @Autowired @Qualifier("airlineManagerServiceImpl")
     AirlineManagerService airlineManagerService;
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
-    final String api = "/airlineManager";
+    final String api = "/api/airlineManager";
     final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
     AirlineManager createAirlineManager() {
         return AirlineManager.builder()
                 .email("airline_manager@mail.com")
-                .roles("airline_manager")
+                .roles(Set.of(new Role("ROLE_ADMIN")))
                 .password("airline")
                 .parkName("airline_manager_park_name")
                 .build();
@@ -55,14 +62,17 @@ public class AirlineManagerRestControllerTest {
     @Test
     void whenCreateAirlineManager_thenStatus201() throws Exception {
         AirlineManager airlineManager = createAirlineManager();
-        mvc.perform(post(api)
+        MvcResult mvcResult = mvc.perform(post(api)
                         .content(objectMapper.writeValueAsString(airlineManager))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.email", is(airlineManager.getEmail())))
-                .andExpect(jsonPath("$.password", is(airlineManager.getPassword())))
-                .andExpect(jsonPath("$.parkName", is(airlineManager.getParkName())));
+                .andExpect(jsonPath("$.parkName", is(airlineManager.getParkName())))
+                .andReturn();
+
+        String password = JsonPath.read(mvcResult.getResponse().getContentAsString(), "$.password");
+        assertTrue(passwordEncoder.matches(airlineManager.getPassword(), password));
     }
 
     @Test

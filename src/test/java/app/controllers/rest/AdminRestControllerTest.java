@@ -1,10 +1,12 @@
-package app.admin;
+package app.controllers.rest;
 
 import app.AirlineApplication;
 import app.entities.Admin;
+import app.entities.Role;
 import app.services.interfaces.AdminService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.jayway.jsonpath.JsonPath;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.junit.jupiter.api.Test;
@@ -13,13 +15,18 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
 import java.util.List;
+import java.util.Set;
 
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -31,20 +38,23 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestPropertySource(locations = "classpath:application-integrationtest.yml")
 @ActiveProfiles("integrationtest")
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@WithMockUser(username = "admin@mai.ru", password = "123", roles = "ADMIN")
 public class AdminRestControllerTest {
 
     @Autowired
     MockMvc mvc;
     @Autowired @Qualifier("adminServiceImpl")
     AdminService adminService;
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
-    final String api = "/admin";
+    final String api = "/api/admin";
     final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
     Admin createAdmin() {
         return Admin.builder()
                 .email("admin@mail.com")
-                .roles("admin")
+                .roles(Set.of(new Role("ADMIN")))
                 .password("nimda")
                 .nickname("admin_nickname")
                 .build();
@@ -53,14 +63,17 @@ public class AdminRestControllerTest {
     @Test
     void whenCreateAdmin_thenStatus201() throws Exception {
         Admin admin = createAdmin();
-        mvc.perform(post(api)
+        MvcResult mvcResult = mvc.perform(post(api)
                     .content(objectMapper.writeValueAsString(admin))
                     .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.email", is(admin.getEmail())))
-                .andExpect(jsonPath("$.password", is(admin.getPassword())))
-                .andExpect(jsonPath("$.nickname", is(admin.getNickname())));
+                .andExpect(jsonPath("$.nickname", is(admin.getNickname())))
+                .andReturn();
+
+        String password = JsonPath.read(mvcResult.getResponse().getContentAsString(), "$.password");
+        assertTrue(passwordEncoder.matches(admin.getPassword(), password));
     }
 
     @Test

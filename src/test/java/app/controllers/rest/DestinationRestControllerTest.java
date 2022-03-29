@@ -1,9 +1,9 @@
-package app.controllers.v1.destination;
+package app.controllers.rest;
 
 import app.AirlineApplication;
+import app.entities.CountryCode;
 import app.entities.Destination;
 import app.services.interfaces.DestinationService;
-import app.entities.CountryCode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.AccessLevel;
@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
@@ -30,13 +31,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestPropertySource(locations = "classpath:application-integrationtest.yml")
 @ActiveProfiles("integrationtest")
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@WithMockUser(username = "admin@mai.ru", password = "123", roles = "ADMIN")
 public class DestinationRestControllerTest {
+
     @Autowired
     MockMvc mvc;
     @Autowired
     DestinationService destinationService;
-    final String api = "/api/v1/destinations";
-    final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
+
+    static final String api = "/api/destinations";
+    static final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
     Destination createDestination1() {
         return Destination.builder()
@@ -139,8 +143,8 @@ public class DestinationRestControllerTest {
 
     @Test
     void givenDestinationExist_whenGetDestinationByCity_thenStatus200() throws Exception {
-        Destination destination1 = destinationService.createOrUpdateDestination((createDestination1()));
-        Destination destination2 = destinationService.createOrUpdateDestination((createDestination2()));
+        destinationService.createOrUpdateDestination((createDestination1()));
+        destinationService.createOrUpdateDestination((createDestination2()));
 
         mvc.perform(get(api + "/city/{city}", "Test Moscow")
                         .contentType(MediaType.APPLICATION_JSON))

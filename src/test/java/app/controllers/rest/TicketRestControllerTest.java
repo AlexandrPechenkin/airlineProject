@@ -1,9 +1,10 @@
-package app.controllers.flight;
+package app.controllers.rest;
 
 import app.AirlineApplication;
 import app.entities.Flight;
 import app.entities.FlightStatus;
-import app.services.interfaces.FlightService;
+import app.entities.Ticket;
+import app.services.interfaces.TicketService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.AccessLevel;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
@@ -21,9 +23,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.hamcrest.Matchers.is;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
@@ -34,66 +35,67 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestPropertySource(locations = "classpath:application-integrationtest.yml")
 @ActiveProfiles("integrationtest")
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class FlightRestControllerTest {
+@WithMockUser(username = "admin@mai.ru", password = "123", roles = "ADMIN")
+public class TicketRestControllerTest {
 
     @Autowired
     MockMvc mvc;
     @Autowired
-    FlightService flightService;
+    TicketService ticketService;
 
-    final String api = "/api/flight";
+    final String api = "/api/ticket";
 
     final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
-    Flight createFlight() {
-        return flightService.createOrUpdateFlight(Flight.builder()
-                .destinationFrom("NSK")
-                .destinationTo("MSK")
-                .departureDate(LocalDate.of(2022, 12, 20))
-                .departureTime(LocalTime.of(10, 20))
-                .arrivalDateTime(LocalDateTime.of(2022, 12, 20, 15, 40))
-                .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
+    Ticket createTicket() {
+        return ticketService.createOrUpdateTicket(Ticket.builder()
+                .seat("5A")
+                .holdNumber(420l)
+                .price(15000l)
+                .flight(Flight.builder()
+                        .destinationFrom("NSK")
+                        .destinationTo("MSK")
+                        .departureDate(LocalDate.of(2022, 12, 20))
+                        .departureTime(LocalTime.of(10, 20))
+                        .arrivalDateTime(LocalDateTime.of(2022, 12, 20, 15, 40))
+                        .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
+                        .build())
                 .build());
     }
 
     @Test
-    void whenCreateFlightWithEmptyBody_thenStatus400() throws Exception {
+    void whenCreateTicketWithEmptyBody_thenStatus400() throws Exception {
         mvc.perform(post(api)
                         .content("{}")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
     }
 
-
     @Test
-    void whenCreateFlight_thenStatus201() throws Exception {
-        Flight flight = createFlight();
+    void whenCreateTicket_thenStatus201() throws Exception {
+        Ticket ticket = createTicket();
 
         mvc.perform(post(api)
-                        .content(objectMapper.writeValueAsString(flight))
+                        .content(objectMapper.writeValueAsString(ticket))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.destinationFrom", is(flight.getDestinationFrom())))
-                .andExpect(jsonPath("$.destinationTo", is(flight.getDestinationTo())));
-
+                .andExpect(jsonPath("$.seat", is(ticket.getSeat())));
     }
 
     @Test
-    void givenFlightExist_whenUpdateFlight_thenStatus200() throws Exception {
-        Flight flight = flightService.createOrUpdateFlight(createFlight());
-        flight.setDestinationFrom("Omsk");
-        flight.setDestinationTo("Barnaul");
+    void givenTicketExist_whenUpdateTicket_thenStatus200() throws Exception {
+        Ticket ticket = ticketService.createOrUpdateTicket(createTicket());
+        ticket.setSeat("55A");
         mvc.perform(put(api)
-                        .content(objectMapper.writeValueAsString(flight))
+                        .content(objectMapper.writeValueAsString(ticket))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.destinationFrom", is(flight.getDestinationFrom())))
-                .andExpect(jsonPath("$.destinationTo", is(flight.getDestinationTo())));
+                .andExpect(jsonPath("$.seat", is(ticket.getSeat())));
     }
 
     @Test
-    void whenUpdateFlightWithEmptyBody_thenStatus400() throws Exception {
+    void whenUpdateTicketWithEmptyBody_thenStatus400() throws Exception {
         mvc.perform(put(api)
                         .content("{}")
                         .contentType(MediaType.APPLICATION_JSON))
@@ -101,22 +103,22 @@ public class FlightRestControllerTest {
     }
 
     @Test
-    void givenFlightExist_whenGetByIdFlight_thenStatus200() throws Exception {
-        Flight flight = flightService.createOrUpdateFlight(createFlight());
+    void givenTicketExist_whenGetByIdTicket_thenStatus200() throws Exception {
+        Ticket ticket = ticketService.createOrUpdateTicket(createTicket());
 
         mvc.perform(get(api + "/{id}", 1)
-                        .content(objectMapper.writeValueAsString(flight))
+                        .content(objectMapper.writeValueAsString(ticket))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(1)));
     }
 
     @Test
-    void givenFlightExist_whenGetWithoutIdFlight_thenStatus404() throws Exception {
-        Flight flight = flightService.createOrUpdateFlight(createFlight());
+    void givenTicketExist_whenGetWithoutIdTicket_thenStatus404() throws Exception {
+        Ticket ticket = ticketService.createOrUpdateTicket(createTicket());
 
         mvc.perform(get(api + "/{id}", 420)
-                        .content(objectMapper.writeValueAsString(flight))
+                        .content(objectMapper.writeValueAsString(ticket))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }

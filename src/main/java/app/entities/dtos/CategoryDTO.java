@@ -3,6 +3,7 @@ package app.entities.dtos;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * Data Transfer Object - передающий данные из Category наружу.
@@ -16,5 +17,7 @@ public class CategoryDTO {
 
     @NotNull(message = "Имя категории не может быть пустым")
     private String category;
+
+    private List<SeatDTO> seats;
 
 }

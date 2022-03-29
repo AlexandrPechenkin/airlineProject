@@ -1,4 +1,4 @@
-package app.entities.mappers.ticket.seat;
+package app.entities.mappers.seat;
 
 import app.entities.Seat;
 import app.entities.dtos.SeatDTO;
