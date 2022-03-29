@@ -1,4 +1,4 @@
-package app.controllers;
+package app.controllers.airline_manager;
 
 import app.services.interfaces.TicketService;
 import io.swagger.annotations.Api;

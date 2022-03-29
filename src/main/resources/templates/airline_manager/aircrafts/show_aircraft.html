@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Show Aircraft</title>
+</head>
+<body>
+
+<table>
+    <thead>
+    <tr>
+        <th> ID </th>
+        <th> Brand </th>
+        <th> Model </th>
+        <th> Board Number </th>
+        <th> Production Year </th>
+        <th> Flying Range </th>
+    </tr>
+    </thead>
+    <tbody>
+        <td><span th:text="${aircraft.id}"> ID </span></td>
+        <td><span th:text="${aircraft.brand}"> Brand </span></td>
+        <td><span th:text="${aircraft.model}"> Model </span></td>
+        <td><span th:text="${aircraft.boardNumber}"> Board Number </span></td>
+        <td><span th:text="${aircraft.productionYear}"> Production Year </span></td>
+        <td><span th:text="${aircraft.flyingRange}"> Flying Range </span></td>
+    </tr>
+    </tbody>
+</table>
+
+<br>
+
+<a th:href="@{/airline_manager/aircrafts/{id}/edit(id=${aircraft.id})}">
+    <input type="button" value="Edit"/>
+</a>
+
+<br>
+
+<form th:method="DELETE" th:action="@{/airline_manager/aircrafts/{id}(id=${aircraft.id})}">
+    <input type="submit" value="Delete"/>
+</form>
+
+</body>
+</html>

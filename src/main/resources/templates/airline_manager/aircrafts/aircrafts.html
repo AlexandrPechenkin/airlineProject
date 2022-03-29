@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.19.1/dist/bootstrap-table.min.css">
+
+    <!-- Table Filter -->
+    <link href="https://unpkg.com/bootstrap-table@1.19.1/dist/bootstrap-table.min.css" rel="stylesheet">
+
+    <!-- Datepicker -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" integrity="sha512-mSYUmp1HYZDFaVKK//63EcZq4iFWFjxSL+Z3T/aCt4IO9Cejm03q3NKKYN6pFQzY0SBOr8h+eCIAZHPXcpZaNw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <title>Aircrafts</title>
+</head>
+
+<body>
+
+<h2> Aircrafts </h2>
+<br>
+
+<table id="table"
+       data-toggle="table"
+       data-filter-control="true">
+    <thead>
+    <tr>
+        <th scope="col"> ID </th>
+        <th scope="col"> Brand </th>
+        <th scope="col"> Model </th>
+        <th scope="col"> Board Number </th>
+        <th scope="col"> Production Year </th>
+        <th scope="col"> Flying Range </th>
+        <th scope="col"> Operations </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="aircraft : ${aircraftList}">
+        <td><span th:text="${aircraft.id}"> ID </span></td>
+        <td><span th:text="${aircraft.brand}"> Brand </span></td>
+        <td><span th:text="${aircraft.model}"> Model </span></td>
+        <td><span th:text="${aircraft.boardNumber}"> Board Number </span></td>
+        <td><span th:text="${aircraft.productionYear}"> Production Year </span></td>
+        <td><span th:text="${aircraft.flyingRange}"> Flying Range </span></td>
+        <td>
+            <a th:href="@{/airline_manager/aircrafts/{id}(id=${aircraft.id})}">
+                <input type="button" value="Show"/>
+            </a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<br><br>
+
+<input type="button" value="Add new aircraft" onclick="window.location.href = '/airline_manager/aircrafts/add'"/>
+
+<!-- Optional JavaScript -->
+
+<!-- jQuery first, then Popper.js, then Bootstrap JS --><script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+<!-- Table Filter -->
+<script src="https://unpkg.com/bootstrap-table@1.19.1/dist/bootstrap-table.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.19.1/dist/extensions/filter-control/bootstrap-table-filter-control.min.js"></script>
+
+<!-- Datepicker -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js" integrity="sha512-T/tUfKSV1bihCnd+MxKD0Hm1uBBroVYBOYSk1knyvQ9VyZJpc/ALb4P0r6ubwVPSGB2GvjeoMAJJImBG12TiaQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</body>
+</html>

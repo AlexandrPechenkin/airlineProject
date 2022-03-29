@@ -1,4 +1,4 @@
-package app.controllers;
+package app.controllers.airline_manager;
 
 import app.entities.Flight;
 import app.services.interfaces.FlightService;
@@ -61,10 +61,6 @@ public class AirlineManagerFlightController {
     }
 
     // Метод Удалить
-    // java.sql.SQLIntegrityConstraintViolationException:
-    // Cannot delete or update a parent row: a foreign key constraint fails
-    // (`airline_db`.`ticket`, CONSTRAINT `FKfju27cbcbl1w16qeora1r636q`
-    // FOREIGN KEY (`flight_id`) REFERENCES `flight` (`id`))
     @DeleteMapping("/{id}")
     public String deleteFlight(@PathVariable("id") Long id) {
         flightService.removeFlight((flightService.findById(id)).get());

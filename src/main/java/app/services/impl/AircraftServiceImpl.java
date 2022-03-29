@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -45,5 +46,14 @@ public class AircraftServiceImpl implements AircraftService {
     @Override
     public void deleteAircraftById(Long id) {
         aircraftRepository.deleteById(id);
+    }
+
+    /**
+     * Возвращает список всех воздушных судов
+     * @return - список всех воздушных судов
+     */
+    @Override
+    public List<Aircraft> getAllAircrafts() {
+        return aircraftRepository.findAll();
     }
 }

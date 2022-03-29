@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Aircraft</title>
+</head>
+<body>
+
+<form th:method="PUT" th:action="@{/airline_manager/aircrafts}" th:object="${aircraft}">
+
+    <input type="hidden" th:field="*{id}" id="id"/>
+    <br><br>
+
+    <label for="brand"> Brand </label>
+    <input type="text" th:field="*{brand}" id="brand"/>
+    <br><br>
+
+    <label for="model"> Model </label>
+    <input type="text" th:field="*{model}" id="model"/>
+    <br><br>
+
+    <label for="boardNumber"> Board Number </label>
+    <input type="text" th:field="*{boardNumber}" id="boardNumber"/>
+    <br><br>
+
+    <label for="productionYear"> Production Year </label>
+    <input type="text" th:field="*{productionYear}" id="productionYear"/>
+    <br><br>
+
+    <label for="flyingRange"> Flying Range </label>
+    <input type="number" th:field="*{flyingRange}" id="flyingRange"/>
+    <br><br>
+
+    <input type="submit" value="Update"/>
+</form>
+
+</body>
+</html>
