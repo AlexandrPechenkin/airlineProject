@@ -12,10 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/airline_manager/flights")
 @Api(tags = "AirlineManagerFlightController")
 @RequiredArgsConstructor
-// Проверки на null
 // Валидация
-// Отображение по дням календаря
-// Не работает удаление
 // Комментарии к коду
 public class AirlineManagerFlightController {
     private final FlightService flightService;

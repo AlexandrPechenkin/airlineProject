@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/airline_manager/tickets")
 @Api(tags = "AirlineManagerTicketController")
 @RequiredArgsConstructor
-// Конкретный рейс в конкретную дату. Простой вариант - начальный экран с выбором рейса и даты
+// Комментарии к коду
 public class AirlineManagerTicketController {
     private final TicketService ticketService;
 
