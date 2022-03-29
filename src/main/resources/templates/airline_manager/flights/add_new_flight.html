@@ -8,24 +8,29 @@
 
 <form th:method="POST" th:action="@{/airline_manager/flights}" th:object="${flight}">
 
-    <label for="departureDate"> Departure Date: (dd.MM.yyyy) </label>
+    <label for="departureDate"> Departure Date (dd.MM.yyyy) : </label>
     <input type="text" th:field="*{departureDate}" id="departureDate"/>
+    <div style="color:red" th:if="${#fields.hasErrors('departureDate')}" th:errors="*{departureDate}"> Departure Date Error </div>
     <br><br>
 
-    <label for="departureTime"> Departure Time: (HH:mm) </label>
+    <label for="departureTime"> Departure Time (HH:mm) : </label>
     <input type="text" th:field="*{departureTime}" id="departureTime"/>
+    <div style="color:red" th:if="${#fields.hasErrors('departureTime')}" th:errors="*{departureTime}"> Departure Time Error </div>
     <br><br>
 
-    <label for="arrivalDateTime"> Arrival Date and Time: (dd.MM.yyyy HH:mm) </label>
+    <label for="arrivalDateTime"> Arrival Date and Time (dd.MM.yyyy HH:mm) : </label>
     <input type="text" th:field="*{arrivalDateTime}" id="arrivalDateTime"/>
+    <div style="color:red" th:if="${#fields.hasErrors('arrivalDateTime')}" th:errors="*{arrivalDateTime}"> Arrival Date and Time Error </div>
     <br><br>
 
-    <label for="destinationFrom"> Destination From: </label>
+    <label for="destinationFrom"> Destination From : </label>
     <input type="text" th:field="*{destinationFrom}" id="destinationFrom"/>
+    <div style="color:red" th:if="${#fields.hasErrors('destinationFrom')}" th:errors="*{destinationFrom}"> Destination From Error </div>
     <br><br>
 
-    <label for="destinationTo"> Destination To: </label>
+    <label for="destinationTo"> Destination To : </label>
     <input type="text" th:field="*{destinationTo}" id="destinationTo"/>
+    <div style="color:red" th:if="${#fields.hasErrors('destinationTo')}" th:errors="*{destinationTo}"> Destination To Error </div>
     <br><br>
 
     <select name="flightStatus">

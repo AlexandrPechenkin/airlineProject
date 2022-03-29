@@ -5,12 +5,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+/**
+ * Контроллер для менеджера авиакомпании
+ */
 @Controller
 @RequestMapping("/airline_manager")
 @Api(tags = "AirlineManagerController")
-// Комментарии к коду
 public class AirlineManagerController {
 
+    /**
+     * Возвращается страницу менеджера с выбором раздела
+     * @return - страница с выбором раздела
+     */
     @GetMapping
     public String MainPanelPage() {
         return "airline_manager/main_panel";

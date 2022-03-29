@@ -8,24 +8,29 @@
 
 <form th:method="POST" th:action="@{/airline_manager/aircrafts}" th:object="${aircraft}">
 
-    <label for="brand"> Brand </label>
+    <label for="brand"> Brand : </label>
     <input type="text" th:field="*{brand}" id="brand"/>
+    <div style="color:red" th:if="${#fields.hasErrors('brand')}" th:errors="*{brand}"> Brand Error </div>
     <br><br>
 
-    <label for="model"> Model </label>
+    <label for="model"> Model : </label>
     <input type="text" th:field="*{model}" id="model"/>
+    <div style="color:red" th:if="${#fields.hasErrors('model')}" th:errors="*{model}"> Model Error </div>
     <br><br>
 
-    <label for="boardNumber"> Board Number </label>
+    <label for="boardNumber"> Board Number : </label>
     <input type="text" th:field="*{boardNumber}" id="boardNumber"/>
+    <div style="color:red" th:if="${#fields.hasErrors('boardNumber')}" th:errors="*{boardNumber}"> Board Number Error </div>
     <br><br>
 
-    <label for="productionYear"> Production Year (dd.MM.yyyy) </label>
+    <label for="productionYear"> Production Year (dd.MM.yyyy) : </label>
     <input type="text" th:field="*{productionYear}" id="productionYear"/>
+    <div style="color:red" th:if="${#fields.hasErrors('productionYear')}" th:errors="*{productionYear}"> Production Year Error </div>
     <br><br>
 
-    <label for="flyingRange"> Flying Range </label>
+    <label for="flyingRange"> Flying Range : </label>
     <input type="number" th:field="*{flyingRange}" id="flyingRange"/>
+    <div style="color:red" th:if="${#fields.hasErrors('flyingRange')}" th:errors="*{flyingRange}"> Flying Range Error </div>
     <br><br>
 
     <input type="submit" value="Add new aircraft"/>

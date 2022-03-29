@@ -8,15 +8,21 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+/**
+ * Контроллер для раздела билетов менеджера авиакомпании
+ */
 @Controller
 @RequestMapping("/airline_manager/tickets")
 @Api(tags = "AirlineManagerTicketController")
 @RequiredArgsConstructor
-// Комментарии к коду
 public class AirlineManagerTicketController {
     private final TicketService ticketService;
 
-    // Страница Все
+    /**
+     * Возвращает страницу с информацией о всех билетах и возможностьью фильтрации билетов по дате вылета
+     * @param model - объект класса Model, предназначенный для добавления атрибутов в модель
+     * @return - страница со всеми билетами
+     */
     @GetMapping
     public String AllTicketsPage(Model model) {
         model.addAttribute("ticketList", ticketService.getAllTickets());
