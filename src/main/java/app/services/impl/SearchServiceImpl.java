@@ -99,7 +99,6 @@ public class SearchServiceImpl implements SearchService {
             }
         }
         // ONE STOP ROUTES
-        // сохраняем по всем оставшимся начальным кодам список DestinationResource для одной остановки
         List<DestinationResource> resourceFirstStopOfOne = new ArrayList<>();
         // Мапа, которая ставит в соответствие каждому коду аэропорта из указанного города from все доступные
         // рейсы в город to (во все доступные аэропорты города to)
@@ -134,24 +133,25 @@ public class SearchServiceImpl implements SearchService {
                             && !resOneStop.getBaseCode().equals(res.getBaseCode())) {
                         resourceFirstStopOfOneResidueAfterSearch.get(res).forEach(firstStopOfOneDest -> {
                             oneStop.get(resOneStop).forEach(toDest -> {
-                                Route route1 = Route.builder()
-                                        .from(constructDestinationByResource(res))
-                                        .to(constructDestinationByAnotherDestination(firstStopOfOneDest))
-                                        .build();
-                                Route route2 = Route.builder()
-                                        .from(constructDestinationByAnotherDestination(firstStopOfOneDest))
-                                        .to(constructDestinationByAnotherDestination(toDest))
-                                        .build();
-                                routesByCode.add(route1);
-                                routesByCode.add(route2);
+                                if (firstStopOfOneDest.getAirportCode().equals(resOneStop.getBaseCode())) {
+                                    Route route1 = Route.builder()
+                                            .from(constructDestinationByResource(res))
+                                            .to(constructDestinationByAnotherDestination(firstStopOfOneDest))
+                                            .build();
+                                    Route route2 = Route.builder()
+                                            .from(constructDestinationByAnotherDestination(firstStopOfOneDest))
+                                            .to(constructDestinationByAnotherDestination(toDest))
+                                            .build();
+                                    sharedListForRoutesByCode.add(new ArrayList<>() {{
+                                        add(route1);
+                                        add(route2);
+                                    }});
+                                }
                             });
                         });
                     }
-                    sharedListForRoutesByCode.add(new ArrayList<>(routesByCode));
-                    oneStopRoutesMap.put(res, new ArrayList<>(sharedListForRoutesByCode));
-                    routesByCode.clear();
-                    sharedListForRoutesByCode.clear();
                 }
+                oneStopRoutesMap.put(res, new ArrayList<>(sharedListForRoutesByCode));
             }
         }
         // TWO STOPS ROUTES
@@ -185,7 +185,6 @@ public class SearchServiceImpl implements SearchService {
         List<List<Route>> sharedListForRoutesByCodeOfSecondStopOfTwo = new ArrayList<>();
         twoStopsRoutesMap = new HashMap<>();
         for (DestinationResource zeroRes : initFromOfTwoStops.keySet()) {
-            Map<DestinationResource, List<List<Route>>> finalSecondStopMap = twoStopsRoutesMap;
             initFromOfTwoStops.get(zeroRes).forEach(zeroDest -> {
                 for (DestinationResource firstRes : firstStop.keySet()) {
                     if (zeroRes.getAvailableAirportCodes().contains(firstRes.getBaseCode())
@@ -220,12 +219,11 @@ public class SearchServiceImpl implements SearchService {
                                     });
                                 });
                             }
-
                         }
                     }
                 }
             });
-            finalSecondStopMap.put(zeroRes, new ArrayList<>(sharedListForRoutesByCodeOfSecondStopOfTwo));
+            twoStopsRoutesMap.put(zeroRes, new ArrayList<>(sharedListForRoutesByCodeOfSecondStopOfTwo));
         }
         Map<Integer, Map<DestinationResource, List<List<Route>>>> allRoutes = new HashMap<>();
         allRoutes.put(0, directRoutesMap);
