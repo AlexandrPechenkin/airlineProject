@@ -3,6 +3,7 @@ package app.config;
 
 import app.entities.*;
 import app.services.interfaces.*;
+import app.util.Fleet;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -54,6 +55,12 @@ public class DataInitializer {
                 .build());
 
         System.out.println("DataInitializer сработал!");
+
+        aircraftService.createOrUpdateAircraft(Fleet.createMC21200());
+        System.out.println("Самолет МС-21-200 был создан.");
+
+        aircraftService.createOrUpdateAircraft(Fleet.createBoeing777());
+        System.out.println("Самолет Боинг 777 был создан.");
 
         createPassenger();
         System.out.println("Пассажир был создан.");
