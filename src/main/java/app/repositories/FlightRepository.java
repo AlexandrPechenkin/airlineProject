@@ -26,6 +26,13 @@ public interface FlightRepository extends JpaRepository<Flight, Long> {
             "and f.departureDate like concat('%', :departureDate, '%')")
     List<Flight> findFlights(@Param("cityFrom") String from, @Param("cityTo") String to, LocalDate departureDate);
 
+
+//    @Query(value = "select f from Flight f where f.from.city like concat('%',:cityFrom,'%')" +
+//            "and f.to.city like concat('%',:cityTo,'%')" )
+//    List<Flight> findFlightsByCitiesAndAirportCode(@Param("cityFrom") String cityFrom, @Param("cityTo") String cityTo,
+//                                                   @Param("airportCode") String airportCode,
+//                                                   @Param("localDate") LocalDate departureDate);
+
 //    @Query(value = "select f from Flight f where f.from.city like concat('%', :from, '%')" +
 //            "and f.to.city like  concat('%', :to, '%') " +
 //            "and f.departureDate like concat('%', :departureDate, '%')")

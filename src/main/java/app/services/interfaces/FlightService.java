@@ -1,6 +1,5 @@
 package app.services.interfaces;
 
-import app.entities.Destination;
 import app.entities.Flight;
 
 import java.time.LocalDate;
@@ -17,5 +16,4 @@ public interface FlightService {
     Optional<Flight> findById(Long id);
 
     List<Flight> findFlights(String cityFrom, String cityTo, LocalDate departureDate);
-
 }

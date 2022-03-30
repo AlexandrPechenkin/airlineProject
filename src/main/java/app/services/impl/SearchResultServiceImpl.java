@@ -10,10 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.TimeZone;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +20,11 @@ public class SearchResultServiceImpl implements SearchResultService {
     FlightService flightService;
     SearchService searchService;
     TicketService ticketService;
+    private Map<String, Destination> destinations = new HashMap<>();
+
+    public SearchResultServiceImpl(DestinationService destinationService) {
+        this.destinationService = destinationService;
+    }
 
     @Override
     public SearchResult createOrUpdateSearchResult(SearchResult searchResult) {
@@ -70,6 +72,13 @@ public class SearchResultServiceImpl implements SearchResultService {
                         .timeZone(TimeZone.getTimeZone("Europe/Vladivostok"))
                         .build()
         );
+        String nizhnyNovgorodString = nizhnyNovgorod.getCity();
+        String vladivostokString = vladivostok.getCity();
+
+
+        // найти список аэропортов по вбиваемому в Route по названию city from и to
+        List<Destination> destinationsFrom = destinationService.getDestinationListByCity(cityFrom);
+        List<Destination> destinationsTo = destinationService.getDestinationListByCity(cityTo);
 
         return new SearchResult();
     }

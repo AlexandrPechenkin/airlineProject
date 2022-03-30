@@ -7,6 +7,10 @@ import org.springframework.stereotype.Component;
 import javax.persistence.*;
 import java.util.List;
 
+/**
+ * Класс, нужный для предоставления результатов поиска доступных рейсов для пользователя
+ * и аналитики.
+ */
 @Entity
 @Table(name = "Search_result")
 @NoArgsConstructor
@@ -39,4 +43,11 @@ public class SearchResult {
     @OneToMany
 //    @JoinColumn(name = "search_result_return")
     private List<Flight> returnFlights;
+
+    /**
+     * Сообщение, которое возникло вследствие ошибки/дачи дополнительной информации пользователю.
+     */
+    @Nullable
+    @Column(name = "message")
+    private String message;
 }

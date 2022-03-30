@@ -52,7 +52,6 @@ public class Flight {
     @DateTimeFormat(pattern = "dd.MM.yyyy HH:mm")
     @JsonFormat(pattern = "dd.MM.yyyy HH:mm")
     private LocalDateTime arrivalDateTime;
-
     /**
      * Enum со статусами полета - "По плану", "Задержан", "Отменён".
      */
@@ -70,7 +69,7 @@ public class Flight {
     /**
      * Destination to
      */
-    @Nullable
+    @NonNull
     @OneToOne
     private Destination to;
 
@@ -82,8 +81,9 @@ public class Flight {
     private Map<Category, List<Seat>> seatsByCategory;
 
     /**
-     * самолет
+     * самолёт
      */
-//    @NonNull
-//    private Aircraft aircraft;
+    @Nullable
+    @OneToOne
+    private Aircraft aircraft;
 }

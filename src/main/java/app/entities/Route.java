@@ -7,6 +7,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
+import javax.validation.constraints.Null;
 import java.time.LocalDate;
 
 @NoArgsConstructor
@@ -30,6 +31,7 @@ public class Route {
      */
     @DateTimeFormat(pattern = "dd.MM.yyyy")
     @JsonFormat(pattern = "dd.MM.yyyy")
+    @Nullable
     private LocalDate departureDate;
 
     /**
@@ -37,24 +39,26 @@ public class Route {
      */
     @DateTimeFormat(pattern = "dd.MM.yyyy")
     @JsonFormat(pattern = "dd.MM.yyyy")
+    @Nullable
     private LocalDate arrivalDate;
 
 
     /**
      * количество сидений
      */
-    @NonNull
+    @Nullable
     private int numberOfSeats;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "search_id", nullable = false)
+    @Nullable
     private Search search;
 
 
     /**
      * категория билета
      */
-    @NonNull
+    @Nullable
     @OneToOne
     private Category category;
 
@@ -68,7 +72,7 @@ public class Route {
     /**
      * Destination to
      */
-    @Nullable
+    @NonNull
     @OneToOne
     private Destination to;
 }
