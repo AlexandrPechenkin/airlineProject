@@ -4,6 +4,7 @@ import app.AirlineApplication;
 import app.entities.AirlineManager;
 import app.entities.Role;
 import app.services.interfaces.AirlineManagerService;
+import app.services.interfaces.RoleService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.jayway.jsonpath.JsonPath;
@@ -46,6 +47,8 @@ public class AirlineManagerRestControllerTest {
     AirlineManagerService airlineManagerService;
     @Autowired
     PasswordEncoder passwordEncoder;
+    @Autowired
+    RoleService roleService;
 
     final String api = "/api/airlineManager";
     final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
@@ -53,7 +56,7 @@ public class AirlineManagerRestControllerTest {
     AirlineManager createAirlineManager() {
         return AirlineManager.builder()
                 .email("airline_manager@mail.com")
-                .roles(Set.of(new Role("ROLE_ADMIN")))
+                .roles(Set.of(roleService.createOrUpdateRole(new Role(1L,"ADMIN"))))
                 .password("airline")
                 .parkName("airline_manager_park_name")
                 .build();

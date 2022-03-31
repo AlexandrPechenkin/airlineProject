@@ -1,11 +1,7 @@
 package app.entities;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.experimental.SuperBuilder;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
@@ -15,11 +11,11 @@ import java.util.Set;
  * Класс Role
  */
 
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-@SuperBuilder
 @Entity
 @Table(name = "roles")
 public class Role implements GrantedAuthority {
@@ -43,6 +39,11 @@ public class Role implements GrantedAuthority {
             inverseJoinColumns = @JoinColumn(columnDefinition = "user_id"))
     private Set<User> users;
 
+    public Role(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     public Role(String name) {
         this.name = name;
     }
@@ -51,6 +52,4 @@ public class Role implements GrantedAuthority {
     public String getAuthority() {
         return name;
     }
-
-
 }

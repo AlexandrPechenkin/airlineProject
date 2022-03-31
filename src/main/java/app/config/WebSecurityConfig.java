@@ -20,14 +20,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/", "/login", "/css/**").permitAll()
+                .antMatchers("/", "/login", "/css/**", "js/**").permitAll()
                 .antMatchers("/swagger-ui.html/**",
                         "/api/admin", "/api/aircraft",
                         "/api/airlineManager", "/api/category",
                         "/api/destinations", "/api/flight",
                         "/api/passenger", "/api/search",
                         "/api/seat", "/api/ticket",
-                        "/api/user", "/api/role").hasRole("ADMIN")
+                        "/api/user", "/api/role").hasAuthority("ADMIN")
                 .anyRequest().authenticated();
         http.formLogin()
                 .successHandler(successUserHandler)
