@@ -35,6 +35,7 @@ public class DataInitializer {
     private final UserService userService;
     private final DestinationService destinationService;
     private final TicketService ticketService;
+    private final RoleService roleService;
 
     @PostConstruct
     public void init() {
@@ -87,6 +88,19 @@ public class DataInitializer {
 
         createAirlineManagerWithUserService();
         System.out.println("AirlineManager был создан при помощи UserService, UserRepository, AirlineManagerMapper, AirlineManagerDTO.");
+    }
+
+    private void createRoles() {
+        roleService.createOrUpdateRole(
+                Role.builder()
+                        .name("Admin")
+                        .build()
+        );
+        roleService.createOrUpdateRole(
+                Role.builder()
+                        .name("USER")
+                        .build()
+        );
     }
 
     private void createPassenger() {
