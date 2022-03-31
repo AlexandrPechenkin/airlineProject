@@ -12,17 +12,24 @@ async function getFlightStatusByFromToDepartureDate() {
             'Content-Type': 'application/json',
             'Accept': 'application/json'
         }
-    }).then(resp => resp.json())
-        .then(res => {
-            for (let iter in res) {
+    })
+        .then(response => {
+            if (response.ok) {
+                return response.json()
+            }
+            throw new Error()
+        })
+        .then(json => {
+            for (let iter in json) {
                 status_info.innerHTML += `
                 <div class="card-body">
-                    <h5>Статус вашего рейса | ID: ${res[iter].id}</h5>
-                    <p>${res[iter].flightStatus}</p>
+                    <h5>Статус вашего рейса | ID: ${json[iter].id}</h5>
+                    <p>${json[iter].flightStatus}</p>
                 </div>
                 `;
             }
-        });
+        })
+        .catch(error => console.log(error));
 }
 
 // TODO: Поиск рейса "По номеру рейса" сделан через ID, позже в Flight добавить поле "Номера рейса" и на основе его переделать.
@@ -36,13 +43,20 @@ async function getFlightStatusById() {
             'Content-Type': 'application/json',
             'Accept': 'application/json'
         }
-    }).then(resp => resp.json())
-        .then(res => {
-            status_info.innerHTML += `
+    })
+        .then(response => {
+            if (response.ok) {
+                return response.json()
+            }
+            throw new Error()
+        })
+        .then(json => {
+                status_info.innerHTML += `
                 <div class="card-body">
-                    <h5>Статус вашего рейса | ID: ${res.id}</h5>
-                    <p>${res.flightStatus}</p>
+                    <h5>Статус вашего рейса | ID: ${json.id}</h5>
+                    <p>${json.flightStatus}</p>
                 </div>
                 `;
-        });
+        })
+        .catch(error => console.log(error));
 }
