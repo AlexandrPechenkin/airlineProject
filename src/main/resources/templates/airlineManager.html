@@ -1,36 +1,242 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      lang="en"
-      xmlns:th="http://www.thymeleaf.org">
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
+    <meta charset="UTF-8">
     <title>Airline Manager Panel</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css"
+          integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF"
+            crossorigin="anonymous"></script>
+
+    <script type="text/javascript" src="/airlineManager.js"></script>
 </head>
+
 <body>
+<!-- Header -->
+<header class="p-3 mb-2 bg-success text-white">
+    <h1>Airline Manager Panel</h1>
+</header>
 
-<table class="table" id="tableFlights">
-    <thead>
-    <tr>
-        <th scope="col"> ID </th>
-        <th scope="col"> Destination From </th>
-    </tr>
-    </thead>
-    <tbody>
-    </tbody>
-</table>
+<!-- Content -->
+<div class="row">
+    <!-- Left -->
+    <div class="col-3">
+        <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+            <a class="nav-link active" id="v-pills-aircrafts-tab" data-toggle="pill" href="#v-pills-aircrafts" role="tab" aria-controls="v-pills-aircrafts" aria-selected="true">Aircrafts</a>
+            <a class="nav-link" id="v-pills-flights-tab" data-toggle="pill" href="#v-pills-flights" role="tab" aria-controls="v-pills-flights" aria-selected="false">Flights</a>
+            <a class="nav-link" id="v-pills-tickets-tab" data-toggle="pill" href="#v-pills-tickets" role="tab" aria-controls="v-pills-tickets" aria-selected="false">Tickets</a>
+        </div>
+    </div>
+    <!-- Right -->
+    <div class="col-9 bg-light text-dark">
+        <div class="tab-content" id="v-pills-tabContent">
+            <!-- Aircrafts -->
+            <div class="tab-pane fade show active" id="v-pills-aircrafts" role="tabpanel" aria-labelledby="v-pills-aircrafts-tab">
+                <!-- Title -->
+                <h1>Aircrafts</h1>
+                <!-- Aircrafts table or new aircraft select -->
+                <ul class="nav nav-tabs" id="aircraftsTabs" role="tablist">
+                    <!-- Aircrafts table -->
+                    <li class="nav-item">
+                        <a class="nav-link active" id="aircraftstable-tab" data-toggle="tab" href="#aircraftstable" role="tab" aria-controls="aircraftstable" aria-selected="true">Aircrafts Table</a>
+                    </li>
+                    <!-- New Aircraft -->
+                    <li class="nav-item">
+                        <a class="nav-link" id="newaircraft-tab" data-toggle="tab" href="#newaircraft" role="tab" aria-controls="newaircraft" aria-selected="false">New Aircraft</a>
+                    </li>
+                </ul>
+                <!-- Aircrafts table or new aircraft -->
+                <div class="tab-content" id="myTabContent">
+                    <!-- Aircrafts table -->
+                    <div class="tab-pane fade show active" id="aircraftstable" role="tabpanel" aria-labelledby="aircraftstable-tab">
+                        <!-- Title -->
+                        <h5>All Aircrafts</h5>
+                        <!-- Table -->
+                        <div class="container-fluid bg-white text-dark">
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th scope="col"> ID </th>
+                                    <th scope="col"> Brand </th>
+                                    <th scope="col"> Model </th>
+                                    <th scope="col"> Board Number </th>
+                                    <th scope="col"> Production Year </th>
+                                    <th scope="col"> Flying Range </th>
+                                    <th scope="col"></th>
+                                    <th scope="col"></th>
+                                </tr>
+                                </thead>
+                                <tbody id="tableAircrafts">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- New Aircraft -->
+                    <div class="tab-pane fade" id="newaircraft" role="tabpanel" aria-labelledby="newaircraft-tab">
+                        <!-- Title -->
+                        <h5>Add new Aircraft</h5>
+                        <!-- Form -->
+                        <div class="container bg-white text-dark">
+                            <form id="addAircraftForm">
 
-<!-- Optional JavaScript -->
-<script type="text/javascript" src="/airlineManager.js"></script>
-<!-- jQuery first, then Popper.js, then Bootstrap JS -->
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+                                <div class="form-group">
+                                    <label for="addBrand" class="col-form-label"> Brand </label>
+                                    <input type="text" class="form-control"
+                                           id="addBrand" placeholder="Brand" name="brand"
+                                           value=""/>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="addModel" class="col-form-label"> Model </label>
+                                    <input type="text" class="form-control"
+                                           id="addModel" placeholder="Model" name="model"
+                                           value=""/>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="addBoardNumber" class="col-form-label"> Board Number </label>
+                                    <input type="text" class="form-control"
+                                           id="addBoardNumber" placeholder="Board Number" name="boardNumber"
+                                           value=""/>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="addProductionYear" class="col-form-label"> Production Year </label>
+                                    <input type="date" class="form-control"
+                                           id="addProductionYear" placeholder="Production Year" name="productionYear"
+                                           value=""/>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="addFlyingRange" class="col-form-label"> Flying Range </label>
+                                    <input type="number" class="form-control"
+                                           id="addFlyingRange" placeholder="Flying Range" name="flyingRange"
+                                           value=""/>
+                                </div>
+
+                                <button type="button" class="btn btn-success" id="addAircraft"
+                                        onclick="addAircraftData()">Add new Aircraft
+                                </button>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Flights -->
+            <!-- Tickets -->
+        </div>
+    </div>
+</div>
+
+<!-- Edit Aircraft Modal -->
+<div class="editAircraftDiv">
+    <div class="modal fade" id="editAircraft" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Edit Aircraft</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="editAircraftForm">
+
+                        <div class="form-group">
+                            <label for="editId" class="col-form-label"> ID </label>
+                            <input type="text" readonly="readonly" class="form-control"
+                                   id="editId" name="id" value=""/>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="editBrand" class="col-form-label"> Brand </label>
+                            <input type="text" class="form-control"
+                                   id="editBrand" placeholder="Brand" name="brand" value=""/>
+                        </div>
+
+
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary"
+                            onclick="updateUser()">Edit
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Aircraft Modal -->
+<div class="deleteUserDiv">
+    <div class="modal fade" id="deleteUser" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="delModalLabel">Delete user</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="deleteUserForm">
+                        <div class="form-group">
+                            <label for="deleteId" class="col-form-label">ID:</label>
+                            <input type="text" readonly="readonly" class="form-control"
+                                   id="deleteId" name="id" value=""/>
+                        </div>
+                        <div class="form-group">
+                            <label for="deleteFirstName" class="col-form-label">First Name:</label>
+                            <input type="text" readonly="readonly" class="form-control"
+                                   id="deleteFirstName" placeholder="First Name" name="firstName" value=""/>
+                        </div>
+                        <div class="form-group">
+                            <label for="deleteLastName" class="col-form-label">Last Name:</label>
+                            <input type="text" readonly="readonly" class="form-control"
+                                   id="deleteLastName" placeholder="Last Name" name="lastName" value=""/>
+                        </div>
+                        <div class="form-group">
+                            <label for="deleteAge" class="col-form-label">Age:</label>
+                            <input type="number" readonly="readonly" class="form-control"
+                                   id="deleteAge" placeholder="Age" name="age" value=""/>
+                        </div>
+                        <div class="form-group">
+                            <label for="deleteEmail" class="col-form-label">Email:</label>
+                            <input type="text" readonly="readonly" class="form-control"
+                                   id="deleteEmail" placeholder="Email" name="email" value=""/>
+                        </div>
+                        <div>
+                            <label>Roles:
+                                <br>
+                                <select size="2" multiple name="roles" id="deleteRoles" required="required"
+                                        disabled="disabled"
+                                        style="width: 300%;">
+                                    <option selected="selected" value="2">USER</option>
+                                    <option value="1">ADMIN</option>
+                                </select>
+                            </label>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-danger" onclick="deleteUserById()">
+                        Delete
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>
 
