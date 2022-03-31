@@ -31,8 +31,8 @@
                             <p class="nav-text"><span>Информация</span></p>
                             <p class="nav-text"><span>Бизнесу</span></p>
                             <p class="nav-text">
-                                <a href="swagger-ui.html" sec:authorize="hasRole('ADMIN')">Swagger</a>
-                                <a href="/" sec:authorize="hasRole('USER')">Путешественникам</a>
+                                <a href="swagger-ui.html" sec:authorize="hasAuthority('ADMIN')">Swagger</a>
+                                <a href="/" sec:authorize="hasAuthority('USER')">Путешественникам</a>
                             </p>
                         </nav>
                     </div>
