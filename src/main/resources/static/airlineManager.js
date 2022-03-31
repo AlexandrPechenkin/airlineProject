@@ -4,13 +4,11 @@ const aircraftsFetch = {
         'Content-Type': 'application/json; charset=UTF-8',
         'Referer': null
     },
-    // getAllAircrafts: async () => await fetch('api/aircraft')
-    getAllAircrafts: async () => await fetch('http://localhost:8888/api/aircraft')
-    // ,
+    getAllAircrafts: async () => await fetch('api/aircraft'),
     // getUserByUsername: async () => await fetch(`api/name`),
     // getUserById: async (id) => await fetch(`api/users/` + id),
-    // addUser: async (user) => await fetch('api/users',
-    //     {method: "POST", headers: userFetch.head, body: JSON.stringify(user)}),
+    addAircraft: async (aircraft) => await fetch('api/aircraft',
+        {method: "POST", headers: aircraftsFetch.head, body: JSON.stringify(aircraft)})
     // updateUser: async (user) => await fetch(`api/users/`,
     //     {method: 'PUT', headers: userFetch.head, body: JSON.stringify(user)}),
     // deleteUserByID: async (id) => await fetch(`api/users/` + id,
@@ -18,109 +16,67 @@ const aircraftsFetch = {
 
 }
 
-// infoUser()
 getAircrafts()
 
-// function getRoles(list) {
-//     let userRoles = [];
-//     for (let role of list) {
-//         if (role.name == "ADMIN") {
-//             userRoles.push(" ADMIN");
-//         }
-//         if (role.name == "USER") {
-//             userRoles.push(" USER");
-//         }
-//
-//     }
-//     let stringRoles = userRoles.join("  ");
-//     return stringRoles;
-// }
-
-// function addRoles(values) {
-//     let roles = [];
-//     for (let role of values) {
-//         if (role === "ADMIN") {
-//             roles.push({id: 1, name: "ADMIN", authority: "ADMIN"});
-//         }
-//         if (role === "USER") {
-//             roles.push({id: 2, name: "USER", authority: "USER"});
-//         }
-//     }
-//     return roles;
-// }
-
 function getAircrafts() {
-    aircraftsFetch.getAllAircrafts().then(
-        res => {
-            res.json().then(
-                aircrafts => {
-                    aircrafts.forEach(aircraft => {
-                        document.querySelector('#tableAircrafts').insertAdjacentHTML('beforeend',
-                            `<tr>
-                                    <td>${aircraft.id}</td>
-                                    <td>${aircraft.brand}</td>
-                                    <td>${aircraft.model}</td>
-                                    <td>${aircraft.boardNumber}</td>
-                                    <td>${aircraft.productionYear}</td>
-                                    <td>${aircraft.flyingRange}</td>
-                                    <td>
-                                    <button type="submit" onclick="editAircraft(${aircraft.id})"
-                                    class="btn btn-info" data-toggle="modal" data-target="#editAircraft">Edit</button>
-                                    </td>
-                                    <td>
-                                    <button type="submit" onclick="deleteAircraft(${aircraft.id})"
-                                    class="btn btn-danger" data-toggle="modal" data-target="#deleteAircraft">Delete</button>
-                                    </td>
-                                </tr>`);
-                    })
-                }
-            )
+    aircraftsFetch.getAllAircrafts()
+        .then(res => res.json())
+        .then(aircrafts => {
+            aircrafts.forEach(aircraft => {
+                document.querySelector('#tableAircrafts').insertAdjacentHTML('beforeend',
+                    `<tr>
+                            <td>${aircraft.id}</td>
+                            <td>${aircraft.brand}</td>
+                            <td>${aircraft.model}</td>
+                            <td>${aircraft.boardNumber}</td>
+                            <td>${aircraft.productionYear}</td>
+                            <td>${aircraft.flyingRange}</td>
+                            <td>
+                            <button type="submit" onclick="editAircraft(${aircraft.id})"
+                            class="btn btn-info" data-toggle="modal" data-target="#editAircraft">Edit</button>
+                            </td>
+                            <td>
+                            <button type="submit" onclick="deleteAircraft(${aircraft.id})"
+                            class="btn btn-danger" data-toggle="modal" data-target="#deleteAircraft">Delete</button>
+                            </td>
+                        </tr>`
+                )
+            })
         }
     )
 }
 
-// function addUserData() {
-//     document.addEventListener('DOMContentLoaded', addUserData);
-//     let firstName = document.getElementById('addFirstName').value;
-//     let lastName = document.getElementById('addLastName').value;
-//     let age = document.getElementById('addAge').value;
-//     let email = document.getElementById('addEmail').value;
-//     let password = document.getElementById('addPassword').value;
-//
-//     let elm = document.getElementById('addRoles');
-//     let values = [];
-//     if (elm.multiple) {
-//         for (let i = 0; i < elm.options.length; i ++) {
-//             if (elm.options[i].selected)
-//                 values.push(elm.options[i].value);
-//         }
-//     } else {
-//         values.push(elm.value);
-//     }
-//
-//     let user = {
-//         firstName: firstName,
-//         lastName: lastName,
-//         age: age,
-//         email: email,
-//         password: password,
-//         roles: addRoles(values)
-//     };
-//     console.log(user)
-//     userFetch.addUser(user).then(() => {
-//         document.getElementById('addFirstName').value = ``;
-//         document.getElementById('addLastName').value = ``;
-//         document.getElementById('addAge').value = ``;
-//         document.getElementById('addEmail').value = ``;
-//         document.getElementById('addPassword').value = ``;
-//         document.getElementById('addRoles').value = ``;
-//         document.getElementById('tableUsers').innerHTML = ``;
-//         getUsers();
-//     })
-//
-//     $('#usertable-tab').tab('show');
-//
-// }
+function addAircraftData() {
+    document.addEventListener('DOMContentLoaded', addAircraftData)
+    let brand = document.getElementById('addBrand').value
+    let model = document.getElementById('addModel').value
+    let boardNumber = document.getElementById('addBoardNumber').value
+    let productionYear = document.getElementById('addProductionYear').value
+    let flyingRange = document.getElementById('addFlyingRange').value
+
+    let aircraft = {
+        brand: brand,
+        model: model,
+        boardNumber: boardNumber,
+        productionYear: productionYear,
+        flyingRange: flyingRange
+    }
+
+    aircraftsFetch.addAircraft(aircraft).then(() => {
+        document.getElementById('addBrand').value = ``
+        document.getElementById('addModel').value = ``
+        document.getElementById('addBoardNumber').value = ``
+        document.getElementById('addProductionYear').value = ``
+        document.getElementById('addFlyingRange').value = ``
+
+        document.getElementById('tableAircrafts').innerHTML = ``
+
+        getAircrafts()
+    })
+
+    $('#aircraftstable-tab').tab('show')
+
+}
 
 // function editUser(id) {
 //     userFetch.getUserById(id)
@@ -209,25 +165,4 @@ function getAircrafts() {
 //         getUsers();
 //         $('#deleteUser').modal('hide');
 //     });
-// }
-
-// function infoUser() {
-//     userFetch.getUserByUsername()
-//         .then(res => res.json())
-//         .then(user => {
-//             let stringRoles = getRoles(user.roles);
-//             document.querySelector('#infoUser').innerHTML = `
-//                 ${user.email} with roles: ${stringRoles}
-//             `;
-//             document.querySelector('#userInfoPanel').innerHTML = `
-//             <tr>
-//                 <td>${user.id}</td>
-//                 <td>${user.firstName}</td>
-//                 <td>${user.lastName}</td>
-//                 <td>${user.age}</td>
-//                 <td>${user.email}</td>
-//                 <td>${stringRoles}</td>
-//                 </tr>
-//             `;
-//         });
 // }

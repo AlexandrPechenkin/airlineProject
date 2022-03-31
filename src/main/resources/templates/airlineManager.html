@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"
-      xmlns="http://www.w3.org/1999/xhtml">
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Airline Manager Panel</title>
@@ -25,7 +26,7 @@
 <!-- Content -->
 <div class="row">
     <!-- Left -->
-    <div class="col-3">
+    <div class="col-2">
         <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
             <a class="nav-link active" id="v-pills-aircrafts-tab" data-toggle="pill" href="#v-pills-aircrafts" role="tab" aria-controls="v-pills-aircrafts" aria-selected="true">Aircrafts</a>
             <a class="nav-link" id="v-pills-flights-tab" data-toggle="pill" href="#v-pills-flights" role="tab" aria-controls="v-pills-flights" aria-selected="false">Flights</a>
@@ -33,7 +34,7 @@
         </div>
     </div>
     <!-- Right -->
-    <div class="col-9 bg-light text-dark">
+    <div class="col-10 bg-light text-dark">
         <div class="tab-content" id="v-pills-tabContent">
             <!-- Aircrafts -->
             <div class="tab-pane fade show active" id="v-pills-aircrafts" role="tabpanel" aria-labelledby="v-pills-aircrafts-tab">
@@ -160,14 +161,36 @@
                                    id="editBrand" placeholder="Brand" name="brand" value=""/>
                         </div>
 
+                        <div class="form-group">
+                            <label for="editModel" class="col-form-label"> Model </label>
+                            <input type="text" class="form-control"
+                                   id="editModel" placeholder="Model" name="model" value=""/>
+                        </div>
 
+                        <div class="form-group">
+                            <label for="editBoardNumber" class="col-form-label"> Board Number </label>
+                            <input type="text" class="form-control"
+                                   id="editBoardNumber" placeholder="Board Number" name="boardNumber" value=""/>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="editProductionYear" class="col-form-label"> Production Year </label>
+                            <input type="date" class="form-control"
+                                   id="editProductionYear" placeholder="Production Year" name="productionYear" value=""/>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="editFlyingRange" class="col-form-label"> Flying Range </label>
+                            <input type="number" class="form-control"
+                                   id="editFlyingRange" placeholder="Flying Range" name="flyingRange" value=""/>
+                        </div>
 
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary"
-                            onclick="updateUser()">Edit
+                            onclick="updateAircraft()">Edit
                     </button>
                 </div>
             </div>
@@ -176,59 +199,60 @@
 </div>
 
 <!-- Delete Aircraft Modal -->
-<div class="deleteUserDiv">
-    <div class="modal fade" id="deleteUser" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="deleteAircraftDiv">
+    <div class="modal fade" id="deleteAircraft" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="delModalLabel">Delete user</h5>
+                    <h5 class="modal-title" id="delModalLabel">Delete Aircraft</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
                     <form id="deleteUserForm">
+
                         <div class="form-group">
-                            <label for="deleteId" class="col-form-label">ID:</label>
+                            <label for="deleteId" class="col-form-label"> ID </label>
                             <input type="text" readonly="readonly" class="form-control"
                                    id="deleteId" name="id" value=""/>
                         </div>
+
                         <div class="form-group">
-                            <label for="deleteFirstName" class="col-form-label">First Name:</label>
+                            <label for="deleteBrand" class="col-form-label"> Brand </label>
                             <input type="text" readonly="readonly" class="form-control"
-                                   id="deleteFirstName" placeholder="First Name" name="firstName" value=""/>
+                                   id="deleteBrand" name="brand" value=""/>
                         </div>
+
                         <div class="form-group">
-                            <label for="deleteLastName" class="col-form-label">Last Name:</label>
+                            <label for="deleteModel" class="col-form-label"> Model </label>
                             <input type="text" readonly="readonly" class="form-control"
-                                   id="deleteLastName" placeholder="Last Name" name="lastName" value=""/>
+                                   id="deleteModel" name="model" value=""/>
                         </div>
+
                         <div class="form-group">
-                            <label for="deleteAge" class="col-form-label">Age:</label>
+                            <label for="deleteBoardNumber" class="col-form-label"> Board Number </label>
+                            <input type="text" readonly="readonly" class="form-control"
+                                   id="deleteBoardNumber" name="boardNumber" value=""/>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="deleteProductionYear" class="col-form-label"> Production Year </label>
+                            <input type="date" readonly="readonly" class="form-control"
+                                   id="deleteProductionYear" name="productionYear" value=""/>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="deleteFlyingRange" class="col-form-label"> Flying Range </label>
                             <input type="number" readonly="readonly" class="form-control"
-                                   id="deleteAge" placeholder="Age" name="age" value=""/>
+                                   id="deleteFlyingRange" name="flyingRange" value=""/>
                         </div>
-                        <div class="form-group">
-                            <label for="deleteEmail" class="col-form-label">Email:</label>
-                            <input type="text" readonly="readonly" class="form-control"
-                                   id="deleteEmail" placeholder="Email" name="email" value=""/>
-                        </div>
-                        <div>
-                            <label>Roles:
-                                <br>
-                                <select size="2" multiple name="roles" id="deleteRoles" required="required"
-                                        disabled="disabled"
-                                        style="width: 300%;">
-                                    <option selected="selected" value="2">USER</option>
-                                    <option value="1">ADMIN</option>
-                                </select>
-                            </label>
-                        </div>
+
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-danger" onclick="deleteUserById()">
+                    <button type="submit" class="btn btn-danger" onclick="deleteAircraftById()">
                         Delete
                     </button>
                 </div>

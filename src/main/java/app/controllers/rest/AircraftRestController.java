@@ -38,7 +38,7 @@ public class AircraftRestController {
     })
     @PostMapping
     public ResponseEntity<AircraftDTO> createAircraft(@ApiParam(value = "DTO Воздушного судна") @RequestBody @Valid AircraftDTO aircraft) {
-        if (Objects.isNull(aircraft.getId())) {
+        if (Objects.nonNull(aircraft.getId())) {
             log.error("Произошла попытка создать (воздушное судно) через метод создания.");
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } else {
