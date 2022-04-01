@@ -49,12 +49,4 @@ public class Seat {
     @NonNull
     private Boolean isSold;
 
-    /**
-     * Рейс
-     */
-    @NonNull
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "flight_id")
-    private Flight flight;
-
 }
