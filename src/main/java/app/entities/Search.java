@@ -20,8 +20,8 @@ public class Search {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(targetEntity = Route.class, mappedBy = "search", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<Route> routes;
+//    @OneToMany(targetEntity = Route.class, mappedBy = "search", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+//    private List<Route> routes;
 
     @NonNull
     @Enumerated(EnumType.STRING)

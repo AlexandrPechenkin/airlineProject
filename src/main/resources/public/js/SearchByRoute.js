@@ -1,4 +1,4 @@
-let urlReq = 'http://localhost:8888/api/flight/'
+let urlReq = 'http://localhost:8888/api/search'
 const buttonSearch = document.getElementById('searchButton');
 buttonSearch.addEventListener('click', getFlightsByRoutes);
 
