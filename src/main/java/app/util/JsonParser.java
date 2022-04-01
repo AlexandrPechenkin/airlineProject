@@ -10,7 +10,9 @@ import org.json.simple.parser.ParseException;
 import java.time.LocalDate;
 
 public class JsonParser {
+
     CategoryService categoryService;
+
     public Route getRouteByJSON(String response) throws ParseException {
         JSONParser parser = new JSONParser();
         JSONObject jsonObject = (JSONObject) parser.parse(response);

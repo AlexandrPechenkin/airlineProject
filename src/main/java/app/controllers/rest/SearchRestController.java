@@ -73,4 +73,5 @@ public class SearchRestController {
             throw new NoSuchObjectException("Error");
         }
     }
+
 }
