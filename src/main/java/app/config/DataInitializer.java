@@ -134,14 +134,6 @@ public class DataInitializer {
                                                 .fare(it1)
                                                 .isRegistered(true)
                                                 .isSold(true)
-                                                .flight(Flight.builder()
-                                                        .destinationFrom("Moscow")
-                                                        .destinationTo("Moon")
-                                                        .departureDate(LocalDate.of(2022, 5, 10))
-                                                        .departureTime(LocalTime.of(10, 20))
-                                                        .arrivalDateTime(LocalDateTime.of(2022, 12, 21, 14, 40))
-                                                        .flightStatus(FlightStatus.CANCELLATION)
-                                                        .build())
                                                 .build()
                                 ).collect(Collectors.toList()))
                         .build()
@@ -220,26 +212,18 @@ public class DataInitializer {
                         .fare(800)
                         .isRegistered(true)
                         .isSold(true)
-                        .flight(Flight.builder()
-                                .destinationFrom("Москва")
-                                .destinationTo("Петербург")
-                                .departureDate(LocalDate.of(2022, 10, 15))
-                                .departureTime(LocalTime.of(10, 20))
-                                .arrivalDateTime(LocalDateTime.of(2022, 12, 21, 14, 40))
-                                .flightStatus(FlightStatus.DELAY)
-                                .build()
-                        ).build());
+                        .build());
     }
 
     private void createFlight() {
         flightService.createOrUpdateFlight(Flight.builder()
-                        .destinationFrom("NSK")
-                        .destinationTo("MSK")
-                        .departureDate(LocalDate.of(2022, 12, 20))
-                        .departureTime(LocalTime.of(10, 20))
-                        .arrivalDateTime(LocalDateTime.of(2022, 12, 21, 14, 40))
-                        .flightStatus(FlightStatus.CANCELLATION)
-                        .build());
+                .destinationFrom("NSK")
+                .destinationTo("MSK")
+                .departureDate(LocalDate.of(2022, 12, 20))
+                .departureTime(LocalTime.of(10, 20))
+                .arrivalDateTime(LocalDateTime.of(2022, 12, 21, 14, 40))
+                .flightStatus(FlightStatus.CANCELLATION)
+                .build());
     }
 
     private void createAdmin() {
