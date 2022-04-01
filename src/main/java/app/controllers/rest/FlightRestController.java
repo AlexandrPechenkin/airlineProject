@@ -2,6 +2,7 @@ package app.controllers.rest;
 
 import app.entities.Flight;
 import app.entities.dtos.FlightDTO;
+import app.entities.mappers.flight.FlightListMapper;
 import app.entities.mappers.flight.FlightMapper;
 import app.exception.NoSuchObjectException;
 import app.services.interfaces.FlightService;
@@ -28,6 +29,7 @@ import java.util.Optional;
 public class FlightRestController {
     private final FlightService flightService;
     private final FlightMapper flightMapper;
+    private final FlightListMapper flightListMapper;
 
 
     /**
@@ -129,6 +131,22 @@ public class FlightRestController {
             return new ResponseEntity(flightService.findById(id), HttpStatus.OK);
         } catch (DataIntegrityViolationException e) {
             throw new NoSuchObjectException("Error");
+        }
+    }
+
+    @ApiOperation(value = "Запрос для получения всех рейсов", notes = "Получение всех рейсов")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Успешно получены"),
+            @ApiResponse(code = 404, message = "Рейсы не найдены")
+    })
+    @GetMapping
+    public ResponseEntity<List<FlightDTO>> getAllFlights() {
+        List<Flight> flightList = flightService.getAllFlights();
+
+        if (flightList.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<>(flightListMapper.toDTOList(flightList), HttpStatus.OK);
         }
     }
 }

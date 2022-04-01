@@ -1,9 +1,7 @@
 package app.entities.mappers.aircraft;
 
 import app.entities.Aircraft;
-import app.entities.Destination;
 import app.entities.dtos.AircraftDTO;
-import app.entities.dtos.DestinationDTO;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.springframework.stereotype.Component;
