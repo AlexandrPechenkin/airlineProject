@@ -27,7 +27,6 @@ public class Flight {
      * дата вылета
      */
     @DateTimeFormat(pattern = "dd.MM.yyyy")
-    @JsonFormat(pattern = "dd.MM.yyyy")
     private LocalDate departureDate;
 
     /**

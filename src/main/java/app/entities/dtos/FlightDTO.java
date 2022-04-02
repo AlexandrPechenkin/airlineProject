@@ -15,7 +15,7 @@ public class FlightDTO {
     private Long id;
     @NotNull(message = "Дата вылета не может быть пустой")
     @DateTimeFormat(pattern = "dd.MM.yyyy")
-    @JsonFormat(pattern = "dd.MM.yyyy")
+//    @JsonFormat(pattern = "dd.MM.yyyy")
     private LocalDate departureDate;
     @NotNull(message = "Время вылета не может быть пустым")
     @DateTimeFormat(pattern = "HH:mm")
