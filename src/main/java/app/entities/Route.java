@@ -7,7 +7,6 @@ import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
-import javax.validation.constraints.Null;
 import java.time.LocalDate;
 
 @NoArgsConstructor

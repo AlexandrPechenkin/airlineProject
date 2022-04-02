@@ -61,10 +61,12 @@ public class SearchServiceImpl implements SearchService {
                             .build());
         }
         // далее идёт составление маршрута согласно доступным аэропортам на пути из from в to
-        // и указанному времени
-        // getRoutes()
-        // настройка маршрутов по дате-времени
+        Map<Integer, Map<DestinationResource, List<List<Route>>>> routes = getRoutes(resourceFrom, resourceTo, departureDate);
+        // поиск доступных рейсов по дате-времени среди тех, что нашлись
+
         // создание Flight
+
+
         return new SearchResult();
     }
 
@@ -125,7 +127,6 @@ public class SearchServiceImpl implements SearchService {
         // одному аэропорту м.б. доступно несколько аэропортов в одном городе
         List<List<Route>> sharedListForRoutesByCode = new ArrayList<>();
         // список маршрутов для одного кода аэропорта из from и ОДНОГО кода аэропорта из to
-        List<Route> routesByCode = new ArrayList<>();
         if (!oneStop.isEmpty()) {
             for (DestinationResource res : resourceFirstStopOfOneResidueAfterSearch.keySet()) {
                 for (DestinationResource resOneStop : oneStop.keySet()) {
@@ -187,39 +188,38 @@ public class SearchServiceImpl implements SearchService {
         for (DestinationResource zeroRes : initFromOfTwoStops.keySet()) {
             initFromOfTwoStops.get(zeroRes).forEach(zeroDest -> {
                 for (DestinationResource firstRes : firstStop.keySet()) {
-                    if (zeroRes.getAvailableAirportCodes().contains(firstRes.getBaseCode())
-                            && !firstRes.getBaseCode().equals(zeroRes.getBaseCode())) {
-                        for (DestinationResource secondRes : twoStops.keySet()) {
-                            if (firstRes.getAvailableAirportCodes().contains(secondRes.getBaseCode())
+                    if (zeroDest.getAirportCode().equals(firstRes.getBaseCode())) {
+                        firstStop.get(firstRes).forEach(firstDest -> {
+                            for (DestinationResource secondRes : twoStops.keySet()) {
+                                if (firstRes.getAvailableAirportCodes().contains(secondRes.getBaseCode())
                                     && !secondRes.getBaseCode().equals(firstRes.getBaseCode())
                                     && !secondRes.getBaseCode().equals(zeroRes.getBaseCode())) {
-                                firstStop.get(firstRes).forEach(firstDest -> {
-                                    twoStops.get(secondRes).forEach(secondDest -> {
-                                        if (firstDest.getAirportCode().equals(secondRes.getBaseCode())) {
-                                            Route route1 = Route.builder()
-                                                    .from(constructDestinationByResource(zeroRes))
-                                                    .departureDate(departureDate)
-                                                    .to(constructDestinationByAnotherDestination(zeroDest))
-                                                    .build();
-                                            Route route2 = Route.builder()
-                                                    .from(constructDestinationByAnotherDestination(zeroDest))
-                                                    .departureDate(LocalDate.now())
-                                                    .to(constructDestinationByAnotherDestination(firstDest))
-                                                    .build();
-                                            Route route3 = Route.builder()
-                                                    .from(constructDestinationByAnotherDestination(firstDest))
-                                                    .to(constructDestinationByAnotherDestination(secondDest))
-                                                    .build();
-                                            sharedListForRoutesByCodeOfSecondStopOfTwo.add(new ArrayList<>() {{
-                                                add(route1);
-                                                add(route2);
-                                                add(route3);
-                                            }});
-                                        }
-                                    });
-                                });
-                            }
-                        }
+                                        twoStops.get(secondRes).forEach(secondDest -> {
+                                            if (firstDest.getAirportCode().equals(secondRes.getBaseCode())) {
+                                                Route route1 = Route.builder()
+                                                        .from(constructDestinationByResource(zeroRes))
+                                                        .departureDate(departureDate)
+                                                        .to(constructDestinationByAnotherDestination(zeroDest))
+                                                        .build();
+                                                Route route2 = Route.builder()
+                                                        .from(constructDestinationByAnotherDestination(zeroDest))
+                                                        .departureDate(LocalDate.now())
+                                                        .to(constructDestinationByAnotherDestination(firstDest))
+                                                        .build();
+                                                Route route3 = Route.builder()
+                                                        .from(constructDestinationByAnotherDestination(firstDest))
+                                                        .to(constructDestinationByAnotherDestination(secondDest))
+                                                        .build();
+                                                sharedListForRoutesByCodeOfSecondStopOfTwo.add(new ArrayList<>() {{
+                                                    add(route1);
+                                                    add(route2);
+                                                    add(route3);
+                                                }});
+                                            }
+                                        });
+                                    }
+                                }
+                        });
                     }
                 }
             });
