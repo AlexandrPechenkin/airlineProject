@@ -3,6 +3,7 @@ package app.config;
 
 import app.entities.*;
 import app.services.interfaces.*;
+import app.util.Fleet;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -54,6 +55,12 @@ public class DataInitializer {
                 .build());
 
         System.out.println("DataInitializer сработал!");
+
+        aircraftService.createOrUpdateAircraft(Fleet.createMC21200());
+        System.out.println("Самолет МС-21-200 был создан.");
+
+        aircraftService.createOrUpdateAircraft(Fleet.createBoeing777());
+        System.out.println("Самолет Боинг 777 был создан.");
 
         createPassenger();
         System.out.println("Пассажир был создан.");
@@ -130,10 +137,10 @@ public class DataInitializer {
                                                 .flight(Flight.builder()
                                                         .destinationFrom("Moscow")
                                                         .destinationTo("Moon")
-                                                        .departureDate(LocalDate.of(2022, 12, 20))
+                                                        .departureDate(LocalDate.of(2022, 5, 10))
                                                         .departureTime(LocalTime.of(10, 20))
                                                         .arrivalDateTime(LocalDateTime.of(2022, 12, 21, 14, 40))
-                                                        .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
+                                                        .flightStatus(FlightStatus.CANCELLATION)
                                                         .build())
                                                 .build()
                                 ).collect(Collectors.toList()))
@@ -214,12 +221,12 @@ public class DataInitializer {
                         .isRegistered(true)
                         .isSold(true)
                         .flight(Flight.builder()
-                                .destinationFrom("NSK")
-                                .destinationTo("MSK")
-                                .departureDate(LocalDate.of(2022, 12, 20))
+                                .destinationFrom("Москва")
+                                .destinationTo("Петербург")
+                                .departureDate(LocalDate.of(2022, 10, 15))
                                 .departureTime(LocalTime.of(10, 20))
                                 .arrivalDateTime(LocalDateTime.of(2022, 12, 21, 14, 40))
-                                .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
+                                .flightStatus(FlightStatus.DELAY)
                                 .build()
                         ).build());
     }
@@ -231,7 +238,7 @@ public class DataInitializer {
                         .departureDate(LocalDate.of(2022, 12, 20))
                         .departureTime(LocalTime.of(10, 20))
                         .arrivalDateTime(LocalDateTime.of(2022, 12, 21, 14, 40))
-                        .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
+                        .flightStatus(FlightStatus.CANCELLATION)
                         .build());
     }
 

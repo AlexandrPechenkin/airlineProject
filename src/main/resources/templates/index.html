@@ -11,6 +11,8 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/bot.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/slider.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/offers_block.css}"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no,user-scalable=no">
 </head>
 
@@ -73,7 +75,8 @@
                         </div>
                         <div class="login-form ">
                             <div class="login-form__select">
-                                <a th:href="${userInfo} ? @{/logout} : @{/login}" th:text="${userInfo} ? 'Выйти' : 'Войти'"></a>
+                                <a th:href="${userInfo} ? @{/logout} : @{/login}"
+                                   th:text="${userInfo} ? 'Выйти' : 'Войти'"></a>
                             </div>
                             <div class="login-form__mobile-select">
                                 <button class="btn login-form__open-button default-btn ">Войти</button>
@@ -88,7 +91,8 @@
                                      src="data:image/jpeg;base64,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"
                                      alt="OneWorld">
                             </a>
-                            <a class="nav-text" sec:authorize="hasAnyRole('USER', 'ADMIN')">ID: <span  th:text="${userInfo.id}"></span></a>
+                            <a class="nav-text" sec:authorize="hasAnyRole('USER', 'ADMIN')">ID: <span
+                                    th:text="${userInfo.id}"></span></a>
                         </div>
                     </div>
                 </div>
@@ -99,218 +103,632 @@
             <div class="mainpage">
                 <!--        МЕСТО СЛАЙДЕРА  -->
                 <div class="mainpage-slider-wrapper">
-                    <div class="main-slider__banner-container___1U6dr main-slider__mainpage-carousel___1ELIr" th:style="'background: url(/img/img_01.png)'">
+                    <div class="main-slider__banner-container___1U6dr main-slider__mainpage-carousel___1ELIr"
+                         th:style="'background: url(/img/img_01.png)'">
 
                     </div>
                 </div>
                 <!--        ОКНО ПОИСКА БИЛЕТОВ -->
                 <div class="mainpage-bot">
-                    <div class="_2wRqi-Dt HnqBWxqa">
-                        <ul class="_2wCVJsyn">
-                            <li class="_25Nj7LXf _1T77MOCn" role="tab">Покупка</li>
-                            <li class="_25Nj7LXf" role="tab">Регистрация на рейс</li>
-                            <li class="_25Nj7LXf" role="tab">Мои бронирования</li>
-                            <li class="_25Nj7LXf" role="tab">Статус рейса</li>
+                    <div class="HnqBWxqa">
+                        <ul class="nav nav-tabs d-flex justify-content-around _2wCVJsyn" id="myTab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active _25Nj7LXf" data-bs-toggle="tab"
+                                        data-bs-target="#home" type="button"
+                                        role="tab" aria-controls="home" aria-selected="true">Покупка
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link _25Nj7LXf" data-bs-toggle="tab"
+                                        data-bs-target="#profile" type="button"
+                                        role="tab" aria-controls="profile" aria-selected="false">Регистрация на рейс
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link _25Nj7LXf"
+                                        data-bs-toggle="tab" data-bs-target="#contact"
+                                        type="button" role="tab" aria-controls="contact" aria-selected="false">Мои
+                                    бронирования
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link _25Nj7LXf"
+                                        data-bs-toggle="tab" data-bs-target="#four"
+                                        type="button" role="tab" aria-controls="contact" aria-selected="false">Статус
+                                    рейса
+                                </button>
+                            </li>
                         </ul>
-                        <div class="_3vxsBP7v">
-                            <div class="zCQuGUY7">
-                                <div class="fTMw7MVc"></div>
-                                <div class="IgP9Lsir">
-                                    <ul class="A75sGA2n">
-                                        <li class="_25h7No4L _37hzAnHH" role="tab">Авиабилеты</li>
-                                        <li class="_25h7No4L _2-x8fJfd" role="tab">Отели
-                                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" class="rVHnvb8W">
-                                                <path fill-rule="evenodd" clip-rule="evenodd" d="M3.067 2.8a.8.8 0 01.8-.8H9.2a.8.8 0 01.8.8v5.333a.8.8 0 11-1.6 0V4.731L3.366 9.766a.8.8 0 01-1.132-1.132L7.27 3.6H3.867a.8.8 0 01-.8-.8z" fill="currentColor"></path>
-                                            </svg>
+                        <div class="tab-content _3vxsBP7v" id="myTabContent">
+                            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+
+                                <div class="_3vxsBP7v">
+                                    <div class="zCQuGUY7">
+                                        <div class="fTMw7MVc"></div>
+                                        <div class="IgP9Lsir">
+                                            <ul class="A75sGA2n">
+                                                <li class="_25h7No4L _37hzAnHH" role="tab">Авиабилеты</li>
+                                                <li class="_25h7No4L _2-x8fJfd" role="tab">Отели
+                                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
+                                                         class="rVHnvb8W">
+                                                        <path fill-rule="evenodd" clip-rule="evenodd"
+                                                              d="M3.067 2.8a.8.8 0 01.8-.8H9.2a.8.8 0 01.8.8v5.333a.8.8 0 11-1.6 0V4.731L3.366 9.766a.8.8 0 01-1.132-1.132L7.27 3.6H3.867a.8.8 0 01-.8-.8z"
+                                                              fill="currentColor"></path>
+                                                    </svg>
+                                                </li>
+                                                <li class="_25h7No4L _2-x8fJfd" role="tab">Трансфер
+                                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
+                                                         class="rVHnvb8W">
+                                                        <path fill-rule="evenodd" clip-rule="evenodd"
+                                                              d="M3.067 2.8a.8.8 0 01.8-.8H9.2a.8.8 0 01.8.8v5.333a.8.8 0 11-1.6 0V4.731L3.366 9.766a.8.8 0 01-1.132-1.132L7.27 3.6H3.867a.8.8 0 01-.8-.8z"
+                                                              fill="currentColor"></path>
+                                                    </svg>
+                                                </li>
+                                                <li class="_25h7No4L _2-x8fJfd" role="tab">Экскурсии
+                                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
+                                                         class="rVHnvb8W">
+                                                        <path fill-rule="evenodd" clip-rule="evenodd"
+                                                              d="M3.067 2.8a.8.8 0 01.8-.8H9.2a.8.8 0 01.8.8v5.333a.8.8 0 11-1.6 0V4.731L3.366 9.766a.8.8 0 01-1.132-1.132L7.27 3.6H3.867a.8.8 0 01-.8-.8z"
+                                                              fill="currentColor"></path>
+                                                    </svg>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="_1YXwWzlF" id="bot-avia-js">
+                                        <form class="VMV4PIP2">
+                                            <div class="_21sbWC6o" id="avia-controls">
+                                                <div class="I5YTs3m2 _1kiOyM6J _361w4O7W _3Dbox2Ke">
+                                                    <div class="_1G-8inlW">
+                                                        <div><label
+                                                                class="_2gBQjtZn TuPk5qeB _31Ft0Yn7 _35jdMK9A _1605ozhZ _2_piJ0Jp _3mh498_u sDZPTMsH _6AUfP-Nk _2VXqKGJZ TrU-Ts4n _3CFEopiy _1yJByOzm _1EeGlJBb _1rfy66XH _2G-XYnL7 _3LhrabYa _3n_DUhtS _3WT6dx7i _28IVP4Uf _1zrlazVu"><input
+                                                                class="_1_1Rhm09" placeholder="Откуда"
+                                                                autocomplete="off" data-test=""
+                                                                value="Казань"><span
+                                                                class="D_oa8YDU juEjHmlC">KZN</span></label></div>
+                                                    </div>
+                                                </div>
+                                                <div class="_3tCR_nWI _1f1ryyMK MqCuRL60 _3Dbox2Ke">
+                                                    <div class="_1VMzEETv">
+                                                        <div><label
+                                                                class="_2gBQjtZn TuPk5qeB _31Ft0Yn7 _35jdMK9A _1605ozhZ _2_piJ0Jp _3mh498_u sDZPTMsH _6AUfP-Nk _2VXqKGJZ TrU-Ts4n _3CFEopiy _1yJByOzm _1EeGlJBb _1rfy66XH _2G-XYnL7 _3LhrabYa _3n_DUhtS _3WT6dx7i _28IVP4Uf _1zrlazVu"><input
+                                                                class="_1_1Rhm09" placeholder="Откуда"
+                                                                autocomplete="off" data-test=""
+                                                                value="Казань"><span
+                                                                class="D_oa8YDU juEjHmlC">KZN</span></label></div>
+                                                    </div>
+                                                </div>
+                                                <button class="_34NRHCCs _3DtvD63-">
+                                                    <svg class="_3QqWcI-d _3wusUrHy" width="20" height="20"
+                                                         xmlns="http://www.w3.org/2000/svg">
+                                                        <g fill="none" fill-rule="evenodd">
+                                                            <path d="M0 0h20v20H0z"></path>
+                                                            <path d="M6.648 10.287a1 1 0 01.095 1.319l-.082.095L5.383 13H17a1 1 0 010 2H5.415l1.292 1.293a1 1 0 01-1.32 1.497l-.094-.083-3-3a1 1 0 01-.088-1.314l.082-.094 2.947-3a1 1 0 011.414-.012zm8.118-7.988l2.947 3a1 1 0 01-.006 1.408l-3 3a1 1 0 01-1.414-1.414L14.584 7H3a1 1 0 110-2h11.616l-1.277-1.3a1 1 0 011.427-1.4z"
+                                                                  class="_3KYkUQgg"></path>
+                                                        </g>
+                                                    </svg>
+                                                </button>
+                                                <div class="I5YTs3m2 _1kiOyM6J _361w4O7W _44IHwQM1">
+                                                    <div class="_1G-8inlW">
+                                                        <div><label
+                                                                class="_2gBQjtZn TuPk5qeB _31Ft0Yn7 _3mh498_u sDZPTMsH _1cZkIPW2 _2_ojnm5s _37aZJARW _3CFEopiy _1yJByOzm _1EeGlJBb _1rfy66XH _2G-XYnL7 _3LhrabYa _3n_DUhtS _3WT6dx7i _28IVP4Uf _1zrlazVu"><input
+                                                                class="_1_1Rhm09" placeholder="Куда" autocomplete="off"
+                                                                data-test="" value=""><span
+                                                                class="D_oa8YDU juEjHmlC"></span></label></div>
+                                                    </div>
+                                                </div>
+                                                <div class="_3tCR_nWI _1f1ryyMK MqCuRL60 _44IHwQM1">
+                                                    <div class="_1VMzEETv">
+                                                        <div><label
+                                                                class="_2gBQjtZn TuPk5qeB _31Ft0Yn7 _3mh498_u sDZPTMsH _1cZkIPW2 _2_ojnm5s _37aZJARW _3CFEopiy _1yJByOzm _1EeGlJBb _1rfy66XH _2G-XYnL7 _3LhrabYa _3n_DUhtS _3WT6dx7i _28IVP4Uf _1zrlazVu"><input
+                                                                class="_1_1Rhm09" placeholder="Куда" autocomplete="off"
+                                                                data-test="" value=""><span
+                                                                class="D_oa8YDU juEjHmlC"></span></label></div>
+                                                    </div>
+                                                </div>
+                                                <div class="_18TKAEyO _11jhO-VH direct-popover">
+                                                    <div class="_1cD2Iyc6 _1Ta4j6hR _1tACkGx3 _3npr7eNs _24raRyxU"
+                                                         data-test="input_component"><label
+                                                            class="_2Q1Q3T3Z">
+                                                        <div class="_3pBKKUE5"><input class="_1Zankvd6" readonly=""
+                                                                                      aria-required="false"
+                                                                                      data-test="input_component__input date-range-input "
+                                                                                      value=""><span
+                                                                class="AfJS6A5g _1iuoRFXU">Туда</span></div>
+                                                        <i class="CvcVPWq1" data-test="input_component__icon">
+                                                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                                                      d="M4 10h3V7H4v3zm-2 4V5h12l.002 9H2zM14 2h-1V1a1 1 0 00-2 0v1H5V1a1 1 0 00-2 0v1H2C.897 2 0 2.897 0 4v10c0 1.103.897 2 2 2h12c1.103 0 2-.897 2-2V4c0-1.103-.897-2-2-2z"
+                                                                      fill="currentColor"></path>
+                                                            </svg>
+                                                        </i></label></div>
+                                                    <div class="_1cD2Iyc6 _1Ta4j6hR _1tACkGx3 _3npr7eNs TGu7qrBL"
+                                                         data-test="input_component"><label
+                                                            class="_2Q1Q3T3Z">
+                                                        <div class="_3pBKKUE5"><input class="_1Zankvd6" readonly=""
+                                                                                      aria-required="false"
+                                                                                      data-test="input_component__input date-range-input "
+                                                                                      value=""><span
+                                                                class="AfJS6A5g _1iuoRFXU">Обратно</span></div>
+                                                    </label></div>
+                                                </div>
+                                                <div class="_2xFnBBmU _373YDRWN">
+                                                    <div class="_1cD2Iyc6 _1ZPFwwnn" data-test="input_component"><label
+                                                            class="_2Q1Q3T3Z _2_evT-AF">
+                                                        <div class="_3pBKKUE5"><input class="_1Zankvd6" readonly=""
+                                                                                      aria-required="false"
+                                                                                      data-test="input_component__input amount_passengers_input "
+                                                                                      value="1, Эконом"><span
+                                                                class="AfJS6A5g"></span></div>
+                                                        <i class="CvcVPWq1" data-test="input_component__icon">
+                                                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                                                      d="M1 13.834c0-2.334 4.667-3.617 7-3.617 2.334 0 7 1.283 7 3.617V15H1v-1.166zM11.5 4.5C11.5 6.437 9.937 8 8 8a3.495 3.495 0 01-3.5-3.5C4.5 2.563 6.064 1 8 1c1.937 0 3.5 1.563 3.5 3.5z"
+                                                                      fill="currentColor"></path>
+                                                            </svg>
+                                                        </i></label></div>
+                                                </div>
+                                                <label class="_2Tr_L2jH">
+                                                    <ul class="_1TwUaHJR _2K2i9K-K">
+                                                        <li class="_1JtK5SaH _3k8gxdS6"><span
+                                                                class="_2fjHNiXt">Эконом</span></li>
+                                                        <li class="_1JtK5SaH"><span class="_2fjHNiXt">Бизнес</span></li>
+                                                    </ul>
+                                                </label>
+                                                <div class="_3bnnnpzx">
+                                                    <button data-test="avia-bot-submit"
+                                                            class="DS__Button__root DS__Button__theme_b2c DS__Button__size_medium"
+                                                            type="button"><span
+                                                            class="DS__Button__content"><svg
+                                                            xmlns="http://www.w3.org/2000/svg" width="1024"
+                                                            height="1024" viewBox="0 0 1024 1024" fill="#c4d600"><path
+                                                            d="M736.531 689.775l132.583 132.583c19.995 19.995 19.995 52.413 0 72.408s-52.413 19.995-72.408 0l-136.27-136.27C603.383 796.832 534.704 819.2 460.8 819.2c-197.939 0-358.4-160.461-358.4-358.4s160.461-358.4 358.4-358.4c197.939 0 358.4 160.461 358.4 358.4 0 87.065-31.045 166.879-82.669 228.975zM460.8 716.8c141.385 0 256-114.615 256-256s-114.615-256-256-256-256 114.615-256 256 114.615 256 256 256z"></path></svg></span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="_3LWGa8l6">
+                                                <div class="_18TKAEyO _391gvdvU"><a class="_1NLf8QUI"
+                                                                                    href="https://ibe.s7.ru/air?id=multiSearch&amp;amp;locale=ru"
+                                                                                    data-test="multi-search-link"><i
+                                                        class="rx0ITPMy">
+                                                    <svg width="20" height="20" viewBox="0 0 20 20">
+                                                        <path d="M16 16a1 1 0 1 1 0-2 1 1 0 0 1 0 2M4 16a1 1 0 1 1 0-2 1 1 0 0 1 0 2m6-12a1 1 0 1 1 0 2 1 1 0 0 1 0-2m-3.682 9.119l3.064-5.184a3 3 0 0 0 1.236 0l3.064 5.184c-.23.282-.407.605-.522.958H6.84a2.965 2.965 0 0 0-.522-.958M16 12c-.212 0-.419.023-.618.065l-3.064-5.184A2.97 2.97 0 0 0 13 5c0-1.654-1.346-3-3-3S7 3.346 7 5c0 .716.262 1.364.682 1.881l-3.064 5.184A3.004 3.004 0 0 0 1 15c0 1.654 1.346 3 3 3a3 3 0 0 0 2.792-1.923h6.416A3 3 0 0 0 16 18c1.654 0 3-1.346 3-3s-1.346-3-3-3"></path>
+                                                    </svg>
+                                                </i><span class="_1MRQhNGq">Составить сложный маршрут</span></a></div>
+                                                <div class="_2kWs8KEn"><label bottheme="Light"
+                                                                              class="DS__Checkbox__root _3ZV3_LI1"><span
+                                                        class="DS__CheckboxBase__root DS__CheckboxBase__theme_b2c DS__Checkbox__checkbox zDhP6T4Z"><input
+                                                        class="DS__CheckboxBase__input" type="checkbox" value=""><span
+                                                        class="DS__CheckboxBase__box"><svg
+                                                        width="10" height="8" viewBox="0 0 10 8" fill="none"><path
+                                                        fill-rule="evenodd"
+                                                        clip-rule="evenodd"
+                                                        d="M.133 4.44a.506.506 0 010-.684l.643-.683a.437.437 0 01.642 0l2.219 2.392L8.58.14a.437.437 0 01.643 0l.643.684a.504.504 0 010 .682l-5.91 6.351a.437.437 0 01-.642 0L.133 4.44z"
+                                                        fill="currentColor"></path></svg></span></span><span
+                                                        class="DS__Checkbox__text"><span
+                                                        class="DS__TextBase__root DS__CssUtils__color_N900 DS__TextBase__size_m">Лечу по работе</span></span></label><label
+                                                        bottheme="Light" class="DS__Checkbox__root _3ZV3_LI1"><span
+                                                        class="DS__CheckboxBase__root DS__CheckboxBase__theme_b2c DS__Checkbox__checkbox zDhP6T4Z"><input
+                                                        class="DS__CheckboxBase__input" type="checkbox" value=""><span
+                                                        class="DS__CheckboxBase__box"><svg
+                                                        width="10" height="8" viewBox="0 0 10 8" fill="none"><path
+                                                        fill-rule="evenodd"
+                                                        clip-rule="evenodd"
+                                                        d="M.133 4.44a.506.506 0 010-.684l.643-.683a.437.437 0 01.642 0l2.219 2.392L8.58.14a.437.437 0 01.643 0l.643.684a.504.504 0 010 .682l-5.91 6.351a.437.437 0 01-.642 0L.133 4.44z"
+                                                        fill="currentColor"></path></svg></span></span><span
+                                                        class="DS__Checkbox__text"><span
+                                                        class="DS__TextBase__root DS__CssUtils__color_N900 DS__TextBase__size_m">Лечу с питомцем</span></span></label>
+                                                    <div class="_3H-W9nRK"><label class="DS__Checkbox__root"><span
+                                                            class="DS__CheckboxBase__root DS__CheckboxBase__theme_b2c DS__Checkbox__checkbox _1kcE7Is8"><input
+                                                            class="DS__CheckboxBase__input" type="checkbox"
+                                                            value="false"><span
+                                                            class="DS__CheckboxBase__box"><svg width="10" height="8"
+                                                                                               viewBox="0 0 10 8"
+                                                                                               fill="none"><path
+                                                            fill-rule="evenodd" clip-rule="evenodd"
+                                                            d="M.133 4.44a.506.506 0 010-.684l.643-.683a.437.437 0 01.642 0l2.219 2.392L8.58.14a.437.437 0 01.643 0l.643.684a.504.504 0 010 .682l-5.91 6.351a.437.437 0 01-.642 0L.133 4.44z"
+                                                            fill="currentColor"></path></svg></span></span><span
+                                                            class="DS__Checkbox__text"><span
+                                                            class="DS__TextBase__root DS__CssUtils__color_N900 DS__TextBase__size_m">Оплата милями</span></span></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="_3bnnnpzx _2y8lOxNk">
+                                                <button data-test="avia-bot-submit"
+                                                        class="DS__Button__root DS__Button__theme_b2c DS__Button__size_large DS__Button__disabled"
+                                                        disabled="" type="submit"><span
+                                                        class="DS__Button__content"><span>Найти</span></span></button>
+                                            </div>
+                                            <div class="_18TKAEyO _2ulaouN-"><a class="_1NLf8QUI"
+                                                                                data-test="multi-search-link"><i
+                                                    class="rx0ITPMy">
+                                                <svg width="20" height="20" viewBox="0 0 20 20">
+                                                    <path d="M16 16a1 1 0 1 1 0-2 1 1 0 0 1 0 2M4 16a1 1 0 1 1 0-2 1 1 0 0 1 0 2m6-12a1 1 0 1 1 0 2 1 1 0 0 1 0-2m-3.682 9.119l3.064-5.184a3 3 0 0 0 1.236 0l3.064 5.184c-.23.282-.407.605-.522.958H6.84a2.965 2.965 0 0 0-.522-.958M16 12c-.212 0-.419.023-.618.065l-3.064-5.184A2.97 2.97 0 0 0 13 5c0-1.654-1.346-3-3-3S7 3.346 7 5c0 .716.262 1.364.682 1.881l-3.064 5.184A3.004 3.004 0 0 0 1 15c0 1.654 1.346 3 3 3a3 3 0 0 0 2.792-1.923h6.416A3 3 0 0 0 16 18c1.654 0 3-1.346 3-3s-1.346-3-3-3"></path>
+                                                </svg>
+                                            </i><span class="_1MRQhNGq">Составить сложный маршрут</span></a></div>
+                                        </form>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+
+
+                                <div class="_12FmCszJ">
+                                    <div class="_1cD2Iyc6 _2HX6fArP" data-test="input_component"><label
+                                            class="_2Q1Q3T3Z">
+                                        <div class="_3pBKKUE5"><input class="_1Zankvd6" aria-required="false"
+                                                                      data-test="input_component__input  "
+                                                                      value=""
+                                                                      placeholder="Фамилия пассажира (латиницей)"></div>
+                                    </label></div>
+                                    <div class="_1n9MU5BL">
+                                        <div class="_1cD2Iyc6 _1py2WN9l" data-test="input_component"><label
+                                                class="_2Q1Q3T3Z">
+                                            <div class="_3pBKKUE5"><input class="_1Zankvd6" aria-required="false"
+                                                                          data-test="input_component__input  " value=""
+                                                                          placeholder="Номер заказа, брони или билета">
+                                            </div>
+                                        </label></div>
+                                        <div class="_375-KL_D"></div>
+                                    </div>
+                                    <div class="_13g0mjoi">
+                                        <button class="DS__Button__root DS__Button__theme_b2c DS__Button__size_medium"
+                                                type="submit"><span
+                                                class="DS__Button__content"><span>Зарегистрироваться</span></span>
+                                        </button>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+
+                                <div class="_3vxsBP7v">
+                                    <div class="_1YXwWzlF">
+                                        <form class="I-ceaT4D">
+                                            <div class="_3h8OIROX">
+                                                <div class="_1rWLuzgD _3FARaRyl" data-test="editable_select undefined">
+                                                    <div class="_1cD2Iyc6" data-test="input_component"><label
+                                                            class="_2Q1Q3T3Z"><input class="_1Zankvd6"
+                                                                                     aria-required="false"
+                                                                                     data-test="input_component__input "
+                                                                                     value=""
+                                                                                     placeholder="Фамилия пассажира (лат) или email"></label>
+                                                    </div>
+                                                </div>
+                                                <div class="_3VyixqSA">
+                                                    <div class="_1cD2Iyc6 _3MsiElgL" data-test="input_component"><label
+                                                            class="_2Q1Q3T3Z">
+                                                        <div class="_3pBKKUE5"><input class="_1Zankvd6"
+                                                                                      aria-required="false"
+                                                                                      data-test="input_component__input  "
+                                                                                      value=""
+                                                                                      placeholder="Номер заказа, брони или билета">
+                                                        </div>
+                                                    </label></div>
+                                                    <div class="_2ioPqqkx"></div>
+                                                </div>
+                                                <div class="_1mbDxnWQ">
+                                                    <button class="DS__Button__root DS__Button__theme_b2c DS__Button__size_medium"
+                                                            type="submit"><span
+                                                            class="DS__Button__content"><span>Проверить статус</span></span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="_154pAgGT">
+                                                <div class="_3Q5OzxGo">
+                                                    <div class="_3r61z1AQ">Управление бронированием, отслеживание
+                                                        статуса и добавление дополнительных
+                                                        продуктов. <a href="/ru/info/myb/myb-comments/index.dot">Подробнее</a>
+                                                    </div>
+                                                </div>
+                                                <div class="_1mbDxnWQ _2w0IJyjr">
+                                                    <button class="DS__Button__root DS__Button__theme_b2c DS__Button__size_medium"
+                                                            type="submit"><span
+                                                            class="DS__Button__content"><span>Проверить статус</span></span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="tab-pane fade" id="four" role="tabpanel" aria-labelledby="four-tab">
+
+                                <!--                                TODO: Тупой вариант реализации вложенных табов. Для фронтендера - Переделать на js.   -->
+                                <div>
+                                    <ul class="nav nav-tabs A75sGA2n" id="myTab" role="tablist">
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link active _25h7No4L" id="home-tab" data-bs-toggle="tab"
+                                                    data-bs-target="#home_two" type="button" role="tab"
+                                                    aria-controls="home" aria-selected="true">По маршруту
+                                            </button>
                                         </li>
-                                        <li class="_25h7No4L _2-x8fJfd" role="tab">Трансфер
-                                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
-                                                 class="rVHnvb8W">
-                                                <path fill-rule="evenodd" clip-rule="evenodd"
-                                                      d="M3.067 2.8a.8.8 0 01.8-.8H9.2a.8.8 0 01.8.8v5.333a.8.8 0 11-1.6 0V4.731L3.366 9.766a.8.8 0 01-1.132-1.132L7.27 3.6H3.867a.8.8 0 01-.8-.8z"
-                                                      fill="currentColor"></path>
-                                            </svg>
-                                        </li>
-                                        <li class="_25h7No4L _2-x8fJfd" role="tab">Экскурсии
-                                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
-                                                 class="rVHnvb8W">
-                                                <path fill-rule="evenodd" clip-rule="evenodd"
-                                                      d="M3.067 2.8a.8.8 0 01.8-.8H9.2a.8.8 0 01.8.8v5.333a.8.8 0 11-1.6 0V4.731L3.366 9.766a.8.8 0 01-1.132-1.132L7.27 3.6H3.867a.8.8 0 01-.8-.8z"
-                                                      fill="currentColor"></path>
-                                            </svg>
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link _25h7No4L" id="profile-tab" data-bs-toggle="tab"
+                                                    data-bs-target="#profile_two" type="button" role="tab"
+                                                    aria-controls="profile" aria-selected="false">По номеру рейса
+                                            </button>
                                         </li>
                                     </ul>
-                                </div>
-                            </div>
-                            <div class="_1YXwWzlF" id="bot-avia-js">
-                                <form class="VMV4PIP2">
-                                    <div class="_21sbWC6o" id="avia-controls">
-                                        <div class="I5YTs3m2 _1kiOyM6J _361w4O7W _3Dbox2Ke">
-                                            <div class="_1G-8inlW">
-                                                <div><label
-                                                        class="_2gBQjtZn TuPk5qeB _31Ft0Yn7 _35jdMK9A _1605ozhZ _2_piJ0Jp _3mh498_u sDZPTMsH _6AUfP-Nk _2VXqKGJZ TrU-Ts4n _3CFEopiy _1yJByOzm _1EeGlJBb _1rfy66XH _2G-XYnL7 _3LhrabYa _3n_DUhtS _3WT6dx7i _28IVP4Uf _1zrlazVu"><input
-                                                        class="_1_1Rhm09" placeholder="Откуда" autocomplete="off"
-                                                        data-test=""
-                                                        value="Москва"><span
-                                                        class="D_oa8YDU juEjHmlC">MOW</span></label></div>
-                                            </div>
-                                        </div>
-                                        <div class="_3tCR_nWI _1f1ryyMK MqCuRL60 _3Dbox2Ke">
-                                            <div class="_1VMzEETv">
-                                                <div><label
-                                                        class="_2gBQjtZn TuPk5qeB _31Ft0Yn7 _35jdMK9A _1605ozhZ _2_piJ0Jp _3mh498_u sDZPTMsH _6AUfP-Nk _2VXqKGJZ TrU-Ts4n _3CFEopiy _1yJByOzm _1EeGlJBb _1rfy66XH _2G-XYnL7 _3LhrabYa _3n_DUhtS _3WT6dx7i _28IVP4Uf _1zrlazVu"><input
-                                                        class="_1_1Rhm09" placeholder="Откуда" autocomplete="off"
-                                                        data-test=""
-                                                        value="Москва"><span
-                                                        class="D_oa8YDU juEjHmlC">MOW</span></label></div>
-                                            </div>
-                                        </div>
-                                        <button class="_34NRHCCs _3DtvD63-">
-                                            <svg class="_3QqWcI-d _3wusUrHy" width="20" height="20"
-                                                 xmlns="http://www.w3.org/2000/svg">
-                                                <g fill="none" fill-rule="evenodd">
-                                                    <path d="M0 0h20v20H0z"></path>
-                                                    <path d="M6.648 10.287a1 1 0 01.095 1.319l-.082.095L5.383 13H17a1 1 0 010 2H5.415l1.292 1.293a1 1 0 01-1.32 1.497l-.094-.083-3-3a1 1 0 01-.088-1.314l.082-.094 2.947-3a1 1 0 011.414-.012zm8.118-7.988l2.947 3a1 1 0 01-.006 1.408l-3 3a1 1 0 01-1.414-1.414L14.584 7H3a1 1 0 110-2h11.616l-1.277-1.3a1 1 0 011.427-1.4z"
-                                                          class="_3KYkUQgg"></path>
-                                                </g>
-                                            </svg>
-                                        </button>
-                                        <div class="I5YTs3m2 _1kiOyM6J _361w4O7W _44IHwQM1">
-                                            <div class="_1G-8inlW">
-                                                <div><label
-                                                        class="_2gBQjtZn TuPk5qeB _31Ft0Yn7 _3mh498_u sDZPTMsH _1cZkIPW2 _2_ojnm5s _37aZJARW _3CFEopiy _1yJByOzm _1EeGlJBb _1rfy66XH _2G-XYnL7 _3LhrabYa _3n_DUhtS _3WT6dx7i _28IVP4Uf _1zrlazVu"><input
-                                                        class="_1_1Rhm09" placeholder="Куда" autocomplete="off"
-                                                        data-test=""
-                                                        value=""><span class="D_oa8YDU juEjHmlC"></span></label></div>
-                                            </div>
-                                        </div>
-                                        <div class="_3tCR_nWI _1f1ryyMK MqCuRL60 _44IHwQM1">
-                                            <div class="_1VMzEETv">
-                                                <div><label
-                                                        class="_2gBQjtZn TuPk5qeB _31Ft0Yn7 _3mh498_u sDZPTMsH _1cZkIPW2 _2_ojnm5s _37aZJARW _3CFEopiy _1yJByOzm _1EeGlJBb _1rfy66XH _2G-XYnL7 _3LhrabYa _3n_DUhtS _3WT6dx7i _28IVP4Uf _1zrlazVu"><input
-                                                        class="_1_1Rhm09" placeholder="Куда" autocomplete="off"
-                                                        data-test=""
-                                                        value=""><span class="D_oa8YDU juEjHmlC"></span></label></div>
-                                            </div>
-                                        </div>
-                                        <div class="_18TKAEyO _11jhO-VH">
-                                            <div class="_1cD2Iyc6 _1Ta4j6hR _1tACkGx3 _3npr7eNs _24raRyxU"
-                                                 data-test="input_component"><label class="_2Q1Q3T3Z">
-                                                <div class="_3pBKKUE5"><input class="_1Zankvd6" readonly=""
-                                                                              aria-required="false"
-                                                                              data-test="input_component__input date-range-input "
-                                                                              value=""><span
-                                                        class="AfJS6A5g _1iuoRFXU">Туда</span></div>
-                                                <i class="CvcVPWq1" data-test="input_component__icon">
-                                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                                        <path fill-rule="evenodd" clip-rule="evenodd"
-                                                              d="M4 10h3V7H4v3zm-2 4V5h12l.002 9H2zM14 2h-1V1a1 1 0 00-2 0v1H5V1a1 1 0 00-2 0v1H2C.897 2 0 2.897 0 4v10c0 1.103.897 2 2 2h12c1.103 0 2-.897 2-2V4c0-1.103-.897-2-2-2z"
-                                                              fill="currentColor"></path>
-                                                    </svg>
-                                                </i></label></div>
-                                            <div class="_1cD2Iyc6 _1Ta4j6hR _1tACkGx3 _3npr7eNs TGu7qrBL"
-                                                 data-test="input_component"><label class="_2Q1Q3T3Z">
-                                                <div class="_3pBKKUE5"><input class="_1Zankvd6" readonly=""
-                                                                              aria-required="false"
-                                                                              data-test="input_component__input date-range-input "
-                                                                              value=""><span
-                                                        class="AfJS6A5g _1iuoRFXU">Обратно</span></div>
-                                            </label></div>
-                                        </div>
-                                        <div class="_2xFnBBmU _373YDRWN">
-                                            <div class="_1cD2Iyc6 _1ZPFwwnn" data-test="input_component"><label
-                                                    class="_2Q1Q3T3Z _2_evT-AF">
-                                                <div class="_3pBKKUE5"><input class="_1Zankvd6" readonly=""
-                                                                              aria-required="false"
-                                                                              data-test="input_component__input amount_passengers_input "
-                                                                              value="1, Эконом"><span
-                                                        class="AfJS6A5g"></span>
+                                    <div class="tab-content" id="myTabContent">
+                                        <div class="tab-pane fade show active" id="home_two" role="tabpanel"
+                                             aria-labelledby="home-tab">
+
+
+                                            <div class="_3vxsBP7v">
+                                                <div class="zCQuGUY7">
+                                                    <div class="fTMw7MVc"></div>
+                                                    <div class="IgP9Lsir"></div>
                                                 </div>
-                                                <i class="CvcVPWq1" data-test="input_component__icon">
-                                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                                        <path fill-rule="evenodd" clip-rule="evenodd"
-                                                              d="M1 13.834c0-2.334 4.667-3.617 7-3.617 2.334 0 7 1.283 7 3.617V15H1v-1.166zM11.5 4.5C11.5 6.437 9.937 8 8 8a3.495 3.495 0 01-3.5-3.5C4.5 2.563 6.064 1 8 1c1.937 0 3.5 1.563 3.5 3.5z"
-                                                              fill="currentColor"></path>
-                                                    </svg>
-                                                </i></label></div>
-                                        </div>
-                                        <label class="_2Tr_L2jH">
-                                            <ul class="_1TwUaHJR _2K2i9K-K">
-                                                <li class="_1JtK5SaH _3k8gxdS6"><span class="_2fjHNiXt">Эконом</span>
-                                                </li>
-                                                <li class="_1JtK5SaH"><span class="_2fjHNiXt">Бизнес</span></li>
-                                            </ul>
-                                        </label>
-                                        <div class="_3bnnnpzx">
-                                            <button data-test="avia-bot-submit"
-                                                    class="DS__Button__root DS__Button__theme_b2c DS__Button__size_medium"
-                                                    type="button"><span class="DS__Button__content"><svg
-                                                    xmlns="http://www.w3.org/2000/svg" width="1024" height="1024"
-                                                    viewBox="0 0 1024 1024" fill="#c4d600"><path
-                                                    d="M736.531 689.775l132.583 132.583c19.995 19.995 19.995 52.413 0 72.408s-52.413 19.995-72.408 0l-136.27-136.27C603.383 796.832 534.704 819.2 460.8 819.2c-197.939 0-358.4-160.461-358.4-358.4s160.461-358.4 358.4-358.4c197.939 0 358.4 160.461 358.4 358.4 0 87.065-31.045 166.879-82.669 228.975zM460.8 716.8c141.385 0 256-114.615 256-256s-114.615-256-256-256-256 114.615-256 256 114.615 256 256 256z"></path></svg></span>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div class="_3LWGa8l6">
-                                        <div class="_18TKAEyO _391gvdvU"><a class="_1NLf8QUI"
-                                                                            href="https://ibe.s7.ru/air?id=multiSearch&amp;amp;locale=ru"
-                                                                            data-test="multi-search-link"><i
-                                                class="rx0ITPMy">
-                                            <svg width="20" height="20" viewBox="0 0 20 20">
-                                                <path d="M16 16a1 1 0 1 1 0-2 1 1 0 0 1 0 2M4 16a1 1 0 1 1 0-2 1 1 0 0 1 0 2m6-12a1 1 0 1 1 0 2 1 1 0 0 1 0-2m-3.682 9.119l3.064-5.184a3 3 0 0 0 1.236 0l3.064 5.184c-.23.282-.407.605-.522.958H6.84a2.965 2.965 0 0 0-.522-.958M16 12c-.212 0-.419.023-.618.065l-3.064-5.184A2.97 2.97 0 0 0 13 5c0-1.654-1.346-3-3-3S7 3.346 7 5c0 .716.262 1.364.682 1.881l-3.064 5.184A3.004 3.004 0 0 0 1 15c0 1.654 1.346 3 3 3a3 3 0 0 0 2.792-1.923h6.416A3 3 0 0 0 16 18c1.654 0 3-1.346 3-3s-1.346-3-3-3"></path>
-                                            </svg>
-                                        </i><span class="_1MRQhNGq">Составить сложный маршрут</span></a></div>
-                                        <div class="_2kWs8KEn"><label bottheme="Light"
-                                                                      class="DS__Checkbox__root _3ZV3_LI1"><span
-                                                class="DS__CheckboxBase__root DS__CheckboxBase__theme_b2c DS__Checkbox__checkbox zDhP6T4Z"><input
-                                                class="DS__CheckboxBase__input" type="checkbox" value=""><span
-                                                class="DS__CheckboxBase__box"><svg width="10" height="8"
-                                                                                   viewBox="0 0 10 8"
-                                                                                   fill="none"><path fill-rule="evenodd"
-                                                                                                     clip-rule="evenodd"
-                                                                                                     d="M.133 4.44a.506.506 0 010-.684l.643-.683a.437.437 0 01.642 0l2.219 2.392L8.58.14a.437.437 0 01.643 0l.643.684a.504.504 0 010 .682l-5.91 6.351a.437.437 0 01-.642 0L.133 4.44z"
-                                                                                                     fill="currentColor"></path></svg></span></span><span
-                                                class="DS__Checkbox__text"><span
-                                                class="DS__TextBase__root DS__CssUtils__color_N900 DS__TextBase__size_m">Лечу по работе</span></span></label><label
-                                                bottheme="Light" class="DS__Checkbox__root _3ZV3_LI1"><span
-                                                class="DS__CheckboxBase__root DS__CheckboxBase__theme_b2c DS__Checkbox__checkbox zDhP6T4Z"><input
-                                                class="DS__CheckboxBase__input" type="checkbox" value=""><span
-                                                class="DS__CheckboxBase__box"><svg width="10" height="8"
-                                                                                   viewBox="0 0 10 8"
-                                                                                   fill="none"><path fill-rule="evenodd"
-                                                                                                     clip-rule="evenodd"
-                                                                                                     d="M.133 4.44a.506.506 0 010-.684l.643-.683a.437.437 0 01.642 0l2.219 2.392L8.58.14a.437.437 0 01.643 0l.643.684a.504.504 0 010 .682l-5.91 6.351a.437.437 0 01-.642 0L.133 4.44z"
-                                                                                                     fill="currentColor"></path></svg></span></span><span
-                                                class="DS__Checkbox__text"><span
-                                                class="DS__TextBase__root DS__CssUtils__color_N900 DS__TextBase__size_m">Лечу с питомцем</span></span></label>
-                                            <div class="_3H-W9nRK"><label class="DS__Checkbox__root"><span
-                                                    class="DS__CheckboxBase__root DS__CheckboxBase__theme_b2c DS__Checkbox__checkbox _1kcE7Is8"><input
-                                                    class="DS__CheckboxBase__input" type="checkbox" value="false"><span
-                                                    class="DS__CheckboxBase__box"><svg width="10" height="8"
-                                                                                       viewBox="0 0 10 8"
-                                                                                       fill="none"><path
-                                                    fill-rule="evenodd"
-                                                    clip-rule="evenodd"
-                                                    d="M.133 4.44a.506.506 0 010-.684l.643-.683a.437.437 0 01.642 0l2.219 2.392L8.58.14a.437.437 0 01.643 0l.643.684a.504.504 0 010 .682l-5.91 6.351a.437.437 0 01-.642 0L.133 4.44z"
-                                                    fill="currentColor"></path></svg></span></span><span
-                                                    class="DS__Checkbox__text"><span
-                                                    class="DS__TextBase__root DS__CssUtils__color_N900 DS__TextBase__size_m">Оплата милями</span></span></label>
+                                                <div class="_1YXwWzlF" id="bot-avia-js">
+                                                    <div class="_1W1T7NUe">
+                                                        <form class="_3MQoQyV3">
+                                                            <div class="KiBTwWq7">
+                                                                <div class="_3SRtC4bN">
+                                                                    <div class="MTazVphs _6k03yfnZ">
+                                                                        <div class="_1rWLuzgD CEteZZB2 _21ATs0tk"
+                                                                             data-test="editable_select undefined">
+                                                                            <div class="_1cD2Iyc6 _1Ta4j6hR"
+                                                                                 data-test="input_component"><label
+                                                                                    class="_2Q1Q3T3Z">
+                                                                                <div class="_3pBKKUE5"><input
+                                                                                        class="_1Zankvd6"
+                                                                                        id="from"
+                                                                                        aria-required="false"
+                                                                                        data-test="input_component__input  "
+                                                                                        value=""
+                                                                                        placeholder="Откуда">
+                                                                                </div>
+                                                                            </label></div>
+                                                                        </div>
+                                                                        <span class="_3GLANNGX"
+                                                                              data-test="swap_avia_directions"><svg
+                                                                                viewBox="0 0 20 20"><path
+                                                                                d="M5.884 12.5H16.5a1 1 0 0 1 0 2H5.914l1.293 1.293a1 1 0 1 1-1.414 1.414l-3-3a1 1 0 0 1-.006-1.408l2.947-3a1 1 0 0 1 1.427 1.402L5.884 12.5zm8.202-5H3.5a1 1 0 1 1 0-2h10.616l-1.277-1.3a1 1 0 0 1 1.427-1.4l2.947 3a1 1 0 0 1-.006 1.407l-3 3a1 1 0 0 1-1.414-1.414L14.086 7.5z"></path></svg></span>
+                                                                        <div class="_1rWLuzgD CEteZZB2 _2MHi1zve"
+                                                                             data-test="editable_select undefined">
+                                                                            <div class="_1cD2Iyc6 _1Ta4j6hR"
+                                                                                 data-test="input_component"><label
+                                                                                    class="_2Q1Q3T3Z">
+                                                                                <div class="_3pBKKUE5"><input
+                                                                                        class="_1Zankvd6"
+                                                                                        id="to"
+                                                                                        aria-required="false"
+                                                                                        data-test="input_component__input  "
+                                                                                        value=""
+                                                                                        placeholder="Куда">
+                                                                                </div>
+                                                                            </label></div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="_3Pz0OBIJ">
+                                                                        <div class="_1cD2Iyc6 _1VsDWwM1"
+                                                                             data-test="input_component"><label
+                                                                                class="_2Q1Q3T3Z _2_evT-AF">
+                                                                            <div class="_3pBKKUE5"><input
+                                                                                    class="_1Zankvd6"
+                                                                                    id="departure-date"
+                                                                                    aria-required="false"
+                                                                                    data-test="input_component__input  "
+                                                                                    value=""
+                                                                                    placeholder="20.12.2022"></div>
+                                                                            <i class="CvcVPWq1"
+                                                                               data-test="input_component__icon">
+                                                                                <svg width="16" height="16"
+                                                                                     viewBox="0 0 16 16"
+                                                                                     fill="none">
+                                                                                    <path fill-rule="evenodd"
+                                                                                          clip-rule="evenodd"
+                                                                                          d="M4 10h3V7H4v3zm-2 4V5h12l.002 9H2zM14 2h-1V1a1 1 0 00-2 0v1H5V1a1 1 0 00-2 0v1H2C.897 2 0 2.897 0 4v10c0 1.103.897 2 2 2h12c1.103 0 2-.897 2-2V4c0-1.103-.897-2-2-2z"
+                                                                                          fill="currentColor"></path>
+                                                                                </svg>
+                                                                            </i></label></div>
+                                                                    </div>
+                                                                    <div class="v0lYl_fw">
+                                                                        <button class="DS__Button__root DS__Button__theme_b2c DS__Button__size_medium"
+                                                                                type="button" id="btn-send"><span
+                                                                                class="DS__Button__content"
+                                                                                onclick="getFlightStatusByFromToDepartureDate()"><span>Проверить статус</span></span>
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="_3SRtC4bN _18Fw33yn _3QbZdeFK">
+                                                                    <div class="_1cD2Iyc6 _1Ta4j6hR _2dEBUOKV"
+                                                                         data-test="input_component"><label
+                                                                            class="_2Q1Q3T3Z">
+                                                                        <div class="_3pBKKUE5"><input class="_1Zankvd6"
+                                                                                                      aria-required="false"
+                                                                                                      data-test="input_component__input  "
+                                                                                                      maxlength="4"
+                                                                                                      value=""
+                                                                                                      placeholder="Номер рейса">
+                                                                        </div>
+                                                                    </label></div>
+                                                                    <div class="_1bUcfAcW">
+                                                                        <div class="_1cD2Iyc6 _11YqStNG"
+                                                                             data-test="input_component"><label
+                                                                                class="_2Q1Q3T3Z _2_evT-AF">
+                                                                            <div class="_3pBKKUE5"><input
+                                                                                    class="_1Zankvd6"
+                                                                                    aria-required="false"
+                                                                                    data-test="input_component__input  "
+                                                                                    value=""
+                                                                                    placeholder="20.12.2022"></div>
+                                                                            <i class="CvcVPWq1"
+                                                                               data-test="input_component__icon">
+                                                                                <svg width="16" height="16"
+                                                                                     viewBox="0 0 16 16"
+                                                                                     fill="none">
+                                                                                    <path fill-rule="evenodd"
+                                                                                          clip-rule="evenodd"
+                                                                                          d="M4 10h3V7H4v3zm-2 4V5h12l.002 9H2zM14 2h-1V1a1 1 0 00-2 0v1H5V1a1 1 0 00-2 0v1H2C.897 2 0 2.897 0 4v10c0 1.103.897 2 2 2h12c1.103 0 2-.897 2-2V4c0-1.103-.897-2-2-2z"
+                                                                                          fill="currentColor"></path>
+                                                                                </svg>
+                                                                            </i></label></div>
+                                                                    </div>
+                                                                    <div class="v0lYl_fw">
+                                                                        <button class="DS__Button__root DS__Button__theme_b2c DS__Button__size_medium"
+                                                                                type="button"><span
+                                                                                class="DS__Button__content"
+                                                                                ><span>Проверить статус</span></span>
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="card" id="card_one"></div>
+
+                                                            <div class="t76SxHZQ"><p class="UBqGKoTD">Поиск рейсов,
+                                                                отслеживание
+                                                                статуса, времени вылета и посадки
+                                                                самолёта.</p>
+                                                                <div class="v0lYl_fw _2PbRf-FF">
+                                                                    <button class="DS__Button__root DS__Button__theme_b2c DS__Button__size_medium"
+                                                                            type="button">
+                                                                        <span class="DS__Button__content"><span>Проверить статус</span></span>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
                                             </div>
+
+
+                                        </div>
+
+                                        <div class="tab-pane fade tab-c" id="profile_two" role="tabpanel"
+                                             aria-labelledby="profile-tab">
+
+
+                                            <div class="_3vxsBP7v">
+                                                <form class="_3MQoQyV3">
+                                                    <div class="KiBTwWq7">
+                                                        <div class="_3SRtC4bN _3QbZdeFK">
+                                                            <div class="MTazVphs _6k03yfnZ">
+                                                                <div class="_1rWLuzgD CEteZZB2 _21ATs0tk"
+                                                                     data-test="editable_select undefined">
+                                                                    <div class="_1cD2Iyc6 _1Ta4j6hR"
+                                                                         data-test="input_component"><label
+                                                                            class="_2Q1Q3T3Z">
+                                                                        <div class="_3pBKKUE5"><input class="_1Zankvd6"
+                                                                                                      aria-required="false"
+                                                                                                      data-test="input_component__input  "
+                                                                                                      value=""><span
+                                                                                class="AfJS6A5g _1iuoRFXU">Откуда</span>
+                                                                        </div>
+                                                                    </label></div>
+                                                                </div>
+                                                                <span class="_3GLANNGX"
+                                                                      data-test="swap_avia_directions"><svg
+                                                                        viewBox="0 0 20 20"><path
+                                                                        d="M5.884 12.5H16.5a1 1 0 0 1 0 2H5.914l1.293 1.293a1 1 0 1 1-1.414 1.414l-3-3a1 1 0 0 1-.006-1.408l2.947-3a1 1 0 0 1 1.427 1.402L5.884 12.5zm8.202-5H3.5a1 1 0 1 1 0-2h10.616l-1.277-1.3a1 1 0 0 1 1.427-1.4l2.947 3a1 1 0 0 1-.006 1.407l-3 3a1 1 0 0 1-1.414-1.414L14.086 7.5z"></path></svg></span>
+                                                                <div class="_1rWLuzgD CEteZZB2 _2MHi1zve"
+                                                                     data-test="editable_select undefined">
+                                                                    <div class="_1cD2Iyc6 _1Ta4j6hR"
+                                                                         data-test="input_component"><label
+                                                                            class="_2Q1Q3T3Z">
+                                                                        <div class="_3pBKKUE5"><input class="_1Zankvd6"
+                                                                                                      aria-required="false"
+                                                                                                      data-test="input_component__input  "
+                                                                                                      value=""><span
+                                                                                class="AfJS6A5g _1iuoRFXU">Куда</span>
+                                                                        </div>
+                                                                    </label></div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="_3Pz0OBIJ">
+                                                                <div class="_1cD2Iyc6 _1VsDWwM1"
+                                                                     data-test="input_component"><label
+                                                                        class="_2Q1Q3T3Z _2_evT-AF">
+                                                                    <div class="_3pBKKUE5"><input class="_1Zankvd6"
+                                                                                                  readonly=""
+                                                                                                  aria-required="false"
+                                                                                                  data-test="input_component__input  "
+                                                                                                  value="28 мар, пн"><span
+                                                                            class="AfJS6A5g"></span></div>
+                                                                    <i class="CvcVPWq1"
+                                                                       data-test="input_component__icon">
+                                                                        <svg width="16" height="16" viewBox="0 0 16 16"
+                                                                             fill="none">
+                                                                            <path fill-rule="evenodd"
+                                                                                  clip-rule="evenodd"
+                                                                                  d="M4 10h3V7H4v3zm-2 4V5h12l.002 9H2zM14 2h-1V1a1 1 0 00-2 0v1H5V1a1 1 0 00-2 0v1H2C.897 2 0 2.897 0 4v10c0 1.103.897 2 2 2h12c1.103 0 2-.897 2-2V4c0-1.103-.897-2-2-2z"
+                                                                                  fill="currentColor"></path>
+                                                                        </svg>
+                                                                    </i></label></div>
+                                                            </div>
+                                                            <div class="v0lYl_fw">
+                                                                <button class="DS__Button__root DS__Button__theme_b2c DS__Button__size_medium"
+                                                                        type="button"><span
+                                                                        class="DS__Button__content"><span>Проверить статус</span></span>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        <div class="_3SRtC4bN _18Fw33yn">
+                                                            <div class="_1cD2Iyc6 _1Ta4j6hR _2dEBUOKV"
+                                                                 data-test="input_component"><label class="_2Q1Q3T3Z">
+                                                                <div class="_3pBKKUE5"><input class="_1Zankvd6"
+                                                                                              aria-required="false"
+                                                                                              data-test="input_component__input  "
+                                                                                              id="flight-number"
+                                                                                              maxlength="4" value="" placeholder="Номер рейса">
+                                                                </div>
+                                                            </label></div>
+                                                            <div class="_1bUcfAcW">
+                                                                <div class="_1cD2Iyc6 _11YqStNG"
+                                                                     data-test="input_component"><label
+                                                                        class="_2Q1Q3T3Z _2_evT-AF">
+                                                                    <div class="_3pBKKUE5"><input class="_1Zankvd6"
+                                                                                                  readonly=""
+                                                                                                  aria-required="false"
+                                                                                                  data-test="input_component__input  "
+                                                                                                  value="28 мар, пн"><span
+                                                                            class="AfJS6A5g"></span></div>
+                                                                    <i class="CvcVPWq1"
+                                                                       data-test="input_component__icon">
+                                                                        <svg width="16" height="16" viewBox="0 0 16 16"
+                                                                             fill="none">
+                                                                            <path fill-rule="evenodd"
+                                                                                  clip-rule="evenodd"
+                                                                                  d="M4 10h3V7H4v3zm-2 4V5h12l.002 9H2zM14 2h-1V1a1 1 0 00-2 0v1H5V1a1 1 0 00-2 0v1H2C.897 2 0 2.897 0 4v10c0 1.103.897 2 2 2h12c1.103 0 2-.897 2-2V4c0-1.103-.897-2-2-2z"
+                                                                                  fill="currentColor"></path>
+                                                                        </svg>
+                                                                    </i></label></div>
+                                                            </div>
+                                                            <div class="v0lYl_fw">
+                                                                <button class="DS__Button__root DS__Button__theme_b2c DS__Button__size_medium"
+                                                                        type="button"><span
+                                                                        class="DS__Button__content" onclick="getFlightStatusById()"><span>Проверить статус</span></span>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="card" id="card_two"></div>
+
+                                                    <div class="t76SxHZQ"><p class="UBqGKoTD">Поиск рейсов, отслеживание
+                                                        статуса, времени вылета и посадки самолёта.</p>
+                                                        <div class="v0lYl_fw _2PbRf-FF">
+                                                            <button class="DS__Button__root DS__Button__theme_b2c DS__Button__size_medium"
+                                                                    type="button"><span
+                                                                    class="DS__Button__content"><span>Проверить статус</span></span>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+
+
                                         </div>
                                     </div>
-                                    <div class="_3bnnnpzx _2y8lOxNk">
-                                        <button data-test="avia-bot-submit"
-                                                class="DS__Button__root DS__Button__theme_b2c DS__Button__size_large DS__Button__disabled"
-                                                disabled="" type="submit"><span
-                                                class="DS__Button__content"><span>Найти</span></span></button>
-                                    </div>
-                                    <div class="_18TKAEyO _2ulaouN-"><a class="_1NLf8QUI" data-test="multi-search-link"><i
-                                            class="rx0ITPMy">
-                                        <svg width="20" height="20" viewBox="0 0 20 20">
-                                            <path d="M16 16a1 1 0 1 1 0-2 1 1 0 0 1 0 2M4 16a1 1 0 1 1 0-2 1 1 0 0 1 0 2m6-12a1 1 0 1 1 0 2 1 1 0 0 1 0-2m-3.682 9.119l3.064-5.184a3 3 0 0 0 1.236 0l3.064 5.184c-.23.282-.407.605-.522.958H6.84a2.965 2.965 0 0 0-.522-.958M16 12c-.212 0-.419.023-.618.065l-3.064-5.184A2.97 2.97 0 0 0 13 5c0-1.654-1.346-3-3-3S7 3.346 7 5c0 .716.262 1.364.682 1.881l-3.064 5.184A3.004 3.004 0 0 0 1 15c0 1.654 1.346 3 3 3a3 3 0 0 0 2.792-1.923h6.416A3 3 0 0 0 16 18c1.654 0 3-1.346 3-3s-1.346-3-3-3"></path>
-                                        </svg>
-                                    </i><span class="_1MRQhNGq">Составить сложный маршрут</span></a></div>
-                                </form>
+                                </div>
+
+
                             </div>
                         </div>
                     </div>
@@ -350,7 +768,7 @@
                                                 </div>
                                             </div>
                                             <span href="/ru/offers/luchshie-predlozheniya-nedeli"
-                                               class="card__card-link___3uKnQ">Подробнее</span>
+                                                  class="card__card-link___3uKnQ">Подробнее</span>
                                         </div>
                                     </a></div>
                                     <div class="offers-block-item"><a href="/ru/offers/semeynyy-schet"
@@ -586,5 +1004,9 @@
         </footer>
     </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+<script th:src="@{/js/flightStatus.js}"></script>
 </body>
 </html>
