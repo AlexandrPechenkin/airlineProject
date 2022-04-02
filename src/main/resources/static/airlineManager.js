@@ -179,10 +179,13 @@ function getFlights() {
         .then(res => res.json())
         .then(flights => {
                 flights.forEach(flight => {
+
+                    const departureDate = formatDate(flight.departureDate)
+
                     document.querySelector('#tableFlights').insertAdjacentHTML('beforeend',
                         `<tr>
                             <td>${flight.id}</td>
-                            <td>${flight.departureDate}</td>
+                            <td>${departureDate}</td>
                             <td>${flight.departureTime}</td>
                             <td>${flight.arrivalDateTime}</td>
                             <td>${flight.destinationFrom}</td>
@@ -203,153 +206,170 @@ function getFlights() {
         )
 }
 
-// function addFlightData() {
-//     document.addEventListener('DOMContentLoaded', addFlightData)
-//     let brand = document.getElementById('addBrand').value
-//     let model = document.getElementById('addModel').value
-//     let boardNumber = document.getElementById('addBoardNumber').value
-//     let productionYear = document.getElementById('addProductionYear').value
-//     let flyingRange = document.getElementById('addFlyingRange').value
-//
-//     let flight = {
-//         brand: brand,
-//         model: model,
-//         boardNumber: boardNumber,
-//         productionYear: productionYear,
-//         flyingRange: flyingRange
-//     }
-//
-//     flightsFetch.addFlight(flight).then(() => {
-//         document.getElementById('addBrand').value = ``
-//         document.getElementById('addModel').value = ``
-//         document.getElementById('addBoardNumber').value = ``
-//         document.getElementById('addProductionYear').value = ``
-//         document.getElementById('addFlyingRange').value = ``
-//
-//         document.getElementById('tableFlights').innerHTML = ``
-//
-//         getFlights()
-//     })
-//
-//     $('#flightstable-tab').tab('show')
-//
-// }
-//
-// function editFlight(id) {
-//     flightsFetch.getFlightById(id)
-//         .then(res => res.json())
-//         .then(flight => {
-//             $('#editId').val(flight.id)
-//             $('#editBrand').val(flight.brand)
-//             $('#editModel').val(flight.model)
-//             $('#editBoardNumber').val(flight.boardNumber)
-//             $('#editProductionYear').val(flight.productionYear)
-//             $('#editFlyingRange').val(flight.flyingRange)
-//         })
-// }
-//
-// function updateFlight() {
-//     let id = document.getElementById('editId').value
-//     let brand = document.getElementById('editBrand').value
-//     let model = document.getElementById('editModel').value
-//     let boardNumber = document.getElementById('editBoardNumber').value
-//     let productionYear = document.getElementById('editProductionYear').value
-//     let flyingRange = document.getElementById('editFlyingRange').value
-//
-//     let flight = {
-//         id: id,
-//         brand: brand,
-//         model: model,
-//         boardNumber: boardNumber,
-//         productionYear: productionYear,
-//         flyingRange: flyingRange
-//     }
-//
-//     flightsFetch.updateFlight(flight).then(() => {
-//         document.getElementById('editId').value = ``
-//         document.getElementById('editBrand').value = ``
-//         document.getElementById('editModel').value = ``
-//         document.getElementById('editBoardNumber').value = ``
-//         document.getElementById('editProductionYear').value = ``
-//         document.getElementById('editFlyingRange').value = ``
-//
-//         document.getElementById('tableFlights').innerHTML = ``
-//
-//         getFlights()
-//
-//         $('#editFlight').modal('hide')
-//     })
-// }
-//
-// function deleteFlight(id) {
-//     flightsFetch.getFlightById(id)
-//         .then(res => res.json())
-//         .then(flight => {
-//             $('#deleteId').val(flight.id)
-//             $('#deleteBrand').val(flight.brand)
-//             $('#deleteModel').val(flight.model)
-//             $('#deleteBoardNumber').val(flight.boardNumber)
-//             $('#deleteProductionYear').val(flight.productionYear)
-//             $('#deleteFlyingRange').val(flight.flyingRange)
-//         })
-// }
-//
-// function deleteFlightById() {
-//     let id = document.getElementById('deleteId').value
-//
-//     flightsFetch.deleteFlightByID(id).then(() => {
-//         document.getElementById('deleteId').value = ``
-//         document.getElementById('deleteBrand').value = ``
-//         document.getElementById('deleteModel').value = ``
-//         document.getElementById('deleteBoardNumber').value = ``
-//         document.getElementById('deleteProductionYear').value = ``
-//         document.getElementById('deleteFlyingRange').value = ``
-//
-//         document.getElementById('tableFlights').innerHTML = ``
-//
-//         getFlights()
-//
-//         $('#deleteFlight').modal('hide')
-//     })
-// }
-//
-// const ticketsFetch = {
-//     head: {
-//         'Accept': 'application/json',
-//         'Content-Type': 'application/json; charset=UTF-8',
-//         'Referer': null
-//     },
-//
-//     getAllTickets: async () => await fetch('api/ticket')
-// }
-//
-// getTickets()
-//
-// function getTickets() {
-//     ticketsFetch.getAllTickets()
-//         .then(res => res.json())
-//         .then(tickets => {
-//                 tickets.forEach(ticket => {
-//                     document.querySelector('#tableTickets').insertAdjacentHTML('beforeend',
-//                         `<tr>
-//                             <td>${ticket.id}</td>
-//                             <td>${ticket.brand}</td>
-//                             <td>${ticket.model}</td>
-//                             <td>${ticket.boardNumber}</td>
-//                             <td>${ticket.productionYear}</td>
-//                             <td>${ticket.flyingRange}</td>
-//                             <td>
-//                             <button type="submit" onclick="editTicket(${ticket.id})"
-//                             class="btn btn-info" data-toggle="modal" data-target="#editTicket">Edit</button>
-//                             </td>
-//                             <td>
-//                             <button type="submit" onclick="deleteTicket(${ticket.id})"
-//                             class="btn btn-danger" data-toggle="modal" data-target="#deleteTicket">Delete</button>
-//                             </td>
-//                         </tr>`
-//                     )
-//                 })
-//             }
-//         )
-// }
+function addFlightData() {
+    document.addEventListener('DOMContentLoaded', addFlightData)
+    let departureDate = document.getElementById('addDepartureDate').value
+    let departureTime = document.getElementById('addDepartureTime').value
+    let arrivalDateTime = document.getElementById('addArrivalDateTime').value
+    let destinationFrom = document.getElementById('addDestinationFrom').value
+    let destinationTo = document.getElementById('addDestinationTo').value
+    let flightStatus = document.getElementById('addFlightStatus').value
 
+    let flight = {
+        departureDate: departureDate,
+        departureTime: departureTime,
+        arrivalDateTime: arrivalDateTime,
+        destinationFrom: destinationFrom,
+        destinationTo: destinationTo,
+        flightStatus: flightStatus
+    }
+
+    flightsFetch.addFlight(flight).then(() => {
+        document.getElementById('addDepartureDate').value = ``
+        document.getElementById('addDepartureTime').value = ``
+        document.getElementById('addArrivalDateTime').value = ``
+        document.getElementById('addDestinationFrom').value = ``
+        document.getElementById('addDestinationTo').value = ``
+        document.getElementById('addFlightStatus').value = ``
+
+        document.getElementById('tableFlights').innerHTML = ``
+
+        getFlights()
+    })
+
+    $('#flightstable-tab').tab('show')
+
+}
+
+function editFlight(id) {
+    flightsFetch.getFlightById(id)
+        .then(res => res.json())
+        .then(flight => {
+            $('#editFlightId').val(flight.id)
+            $('#editDepartureDate').val(flight.departureDate)
+            $('#editDepartureTime').val(flight.departureTime)
+            $('#editArrivalDateTime').val(flight.arrivalDateTime)
+            $('#editDestinationFrom').val(flight.destinationFrom)
+            $('#editDestinationTo').val(flight.destinationTo)
+            $('#editFlightStatus').val(flight.flightStatus)
+        })
+}
+
+function updateFlight() {
+    let id = document.getElementById('editFlightId').value
+    let departureDate = document.getElementById('editDepartureDate').value
+    let departureTime = document.getElementById('editDepartureTime').value
+    let arrivalDateTime = document.getElementById('editArrivalDateTime').value
+    let destinationFrom = document.getElementById('editDestinationFrom').value
+    let destinationTo = document.getElementById('editDestinationTo').value
+    let flightStatus = document.getElementById('editFlightStatus').value
+
+    let flight = {
+        id: id,
+        departureDate: departureDate,
+        departureTime: departureTime,
+        arrivalDateTime: arrivalDateTime,
+        destinationFrom: destinationFrom,
+        destinationTo: destinationTo,
+        flightStatus: flightStatus
+    }
+
+    flightsFetch.updateFlight(flight).then(() => {
+        document.getElementById('editFlightId').value = ``
+        document.getElementById('editDepartureDate').value = ``
+        document.getElementById('editDepartureDate').value = ``
+        document.getElementById('editArrivalDateTime').value = ``
+        document.getElementById('editDestinationFrom').value = ``
+        document.getElementById('editDestinationTo').value = ``
+
+        document.getElementById('tableFlights').innerHTML = ``
+
+        getFlights()
+
+        $('#editFlight').modal('hide')
+    })
+}
+
+function deleteFlight(id) {
+    flightsFetch.getFlightById(id)
+        .then(res => res.json())
+        .then(flight => {
+            $('#deleteFlightId').val(flight.id)
+            $('#deleteDepartureDate').val(flight.departureDate)
+            $('#deleteDepartureTime').val(flight.departureTime)
+            $('#deleteArrivalDateTime').val(flight.arrivalDateTime)
+            $('#deleteDestinationFrom').val(flight.destinationFrom)
+            $('#deleteDestinationTo').val(flight.destinationTo)
+            $('#deleteFlightStatus').val(flight.flightStatus)
+        })
+}
+
+function deleteFlightById() {
+    let id = document.getElementById('deleteFlightId').value
+
+    flightsFetch.deleteFlightByID(id).then(() => {
+        document.getElementById('deleteFlightId').value = ``
+        document.getElementById('deleteDepartureDate').value = ``
+        document.getElementById('deleteDepartureTime').value = ``
+        document.getElementById('deleteArrivalDateTime').value = ``
+        document.getElementById('deleteDestinationFrom').value = ``
+        document.getElementById('deleteDestinationTo').value = ``
+        document.getElementById('deleteFlightStatus').value = ``
+
+        document.getElementById('tableFlights').innerHTML = ``
+
+        getFlights()
+
+        $('#deleteFlight').modal('hide')
+    })
+}
+
+const ticketsFetch = {
+    head: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Referer': null
+    },
+
+    getAllTickets: async () => await fetch('api/ticket')
+}
+
+getTickets()
+
+function getTickets() {
+    ticketsFetch.getAllTickets()
+        .then(res => res.json())
+        .then(tickets => {
+            tickets.forEach(ticket => {
+
+                const departureDate = formatDate(ticket.flight.departureDate)
+
+                document.querySelector('#tableTickets').insertAdjacentHTML('beforeend',
+                    `<tr>
+                        <td>${ticket.id}</td>
+                        <td>${ticket.seat}</td>
+                        <td>${ticket.holdNumber}</td>
+                        <td>${ticket.price}</td>
+                        <td>${ticket.flight.flightStatus}</td>
+                        <td>${departureDate}</td>
+                    </tr>`
+                )
+            })
+        })
+}
+
+function formatDate(unformattedDate) {
+
+    const date = new Date(unformattedDate)
+
+    let dd = date.getDate()
+    if (dd < 10) dd = '0' + dd
+
+    let mm = date.getMonth() + 1
+    if (mm < 10) mm = '0' + mm
+
+    let yy = date.getFullYear()
+    if (yy < 10) yy = '0' + yy
+
+    return mm + '/' + dd + '/' + yy
+}
