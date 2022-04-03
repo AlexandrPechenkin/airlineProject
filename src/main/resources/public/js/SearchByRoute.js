@@ -19,14 +19,12 @@ async function getFlightsByRoutes() {
         "number_of_seats": inp_number_of_seats,
         "category": inp_category
     }
-    let json = JSON.stringify(route);
     await fetch(urlReq, {
         method: "POST",
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
-        body: json
-
+        body: JSON.stringify(route)
     })
 }
