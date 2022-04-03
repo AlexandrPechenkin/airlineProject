@@ -1,7 +1,7 @@
 package app.controllers.rest;
 
 import app.AirlineApplication;
-import app.entities.*;
+import app.entities.Seat;
 import app.services.interfaces.SeatService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -48,25 +48,25 @@ public class SeatRestControllerTest {
                 .fare(800)
                 .isRegistered(true)
                 .isSold(true)
-                .flight(Flight.builder()
-                        .id(1L)
-                        .flightStatus(FlightStatus.DELAY)
-                        .from(Destination.builder()
-                                .airportName("seat1_airport_name")
-                                .airportCode("seat1_airport_code")
-                                .city("Moscow")
-                                .countryName("Russia")
-                                .countryCode(CountryCode.RUS)
-                                .build())
-                        .to(Destination.builder()
-                                .airportName("Bogashevo")
-                                .airportCode("TOF")
-                                .countryName("Russia")
-                                .countryCode(CountryCode.RUS)
-                                .city("Tomsk")
-                                .build())
-                        .build()
-                ).build();
+//                .flight(Flight.builder()
+//                        .id(1L)
+//                        .flightStatus(FlightStatus.DELAY)
+//                        .from(Destination.builder()
+//                                .airportName("seat1_airport_name")
+//                                .airportCode("seat1_airport_code")
+//                                .city("Moscow")
+//                                .countryName("Russia")
+//                                .countryCode(CountryCode.RUS)
+//                                .build())
+//                        .to(Destination.builder()
+//                                .airportName("Bogashevo")
+//                                .airportCode("TOF")
+//                                .countryName("Russia")
+//                                .countryCode(CountryCode.RUS)
+//                                .city("Tomsk")
+//                                .build())
+//                        .build()
+                .build();
     }
 
     Seat createSeat2() {
@@ -76,25 +76,25 @@ public class SeatRestControllerTest {
                 .fare(1100)
                 .isRegistered(false)
                 .isSold(true)
-                .flight(Flight.builder()
-                        .id(1L)
-                        .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
-                        .from(Destination.builder()
-                                .airportName("seat1_airport_name")
-                                .airportCode("seat1_airport_code")
-                                .city("Moscow")
-                                .countryName("Russia")
-                                .countryCode(CountryCode.RUS)
-                                .build())
-                        .to(Destination.builder()
-                                .airportName("Bogashevo")
-                                .airportCode("TOF")
-                                .countryName("Russia")
-                                .countryCode(CountryCode.RUS)
-                                .city("Tomsk")
-                                .build())
-                        .build()
-                ).build();
+//                .flight(Flight.builder()
+//                        .id(1L)
+//                        .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
+//                        .from(Destination.builder()
+//                                .airportName("seat1_airport_name")
+//                                .airportCode("seat1_airport_code")
+//                                .city("Moscow")
+//                                .countryName("Russia")
+//                                .countryCode(CountryCode.RUS)
+//                                .build())
+//                        .to(Destination.builder()
+//                                .airportName("Bogashevo")
+//                                .airportCode("TOF")
+//                                .countryName("Russia")
+//                                .countryCode(CountryCode.RUS)
+//                                .city("Tomsk")
+//                                .build())
+//                        .build()
+                .build();
     }
 
 

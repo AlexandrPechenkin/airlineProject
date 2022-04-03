@@ -1,12 +1,12 @@
 package app.util;
 
-import app.entities.*;
+import app.entities.Aircraft;
+import app.entities.Category;
+import app.entities.Seat;
 import app.services.interfaces.DestinationService;
 import lombok.experimental.UtilityClass;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -27,14 +27,14 @@ public class Fleet {
                                         .fare(6500)
                                         .isRegistered(false)
                                         .isSold(false)
-                                        .flight(Flight.builder()
-                                                .from(destinationService.getDestinationById(1L).get())
-                                                .to(destinationService.getDestinationById(2L).get())
-                                                .departureDate(LocalDate.of(2022, 12, 20))
-                                                .departureTime(LocalTime.of(10, 20))
-                                                .arrivalDateTime(LocalDateTime.of(2022, 12, 21, 14, 40))
-                                                .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
-                                                .build())
+//                                        .flight(Flight.builder()
+//                                                .from(destinationService.getDestinationById(1L).get())
+//                                                .to(destinationService.getDestinationById(2L).get())
+//                                                .departureDate(LocalDate.of(2022, 12, 20))
+//                                                .departureTime(LocalTime.of(10, 20))
+//                                                .arrivalDateTime(LocalDateTime.of(2022, 12, 21, 14, 40))
+//                                                .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
+//                                                .build())
                                         .build()
                         ).collect(Collectors.toList()))
                 .build();
@@ -47,14 +47,14 @@ public class Fleet {
                                         .fare(3600)
                                         .isRegistered(false)
                                         .isSold(false)
-                                        .flight(Flight.builder()
-                                                .from(destinationService.getDestinationById(1L).get())
-                                                .to(destinationService.getDestinationById(2L).get())
-                                                .departureDate(LocalDate.of(2022, 12, 20))
-                                                .departureTime(LocalTime.of(10, 20))
-                                                .arrivalDateTime(LocalDateTime.of(2022, 12, 21, 14, 40))
-                                                .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
-                                                .build())
+//                                        .flight(Flight.builder()
+//                                                .from(destinationService.getDestinationById(1L).get())
+//                                                .to(destinationService.getDestinationById(2L).get())
+//                                                .departureDate(LocalDate.of(2022, 12, 20))
+//                                                .departureTime(LocalTime.of(10, 20))
+//                                                .arrivalDateTime(LocalDateTime.of(2022, 12, 21, 14, 40))
+//                                                .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
+//                                                .build())
                                         .build()
                         ).collect(Collectors.toList()))
                 .build();
@@ -79,14 +79,14 @@ public class Fleet {
                                         .fare(6500)
                                         .isRegistered(false)
                                         .isSold(false)
-                                        .flight(Flight.builder()
-                                                .from(destinationService.getDestinationById(1L).get())
-                                                .to(destinationService.getDestinationById(2L).get())
-                                                .departureDate(LocalDate.of(2022, 12, 20))
-                                                .departureTime(LocalTime.of(10, 20))
-                                                .arrivalDateTime(LocalDateTime.of(2022, 12, 21, 14, 40))
-                                                .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
-                                                .build())
+//                                        .flight(Flight.builder()
+//                                                .from(destinationService.getDestinationById(1L).get())
+//                                                .to(destinationService.getDestinationById(2L).get())
+//                                                .departureDate(LocalDate.of(2022, 12, 20))
+//                                                .departureTime(LocalTime.of(10, 20))
+//                                                .arrivalDateTime(LocalDateTime.of(2022, 12, 21, 14, 40))
+//                                                .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
+//                                                .build())
                                         .build()
                         ).collect(Collectors.toList()))
                 .build();
@@ -99,14 +99,14 @@ public class Fleet {
                                         .fare(4600)
                                         .isRegistered(false)
                                         .isSold(false)
-                                        .flight(Flight.builder()
-                                                .from(destinationService.getDestinationById(1L).get())
-                                                .to(destinationService.getDestinationById(2L).get())
-                                                .departureDate(LocalDate.of(2022, 12, 20))
-                                                .departureTime(LocalTime.of(10, 20))
-                                                .arrivalDateTime(LocalDateTime.of(2022, 12, 21, 14, 40))
-                                                .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
-                                                .build())
+//                                        .flight(Flight.builder()
+//                                                .from(destinationService.getDestinationById(1L).get())
+//                                                .to(destinationService.getDestinationById(2L).get())
+//                                                .departureDate(LocalDate.of(2022, 12, 20))
+//                                                .departureTime(LocalTime.of(10, 20))
+//                                                .arrivalDateTime(LocalDateTime.of(2022, 12, 21, 14, 40))
+//                                                .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
+//                                                .build())
                                         .build()
                         ).collect(Collectors.toList()))
                 .build();
@@ -119,14 +119,14 @@ public class Fleet {
                                         .fare(3200)
                                         .isRegistered(false)
                                         .isSold(false)
-                                        .flight(Flight.builder()
-                                                .from(destinationService.getDestinationById(1L).get())
-                                                .to(destinationService.getDestinationById(2L).get())
-                                                .departureDate(LocalDate.of(2022, 12, 20))
-                                                .departureTime(LocalTime.of(10, 20))
-                                                .arrivalDateTime(LocalDateTime.of(2022, 12, 21, 14, 40))
-                                                .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
-                                                .build())
+//                                        .flight(Flight.builder()
+//                                                .from(destinationService.getDestinationById(1L).get())
+//                                                .to(destinationService.getDestinationById(2L).get())
+//                                                .departureDate(LocalDate.of(2022, 12, 20))
+//                                                .departureTime(LocalTime.of(10, 20))
+//                                                .arrivalDateTime(LocalDateTime.of(2022, 12, 21, 14, 40))
+//                                                .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
+//                                                .build())
                                         .build()
                         ).collect(Collectors.toList()))
                 .build();

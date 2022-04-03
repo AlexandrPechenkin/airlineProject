@@ -1,7 +1,9 @@
 package app.controllers.rest;
 
 import app.AirlineApplication;
-import app.entities.*;
+import app.entities.Aircraft;
+import app.entities.Category;
+import app.entities.Seat;
 import app.entities.mappers.aircraft.AircraftMapper;
 import app.services.interfaces.AircraftService;
 import app.services.interfaces.DestinationService;
@@ -20,10 +22,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
-import java.util.TimeZone;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -65,31 +64,31 @@ class AircraftRestControllerTest {
                                                 .fare(it1)
                                                 .isRegistered(true)
                                                 .isSold(true)
-                                                .flight(Flight.builder()
-                                                        .from(destinationService.createOrUpdateDestination(
-                                                                Destination.builder()
-                                                                        .countryName("Russia")
-                                                                        .countryCode(CountryCode.RUS)
-                                                                        .city("Moscow")
-                                                                        .airportName("Domodedovo")
-                                                                        .airportCode("DME")
-                                                                        .timeZone(TimeZone.getTimeZone("Europe/Moscow"))
-                                                                        .build()
-                                                        ))
-                                                        .to(destinationService.createOrUpdateDestination(
-                                                                Destination.builder()
-                                                                        .countryName("Russia")
-                                                                        .countryCode(CountryCode.RUS)
-                                                                        .city("Nizhny Novgorod")
-                                                                        .airportName("Strigino")
-                                                                        .airportCode("GOJ")
-                                                                        .timeZone(TimeZone.getTimeZone("Europe/Nizhny Novgorod"))
-                                                                        .build()))
-                                                        .departureDate(LocalDate.of(2021, 1, 1))
-                                                        .departureTime(LocalTime.MAX)
-                                                        .arrivalDateTime(LocalDateTime.MAX)
-                                                        .flightStatus(FlightStatus.DELAY)
-                                                        .build())
+//                                                .flight(Flight.builder()
+//                                                        .from(destinationService.createOrUpdateDestination(
+//                                                                Destination.builder()
+//                                                                        .countryName("Russia")
+//                                                                        .countryCode(CountryCode.RUS)
+//                                                                        .city("Moscow")
+//                                                                        .airportName("Domodedovo")
+//                                                                        .airportCode("DME")
+//                                                                        .timeZone(TimeZone.getTimeZone("Europe/Moscow"))
+//                                                                        .build()
+//                                                        ))
+//                                                        .to(destinationService.createOrUpdateDestination(
+//                                                                Destination.builder()
+//                                                                        .countryName("Russia")
+//                                                                        .countryCode(CountryCode.RUS)
+//                                                                        .city("Nizhny Novgorod")
+//                                                                        .airportName("Strigino")
+//                                                                        .airportCode("GOJ")
+//                                                                        .timeZone(TimeZone.getTimeZone("Europe/Nizhny Novgorod"))
+//                                                                        .build()))
+//                                                        .departureDate(LocalDate.of(2021, 1, 1))
+//                                                        .departureTime(LocalTime.MAX)
+//                                                        .arrivalDateTime(LocalDateTime.MAX)
+//                                                        .flightStatus(FlightStatus.DELAY)
+//                                                        .build())
                                                 .build()
                                 ).collect(Collectors.toList()))
                         .build()

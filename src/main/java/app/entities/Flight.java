@@ -11,8 +11,6 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.List;
-import java.util.Map;
 
 @Data
 @NoArgsConstructor
@@ -74,16 +72,9 @@ public class Flight {
     private Destination to;
 
     /**
-     * места на рейса
-     */
-    @Nullable
-    @OneToMany(targetEntity = Seat.class)
-    private Map<Category, List<Seat>> seatsByCategory;
-
-    /**
      * самолёт
      */
     @Nullable
-    @OneToOne
+    @ManyToOne
     private Aircraft aircraft;
 }

@@ -1,8 +1,6 @@
 package app.controllers.rest;
 
 
-import app.entities.Flight;
-import app.entities.Seat;
 import app.entities.dtos.SeatDTO;
 import app.entities.mappers.seat.SeatMapper;
 import app.services.interfaces.FlightService;
@@ -14,8 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
-import java.util.Optional;
 
 
 /**
@@ -34,39 +30,39 @@ public class SeatRestController {
     private final SeatMapper seatMapper;
     private final FlightService flightService;
 
-    @ApiOperation(value = "Запрос для получения всех мест конкретного рейса")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Места успешно получены"),
-            @ApiResponse(code = 400, message = "Переданы неверные данные")
-    })
-    @GetMapping("/{id}")
-    public ResponseEntity<List<Seat>> getAllSeat(@ApiParam(example = "1") @PathVariable long id) {
-        List<Seat> seat = seatService.getAllSeatByFlightId(id);
-
-        if (seat.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } else {
-            return new ResponseEntity<>(seat, HttpStatus.OK);
-        }
-    }
-
-    @ApiOperation(value = "Запрос для получения мест конкретного рейса определенной категории")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Места успешно получены"),
-            @ApiResponse(code = 400, message = "Переданы неверные данные")
-    })
-    @GetMapping("/{flight}/{category}")
-    public ResponseEntity<List<Seat>> getSeatByFlightAndCategory(
-            @ApiParam(example = "1") @PathVariable long flight, @ApiParam(example = "1") @PathVariable long category) {
-
-        List<Seat> seat = seatService.getSeatByFlightAndCategory(flight, category);
-
-        if (seat.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } else {
-            return new ResponseEntity<>(seat, HttpStatus.OK);
-        }
-    }
+//    @ApiOperation(value = "Запрос для получения всех мест конкретного рейса")
+//    @ApiResponses(value = {
+//            @ApiResponse(code = 200, message = "Места успешно получены"),
+//            @ApiResponse(code = 400, message = "Переданы неверные данные")
+//    })
+//    @GetMapping("/{id}")
+//    public ResponseEntity<List<Seat>> getAllSeat(@ApiParam(example = "1") @PathVariable long id) {
+//        List<Seat> seat = seatService.getAllSeatByFlightId(id);
+//
+//        if (seat.isEmpty()) {
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        } else {
+//            return new ResponseEntity<>(seat, HttpStatus.OK);
+//        }
+//    }
+//
+//    @ApiOperation(value = "Запрос для получения мест конкретного рейса определенной категории")
+//    @ApiResponses(value = {
+//            @ApiResponse(code = 200, message = "Места успешно получены"),
+//            @ApiResponse(code = 400, message = "Переданы неверные данные")
+//    })
+//    @GetMapping("/{flight}/{category}")
+//    public ResponseEntity<List<Seat>> getSeatByFlightAndCategory(
+//            @ApiParam(example = "1") @PathVariable long flight, @ApiParam(example = "1") @PathVariable long category) {
+//
+//        List<Seat> seat = seatService.getSeatByFlightAndCategory(flight, category);
+//
+//        if (seat.isEmpty()) {
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        } else {
+//            return new ResponseEntity<>(seat, HttpStatus.OK);
+//        }
+//    }
 
     @ApiOperation(value = "Запрос для создания места на рейсе")
     @ApiResponses(value = {
@@ -99,54 +95,54 @@ public class SeatRestController {
     }
 
 
-    @ApiOperation(value = "Запрос для получения количества непроданных мест")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Места успешно получены"),
-            @ApiResponse(code = 400, message = "Переданы неверные данные")
-    })
-    @GetMapping("/no-sold/{id}")
-    public ResponseEntity<Long> getCountNoSoldSeat(@ApiParam(example = "1") @PathVariable long id) {
-        Optional<Flight> flight = flightService.findById(id);
-
-        if (flight.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } else {
-            return new ResponseEntity<>(seatService.getCountNoSoldSeat(id), HttpStatus.OK);
-        }
-    }
-
-
-    @ApiOperation(value = "Запрос для получения количества проданных мест")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Места успешно получены"),
-            @ApiResponse(code = 400, message = "Переданы неверные данные")
-    })
-    @GetMapping("/sold/{id}")
-    public ResponseEntity<Long> getCountSoldSeat(@ApiParam(example = "1") @PathVariable long id) {
-        Optional<Flight> flight = flightService.findById(id);
-
-        if (flight.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } else {
-            return new ResponseEntity<>(seatService.getCountSoldSeat(id), HttpStatus.OK);
-        }
-    }
-
-
-    @ApiOperation(value = "Запрос для получения количества зарегистрированных пассажиров")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Зарегистрированные пассажиры успешно получены"),
-            @ApiResponse(code = 400, message = "Переданы неверные данные")
-    })
-    @GetMapping("/registered/{id}")
-    public ResponseEntity<Long> getCountRegisteredPassenger(@ApiParam(example = "1") @PathVariable long id) {
-        Optional<Flight> flight = flightService.findById(id);
-
-        if (flight.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } else {
-            return new ResponseEntity<>(seatService.getCountRegisteredPassenger(id), HttpStatus.OK);
-        }
-    }
+//    @ApiOperation(value = "Запрос для получения количества непроданных мест")
+//    @ApiResponses(value = {
+//            @ApiResponse(code = 200, message = "Места успешно получены"),
+//            @ApiResponse(code = 400, message = "Переданы неверные данные")
+//    })
+//    @GetMapping("/no-sold/{id}")
+//    public ResponseEntity<Long> getCountNoSoldSeat(@ApiParam(example = "1") @PathVariable long id) {
+//        Optional<Flight> flight = flightService.findById(id);
+//
+//        if (flight.isEmpty()) {
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        } else {
+//            return new ResponseEntity<>(seatService.getCountNoSoldSeat(id), HttpStatus.OK);
+//        }
+//    }
+//
+//
+//    @ApiOperation(value = "Запрос для получения количества проданных мест")
+//    @ApiResponses(value = {
+//            @ApiResponse(code = 200, message = "Места успешно получены"),
+//            @ApiResponse(code = 400, message = "Переданы неверные данные")
+//    })
+//    @GetMapping("/sold/{id}")
+//    public ResponseEntity<Long> getCountSoldSeat(@ApiParam(example = "1") @PathVariable long id) {
+//        Optional<Flight> flight = flightService.findById(id);
+//
+//        if (flight.isEmpty()) {
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        } else {
+//            return new ResponseEntity<>(seatService.getCountSoldSeat(id), HttpStatus.OK);
+//        }
+//    }
+//
+//
+//    @ApiOperation(value = "Запрос для получения количества зарегистрированных пассажиров")
+//    @ApiResponses(value = {
+//            @ApiResponse(code = 200, message = "Зарегистрированные пассажиры успешно получены"),
+//            @ApiResponse(code = 400, message = "Переданы неверные данные")
+//    })
+//    @GetMapping("/registered/{id}")
+//    public ResponseEntity<Long> getCountRegisteredPassenger(@ApiParam(example = "1") @PathVariable long id) {
+//        Optional<Flight> flight = flightService.findById(id);
+//
+//        if (flight.isEmpty()) {
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        } else {
+//            return new ResponseEntity<>(seatService.getCountRegisteredPassenger(id), HttpStatus.OK);
+//        }
+//    }
 
 }
