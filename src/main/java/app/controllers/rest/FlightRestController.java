@@ -89,23 +89,6 @@ public class FlightRestController {
             @ApiResponse(code = 200, message = "Успешно получен"),
             @ApiResponse(code = 404, message = "Перелет не найден")
     })
-//    @GetMapping("/{from}/{to}/{departureDate}")
-//    public ResponseEntity<List<FlightDTO>> searchFlights(@ApiParam(value = "место вылета")
-//                                                         @PathVariable("from") String from,
-//                                                         @ApiParam(value = "место прилета")
-//                                                         @PathVariable("to") String to,
-//                                                         @ApiParam(value = "дата вылета")
-//                                                         @PathVariable("departureDate") LocalDate departureDate) {
-//        List<Flight> flightList = flightService.findFlights(from, to, departureDate);
-//        if (flightList.isEmpty()) {
-//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//        }
-//        try {
-//            return new ResponseEntity(flightList, HttpStatus.OK);
-//        } catch (DataIntegrityViolationException e) {
-//            throw new NoSuchObjectException("Error");
-//        }
-//    }
 
     @GetMapping("/{from}/{to}/{departureDate}")
     public ResponseEntity<List<FlightDTO>> searchFlights(@ApiParam(value = "место вылета")

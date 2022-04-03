@@ -14,6 +14,7 @@ import java.time.LocalDate;
 @Table(name = "Route")
 @Component
 @Builder
+@Data
 public class Route {
 
     /**
