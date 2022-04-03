@@ -20,8 +20,13 @@ async function getFlightsByRoutes() {
         "category": inp_category
     }
     let json = JSON.stringify(route);
-    let xhr = new XMLHttpRequest();
-    xhr.open("POST", urlReq, true);
-    xhr.setRequestHeader("Content-Type", "application/json");
-    xhr.send(json);
+    await fetch(urlReq, {
+        method: "POST",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: json
+
+    })
 }
