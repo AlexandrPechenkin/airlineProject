@@ -39,6 +39,7 @@ public class Registration {
     /**
      * Статус регистрации.
      * "OK" - регистрация на рейс успешно выполнена.
+     * "EXPIRED" - регистрация происходит позже даты и времени вылета.
      * "CANCELLED" - пассажир не зарегистрировался или отменил регистрацию.
      *
      * Регистрация происходит в том случае, если билет забронирован (т.е. куплен - "PAID" в Booking).
@@ -53,5 +54,5 @@ public class Registration {
      */
     @DateTimeFormat(pattern = "dd.MM.yyyy hh:mm")
     @JsonFormat(pattern = "dd.MM.yyyy hh:mm")
-    private LocalDateTime registrationDateTime;
+    private LocalDateTime localDateTime;
 }

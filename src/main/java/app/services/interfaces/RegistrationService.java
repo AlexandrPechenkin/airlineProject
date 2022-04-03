@@ -10,12 +10,12 @@ import java.util.Optional;
  */
 public interface RegistrationService {
     /**
-     * Создание/обновление записи в БД о регистрации.
+     * Создание/обновление/удаление записи в БД о регистрации.
      *
      * @param registration - регистрация
      * @return {@link Registration}
      */
-    Registration createOrUpdateRegistration(Registration registration);
+    Registration createOrUpdateOrDeleteRegistration(Registration registration);
 
     /**
      * Возвращает запись о регистрации по id.

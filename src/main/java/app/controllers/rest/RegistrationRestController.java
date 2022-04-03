@@ -20,7 +20,7 @@ import java.util.Optional;
 @RestController
 @RequiredArgsConstructor
 @Api(tags = "RegistrationRestController")
-@RequestMapping("/registration")
+@RequestMapping("/api/registration")
 @Validated
 public class RegistrationRestController {
     private final RegistrationService registrationService;
@@ -43,8 +43,29 @@ public class RegistrationRestController {
                                                           @RequestBody @Valid RegistrationDTO registration) {
         return new ResponseEntity<>
                 (registrationMapper.toDto(
-                        registrationService.createOrUpdateRegistration(
+                        registrationService.createOrUpdateOrDeleteRegistration(
                                 registrationMapper.toEntity(registration))), HttpStatus.CREATED);
+    }
+
+    /**
+     * Обновление записи о регистрировании пассажира на рейс.
+     *
+     * @param registration - данные для обновления о регистрации.
+     * @return {@link ResponseEntity<RegistrationDTO>}
+     */
+    @ApiOperation(value = "Запрос для обновления регистрации пассажира на рейс",
+            notes = "Обновление регистрации пассажира на рейс")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Обновление данных о регистрации на рейс успешно завершено"),
+            @ApiResponse(code = 400, message = "Переданы неверные данные")
+    })
+    @PutMapping
+    public ResponseEntity<RegistrationDTO> updateRegistration(@ApiParam(value = "Registration DTO")
+                                                              @RequestBody @Valid RegistrationDTO registration) {
+        return new ResponseEntity<>
+                (registrationMapper.toDto(
+                        registrationService.createOrUpdateOrDeleteRegistration(
+                                registrationMapper.toEntity(registration))), HttpStatus.OK);
     }
 
     /**
