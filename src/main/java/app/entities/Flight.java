@@ -4,28 +4,22 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
+@Builder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "Flight")
-@Component
-@Builder
+@Table(name="flight")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Flight {
 
-    /**
-     * id
-     */
     @Id
-    @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -55,16 +49,14 @@ public class Flight {
      * В БУДУЩЕМ УДАЛИТЬ
      */
     @NonNull
-    @Column(name = "destinationFrom")
-    private String from;
+    private String destinationFrom;
 
     /**
      * место прилета
      * В БУДУЩЕМ УДАЛИТЬ
      */
     @NonNull
-    @Column(name = "destinationTo")
-    private String to;
+    private String destinationTo;
 
     /**
      * Enum со статусами полета - "По плану", "Задержан", "Отменён".
@@ -72,28 +64,4 @@ public class Flight {
     @NonNull
     @Enumerated(EnumType.STRING)
     private FlightStatus flightStatus;
-
-    /**
-     * Destination from
-     */
-//    @NonNull
-//    private Destination from;
-
-    /**
-     * Destination to
-     */
-//    @NonNull
-//    private Destination to;
-
-    /**
-     * места на рейса
-     */
-//    @NonNull
-//    private Map<Category, List<Seat>> seatsByCategory;
-
-    /**
-     * самолет
-     */
-//    @NonNull
-//    private Aircraft aircraft;
 }

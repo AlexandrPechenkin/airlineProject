@@ -1,9 +1,9 @@
 package app.entities;
 
 import lombok.*;
-import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * Класс категории конкретного места на рейсе
@@ -14,19 +14,13 @@ import javax.persistence.*;
 
 @Data
 @Builder
-@RequiredArgsConstructor
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "category")
-@Component
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
-    /**
-     * ID
-     */
     private Long id;
 
     /**
@@ -34,5 +28,11 @@ public class Category {
      */
     @NonNull
     private String category;
+
+    /**
+     * Места {@link Seat} в воздушном судне которые относятся к разным категориям
+     */
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Seat> seats;
 
 }

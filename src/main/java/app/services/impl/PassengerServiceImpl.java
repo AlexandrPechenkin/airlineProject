@@ -4,6 +4,7 @@ import app.entities.Passenger;
 import app.repositories.PassengerRepository;
 import app.services.interfaces.PassengerService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +19,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class PassengerServiceImpl implements PassengerService {
     private final PassengerRepository passengerRepository;
+    private final PasswordEncoder passwordEncoder;
 
     /**
      * Создает и обновляет пассажира
@@ -27,6 +29,7 @@ public class PassengerServiceImpl implements PassengerService {
     @Override
     @Transactional
     public Passenger createOrUpdatePassenger(Passenger passenger) {
+        passenger.setPassword(passwordEncoder.encode(passenger.getPassword()));
         return passengerRepository.save(passenger);
     }
 

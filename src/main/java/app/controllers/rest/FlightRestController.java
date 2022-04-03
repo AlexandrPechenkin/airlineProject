@@ -2,8 +2,8 @@ package app.controllers.rest;
 
 import app.entities.Flight;
 import app.entities.dtos.FlightDTO;
-import app.exception.NoSuchObjectException;
 import app.entities.mappers.flight.FlightMapper;
+import app.exception.NoSuchObjectException;
 import app.services.interfaces.FlightService;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
@@ -13,17 +13,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import javax.validation.Valid;
 
 
 @RestController
 @RequiredArgsConstructor
 @Api(tags = "FlightController")
-@RequestMapping("api/flight")
+@RequestMapping("/api/flight")
 @Validated
 public class FlightRestController {
     private final FlightService flightService;
@@ -121,12 +121,12 @@ public class FlightRestController {
     @GetMapping("/{id}")
     public ResponseEntity<Flight> searchFlightById(@ApiParam(value = "Id перелета", example = "1")
                                                    @PathVariable("id") Long id) {
-        Optional<Flight> flight = flightService.getFlightById(id);
+        Optional<Flight> flight = flightService.findById(id);
         if (flight.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         try {
-            return new ResponseEntity(flightService.getFlightById(id), HttpStatus.OK);
+            return new ResponseEntity(flightService.findById(id), HttpStatus.OK);
         } catch (DataIntegrityViolationException e) {
             throw new NoSuchObjectException("Error");
         }

@@ -3,6 +3,8 @@ package app.services.impl;
 import app.entities.AirlineManager;
 import app.repositories.AirlineManagerRepository;
 import app.services.interfaces.AirlineManagerService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,13 +15,12 @@ import java.util.Optional;
  * Сервис для работы с классом {@link AirlineManager}
  */
 @Service
+@RequiredArgsConstructor
 @Transactional
 public class AirlineManagerServiceImpl implements AirlineManagerService {
     private final AirlineManagerRepository airlineManagerRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public AirlineManagerServiceImpl(AirlineManagerRepository airlineManagerRepository) {
-        this.airlineManagerRepository = airlineManagerRepository;
-    }
 
     /**
      * Создание/обновление записи в БД о менеджере.
@@ -29,6 +30,7 @@ public class AirlineManagerServiceImpl implements AirlineManagerService {
      */
     @Override
     public AirlineManager createOrUpdateAirlineManager(AirlineManager airlineManager) {
+        airlineManager.setPassword(passwordEncoder.encode(airlineManager.getPassword()));
         return airlineManagerRepository.save(airlineManager);
     }
 

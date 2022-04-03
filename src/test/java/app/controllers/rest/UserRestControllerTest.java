@@ -1,8 +1,10 @@
-package app;
+package app.controllers.rest;
 
+import app.AirlineApplication;
 import app.entities.Admin;
 import app.entities.Passenger;
 import app.entities.Passport;
+import app.entities.Role;
 import app.services.interfaces.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -14,16 +16,17 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @SpringBootTest(
         webEnvironment = SpringBootTest.WebEnvironment.MOCK,
@@ -33,6 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestPropertySource(locations = "classpath:application-integrationtest.yml")
 @ActiveProfiles("integrationtest")
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@WithMockUser(username = "admin@mai.ru", password = "123", roles = "ADMIN")
 public class UserRestControllerTest {
 
     @Autowired
@@ -41,14 +45,14 @@ public class UserRestControllerTest {
     @Autowired @Qualifier("userServiceImpl")
     UserService userService;
 
-    final String api = "/user";
+    final String api = "/api/user";
     final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
     Admin createAdmin() {
         return Admin.builder().email("admin_user@mail.com")
                 .password("password_admin_user")
                 .nickname("nickname_admin_user")
-                .roles("admin_user")
+                .roles(Set.of(new Role("ADMIN")))
                 .build();
     }
 
@@ -60,7 +64,7 @@ public class UserRestControllerTest {
                 .dateOfBirth(LocalDate.of(1992, 2, 15))
                 .email("Airlines@test.com")
                 .password("password_airlines")
-                .roles("passenger")
+                .roles(Set.of(new Role("ADMIN")))
                 .passport(
                         Passport.builder()
                                 .firstName("Dereck")

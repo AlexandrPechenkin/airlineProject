@@ -50,14 +50,6 @@ public class Seat {
     private Boolean isSold;
 
     /**
-     * Категория места
-     */
-    @NonNull
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category category;
-
-    /**
      * Рейс
      */
     @NonNull

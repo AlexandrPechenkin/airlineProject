@@ -1,4 +1,4 @@
-package app.controllers.ticket;
+package app.controllers.rest;
 
 import app.AirlineApplication;
 import app.entities.Flight;
@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
@@ -24,9 +25,7 @@ import java.time.LocalTime;
 
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 
 @SpringBootTest(
@@ -36,6 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestPropertySource(locations = "classpath:application-integrationtest.yml")
 @ActiveProfiles("integrationtest")
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@WithMockUser(username = "admin@mai.ru", password = "123", roles = "ADMIN")
 public class TicketRestControllerTest {
 
     @Autowired
@@ -53,8 +53,8 @@ public class TicketRestControllerTest {
                 .holdNumber(420l)
                 .price(15000l)
                 .flight(Flight.builder()
-                        .from("NSK")
-                        .to("MSK")
+                        .destinationFrom("NSK")
+                        .destinationTo("MSK")
                         .departureDate(LocalDate.of(2022, 12, 20))
                         .departureTime(LocalTime.of(10, 20))
                         .arrivalDateTime(LocalDateTime.of(2022, 12, 20, 15, 40))

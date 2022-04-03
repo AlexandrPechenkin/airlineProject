@@ -25,5 +25,5 @@ public interface FlightMapper {
      * @param flightDTO - Поля перелета, которые отдаются наружу
      */
     Flight toEntity(FlightDTO flightDTO);
-    
+
 }

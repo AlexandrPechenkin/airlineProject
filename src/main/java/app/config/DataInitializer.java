@@ -3,6 +3,7 @@ package app.config;
 
 import app.entities.*;
 import app.services.interfaces.*;
+import app.util.Fleet;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -10,8 +11,11 @@ import javax.annotation.PostConstruct;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
+import java.util.Set;
 import java.util.TimeZone;
-
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * В этом классе инициализируются тестовые данные для базы.
@@ -23,6 +27,7 @@ import java.util.TimeZone;
 @RequiredArgsConstructor
 public class DataInitializer {
     private final PassengerService passengerService;
+    private final AircraftService aircraftService;
     private final CategoryService categoryService;
     private final SeatService seatService;
     private final FlightService flightService;
@@ -31,7 +36,6 @@ public class DataInitializer {
     private final UserService userService;
     private final DestinationService destinationService;
     private final TicketService ticketService;
-    private final RegistrationService registrationService;
 
     @PostConstruct
     public void init() {
@@ -41,8 +45,8 @@ public class DataInitializer {
                 .holdNumber(420L)
                 .price(15000L)
                 .flight(Flight.builder()
-                        .from("NSK")
-                        .to("MSK")
+                        .destinationFrom("NSK")
+                        .destinationTo("MSK")
                         .departureDate(LocalDate.of(2022, 12, 20))
                         .departureTime(LocalTime.of(10, 20))
                         .arrivalDateTime(LocalDateTime.of(2022, 12, 21, 14, 40))
@@ -52,11 +56,20 @@ public class DataInitializer {
 
         System.out.println("DataInitializer сработал!");
 
+        aircraftService.createOrUpdateAircraft(Fleet.createMC21200());
+        System.out.println("Самолет МС-21-200 был создан.");
+
+        aircraftService.createOrUpdateAircraft(Fleet.createBoeing777());
+        System.out.println("Самолет Боинг 777 был создан.");
+
         createPassenger();
         System.out.println("Пассажир был создан.");
 
         createDestinations();
         System.out.println("Аэропорты были созданы.");
+
+        createAircraft();
+        System.out.println("Воздушное судно было создано.");
 
         createCategory();
         System.out.println("Категории были созданы");
@@ -81,16 +94,13 @@ public class DataInitializer {
 
         createAirlineManagerWithUserService();
         System.out.println("AirlineManager был создан при помощи UserService, UserRepository, AirlineManagerMapper, AirlineManagerDTO.");
-
-        createRegistration();
-        System.out.println("Регистрация пассажира на рейс создана.");
     }
 
     private void createPassenger() {
         passengerService.createOrUpdatePassenger(
                 Passenger.builder()
                         .password("password_passenger")
-                        .roles("passenger")
+                        .roles(Set.of(new Role("ADMIN")))
                         .firstName("Dereck")
                         .lastName("Storm")
                         .middleName("Totoro")
@@ -108,6 +118,43 @@ public class DataInitializer {
                                         .seriesAndNumber("3333 123456")
                                         .build()
                         )
+                        .build()
+        );
+
+    }
+
+    private void createAircraft() {
+        List<Category> categories = IntStream.rangeClosed(1, 3)
+                .mapToObj(it -> Category.builder()
+                        .category("K" + it * 5)
+                        .seats(IntStream.rangeClosed(0, 10)
+                                .mapToObj(it1 ->
+                                        Seat.builder()
+                                                .seatNumber(it1 + "F")
+                                                .fare(it1)
+                                                .isRegistered(true)
+                                                .isSold(true)
+                                                .flight(Flight.builder()
+                                                        .destinationFrom("Moscow")
+                                                        .destinationTo("Moon")
+                                                        .departureDate(LocalDate.of(2022, 5, 10))
+                                                        .departureTime(LocalTime.of(10, 20))
+                                                        .arrivalDateTime(LocalDateTime.of(2022, 12, 21, 14, 40))
+                                                        .flightStatus(FlightStatus.CANCELLATION)
+                                                        .build())
+                                                .build()
+                                ).collect(Collectors.toList()))
+                        .build()
+                ).collect(Collectors.toList());
+
+        aircraftService.createOrUpdateAircraft(
+                Aircraft.builder()
+                        .categories(categories)
+                        .brand("Air")
+                        .boardNumber("RA-3030")
+                        .model("1058NS")
+                        .flyingRange(2974)
+                        .productionYear(LocalDate.of(1998, 5, 24))
                         .build()
         );
     }
@@ -152,16 +199,18 @@ public class DataInitializer {
     }
 
     private void createCategory() {
-
-        Category categoryEconomy = new Category("Economy");
-        Category categoryComfort = new Category("Comfort");
-        Category categoryBusiness = new Category("Business");
-        Category categoryFirstClass = new Category("First class");
-
-        categoryService.createOrUpdate(categoryEconomy);
-        categoryService.createOrUpdate(categoryComfort);
-        categoryService.createOrUpdate(categoryBusiness);
-        categoryService.createOrUpdate(categoryFirstClass);
+        categoryService.createOrUpdate(Category.builder()
+                .category("Economy")
+                .build());
+        categoryService.createOrUpdate(Category.builder()
+                .category("Comfort")
+                .build());
+        categoryService.createOrUpdate(Category.builder()
+                .category("Business")
+                .build());
+        categoryService.createOrUpdate(Category.builder()
+                .category("First class")
+                .build());
     }
 
     private void createSeat() {
@@ -171,25 +220,25 @@ public class DataInitializer {
                         .fare(800)
                         .isRegistered(true)
                         .isSold(true)
-                        .category(Category.builder()
-                                .id(1L)
-                                .category("testCategory")
-                                .build())
                         .flight(Flight.builder()
-                                .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
-//                                .id(1L)
-                                .from("Moscow")
-                                .to("Tomsk")
+                                .destinationFrom("Москва")
+                                .destinationTo("Петербург")
+                                .departureDate(LocalDate.of(2022, 10, 15))
+                                .departureTime(LocalTime.of(10, 20))
+                                .arrivalDateTime(LocalDateTime.of(2022, 12, 21, 14, 40))
+                                .flightStatus(FlightStatus.DELAY)
                                 .build()
                         ).build());
     }
 
     private void createFlight() {
-        flightService.createOrUpdateFlight(
-                Flight.builder()
-                        .from("Moscow")
-                        .to("Tomsk")
-                        .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
+        flightService.createOrUpdateFlight(Flight.builder()
+                        .destinationFrom("NSK")
+                        .destinationTo("MSK")
+                        .departureDate(LocalDate.of(2022, 12, 20))
+                        .departureTime(LocalTime.of(10, 20))
+                        .arrivalDateTime(LocalDateTime.of(2022, 12, 21, 14, 40))
+                        .flightStatus(FlightStatus.CANCELLATION)
                         .build());
     }
 
@@ -199,26 +248,26 @@ public class DataInitializer {
                         .email("admin@mail.com")
                         .password("password_admin")
                         .nickname("admin_nickname")
-                        .roles("admin")
+                        .roles(Set.of(new Role("ROLE_ADMIN")))
                         .build());
     }
 
     private void createAirlineManager() {
         airlineManagerService.createOrUpdateAirlineManager(
                 AirlineManager.builder()
-                        .email("airlinemanager@mail.com")
+                        .email("user@mail.ru")
                         .parkName("park_name")
-                        .password("password_airline_manager")
-                        .roles("airline_manager")
+                        .password("123")
+                        .roles(Set.of(new Role("ROLE_USER")))
                         .build());
     }
 
     private Admin createAdminWithUserService() {
         return (Admin) userService.createOrUpdateUser(
-                Admin.builder().email("admin_user@mail.com")
-                        .password("password_admin_user")
+                Admin.builder().email("admin@mail.ru")
+                        .password("123")
                         .nickname("nickname_admin_user")
-                        .roles("admin_user")
+                        .roles(Set.of(new Role("ROLE_ADMIN")))
                         .build());
     }
 
@@ -243,7 +292,7 @@ public class DataInitializer {
                                         .seriesAndNumber("3333 123456_user")
                                         .build()
                         )
-                        .roles("passenger_user")
+                        .roles(Set.of(new Role("USER")))
                         .build()
         );
     }
@@ -253,34 +302,8 @@ public class DataInitializer {
                 AirlineManager.builder()
                         .email("airline_manager_user@mail.com")
                         .password("password_airline_manager_user")
-                        .roles("airline_manager_user")
+                        .roles(Set.of(new Role("ADMIN")))
                         .parkName("park_name_user")
-                        .build());
-    }
-
-    private void createRegistration() {
-        registrationService.createOrUpdateRegistration(
-                Registration.builder()
-                        .status("OK")
-                        .seat(
-                                seatService.createOrUpdate(
-                                        Seat.builder()
-                                                .seatNumber("1A_registration")
-                                                .fare(800)
-                                                .isRegistered(true)
-                                                .isSold(true)
-                                                .category(Category.builder()
-                                                        .id(1L)
-                                                        .category("testCategory_registration")
-                                                        .build())
-                                                .flight(Flight.builder()
-                                                                .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
-                                                                .from("Moscow")
-                                                                .to("Tomsk")
-                                                                .build()
-                                                ).build())
-                                )
-                        .registrationDateTime(LocalDateTime.now())
                         .build());
     }
 

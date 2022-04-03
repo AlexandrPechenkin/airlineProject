@@ -1,4 +1,4 @@
-package app.controllers.flight;
+package app.controllers.rest;
 
 import app.AirlineApplication;
 import app.entities.Flight;
@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
@@ -21,9 +22,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.hamcrest.Matchers.is;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
@@ -34,6 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestPropertySource(locations = "classpath:application-integrationtest.yml")
 @ActiveProfiles("integrationtest")
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@WithMockUser(username = "admin@mai.ru", password = "123", roles = "ADMIN")
 public class FlightRestControllerTest {
 
     @Autowired
@@ -47,8 +48,8 @@ public class FlightRestControllerTest {
 
     Flight createFlight() {
         return flightService.createOrUpdateFlight(Flight.builder()
-                .from("NSK")
-                .to("MSK")
+                .destinationFrom("NSK")
+                .destinationTo("MSK")
                 .departureDate(LocalDate.of(2022, 12, 20))
                 .departureTime(LocalTime.of(10, 20))
                 .arrivalDateTime(LocalDateTime.of(2022, 12, 20, 15, 40))
@@ -74,22 +75,22 @@ public class FlightRestControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.from", is(flight.getFrom())))
-                .andExpect(jsonPath("$.to", is(flight.getTo())));
+                .andExpect(jsonPath("$.destinationFrom", is(flight.getDestinationFrom())))
+                .andExpect(jsonPath("$.destinationTo", is(flight.getDestinationTo())));
 
     }
 
     @Test
     void givenFlightExist_whenUpdateFlight_thenStatus200() throws Exception {
         Flight flight = flightService.createOrUpdateFlight(createFlight());
-        flight.setFrom("Omsk");
-        flight.setTo("Barnaul");
+        flight.setDestinationFrom("Omsk");
+        flight.setDestinationTo("Barnaul");
         mvc.perform(put(api)
                         .content(objectMapper.writeValueAsString(flight))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.from", is(flight.getFrom())))
-                .andExpect(jsonPath("$.to", is(flight.getTo())));
+                .andExpect(jsonPath("$.destinationFrom", is(flight.getDestinationFrom())))
+                .andExpect(jsonPath("$.destinationTo", is(flight.getDestinationTo())));
     }
 
     @Test

@@ -38,6 +38,6 @@ public class FlightDTO {
     /**
      * в будущем удалить
      */
-    private String to;
-    private String from;
+    private String destinationTo;
+    private String destinationFrom;
 }
