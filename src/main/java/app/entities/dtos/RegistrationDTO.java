@@ -1,6 +1,7 @@
 package app.entities.dtos;
 
 import app.entities.Seat;
+import app.entities.Ticket;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
@@ -18,6 +19,8 @@ public class RegistrationDTO {
 
     @NotEmpty(message = "Пожалуйста, укажите место")
     private Seat seat;
+
+    private Ticket ticket;
 
     private String status;
 

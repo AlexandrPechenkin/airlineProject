@@ -31,10 +31,10 @@ public class Registration {
     private Long id;
 
     /**
-     * Выбранное пассажиром место на забронированный рейс.
+     * Купленный (после процесса booking) пассажиром билет, внутри которого хранится выбранное пассажиром место.
      */
     @OneToOne
-    private Seat seat;
+    private Ticket ticket;
 
     /**
      * Статус регистрации.
