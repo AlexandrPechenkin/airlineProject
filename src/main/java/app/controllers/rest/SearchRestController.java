@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -90,7 +91,7 @@ public class SearchRestController {
             @ApiResponse(code = 404, message = "Перелет не найден")
     })
     @PostMapping("/")
-    public ResponseEntity<List<FlightDTO>> searchFlightsByRoute(String jsonRoute) throws ParseException {
+    public ResponseEntity<List<FlightDTO>> searchFlightsByRoute(@RequestBody @Valid String jsonRoute) throws ParseException {
         Route route = jsonParser.getRouteByJSON(jsonRoute);
         List<Flight> flightList = searchService.findFlightsByRoute(route.getFrom(), route.getTo(), route.getDepartureDate());
         if (flightList.isEmpty()) {
