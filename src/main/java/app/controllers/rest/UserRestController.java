@@ -1,11 +1,10 @@
 package app.controllers.rest;
 
 import app.entities.Admin;
-import app.entities.dtos.AdminDTO;
 import app.entities.Passenger;
+import app.entities.dtos.AdminDTO;
 import app.entities.dtos.PassengerDTO;
 import app.entities.mappers.user.UserMapper;
-
 import app.services.interfaces.UserService;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.util.Objects;
 
 /**
  * RestController для управления записями о классах типа User.
@@ -25,7 +23,7 @@ import java.util.Objects;
 @RestController
 @RequiredArgsConstructor
 @Api(tags = "UserRestController")
-@RequestMapping("/user")
+@RequestMapping("/api/user")
 public class UserRestController {
     private final UserService userService;
     private final UserMapper userMapper;

@@ -10,12 +10,12 @@ import javax.annotation.PostConstruct;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TimeZone;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-
-import static app.entities.Flight.builder;
-
 /**
  * В этом классе инициализируются тестовые данные для базы.
  * Эти данные будут каждый раз создаваться заново при поднятии SessionFactory и удаляться из БД при её остановке.
@@ -57,8 +57,8 @@ public class DataInitializer {
         createCategory();
         System.out.println("Категории были созданы");
 
-//        createSeat();
-//        System.out.println("Места были созданы");
+        createSeat();
+        System.out.println("Места были созданы");
 
         createFlight();
         System.out.println("Рейс был добавлен");
@@ -86,8 +86,8 @@ public class DataInitializer {
         Destination omsk = createOmskDestination();
         Destination barnaul = createBarnaulDestination();
 
-        createAircraft(moscow, nizhny);
-        System.out.println("Самолёт был создан");
+//        createAircraft(moscow, nizhny);
+//        System.out.println("Самолёт был создан");
 
         createSeat(moscow, nizhny);
         System.out.println("Места были созданы");
@@ -96,7 +96,7 @@ public class DataInitializer {
                 .seat("5A")
                 .holdNumber(420L)
                 .price(15000L)
-                .flight(builder()
+                .flight(Flight.builder()
                         .from(norilsk)
                         .to(moscow)
                         .departureDate(LocalDate.of(2022, 12, 20))
@@ -115,44 +115,42 @@ public class DataInitializer {
         DestinationResource resVVO = createDestinationResourceVVO();
         DestinationResource resOVB = createDestinationResourceOVB();
         DestinationResource resDirect = createDestinationResourceDirect();
+
         List<DestinationResource> listMoscowDestinationResource = destinationResourceService.findByCity("Moscow");
         List<DestinationResource> listFirstCityDestinationResource = destinationResourceService.findByCity("First_city");
         List<DestinationResource> listSecondCityDestinationResource = destinationResourceService.findByCity("Second_city");
         List<DestinationResource> listNotExistedDestinationResource = destinationResourceService.findByCity("adfasdf");
         List<DestinationResource> listDirectDestinationResource = destinationResourceService.findByCity("DIRECT");
         List<DestinationResource> listVladivostokDestinationResource = destinationResourceService.findByCity("Vladivostok");
-//        Map<Integer, Map<DestinationResource, List<List<Route>>>> allRoutesOnlyDirect = searchService.getRoutes(listMoscowDestinationResource,
-//                listDirectDestinationResource, LocalDate.of(2022, 4, 28));
-//        Map<DestinationResource, List<List<Route>>> route = allRoutesOnlyDirect.get(0);
-//        System.out.println(allRoutesOnlyDirect.get(0));
-//        System.out.println(allRoutesOnlyDirect.get(1));
-//        System.out.println(allRoutesOnlyDirect.get(2));
+        Map<Integer, Map<DestinationResource, List<List<Route>>>> allRoutesOnlyDirect = searchService.getRoutes(
+                listMoscowDestinationResource,
+                listDirectDestinationResource,
+                LocalDate.of(2022, 4, 28));
+        Map<DestinationResource, List<List<Route>>> route = allRoutesOnlyDirect.get(0);
+        System.out.println(allRoutesOnlyDirect.get(0));
+        System.out.println(allRoutesOnlyDirect.get(1));
+        System.out.println(allRoutesOnlyDirect.get(2));
 
         Map<Integer, Map<DestinationResource, List<List<Route>>>> allRoutesOneStop = searchService.getRoutes(
-                listDirectDestinationResource, listVladivostokDestinationResource, LocalDate.of(2022, 5, 27)
-        );
+                listDirectDestinationResource, listVladivostokDestinationResource,
+                LocalDate.of(2022, 5, 27));
         Map<DestinationResource, List<List<Route>>> routeOneStop = allRoutesOneStop.get(1);
         System.out.println(allRoutesOneStop.get(1));
         allRoutesOneStop.forEach((integer, destinationResourceListMap) -> {
             System.out.println(integer + ":" + destinationResourceListMap);
         });
 
-
-//        Map<Integer, Map<DestinationResource, List<List<Route>>>> allRoutesDirectAndOneStop
-//                = searchService.getRoutes(listMoscowDestinationResource, listFirstCityDestinationResource,
-//                LocalDate.of(2022, 5, 27));
-
     }
 
     private DestinationResource createDestinationResourceMoscowDME() {
         return destinationResourceService.createOrUpdateDestinationResource(
                 DestinationResource.builder()
-                        .city(destinationService.getDestinationById(3L).get().getCity())
-                        .airportName(destinationService.getDestinationById(3L).get().getAirportName())
-                        .countryCode(destinationService.getDestinationById(3L).get().getCountryCode())
-                        .countryName(destinationService.getDestinationById(3L).get().getCountryName())
-                        .baseCode(destinationService.getDestinationById(3L).get().getAirportCode())
-                        .availableAirportCodes(Set.of("GOJ", "OVB", "VVO", "NSK", "OMS", "DIRECT", "FIRST", "SECOND"))
+                        .city("Moscow")
+                        .airportName("Domodedovo")
+                        .countryCode(CountryCode.RUS)
+                        .countryName("Russia")
+                        .baseCode("DME")
+                        .availableAirportCodes(Set.of("GOJ", "OVB", "NSK", "OMS", "DIRECT", "FIRST", "SECOND"))
                         .build()
         );
     }
@@ -177,8 +175,8 @@ public class DataInitializer {
                         .countryName("Russia")
                         .city("Nizhny")
                         .baseCode("GOJ")
-                        .airportName("GOJ_airport")
-                        .availableAirportCodes(Set.of("FIRST_TO", "OVB", "NSK", "DIRECT"))
+                        .airportName("Strigino")
+                        .availableAirportCodes(Set.of("FIRST_TO", "OVB", "DIRECT", "DME"))
                         .build()
         );
     }
@@ -190,8 +188,8 @@ public class DataInitializer {
                         .countryName("Russia")
                         .city("Omsk")
                         .baseCode("OMS")
-                        .airportName("OMS_airport")
-                        .availableAirportCodes(Set.of("FIRST_TO", "OVB", "NSK"))
+                        .airportName("Tsentralny")
+                        .availableAirportCodes(Set.of("FIRST_TO", "OVB", "DME"))
                         .build()
         );
     }
@@ -203,8 +201,8 @@ public class DataInitializer {
                         .countryName("Russia")
                         .city("Norilsk")
                         .baseCode("NSK")
-                        .airportName("NSK_airport")
-                        .availableAirportCodes(Set.of("FIRST_TO", "VVO"))
+                        .airportName("Alykel")
+                        .availableAirportCodes(Set.of("FIRST_TO", "OVB"))
                         .build()
         );
     }
@@ -216,8 +214,8 @@ public class DataInitializer {
                         .countryName("Russia")
                         .city("Vladivostok")
                         .baseCode("VVO")
-                        .airportName("VVO_airport")
-                        .availableAirportCodes(Set.of("FIRST_TO"))
+                        .airportName("Vladivostok")
+                        .availableAirportCodes(Set.of("DME", "OVB"))
                         .build()
         );
     }
@@ -230,7 +228,7 @@ public class DataInitializer {
                         .city("Novosibirsk")
                         .baseCode("OVB")
                         .airportName("OVB_airport")
-                        .availableAirportCodes(Set.of("SECOND_TO", "VVO"))
+                        .availableAirportCodes(Set.of("SECOND_TO", "DME", "OMS", "VVO"))
                         .build()
         );
     }
@@ -436,7 +434,7 @@ public class DataInitializer {
                                                 .fare(it1)
                                                 .isRegistered(true)
                                                 .isSold(true)
-                                                .flight(builder()
+                                                .flight(Flight.builder()
                                                         .from(from)
                                                         .to(to)
                                                         .departureDate(LocalDate.of(2022, 12, 20))
@@ -515,38 +513,38 @@ public class DataInitializer {
                 .build());
     }
 
-//    private void createSeat() {
-//        seatService.createOrUpdate(
-//                Seat.builder()
-//                        .seatNumber("1A")
-//                        .fare(800)
-//                        .isRegistered(true)
-//                        .isSold(true)
-//                        .flight(Flight.builder()
-////                                .id(1L)
-//                                        .from(destinationService.createOrUpdateDestination(
-//                                                Destination.builder()
-//                                                        .countryName("Russia")
-//                                                        .city("Moscow")
-//                                                        .countryCode(CountryCode.RUS)
-//                                                        .airportName("Domodedovo")
-//                                                        .airportCode("DME")
-//                                                        .timeZone(TimeZone.getTimeZone("Europe/Moscow"))
-//                                                        .build()))
-//                                        .to(destinationService.createOrUpdateDestination(
-//                                                Destination.builder()
-//                                                        .countryName("Russia")
-//                                                        .city("Tomsk")
-//                                                        .countryCode(CountryCode.RUS)
-//                                                        .airportName("Bogashevo")
-//                                                        .airportCode("TOF")
-//                                                        .timeZone(TimeZone.getTimeZone("Europe/Tomsk"))
-//                                                        .build()
-//                                        ))
-//                                        .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
-//                                        .build()
-//                        ).build());
-//    }
+    private void createSeat() {
+        seatService.createOrUpdate(
+                Seat.builder()
+                        .seatNumber("1A")
+                        .fare(800)
+                        .isRegistered(true)
+                        .isSold(true)
+                        .flight(Flight.builder()
+//                                .id(1L)
+                                        .from(destinationService.createOrUpdateDestination(
+                                                Destination.builder()
+                                                        .countryName("Russia")
+                                                        .city("Moscow")
+                                                        .countryCode(CountryCode.RUS)
+                                                        .airportName("Domodedovo")
+                                                        .airportCode("DME")
+                                                        .timeZone(TimeZone.getTimeZone("Europe/Moscow"))
+                                                        .build()))
+                                        .to(destinationService.createOrUpdateDestination(
+                                                Destination.builder()
+                                                        .countryName("Russia")
+                                                        .city("Tomsk")
+                                                        .countryCode(CountryCode.RUS)
+                                                        .airportName("Bogashevo")
+                                                        .airportCode("TOF")
+                                                        .timeZone(TimeZone.getTimeZone("Europe/Tomsk"))
+                                                        .build()
+                                        ))
+                                        .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
+                                        .build()
+                        ).build());
+    }
 
     private void createSeat(Destination from, Destination to) {
         seatService.createOrUpdate(
@@ -555,7 +553,7 @@ public class DataInitializer {
                         .fare(800)
                         .isRegistered(true)
                         .isSold(true)
-                        .flight(builder()
+                        .flight(Flight.builder()
 //                                .id(1L)
                                         .from(from)
                                         .to(to)
@@ -566,23 +564,23 @@ public class DataInitializer {
 
     private void createFlight() {
         flightService.createOrUpdateFlight(
-                builder()
+                Flight.builder()
                         .from(destinationService.createOrUpdateDestination(
                                 Destination.builder()
                                         .countryName("Russia")
-                                        .city("Norilsk")
+                                        .city("11111")
                                         .countryCode(CountryCode.RUS)
-                                        .airportName("Alykel")
-                                        .airportCode("NSK")
+                                        .airportName("1111")
+                                        .airportCode("1111")
                                         .timeZone(TimeZone.getTimeZone("Europe/KRAT"))
                                         .build()))
                         .to(destinationService.createOrUpdateDestination(
                                 Destination.builder()
                                         .countryName("Russia")
-                                        .city("Tomsk")
+                                        .city("2222")
                                         .countryCode(CountryCode.RUS)
-                                        .airportName("Bogashevo")
-                                        .airportCode("TOF")
+                                        .airportName("2222")
+                                        .airportCode("2222")
                                         .timeZone(TimeZone.getTimeZone("Europe/Tomsk"))
                                         .build()
                         ))

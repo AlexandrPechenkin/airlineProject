@@ -1,9 +1,9 @@
 package app.controllers.rest;
 
-import app.entities.dtos.TicketDTO;
 import app.entities.Ticket;
-import app.exception.NoSuchObjectException;
+import app.entities.dtos.TicketDTO;
 import app.entities.mappers.ticket.TicketMapper;
+import app.exception.NoSuchObjectException;
 import app.services.interfaces.TicketService;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +20,7 @@ import java.util.Optional;
 @RestController
 @RequiredArgsConstructor
 @Api(tags = "TicketController")
-@RequestMapping("api/ticket")
+@RequestMapping("/api/ticket")
 @Validated
 public class TicketRestController {
     private final TicketService ticketService;
