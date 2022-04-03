@@ -241,7 +241,7 @@ public class DataInitializer {
                         .email("admin@mail.com")
                         .password("password_admin")
                         .nickname("admin_nickname")
-                        .roles(Set.of(new Role("ROLE_ADMIN"), new Role("ROLE_USER")))
+                        .roles(Set.of(new Role("ROLE_ADMIN")))
                         .build());
     }
 
