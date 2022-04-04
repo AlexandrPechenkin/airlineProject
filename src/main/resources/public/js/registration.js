@@ -65,38 +65,60 @@ async function getRegistrationInfo(modal, passengerName, bookingId) {
     //по умолчанию используется шестиместный ряд с одним проходом
     let rows = 20;
     let columns = 6;
-    let rowNumber = 4; //
     let seatCheck = "check-";
 
     for (let i = 1; i <= rows; i++) {
         let divRows = document.createElement('div');
-        for (let j = 1; j <= columns + 1; j++) {
+        let rowNumber = 4; //значение для прохода
+        for (let j = 1; j <= columns; j++) {
             let div = document.createElement('div');
-            div.setAttribute('class', 'form-check-inline');
+            div.setAttribute('class', 'form-check-inline plane-seat');
             if (j !== rowNumber) {
                 let checkboxes = "<input type=\"checkbox\" " +
-                    "id=\"" + seatCheck + i + j + "\">" +
-                    " <label for=\"" + seatCheck + i + j + "\" class=\"seat-selector\"" +
-                    " style='min-width: 40px'" +
+                    "id=\"" + seatCheck + i + j + "\" class='seat-checkbox'" +
+                    " data-seat-row=\"" + i + "\"" +
+                    " data-seat-col=\"" + j + "\">" +
+                    " <label for=\"" + seatCheck + i + j + "\"" +
+                    " class=\"seat-selector btn btn-outline-primary\"" +
+                    " style='min-width: 60px'" +
                     " data-seat-row=\"" + i + "\"" +
                     " data-seat-col=\"" + j + "\">" + i +
                     String.fromCharCode(64 + j) + "</label>";
                 div.innerHTML += checkboxes;
             } else {
                 div.innerHTML += "<h6 style='min-width: 50px'>ряд " + i + "<h6>";
+                j--;
+                rowNumber = 0;
             }
             divRows.append(div);
         }
         $("#seats").append(divRows);
     }
-}
 
-//обработчик нажатия на чекбоксы
-$('input:checkbox').change(
-    function() {
-            alert(1234);
-            //let targetElement = event.currentTarget;
-            //let dataSet = targetElement.dataset;
-            //let result = targetElement.getText();
-            //$(".seat-result-container").append('<div>' + result + '</div>');
-    })
+    //обработчик клика на label checkbox места
+    $(".seat-selector").on('click',
+        function(event) {
+            $(".seat-result-container").empty();
+            let targetElement = event.currentTarget;
+            let checkBoxId = targetElement.getAttribute('for')
+            let targetCheckbox = document.getElementById(checkBoxId);
+
+            //Вывод выбранных мест
+            let chosenCheckboxes = document.querySelectorAll('input[class="seat-checkbox"]');
+
+            for (let i = 0; i < chosenCheckboxes.length; i++) {
+
+                let dataSet = chosenCheckboxes[i].dataset;
+                let chosenSeat = dataSet.seatRow +
+                    String.fromCharCode(64 + Number(dataSet.seatCol));
+
+                if (targetCheckbox.checked &&
+                    chosenCheckboxes[i].checked && chosenCheckboxes[i] !== targetCheckbox ||
+                    !targetCheckbox.checked &&
+                    (chosenCheckboxes[i].checked || chosenCheckboxes[i] === targetCheckbox)) {
+                        $(".seat-result-container").append('<div>' +
+                            chosenSeat + '</div>');
+                }
+            }
+        })
+}
