@@ -22,7 +22,6 @@ public class JsonParser {
         JSONParser parser = new JSONParser();
         JSONObject jsonObject = (JSONObject) parser.parse(response);
 
-        Long id = Long.parseLong(jsonObject.get("id").toString());
         LocalDate departureDate = LocalDate.parse(jsonObject.get("departureDate").toString());
         LocalDate departureDateOfReturn = LocalDate.parse(jsonObject.get("departureDateOfReturn").toString());
         int numberOfSeats = Integer.parseInt(jsonObject.get("numberOfSeats").toString());
@@ -30,6 +29,6 @@ public class JsonParser {
         String to = jsonObject.get("to").toString();
         Category category = categoryService.getByCategoryByString(jsonObject.get("category").toString());
 
-        return new Route(id, departureDate, departureDateOfReturn, numberOfSeats, category, from, to);
+        return new Route(departureDate, departureDateOfReturn, numberOfSeats, category, from, to);
     }
 }
