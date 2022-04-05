@@ -36,10 +36,6 @@ public class Route {
     @NonNull
     private int numberOfSeats;
 
-//    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//    @JoinColumn(name = "search_id", nullable = false)
-//    private Search search;
-
 
     /**
      * категория билета
