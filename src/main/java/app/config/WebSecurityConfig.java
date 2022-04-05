@@ -20,7 +20,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/", "/login", "/css/*", "/img/*", "/js/*", "/api/flight/**").permitAll()
+                /*.antMatchers("/", "/login", "/css/*", "/img/*", "/js/*",
+                        "api/registration/**", "/api/flight/**").permitAll()
                 .antMatchers("/swagger-ui.html/**",
                         "/api/admin", "/api/aircraft",
                         "/api/airlineManager", "/api/category",
@@ -28,7 +29,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/api/passenger", "/api/search",
                         "/api/seat", "/api/ticket",
                         "/api/user").hasRole("ADMIN")
-                .anyRequest().authenticated();
+                .anyRequest().authenticated();*/
+                        .anyRequest().permitAll();
         http.formLogin()
                 .successHandler(successUserHandler)
                 .permitAll()

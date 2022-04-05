@@ -36,6 +36,7 @@ public class DataInitializer {
     private final UserService userService;
     private final DestinationService destinationService;
     private final TicketService ticketService;
+    private final RegistrationService registrationService;
 
     @PostConstruct
     public void init() {
@@ -63,7 +64,7 @@ public class DataInitializer {
                 .build();
         passengerService.createOrUpdatePassenger(passenger);
 
-        ticketService.createOrUpdateTicket(Ticket.builder()
+        Ticket ticket = ticketService.createOrUpdateTicket(Ticket.builder()
                 .passenger(passenger)
                 .seat("5A")
                 .holdNumber(420L)
@@ -118,6 +119,10 @@ public class DataInitializer {
 
         createAirlineManagerWithUserService();
         System.out.println("AirlineManager был создан при помощи UserService, UserRepository, AirlineManagerMapper, AirlineManagerDTO.");
+
+        createRegistration(ticket);
+        System.out.println("Регистрация пассажира на рейс создана.");
+
     }
 
     private void createPassenger() {
@@ -312,6 +317,15 @@ public class DataInitializer {
                         .password("password_airline_manager_user")
                         .roles(Set.of(new Role("ADMIN")))
                         .parkName("park_name_user")
+                        .build());
+    }
+
+    private void createRegistration(Ticket ticket) {
+        registrationService.createOrUpdateOrDeleteRegistration(
+                Registration.builder()
+                        .ticket(ticket)
+                        .status("IN_PROGRESS")
+                        .localDateTime(LocalDateTime.now())
                         .build());
     }
 
