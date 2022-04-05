@@ -40,7 +40,31 @@ public class DataInitializer {
     @PostConstruct
     public void init() {
 
+        Passenger passenger = Passenger.builder()
+                .password("password_first")
+                .roles(Set.of(new Role("ADMIN")))
+                .firstName("Dereck")
+                .lastName("Storm")
+                .middleName("Totoro")
+                .dateOfBirth(LocalDate.of(1992, 2, 15))
+                .email("passanger@test.com")
+                .passport(
+                        Passport.builder()
+                                .firstName("Dereck")
+                                .lastName("Storm")
+                                .middleName("Totoro")
+                                .dateOfBirth(LocalDate.of(1990, 2, 15))
+                                .gender("Male")
+                                .birthplace("US")
+                                .residenceRegistration("New York")
+                                .seriesAndNumber("3333 123457")
+                                .build()
+                )
+                .build();
+        passengerService.createOrUpdatePassenger(passenger);
+
         ticketService.createOrUpdateTicket(Ticket.builder()
+                .passenger(passenger)
                 .seat("5A")
                 .holdNumber(420L)
                 .price(15000L)
