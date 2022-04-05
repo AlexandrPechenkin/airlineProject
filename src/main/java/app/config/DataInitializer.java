@@ -3,6 +3,7 @@ package app.config;
 
 import app.entities.*;
 import app.services.interfaces.*;
+import app.util.Fleet;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -54,6 +55,12 @@ public class DataInitializer {
                 .build());
 
         System.out.println("DataInitializer сработал!");
+
+        aircraftService.createOrUpdateAircraft(Fleet.createMC21200());
+        System.out.println("Самолет МС-21-200 был создан.");
+
+        aircraftService.createOrUpdateAircraft(Fleet.createBoeing777());
+        System.out.println("Самолет Боинг 777 был создан.");
 
         createPassenger();
         System.out.println("Пассажир был создан.");
@@ -127,14 +134,6 @@ public class DataInitializer {
                                                 .fare(it1)
                                                 .isRegistered(true)
                                                 .isSold(true)
-                                                .flight(Flight.builder()
-                                                        .destinationFrom("Moscow")
-                                                        .destinationTo("Moon")
-                                                        .departureDate(LocalDate.of(2022, 12, 20))
-                                                        .departureTime(LocalTime.of(10, 20))
-                                                        .arrivalDateTime(LocalDateTime.of(2022, 12, 21, 14, 40))
-                                                        .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
-                                                        .build())
                                                 .build()
                                 ).collect(Collectors.toList()))
                         .build()
@@ -213,26 +212,18 @@ public class DataInitializer {
                         .fare(800)
                         .isRegistered(true)
                         .isSold(true)
-                        .flight(Flight.builder()
-                                .destinationFrom("NSK")
-                                .destinationTo("MSK")
-                                .departureDate(LocalDate.of(2022, 12, 20))
-                                .departureTime(LocalTime.of(10, 20))
-                                .arrivalDateTime(LocalDateTime.of(2022, 12, 21, 14, 40))
-                                .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
-                                .build()
-                        ).build());
+                        .build());
     }
 
     private void createFlight() {
         flightService.createOrUpdateFlight(Flight.builder()
-                        .destinationFrom("NSK")
-                        .destinationTo("MSK")
-                        .departureDate(LocalDate.of(2022, 12, 20))
-                        .departureTime(LocalTime.of(10, 20))
-                        .arrivalDateTime(LocalDateTime.of(2022, 12, 21, 14, 40))
-                        .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
-                        .build());
+                .destinationFrom("NSK")
+                .destinationTo("MSK")
+                .departureDate(LocalDate.of(2022, 12, 20))
+                .departureTime(LocalTime.of(10, 20))
+                .arrivalDateTime(LocalDateTime.of(2022, 12, 21, 14, 40))
+                .flightStatus(FlightStatus.CANCELLATION)
+                .build());
     }
 
     private void createAdmin() {
