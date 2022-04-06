@@ -35,7 +35,7 @@ public class AircraftDTO {
     @NotNull(message = "Поле productionYear не должно быть пустым")
     @PastOrPresent
     @DateTimeFormat(pattern = "dd.MM.yyyy")
-    @JsonFormat(pattern = "dd.MM.yyyy")
+//    @JsonFormat(pattern = "dd.MM.yyyy")
     private LocalDate productionYear;
 
     @NotNull(message = "Поле flyingRange не должно быть пустым")

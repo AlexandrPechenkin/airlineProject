@@ -26,42 +26,33 @@ public class Flight {
     /**
      * дата вылета
      */
-    @DateTimeFormat(pattern = "dd.MM.yyyy")
-    @JsonFormat(pattern = "dd.MM.yyyy")
     private LocalDate departureDate;
 
     /**
      * время вылета
      */
-    @DateTimeFormat(pattern = "HH:mm")
-    @JsonFormat(pattern = "HH:mm")
     private LocalTime departureTime;
 
     /**
      * дата прилета
      */
-    @DateTimeFormat(pattern = "dd.MM.yyyy HH:mm")
-    @JsonFormat(pattern = "dd.MM.yyyy HH:mm")
     private LocalDateTime arrivalDateTime;
 
     /**
      * место вылета
      * В БУДУЩЕМ УДАЛИТЬ
      */
-    @NonNull
     private String destinationFrom;
 
     /**
      * место прилета
      * В БУДУЩЕМ УДАЛИТЬ
      */
-    @NonNull
     private String destinationTo;
 
     /**
      * Enum со статусами полета - "По плану", "Задержан", "Отменён".
      */
-    @NonNull
     @Enumerated(EnumType.STRING)
     private FlightStatus flightStatus;
 }

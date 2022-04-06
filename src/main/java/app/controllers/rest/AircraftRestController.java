@@ -3,6 +3,7 @@ package app.controllers.rest;
 
 import app.entities.Aircraft;
 import app.entities.dtos.AircraftDTO;
+import app.entities.mappers.aircraft.AircraftListMapper;
 import app.entities.mappers.aircraft.AircraftMapper;
 import app.services.interfaces.AircraftService;
 import io.swagger.annotations.*;
@@ -13,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -27,6 +29,7 @@ import java.util.Optional;
 public class AircraftRestController {
     private final AircraftService aircraftService;
     private final AircraftMapper aircraftMapper;
+    private final AircraftListMapper aircraftListMapper;
 
     @ApiOperation(value = "Запрос для создания воздушного судна", notes = "Создание воздушного судна")
     @ApiResponses(value = {
@@ -35,7 +38,7 @@ public class AircraftRestController {
     })
     @PostMapping
     public ResponseEntity<AircraftDTO> createAircraft(@ApiParam(value = "DTO Воздушного судна") @RequestBody @Valid AircraftDTO aircraft) {
-        if (Objects.isNull(aircraft.getId())) {
+        if (Objects.nonNull(aircraft.getId())) {
             log.error("Произошла попытка создать (воздушное судно) через метод создания.");
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } else {
@@ -94,6 +97,22 @@ public class AircraftRestController {
         } else {
             aircraftService.deleteAircraftById(id);
             return new ResponseEntity<>(HttpStatus.OK);
+        }
+    }
+
+    @ApiOperation(value = "Запрос для получения всех воздушных судов", notes = "Получение всех воздушных судов")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Успешно получены"),
+            @ApiResponse(code = 404, message = "Воздушные судна не найдены")
+    })
+    @GetMapping
+    public ResponseEntity<List<AircraftDTO>> getAllAircrafts() {
+        List<Aircraft> aircraftList = aircraftService.getAllAircrafts();
+
+        if (aircraftList.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<>(aircraftListMapper.toDTOList(aircraftList), HttpStatus.OK);
         }
     }
 }
