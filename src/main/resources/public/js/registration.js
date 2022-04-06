@@ -11,50 +11,30 @@ const registrationFetchService = {
     getTicketByHoldNumber: async (holdNumber) => await fetch(`${urlTicket}${holdNumber}`)
 }
 
-//Обработчик кнопки "Зарегистрирроваться"
+let registrationModal = $('#registrationModal');
+
+//Обработчик кнопки "Зарегистрироваться"
 $("#registrationButton").on('click', async () => {
     let passengerName = document.getElementById("registrationPassengerSecondName").value;
     let bookingId = document.getElementById("registrationBookingId").value;
 
-    await getRegistrationModal(passengerName, bookingId);
+    //Запрос на получение объектов Ticket и Passenger
+    await getRegistrationInfo(passengerName, bookingId);
 })
 
-//Управление активацией/скрытием и очисткой содержимого модального окна
-async function getRegistrationModal(passengerName, bookingId) {
+//Фиксированное содержимое модального окна и очистка при закрытии
+registrationModal.on("show.bs.modal", () => {
+    let closeButton = `<button type="button" class="btn btn-secondary" 
+       data-bs-dismiss="modal">Отмена</button>`
+    registrationModal.find('.modal-footer').append(closeButton);
 
-    $('#registrationModal').on("shown.bs.modal", (event) => {
-        let modal = $(event.target);
-        modal.off("shown.bs.modal");
+}).on("hidden.bs.modal", () => {
+    registrationModal.find('.modal-title').html('');
+    registrationModal.find('.modal-body').html('');
+    registrationModal.find('.modal-footer').html('');
+})
 
-        //Фиксированный footer модального окна
-        let registerCompleteButton = `<button  class="btn btn-primary"
-        id="registerCompleteButton">Подтвердить</button>`;
-        let closeButton = `<button type="button" class="btn btn-secondary" 
-        data-bs-dismiss="modal">Отмена</button>`
-        modal.find('.modal-footer').append(closeButton);
-        modal.find('.modal-footer').append(registerCompleteButton);
-
-        //Запрос на получение объектов Registration и Passenger
-        getRegistrationInfo(modal, passengerName, bookingId);
-
-    }).on("hidden.bs.modal", (e) => {
-        let modal = $(e.target);
-        modal.off("hidden.bs.modal");
-        modal.find('.modal-title').html('');
-        modal.find('.modal-body').html('');
-        modal.find('.modal-footer').html('');
-    })
-}
-
-async function getRegistrationInfo(modal, passengerName, bookingId) {
-    //Запрос на получение объекта Registration
-    /*let promiseRegistration = await fetch(urlRegistration + bookingId, {
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        }
-    })*/
-
+async function getRegistrationInfo(passengerName, bookingId) {
     //Запрос на получение объекта Ticket
     let promiseTicket = await registrationFetchService.getTicketByHoldNumber(bookingId);
 
@@ -62,16 +42,20 @@ async function getRegistrationInfo(modal, passengerName, bookingId) {
         let ticket = await promiseTicket.json();
 
         //Заполнение содержимым модального окна
-        await setModalContent(modal, passengerName, bookingId, ticket);
+        await setModalContent(passengerName, bookingId);
+        await showSeatSelectors(ticket);
 
     } else {
-        modal.find('.modal-title').html(`Не найден рейс ${bookingId}`);
+        registrationModal.find('.modal-title').html(`Не найден рейс ${bookingId}`);
     }
 }
 
-async function setModalContent(modal, passengerName, bookingId, ticket) {
-    modal.find('.modal-title').html(`Выбор места на рейс ${bookingId} 
+async function setModalContent(passengerName, bookingId) {
+    registrationModal.find('.modal-title').html(`Выбор места на рейс ${bookingId} 
         пассажира ${passengerName}`);
+    let registerCompleteButton = `<button  class="btn btn-primary"
+        id="registerCompleteButton">Подтвердить</button>`;
+    registrationModal.find('.modal-footer').append(registerCompleteButton);
 
     let regModalBody = `
         <div class="row seat-container">
@@ -84,11 +68,7 @@ async function setModalContent(modal, passengerName, bookingId, ticket) {
             </div>     
         </div>
         `;
-    modal.find('.modal-body').append(regModalBody);
-
-    await showSeatSelectors(ticket);
-
-    await showSelectedSeats();
+    registrationModal.find('.modal-body').append(regModalBody);
 }
 
 async function showSeatSelectors(ticket) {
@@ -125,34 +105,38 @@ async function showSeatSelectors(ticket) {
     }
 }
 
-async function showSelectedSeats() {
-    //обработчик клика на label checkbox места
-    $(".seat-selector").on('click', function(event) {
-        let seatResultContainer = $(".seat-result-container");
-        seatResultContainer.empty();
+//Обработчик нажатия на label чекбоксов
+registrationModal.on('click', '.seat-selector', async (event)=> {
+    let seatResultContainer = $(".seat-result-container");
+    seatResultContainer.empty();
 
-        let targetLabel = event.currentTarget;
-        let checkBoxId = targetLabel.getAttribute('for');
-        let targetCheckbox = document.getElementById(checkBoxId);
+    let targetLabel = event.currentTarget;
+    let checkBoxId = targetLabel.getAttribute('for');
+    let targetCheckbox = document.getElementById(checkBoxId);
 
-        //Вывод выбранных мест
-        let chosenCheckboxes = document.querySelectorAll('input[class="seat-checkbox"]');
-        let setChosenSeats = "";
+    //Вывод выбранных мест
+    let chosenCheckboxes = document.querySelectorAll('input[class="seat-checkbox"]');
+    let setChosenSeats = "";
 
-        for (let i = 0; i < chosenCheckboxes.length; i++) {
-            let dataSet = chosenCheckboxes[i].dataset;
-            let chosenSeat = dataSet.seatRow +
-                String.fromCharCode(64 + Number(dataSet.seatCol));
+    for (let i = 0; i < chosenCheckboxes.length; i++) {
+        let dataSet = chosenCheckboxes[i].dataset;
+        let chosenSeat = dataSet.seatRow +
+            String.fromCharCode(64 + Number(dataSet.seatCol));
 
-            if (targetCheckbox.checked &&
-                chosenCheckboxes[i].checked && chosenCheckboxes[i] !== targetCheckbox ||
-                !targetCheckbox.checked &&
-                (chosenCheckboxes[i].checked || chosenCheckboxes[i] === targetCheckbox)) {
+        if (targetCheckbox.checked &&
+            chosenCheckboxes[i].checked && chosenCheckboxes[i] !== targetCheckbox ||
+            !targetCheckbox.checked &&
+            (chosenCheckboxes[i].checked || chosenCheckboxes[i] === targetCheckbox)) {
 
-                setChosenSeats += chosenSeat;
-                seatResultContainer.append('<div>' +
-                    chosenSeat + '</div>');
-            }
+            setChosenSeats = chosenSeat; //заменить на += при добавлении возможности
+                                         // регистрации нескольких пассажиров
+            seatResultContainer.append('<div>' +
+                chosenSeat + '</div>');
         }
-    })
-}
+    }
+})
+
+//обработчик кнопки "Подтвердить"
+registrationModal.on('click', '#registerCompleteButton', async ()=> {
+    alert('OK');
+})
