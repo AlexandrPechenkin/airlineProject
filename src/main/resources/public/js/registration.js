@@ -1,5 +1,15 @@
-let urlRegistration = 'http://localhost:8888/api/registration/'
-let urlPassenger = 'http://localhost:8888/api/passenger/'
+//let urlRegistration = 'http://localhost:8888/api/registration/'
+//let urlPassenger = 'http://localhost:8888/api/passenger/'
+let urlTicket = 'http://localhost:8888/api/ticket/holdNumber/'
+
+const registrationFetchService = {
+    head: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Referer': null
+    },
+    getTicketByHoldNumber: async (holdNumber) => await fetch(`${urlTicket}${holdNumber}`)
+}
 
 //Обработчик кнопки "Зарегистрирроваться"
 $("#registrationButton").on('click', async () => {
@@ -38,29 +48,28 @@ async function getRegistrationModal(passengerName, bookingId) {
 
 async function getRegistrationInfo(modal, passengerName, bookingId) {
     //Запрос на получение объекта Registration
-    let promiseRegistration = await fetch(urlRegistration + bookingId, {
+    /*let promiseRegistration = await fetch(urlRegistration + bookingId, {
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         }
-    })
+    })*/
 
-    //Запрос на получение объекта Passenger
-    //--------
+    //Запрос на получение объекта Ticket
+    let promiseTicket = await registrationFetchService.getTicketByHoldNumber(bookingId);
 
-    if (promiseRegistration.ok) {
-        let registration = await promiseRegistration.json();
+    if (promiseTicket.ok) {
+        let ticket = await promiseTicket.json();
 
         //Заполнение содержимым модального окна
-        await setModalContent(modal, passengerName, bookingId, registration);
+        await setModalContent(modal, passengerName, bookingId, ticket);
 
-        //alert(registration.ticket.holdNumber);
     } else {
         modal.find('.modal-title').html(`Не найден рейс ${bookingId}`);
     }
 }
 
-async function setModalContent(modal, passengerName, bookingId, registration) {
+async function setModalContent(modal, passengerName, bookingId, ticket) {
     modal.find('.modal-title').html(`Выбор места на рейс ${bookingId} 
         пассажира ${passengerName}`);
 
@@ -77,12 +86,12 @@ async function setModalContent(modal, passengerName, bookingId, registration) {
         `;
     modal.find('.modal-body').append(regModalBody);
 
-    await showSeatSelectors(registration);
+    await showSeatSelectors(ticket);
 
     await showSelectedSeats();
 }
 
-async function showSeatSelectors(registration) {
+async function showSeatSelectors(ticket) {
     //Переменные, отвечающие за геометрию мест
     //в дальнейшем определять исходя из типа самолёта (описание мест внутри категорий)
     //по умолчанию используется шестиместный ряд с одним проходом

@@ -47,4 +47,12 @@ public class TicketServiceImpl implements TicketService {
     public Optional<Ticket> getTicketById(Long id) {
         return ticketRepository.findById(id);
     }
+
+    /**
+     * поиск билета по номеру брони
+     */
+    @Override
+    public Ticket findTicketByHoldNumber(Long holdNumber) {
+        return ticketRepository.findTicketByHoldNumber(holdNumber);
+    }
 }
