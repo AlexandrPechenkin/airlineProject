@@ -40,7 +40,7 @@ public class Fleet {
                 .build();
         Category economyClass = Category.builder()
                 .category("Эконом-класс")
-                .seats(IntStream.rangeClosed(1, 120)
+                .seats(IntStream.rangeClosed(1, 12)
                         .mapToObj(iter ->
                                 Seat.builder()
                                         .seatNumber("ЭК" + iter)
@@ -112,7 +112,7 @@ public class Fleet {
                 .build();
         Category economyClass = Category.builder()
                 .category("Эконом-класс")
-                .seats(IntStream.rangeClosed(1, 375)
+                .seats(IntStream.rangeClosed(1, 37)
                         .mapToObj(iter ->
                                 Seat.builder()
                                         .seatNumber("ЭК" + iter)

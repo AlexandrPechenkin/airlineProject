@@ -1,6 +1,5 @@
 package app.repositories;
 
-import app.entities.Destination;
 import app.entities.Flight;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -22,21 +21,15 @@ public interface FlightRepository extends JpaRepository<Flight, Long> {
      * @return
      */
     @Query(value = "select f from Flight f where (f.from.city like concat('%', :cityFrom, '%')) " +
-            "and f.to.city like  concat('%', :cityTo, '%') " +
-            "and f.departureDate like concat('%', :departureDate, '%')")
-    List<Flight> findFlights(@Param("cityFrom") String from, @Param("cityTo") String to, LocalDate departureDate);
+            "and f.to.city like concat('%', :cityTo, '%') " +
+            "and f.departureDate like concat('%', :date, '%')")
+    List<Flight> findFlights(@Param("cityFrom") String from, @Param("cityTo") String to,
+                             @Param("date") LocalDate departureDate);
 
-
-//    @Query(value = "select f from Flight f where f.from.city like concat('%',:cityFrom,'%')" +
-//            "and f.to.city like concat('%',:cityTo,'%')" )
-//    List<Flight> findFlightsByCitiesAndAirportCode(@Param("cityFrom") String cityFrom, @Param("cityTo") String cityTo,
-//                                                   @Param("airportCode") String airportCode,
-//                                                   @Param("localDate") LocalDate departureDate);
-
-//    @Query(value = "select f from Flight f where f.from.city like concat('%', :from, '%')" +
-//            "and f.to.city like  concat('%', :to, '%') " +
-//            "and f.departureDate like concat('%', :departureDate, '%')")
-//    List<Flight> findFlights(@Param("from") Destination from, @Param("to") Destination to,
-//                             @Param("departureDate") LocalDate departureDate);
-
+    @Query(value = "select f from Flight f where f.departureDate > :date " +
+            "and f.from.city like concat('%',:cityFrom,'%') " +
+            "and f.to.city like concat('%',:cityTo,'%')")
+    List<Flight> findAllWithDepartureDateAfter(@Param("cityFrom") String cityFrom,
+                                               @Param("cityTo") String cityTo,
+                                               @Param("date") LocalDate date);
 }

@@ -1,6 +1,5 @@
 package app.services.impl;
 
-import app.entities.Destination;
 import app.entities.Flight;
 import app.repositories.FlightRepository;
 import app.services.interfaces.FlightService;
@@ -67,4 +66,8 @@ public class FlightServiceImpl implements FlightService {
         return flightRepository.findFlights(from, to, departureDate);
     }
 
+    @Override
+    public List<Flight> findAllWithDepartureDateAfter(String cityFrom, String cityTo, LocalDate date) {
+        return flightRepository.findAllWithDepartureDateAfter(cityFrom, cityTo, date);
+    }
 }

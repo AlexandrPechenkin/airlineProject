@@ -5,6 +5,7 @@ import app.entities.*;
 import app.services.interfaces.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.util.MultiValueMap;
 
 import javax.annotation.PostConstruct;
 import java.time.LocalDate;
@@ -55,8 +56,8 @@ public class DataInitializer {
         createSeat();
         System.out.println("Места были созданы");
 
-        createFlight();
-        System.out.println("Рейс был добавлен");
+//        createFlight();
+//        System.out.println("Рейс был добавлен");
 
         createAdmin();
         System.out.println("Администратор был создан с AdminService, AdminRepository, AdminMapper, AdminDTO.");
@@ -80,6 +81,7 @@ public class DataInitializer {
         Destination norilsk = createNorilskDestination();
         Destination omsk = createOmskDestination();
         Destination barnaul = createBarnaulDestination();
+        Destination direct = createDirectDestination();
 
         createAircraft(moscow, nizhny);
         System.out.println("Самолёт был создан");
@@ -117,7 +119,25 @@ public class DataInitializer {
         List<DestinationResource> listDirectDestinationResource = destinationResourceService.findByCity("DIRECT");
         List<DestinationResource> listVladivostokDestinationResource = destinationResourceService.findByCity("Vladivostok");
 
-        Map<Integer, Map<DestinationResource, List<List<Route>>>> allRoutesOnlyDirect = searchService.getRoutes(
+//        Map<Integer, Map<DestinationResource, List<List<Route>>>> allRoutesOnlyDirect = searchService.getRoutes(
+//                listMoscowDestinationResource,
+//                listDirectDestinationResource,
+//                LocalDate.of(2022, 4, 28));
+//        Map<DestinationResource, List<List<Route>>> route = allRoutesOnlyDirect.get(0);
+//        System.out.println(allRoutesOnlyDirect.get(0));
+//        System.out.println(allRoutesOnlyDirect.get(1));
+//        System.out.println(allRoutesOnlyDirect.get(2));
+//
+//        Map<Integer, Map<DestinationResource, List<List<Route>>>> allRoutesOneStop = searchService.getRoutes(
+//                listDirectDestinationResource, listVladivostokDestinationResource,
+//                LocalDate.of(2022, 5, 27));
+//        Map<DestinationResource, List<List<Route>>> routeOneStop = allRoutesOneStop.get(1);
+//        System.out.println(allRoutesOneStop.get(1));
+//        allRoutesOneStop.forEach((integer, destinationResourceListMap) -> {
+//            System.out.println(integer + ":" + destinationResourceListMap);
+//        });
+
+        Map<Integer, MultiValueMap<DestinationResource, List<Route>>> allRoutesOnlyDirect = searchService.getRoutes(
                 listMoscowDestinationResource,
                 listDirectDestinationResource,
                 LocalDate.of(2022, 4, 28));
@@ -126,17 +146,421 @@ public class DataInitializer {
         System.out.println(allRoutesOnlyDirect.get(1));
         System.out.println(allRoutesOnlyDirect.get(2));
 
-        Map<Integer, Map<DestinationResource, List<List<Route>>>> allRoutesOneStop = searchService.getRoutes(
+        Map<Integer, MultiValueMap<DestinationResource, List<Route>>> allRoutesDirectToVvo = searchService.getRoutes(
                 listDirectDestinationResource, listVladivostokDestinationResource,
                 LocalDate.of(2022, 5, 27));
-        Map<DestinationResource, List<List<Route>>> routeOneStop = allRoutesOneStop.get(1);
-        System.out.println(allRoutesOneStop.get(1));
-        allRoutesOneStop.forEach((integer, destinationResourceListMap) -> {
+        Map<DestinationResource, List<List<Route>>> routeOneStop = allRoutesDirectToVvo.get(1);
+        System.out.println(allRoutesDirectToVvo.get(1));
+        allRoutesDirectToVvo.forEach((integer, destinationResourceListMap) -> {
             System.out.println(integer + ":" + destinationResourceListMap);
         });
 
-        // создаём доступные рейсы
+        Map<Integer, MultiValueMap<DestinationResource, List<Route>>> allRoutesDmeToVvo = searchService.getRoutes(
+                listMoscowDestinationResource, listVladivostokDestinationResource,
+                LocalDate.of(2022, 4, 4));
 
+        // создаём доступные рейсы
+        createFlightDmeToOms();
+        createFlightDmeToOmsAfter();
+        createFlightDmeToGoj();
+        createFlightDmeToNsk();
+        createFlightDmeToOvb();
+        createFlightGojToOvb();
+        createFlightGojToDme();
+        createFlightOmsToOvb();
+        createFlightOmsToDme();
+        createFlightNskToOvb();
+        createFlightVvoToOvb();
+        createFlightVvoToDme();
+        createFlightDmeToDirect();
+        createFlightDirectToVvo();
+        createFlightNskToVvo();
+        createFlightDmeToSecond();
+        createFlightSecondToVvo();
+        //
+        List<Destination> listDest = destinationService.getDestinationListByCity("Moscow");
+        List<Flight> fl = flightService.findFlights("Moscow", "Omsk",
+                LocalDate.of(2022, 4,4));
+        // ищем рейсы, удовлетворяющие переданным городам
+        List<Flight> gg = flightService.findAllWithDepartureDateAfter("Moscow", "Omsk",
+                LocalDate.of(2022, 4, 4));
+
+        List<Flight> fl1 = flightService.findFlights("Moscow", "Novosibirsk",
+                LocalDate.of(2022,4,4));
+
+        Map<Integer, MultiValueMap<DestinationResource, List<Flight>>> flights = searchService.getFlights(allRoutesDmeToVvo,
+                LocalDate.of(2022,4,4));
+
+    }
+
+    private Flight createFlightDmeToOvb() {
+        return flightService.createOrUpdateFlight(
+                Flight.builder()
+                        .from(destinationService.createOrUpdateDestination(
+                                Destination.builder()
+                                        .countryCode(CountryCode.RUS)
+                                        .countryName("Russia")
+                                        .city("Moscow")
+                                        .airportCode("DME")
+                                        .airportName("Domodedovo")
+                                        .build()))
+                        .to(destinationService.createOrUpdateDestination(
+                                Destination.builder()
+                                        .countryName("Russia")
+                                        .countryCode(CountryCode.RUS)
+                                        .city("Novosibirsk")
+                                        .airportName("Tolmachevo")
+                                        .airportCode("OVB")
+                                        .build()))
+                        .departureDate(LocalDate.of(2022, 4, 4))
+                        .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
+                        .build());
+    }
+
+    private Flight createFlightSecondToVvo() {
+        return flightService.createOrUpdateFlight(
+                Flight.builder()
+                        .from(destinationService.createOrUpdateDestination(
+                                Destination.builder()
+                                        .countryCode(CountryCode.RUS)
+                                        .countryName("Russia")
+                                        .city("Second_city")
+                                        .airportCode("SECOND")
+                                        .airportName("Second_airport")
+                                        .build()))
+                        .to(destinationService.createOrUpdateDestination(
+                                Destination.builder()
+                                        .countryName("Russia")
+                                        .countryCode(CountryCode.RUS)
+                                        .city("Vladivostok")
+                                        .airportName("Knevichi")
+                                        .airportCode("VVO")
+                                        .build()))
+                        .departureDate(LocalDate.of(2022, 4, 4))
+                        .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
+                        .build());
+    }
+
+    private Flight createFlightDmeToSecond() {
+        return flightService.createOrUpdateFlight(
+                Flight.builder()
+                        .from(destinationService.createOrUpdateDestination(
+                                Destination.builder()
+                                        .countryCode(CountryCode.RUS)
+                                        .countryName("Russia")
+                                        .city("Moscow")
+                                        .airportCode("DME")
+                                        .airportName("Domodedovo")
+                                        .build()))
+                        .to(destinationService.createOrUpdateDestination(
+                                Destination.builder()
+                                        .countryName("Russia")
+                                        .countryCode(CountryCode.RUS)
+                                        .city("Second_city")
+                                        .airportName("Second_airport")
+                                        .airportCode("SECOND")
+                                        .build()))
+                        .departureDate(LocalDate.of(2022, 4, 4))
+                        .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
+                        .build());
+    }
+
+    private Flight createFlightNskToVvo() {
+        return flightService.createOrUpdateFlight(
+                Flight.builder()
+                        .from(destinationService.createOrUpdateDestination(
+                                Destination.builder()
+                                        .countryCode(CountryCode.RUS)
+                                        .countryName("Russia")
+                                        .city("Novosibirsk")
+                                        .airportCode("OVB")
+                                        .airportName("Tolmachevo")
+                                        .build()))
+                        .to(destinationService.createOrUpdateDestination(
+                                Destination.builder()
+                                        .countryName("Russia")
+                                        .countryCode(CountryCode.RUS)
+                                        .city("Vladivostok")
+                                        .airportName("Knevichi")
+                                        .airportCode("VVO")
+                                        .build()))
+                        .departureDate(LocalDate.of(2022, 4, 4))
+                        .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
+                        .build());
+    }
+
+    private Flight createFlightDirectToVvo() {
+        return flightService.createOrUpdateFlight(
+                Flight.builder()
+                        .from(destinationService.createOrUpdateDestination(
+                                Destination.builder()
+                                        .countryName("Russia")
+                                        .city("Direct_city")
+                                        .countryCode(CountryCode.RUS)
+                                        .airportName("Direct_airport")
+                                        .airportCode("DIRECT")
+                                        .build()))
+                        .to(destinationService.createOrUpdateDestination(
+                                Destination.builder()
+                                        .countryName("Russia")
+                                        .countryCode(CountryCode.RUS)
+                                        .city("Vladivostok")
+                                        .airportName("Knevichi")
+                                        .airportCode("VVO")
+                                        .build()))
+                        .departureDate(LocalDate.of(2022, 4, 4))
+                        .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
+                        .build());
+    }
+
+    private Flight createFlightDmeToDirect() {
+        return flightService.createOrUpdateFlight(
+                Flight.builder()
+                        .from(destinationService.createOrUpdateDestination(
+                                Destination.builder()
+                                        .countryName("Russia")
+                                        .city("Moscow")
+                                        .countryCode(CountryCode.RUS)
+                                        .airportName("Domodedovo")
+                                        .airportCode("DME")
+                                        .build()))
+                        .to(destinationService.createOrUpdateDestination(
+                                Destination.builder()
+                                        .city("Direct_city")
+                                        .countryName("Russia")
+                                        .countryCode(CountryCode.RUS)
+                                        .airportName("Direct_airport")
+                                        .airportCode("DIRECT")
+                                        .build()))
+                        .departureDate(LocalDate.of(2022, 4, 4))
+                        .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
+                        .build());
+    }
+
+    private Flight createFlightVvoToDme() {
+        return flightService.createOrUpdateFlight(
+                Flight.builder()
+                        .from(destinationService.createOrUpdateDestination(
+                                Destination.builder()
+                                        .countryName("Russia")
+                                        .countryCode(CountryCode.RUS)
+                                        .city("Vladivostok")
+                                        .airportName("Knevichi")
+                                        .airportCode("VVO")
+                                        .build()))
+                        .to(destinationService.createOrUpdateDestination(
+                                Destination.builder()
+                                        .countryName("Russia")
+                                        .city("Moscow")
+                                        .countryCode(CountryCode.RUS)
+                                        .airportName("Domodedovo")
+                                        .airportCode("DME")
+                                        .build()
+                        ))
+                        .departureDate(LocalDate.of(2022, 4, 4))
+                        .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
+                        .build());
+    }
+
+    private Flight createFlightVvoToOvb() {
+        return flightService.createOrUpdateFlight(
+                Flight.builder()
+                        .from(destinationService.createOrUpdateDestination(
+                                Destination.builder()
+                                        .countryName("Russia")
+                                        .countryCode(CountryCode.RUS)
+                                        .city("Vladivostok")
+                                        .airportName("Knevichi")
+                                        .airportCode("VVO")
+                                        .build()))
+                        .to(destinationService.createOrUpdateDestination(
+                                Destination.builder()
+                                        .countryCode(CountryCode.RUS)
+                                        .countryName("Russia")
+                                        .city("Novosibirsk")
+                                        .airportCode("OVB")
+                                        .airportName("Tolmachevo")
+                                        .build()
+                        ))
+                        .departureDate(LocalDate.of(2022, 4, 4))
+                        .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
+                        .build());
+    }
+
+    private Flight createFlightNskToOvb() {
+        return flightService.createOrUpdateFlight(
+                Flight.builder()
+                        .from(destinationService.createOrUpdateDestination(
+                                Destination.builder()
+                                        .countryCode(CountryCode.RUS)
+                                        .countryName("Russia")
+                                        .city("Norilsk")
+                                        .airportCode("NSK")
+                                        .airportName("Alykel")
+                                        .build()))
+                        .to(destinationService.createOrUpdateDestination(
+                                Destination.builder()
+                                        .countryCode(CountryCode.RUS)
+                                        .countryName("Russia")
+                                        .city("Novosibirsk")
+                                        .airportCode("OVB")
+                                        .airportName("Tolmachevo")
+                                        .build()
+                        ))
+                        .departureDate(LocalDate.of(2022, 4, 4))
+                        .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
+                        .build());
+    }
+
+    private Flight createFlightOmsToDme() {
+        return flightService.createOrUpdateFlight(
+                Flight.builder()
+                        .from(destinationService.createOrUpdateDestination(
+                                Destination.builder()
+                                        .countryName("Russia")
+                                        .countryCode(CountryCode.RUS)
+                                        .airportName("Omsk Tsentralny")
+                                        .airportCode("OMS")
+                                        .city("Omsk")
+                                        .build()))
+                        .to(destinationService.createOrUpdateDestination(
+                                Destination.builder()
+                                        .countryName("Russia")
+                                        .city("Moscow")
+                                        .countryCode(CountryCode.RUS)
+                                        .airportName("Domodedovo")
+                                        .airportCode("DME")
+                                        .build()
+                        ))
+                        .departureDate(LocalDate.of(2022, 4, 4))
+                        .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
+                        .build());
+    }
+
+    private Flight createFlightOmsToOvb() {
+        return flightService.createOrUpdateFlight(
+                Flight.builder()
+                        .from(destinationService.createOrUpdateDestination(
+                                Destination.builder()
+                                        .countryName("Russia")
+                                        .countryCode(CountryCode.RUS)
+                                        .airportName("Omsk Tsentralny")
+                                        .airportCode("OMS")
+                                        .city("Omsk")
+                                        .build()))
+                        .to(destinationService.createOrUpdateDestination(
+                                Destination.builder()
+                                        .countryCode(CountryCode.RUS)
+                                        .countryName("Russia")
+                                        .city("Novosibirsk")
+                                        .airportCode("OVB")
+                                        .airportName("Tolmachevo")
+                                        .build()
+                        ))
+                        .departureDate(LocalDate.of(2022, 4, 4))
+                        .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
+                        .build());
+
+    }
+
+    private Flight createFlightGojToDme() {
+        return flightService.createOrUpdateFlight(
+                Flight.builder()
+                        .from(destinationService.createOrUpdateDestination(
+                                Destination.builder()
+                                        .countryCode(CountryCode.RUS)
+                                        .countryName("Russia")
+                                        .city("Nizhny Novgorod")
+                                        .airportCode("GOJ")
+                                        .airportName("Strigino")
+                                        .build()))
+                        .to(destinationService.createOrUpdateDestination(
+                                Destination.builder()
+                                        .countryName("Russia")
+                                        .city("Moscow")
+                                        .countryCode(CountryCode.RUS)
+                                        .airportName("Domodedovo")
+                                        .airportCode("DME")
+                                        .build()
+                        ))
+                        .departureDate(LocalDate.of(2022, 4, 4))
+                        .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
+                        .build());
+    }
+
+    private Flight createFlightGojToOvb() {
+        return flightService.createOrUpdateFlight(
+                Flight.builder()
+                        .from(destinationService.createOrUpdateDestination(
+                                Destination.builder()
+                                        .countryCode(CountryCode.RUS)
+                                        .countryName("Russia")
+                                        .city("Nizhny Novgorod")
+                                        .airportCode("GOJ")
+                                        .airportName("Strigino")
+                                        .build()))
+                        .to(destinationService.createOrUpdateDestination(
+                                Destination.builder()
+                                        .countryCode(CountryCode.RUS)
+                                        .countryName("Russia")
+                                        .city("Novosibirsk")
+                                        .airportCode("OVB")
+                                        .airportName("Tolmachevo")
+                                        .build()
+                        ))
+                        .departureDate(LocalDate.of(2022, 4, 4))
+                        .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
+                        .build());
+    }
+
+    private Flight createFlightDmeToNsk() {
+        return flightService.createOrUpdateFlight(
+                Flight.builder()
+                        .from(destinationService.createOrUpdateDestination(
+                                Destination.builder()
+                                        .countryName("Russia")
+                                        .city("Moscow")
+                                        .countryCode(CountryCode.RUS)
+                                        .airportName("Domodedovo")
+                                        .airportCode("DME")
+                                        .build()))
+                        .to(destinationService.createOrUpdateDestination(
+                                Destination.builder()
+                                        .countryCode(CountryCode.RUS)
+                                        .countryName("Russia")
+                                        .city("Norilsk")
+                                        .airportCode("NSK")
+                                        .airportName("Alykel")
+                                        .build()
+                        ))
+                        .departureDate(LocalDate.of(2022, 4, 4))
+                        .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
+                        .build());
+    }
+
+    private Flight createFlightDmeToGoj() {
+        return flightService.createOrUpdateFlight(
+                Flight.builder()
+                        .from(destinationService.createOrUpdateDestination(
+                                Destination.builder()
+                                        .countryName("Russia")
+                                        .city("Moscow")
+                                        .countryCode(CountryCode.RUS)
+                                        .airportName("Domodedovo")
+                                        .airportCode("DME")
+                                        .build()))
+                        .to(destinationService.createOrUpdateDestination(
+                                Destination.builder()
+                                        .countryCode(CountryCode.RUS)
+                                        .countryName("Russia")
+                                        .city("Nizhny Novgorod")
+                                        .airportCode("GOJ")
+                                        .airportName("Strigino")
+                                        .build()
+                        ))
+                        .departureDate(LocalDate.of(2022, 4, 4))
+                        .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
+                        .build());
     }
 
     private DestinationResource createDestinationResourceMoscowDME() {
@@ -211,7 +635,7 @@ public class DataInitializer {
                         .countryName("Russia")
                         .city("Vladivostok")
                         .baseCode("VVO")
-                        .airportName("Vladivostok")
+                        .airportName("Knevichi")
                         .availableAirportCodes(Set.of("DME", "OVB"))
                         .build()
         );
@@ -224,7 +648,7 @@ public class DataInitializer {
                         .countryName("Russia")
                         .city("Novosibirsk")
                         .baseCode("OVB")
-                        .airportName("OVB_airport")
+                        .airportName("Tolmachevo")
                         .availableAirportCodes(Set.of("SECOND_TO", "DME", "OMS", "VVO"))
                         .build()
         );
@@ -340,6 +764,17 @@ public class DataInitializer {
                         .build());
     }
 
+    private Destination createDirectDestination() {
+        return destinationService.createOrUpdateDestination(
+                Destination.builder()
+                        .city("Direct_city")
+                        .countryName("Russia")
+                        .countryCode(CountryCode.RUS)
+                        .airportName("Direct_airport")
+                        .airportCode("DIRECT")
+                        .build());
+    }
+
     private void createPassenger() {
         passengerService.createOrUpdatePassenger(
                 Passenger.builder()
@@ -447,6 +882,56 @@ public class DataInitializer {
         );
     }
 
+    private Flight createFlightDmeToOms() {
+        return flightService.createOrUpdateFlight(
+                Flight.builder()
+                        .from(destinationService.createOrUpdateDestination(
+                                Destination.builder()
+                                        .countryName("Russia")
+                                        .city("Moscow")
+                                        .countryCode(CountryCode.RUS)
+                                        .airportName("Domodedovo")
+                                        .airportCode("DME")
+                                        .build()))
+                        .to(destinationService.createOrUpdateDestination(
+                                Destination.builder()
+                                        .countryCode(CountryCode.RUS)
+                                        .countryName("Russia")
+                                        .city("Omsk")
+                                        .airportCode("OMS")
+                                        .airportName("Tsentralny")
+                                        .build()
+                        ))
+                        .departureDate(LocalDate.of(2022, 4, 4))
+                        .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
+                        .build());
+    }
+
+    private Flight createFlightDmeToOmsAfter() {
+        return flightService.createOrUpdateFlight(
+                Flight.builder()
+                        .from(destinationService.createOrUpdateDestination(
+                                Destination.builder()
+                                        .countryName("Russia")
+                                        .city("Moscow")
+                                        .countryCode(CountryCode.RUS)
+                                        .airportName("Domodedovo")
+                                        .airportCode("DME")
+                                        .build()))
+                        .to(destinationService.createOrUpdateDestination(
+                                Destination.builder()
+                                        .countryCode(CountryCode.RUS)
+                                        .countryName("Russia")
+                                        .city("Omsk")
+                                        .airportCode("OMS")
+                                        .airportName("Tsentralny")
+                                        .build()
+                        ))
+                        .departureDate(LocalDate.of(2022, 4, 5))
+                        .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
+                        .build());
+    }
+
     /**
      * Создает аэропорты
      */
@@ -511,31 +996,31 @@ public class DataInitializer {
                         .build());
     }
 
-    private void createFlight() {
-        flightService.createOrUpdateFlight(
-                Flight.builder()
-                        .from(destinationService.createOrUpdateDestination(
-                                Destination.builder()
-                                        .countryName("Russia")
-                                        .city("11111")
-                                        .countryCode(CountryCode.RUS)
-                                        .airportName("1111")
-                                        .airportCode("1111")
-                                        .timeZone(TimeZone.getTimeZone("Europe/KRAT"))
-                                        .build()))
-                        .to(destinationService.createOrUpdateDestination(
-                                Destination.builder()
-                                        .countryName("Russia")
-                                        .city("2222")
-                                        .countryCode(CountryCode.RUS)
-                                        .airportName("2222")
-                                        .airportCode("2222")
-                                        .timeZone(TimeZone.getTimeZone("Europe/Tomsk"))
-                                        .build()
-                        ))
-                        .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
-                        .build());
-    }
+//    private void createFlight() {
+//        flightService.createOrUpdateFlight(
+//                Flight.builder()
+//                        .from(destinationService.createOrUpdateDestination(
+//                                Destination.builder()
+//                                        .countryName("Russia")
+//                                        .city("11111")
+//                                        .countryCode(CountryCode.RUS)
+//                                        .airportName("1111")
+//                                        .airportCode("1111")
+//                                        .timeZone(TimeZone.getTimeZone("Europe/KRAT"))
+//                                        .build()))
+//                        .to(destinationService.createOrUpdateDestination(
+//                                Destination.builder()
+//                                        .countryName("Russia")
+//                                        .city("2222")
+//                                        .countryCode(CountryCode.RUS)
+//                                        .airportName("2222")
+//                                        .airportCode("2222")
+//                                        .timeZone(TimeZone.getTimeZone("Europe/Tomsk"))
+//                                        .build()
+//                        ))
+//                        .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
+//                        .build());
+//    }
 
     private void createAdmin() {
         adminService.createOrUpdateAdmin(

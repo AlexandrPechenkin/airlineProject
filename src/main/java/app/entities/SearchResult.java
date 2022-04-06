@@ -31,17 +31,22 @@ public class SearchResult {
     /**
      * список рейсов from-to
      */
-    @Nullable
-    @OneToMany
-//    @JoinColumn(name = "search_result_depart")
-    private List<Flight> departFlights;
+//    @Nullable
+//    @OneToMany(targetEntity = Flight.class)
+//    private Map<Integer, MultiValueMap<DestinationResource, List<Flight>>> departFlights;
 
     /**
      * список рейсов to-from
      */
+//    @Nullable
+//    @OneToMany(targetEntity = Flight.class)
+//    private Map<Integer, MultiValueMap<DestinationResource, List<Flight>>> returnFlights;
     @Nullable
     @OneToMany
-//    @JoinColumn(name = "search_result_return")
+    private List<Flight> departFlights;
+
+    @Nullable
+    @OneToMany
     private List<Flight> returnFlights;
 
     /**

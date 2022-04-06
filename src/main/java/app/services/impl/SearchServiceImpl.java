@@ -3,11 +3,13 @@ package app.services.impl;
 import app.entities.*;
 import app.repositories.SearchRepository;
 import app.services.interfaces.DestinationResourceService;
-import app.services.interfaces.DestinationService;
+import app.services.interfaces.FlightService;
 import app.services.interfaces.SearchResultService;
 import app.services.interfaces.SearchService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.util.MultiValueMap;
+import org.springframework.util.MultiValueMapAdapter;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
@@ -18,9 +20,9 @@ import java.util.*;
 @Service
 public class SearchServiceImpl implements SearchService {
     private final SearchRepository searchRepository;
-    private final DestinationService destinationService;
     private final DestinationResourceService desResService;
     private final SearchResultService searchResultService;
+    private final FlightService flightService;
 
     @Override
     public List<Search> getAll() {
@@ -59,26 +61,71 @@ public class SearchServiceImpl implements SearchService {
                             .departFlights(null)
                             .returnFlights(null)
                             .build());
+        } else {
+            // ПОИСК В ОДНУ СТОРОНУ
+            // далее идёт составление маршрута согласно доступным аэропортам на пути из from в to
+            Map<Integer, MultiValueMap<DestinationResource, List<Route>>> routes =
+                    getRoutes(resourceFrom, resourceTo, departureDate);
+            // поиск доступных рейсов по дате-времени среди тех маршрутов выше, что нашлись
+            Map<Integer, MultiValueMap<DestinationResource, List<Flight>>> flights = getFlights(routes, departureDate);
+            return searchResultService.createOrUpdateSearchResult(
+                SearchResult.builder()
+//                    .departFlights(flights)
+                    .build());
         }
-        // далее идёт составление маршрута согласно доступным аэропортам на пути из from в to
-        Map<Integer, Map<DestinationResource, List<List<Route>>>> routes = getRoutes(resourceFrom, resourceTo, departureDate);
-        // поиск доступных рейсов по дате-времени среди тех, что нашлись
-
-        // создание Flight
-
-
-        return new SearchResult();
     }
 
     @Override
-    public Map<Integer, Map<DestinationResource, List<List<Route>>>> getRoutes(List<DestinationResource> resourceFrom,
+    public Map<Integer, MultiValueMap<DestinationResource, List<Flight>>> getFlights(
+            Map<Integer, MultiValueMap<DestinationResource, List<Route>>> resourceFlight, LocalDate departureDate) {
+        Map<Integer, Map<DestinationResource, List<List<Flight>>>> flights = new HashMap<>();
+        Map<DestinationResource, List<List<Flight>>> flightsMap = new HashMap<>();
+        List<List<Flight>> listFlight = new ArrayList<>();
+        List<Flight> flight = new ArrayList<>();
+        if (!resourceFlight.isEmpty()) {
+            resourceFlight.forEach((numberOfStops, multiRoutesValueMap) -> {
+                multiRoutesValueMap.forEach((destRes, listOfRoutesList) -> {
+                    listOfRoutesList.forEach(routesListForEachDestRes -> {
+                        routesListForEachDestRes.forEach(route -> {
+                            List<Flight> temp = flightService.findFlights(
+                                    route.getFrom().getCity(),
+                                    route.getTo().getCity(),
+                                    departureDate);
+                            if (!temp.isEmpty()) {
+                                Flight f = temp.get(0);
+                                flight.add(f);
+                            }
+                        });
+                        if (flight.size() == routesListForEachDestRes.size()) {
+                            listFlight.add(new ArrayList<>(flight));
+                            flightsMap.put(destRes, new ArrayList<>(listFlight));
+                            flight.clear();
+                        }
+                    });
+                });
+                flights.put(numberOfStops, new HashMap<>(flightsMap));
+                flightsMap.clear();
+                listFlight.clear();
+            });
+        }
+        Map<Integer, MultiValueMap<DestinationResource, List<Flight>>> mapMultiValueFlightsMap = new HashMap<>();
+        flights.forEach((numberOfStops, map) -> {
+            map.keySet().forEach(destinationResource -> {
+                MultiValueMap<DestinationResource, List<Flight>> multiValueTemp = new MultiValueMapAdapter<>(map);
+                mapMultiValueFlightsMap.put(numberOfStops, multiValueTemp);
+            });
+        });
+        return mapMultiValueFlightsMap;
+    }
+
+    @Override
+    public Map<Integer, MultiValueMap<DestinationResource, List<Route>>> getRoutes(List<DestinationResource> resourceFrom,
                                                                                List<DestinationResource> resourceTo,
                                                                                LocalDate departureDate) {
         // DIRECT ROUTES
         Map<DestinationResource, List<Destination>> direct = null;
         if (!resourceFrom.isEmpty() && !resourceTo.isEmpty()) {
-            direct =
-                    getDestinationsByAvailableAirportCodes(resourceFrom, resourceTo);
+            direct = getDestinationsByAvailableAirportCodes(resourceFrom, resourceTo);
         }
         Map<DestinationResource, List<List<Route>>> directRoutesMap = new HashMap<>();
         List<List<Route>> directRoutes = new ArrayList<>();
@@ -100,6 +147,8 @@ public class SearchServiceImpl implements SearchService {
                 routeListDirect.clear();
             }
         }
+        MultiValueMap<DestinationResource, List<Route>> directRoutesMultiMap = new MultiValueMapAdapter<>(
+                directRoutesMap);
         // ONE STOP ROUTES
         List<DestinationResource> resourceFirstStopOfOne = new ArrayList<>();
         // Мапа, которая ставит в соответствие каждому коду аэропорта из указанного города from все доступные
@@ -155,9 +204,11 @@ public class SearchServiceImpl implements SearchService {
                 oneStopRoutesMap.put(res, new ArrayList<>(sharedListForRoutesByCode));
             }
         }
+        MultiValueMap<DestinationResource, List<Route>> oneStopRoutesMultiMap = new MultiValueMapAdapter<>(
+                oneStopRoutesMap);
         // TWO STOPS ROUTES
         Set<DestinationResource> resourceTwoStops = new HashSet<>();
-        Map<DestinationResource, List<List<Route>>> twoStopsRoutesMap = null;
+        Map<DestinationResource, List<List<Route>>> twoStopsRoutesMap = new HashMap<>();
         // убираем все рейсы с одной пересадкой (прямые рейсы уже убраны)
         List<DestinationResource> resourceFirstStopOfTwo = new ArrayList<>();
         resourceFrom.forEach(res -> {
@@ -176,34 +227,35 @@ public class SearchServiceImpl implements SearchService {
         });
         Map<DestinationResource, List<Destination>> twoStops =
                 getDestinationsByAvailableAirportCodes(new ArrayList<>(resourceTwoStops), resourceTo);
-        // рейсы от второй до первой пересадки
-        Map<DestinationResource, List<Destination>> firstStop =
-                getDestinationsByAvailableAirportCodes(resourceFirstStopOfTwo, new ArrayList<>(twoStops.keySet()));
-        // рейсы от первой до нулевой пересадки
-        Map<DestinationResource, List<Destination>> initFromOfTwoStops =
-                getDestinationsByAvailableAirportCodes(resourceFrom, new ArrayList<>(firstStop.keySet()));
-        // одному аэропорту м.б. доступно несколько аэропортов в одном городе
-        List<List<Route>> sharedListForRoutesByCodeOfSecondStopOfTwo = new ArrayList<>();
-        twoStopsRoutesMap = new HashMap<>();
-        for (DestinationResource zeroRes : initFromOfTwoStops.keySet()) {
-            initFromOfTwoStops.get(zeroRes).forEach(zeroDest -> {
-                for (DestinationResource firstRes : firstStop.keySet()) {
-                    if (zeroDest.getAirportCode().equals(firstRes.getBaseCode())) {
-                        firstStop.get(firstRes).forEach(firstDest -> {
-                            for (DestinationResource secondRes : twoStops.keySet()) {
-                                if (firstRes.getAvailableAirportCodes().contains(secondRes.getBaseCode())
-                                    && !secondRes.getBaseCode().equals(firstRes.getBaseCode())
-                                    && !secondRes.getBaseCode().equals(zeroRes.getBaseCode())) {
+        if (!twoStops.isEmpty()) {
+            // рейсы от второй до первой пересадки
+            Map<DestinationResource, List<Destination>> firstStop =
+                    getDestinationsByAvailableAirportCodes(resourceFirstStopOfTwo, new ArrayList<>(twoStops.keySet()));
+            // рейсы от первой до нулевой пересадки
+            Map<DestinationResource, List<Destination>> initFromOfTwoStops =
+                    getDestinationsByAvailableAirportCodes(resourceFrom, new ArrayList<>(firstStop.keySet()));
+            // одному аэропорту м.б. доступно несколько аэропортов в одном городе
+            List<List<Route>> sharedListForRoutesByCodeOfSecondStopOfTwo = new ArrayList<>();
+//            twoStopsRoutesMap = new HashMap<>();
+            for (DestinationResource zeroRes : initFromOfTwoStops.keySet()) {
+                initFromOfTwoStops.get(zeroRes).forEach(zeroDest -> {
+                    for (DestinationResource firstRes : firstStop.keySet()) {
+                        if (zeroDest.getAirportCode().equals(firstRes.getBaseCode())) {
+                            firstStop.get(firstRes).forEach(firstDest -> {
+                                for (DestinationResource secondRes : twoStops.keySet()) {
+                                    if (firstRes.getAvailableAirportCodes().contains(secondRes.getBaseCode())
+                                            && !secondRes.getBaseCode().equals(firstRes.getBaseCode())
+                                            && !secondRes.getBaseCode().equals(zeroRes.getBaseCode())) {
                                         twoStops.get(secondRes).forEach(secondDest -> {
                                             if (firstDest.getAirportCode().equals(secondRes.getBaseCode())) {
                                                 Route route1 = Route.builder()
                                                         .from(constructDestinationByResource(zeroRes))
-                                                        .departureDate(departureDate)
+//                                                        .departureDate(departureDate)
                                                         .to(constructDestinationByAnotherDestination(zeroDest))
                                                         .build();
                                                 Route route2 = Route.builder()
                                                         .from(constructDestinationByAnotherDestination(zeroDest))
-                                                        .departureDate(LocalDate.now())
+//                                                        .departureDate(LocalDate.now())
                                                         .to(constructDestinationByAnotherDestination(firstDest))
                                                         .build();
                                                 Route route3 = Route.builder()
@@ -219,21 +271,28 @@ public class SearchServiceImpl implements SearchService {
                                         });
                                     }
                                 }
-                        });
+                            });
+                        }
                     }
-                }
-            });
-            twoStopsRoutesMap.put(zeroRes, new ArrayList<>(sharedListForRoutesByCodeOfSecondStopOfTwo));
+                });
+                twoStopsRoutesMap.put(zeroRes, new ArrayList<>(sharedListForRoutesByCodeOfSecondStopOfTwo));
+            }
         }
-        Map<Integer, Map<DestinationResource, List<List<Route>>>> allRoutes = new HashMap<>();
-        allRoutes.put(0, directRoutesMap);
-        allRoutes.put(1, oneStopRoutesMap);
-        allRoutes.put(2, twoStopsRoutesMap);
-        return allRoutes;
+        MultiValueMap<DestinationResource, List<Route>> twoStopsRoutesMultiMap = new MultiValueMapAdapter<>(
+                twoStopsRoutesMap);
+        Map<Integer, MultiValueMap<DestinationResource, List<Route>>> all = new HashMap<>();
+        all.put(0, directRoutesMultiMap);
+        all.put(1, oneStopRoutesMultiMap);
+        all.put(2, twoStopsRoutesMultiMap);
+
+        return all;
     }
 
     private Map<DestinationResource, List<Destination>> getDestinationsByAvailableAirportCodes
             (List<DestinationResource> fromList, List<DestinationResource> toList) {
+        if (fromList.isEmpty() || toList.isEmpty()) {
+            return new HashMap<>();
+        }
         // Map списков доступных мест прибытия относительно каждого DestinationResource from из fromList
         Map<DestinationResource, List<Destination>> availableDestinations = new HashMap<>();
         // Map всех DestinationResource to из List<DestinationResource> toList с указанием базового кода аэропорта из to

@@ -15,8 +15,9 @@ import java.time.LocalDate;
 @Table(name = "Route")
 @Component
 @Builder
+@Getter
+@Setter
 public class Route {
-
     /**
      * id
      */
