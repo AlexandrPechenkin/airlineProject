@@ -18,6 +18,12 @@ public class JsonParser {
     private final CategoryService categoryService;
 
 
+    /**
+     * метод для парсинга из JSON с фронта в объект Route
+     * @param response
+     * @return
+     * @throws ParseException
+     */
     public Route getRouteByJSON(String response) throws ParseException {
         JSONParser parser = new JSONParser();
         JSONObject jsonObject = (JSONObject) parser.parse(response);
