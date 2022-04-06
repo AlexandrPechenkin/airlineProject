@@ -29,6 +29,10 @@ spring:
         format_sql: true
         jdbc:
           time_zone: Europe/Moscow
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
 
 logging:
   config: classpath:log4j2.yml

@@ -15,16 +15,10 @@ import java.time.LocalTime;
 public class FlightDTO {
     private Long id;
     @NotNull(message = "Дата вылета не может быть пустой")
-    @DateTimeFormat(pattern = "dd.MM.yyyy")
-    @JsonFormat(pattern = "dd.MM.yyyy")
     private LocalDate departureDate;
     @NotNull(message = "Время вылета не может быть пустым")
-    @DateTimeFormat(pattern = "HH:mm")
-    @JsonFormat(pattern = "HH:mm")
     private LocalTime departureTime;
     @NotNull(message = "Дата прилета не может быть пустой")
-    @DateTimeFormat(pattern = "dd.MM.yyyy HH:mm")
-    @JsonFormat(pattern = "dd.MM.yyyy HH:mm")
     private LocalDateTime arrivalDateTime;
     //    @NotEmpty(message = "Место вылета не может быть пустым")
     //    private Destination from;
