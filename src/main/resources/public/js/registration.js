@@ -1,4 +1,5 @@
 let urlRegistration = 'http://localhost:8888/api/registration/'
+let urlPassenger = 'http://localhost:8888/api/passenger/'
 
 //Обработчик кнопки "Зарегистрирроваться"
 $("#registrationButton").on('click', async () => {
@@ -85,6 +86,7 @@ async function showSeatSelectors(registration) {
     //Переменные, отвечающие за геометрию мест
     //в дальнейшем определять исходя из типа самолёта (описание мест внутри категорий)
     //по умолчанию используется шестиместный ряд с одним проходом
+    let columns = 6;
     let rows = 20;
 
     for (let i = 1; i <= rows; i++) {
@@ -129,7 +131,6 @@ async function showSelectedSeats() {
         let setChosenSeats = "";
 
         for (let i = 0; i < chosenCheckboxes.length; i++) {
-
             let dataSet = chosenCheckboxes[i].dataset;
             let chosenSeat = dataSet.seatRow +
                 String.fromCharCode(64 + Number(dataSet.seatCol));
