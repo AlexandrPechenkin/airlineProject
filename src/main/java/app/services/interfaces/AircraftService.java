@@ -2,6 +2,7 @@ package app.services.interfaces;
 
 import app.entities.Aircraft;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -29,4 +30,10 @@ public interface AircraftService {
      * @param id - Уникальный ID воздушного судна
      */
     void deleteAircraftById(Long id);
+
+    /**
+     * Возвращает список всех воздушных судов
+     * @return - список всех воздушных судов
+     */
+    List<Aircraft> getAllAircrafts();
 }

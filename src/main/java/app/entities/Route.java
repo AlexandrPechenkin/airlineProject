@@ -36,7 +36,7 @@ public class Route {
      */
     @DateTimeFormat(pattern = "dd.MM.yyyy")
     @JsonFormat(pattern = "dd.MM.yyyy")
-    private LocalDate arrivalDate;
+    private LocalDate departureDateOfReturn;
 
 
     /**
@@ -53,18 +53,24 @@ public class Route {
     /**
      * категория билета
      */
-//    @NonNull
-//    private Category category;
+    @OneToOne
+    @JoinColumn(name = "category_id")
+    @NonNull
+    private Category category;
+
+
 
     /**
      * Destination from
      */
 //    @NonNull
 //    private Destination from;
+    private String from;
 
     /**
      * Destination to
      */
 //    @NonNull
 //    private Destination to;
+    private String to;
 }

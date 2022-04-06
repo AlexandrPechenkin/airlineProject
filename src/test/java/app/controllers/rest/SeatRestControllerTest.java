@@ -50,13 +50,7 @@ public class SeatRestControllerTest {
                 .fare(800)
                 .isRegistered(true)
                 .isSold(true)
-                .flight(Flight.builder()
-                        .id(1L)
-                        .flightStatus(FlightStatus.DELAY)
-                        .destinationFrom("Moscow")
-                        .destinationTo("Tomsk")
-                        .build()
-                ).build();
+                        .build();
     }
 
     Seat createSeat2() {
@@ -66,13 +60,7 @@ public class SeatRestControllerTest {
                 .fare(1100)
                 .isRegistered(false)
                 .isSold(true)
-                .flight(Flight.builder()
-                        .id(1L)
-                        .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
-                        .destinationFrom("Moscow")
-                        .destinationTo("Tomsk")
-                        .build()
-                ).build();
+                .build();
     }
 
 

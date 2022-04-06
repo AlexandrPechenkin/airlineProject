@@ -73,7 +73,8 @@
                         </div>
                         <div class="login-form ">
                             <div class="login-form__select">
-                                <a th:href="${userInfo} ? @{/logout} : @{/login}" th:text="${userInfo} ? 'Выйти' : 'Войти'"></a>
+                                <a th:href="${userInfo} ? @{/logout} : @{/login}"
+                                   th:text="${userInfo} ? 'Выйти' : 'Войти'"></a>
                             </div>
                             <div class="login-form__mobile-select">
                                 <button class="btn login-form__open-button default-btn ">Войти</button>
@@ -88,7 +89,8 @@
                                      src="data:image/jpeg;base64,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"
                                      alt="OneWorld">
                             </a>
-                            <a class="nav-text" sec:authorize="hasAnyRole('USER', 'ADMIN')">ID: <span  th:text="${userInfo.id}"></span></a>
+                            <a class="nav-text" sec:authorize="hasAnyRole('USER', 'ADMIN')">ID: <span
+                                    th:text="${userInfo.id}"></span></a>
                         </div>
                     </div>
                 </div>
@@ -99,7 +101,8 @@
             <div class="mainpage">
                 <!--        МЕСТО СЛАЙДЕРА  -->
                 <div class="mainpage-slider-wrapper">
-                    <div class="main-slider__banner-container___1U6dr main-slider__mainpage-carousel___1ELIr" th:style="'background: url(/img/img_01.png)'">
+                    <div class="main-slider__banner-container___1U6dr main-slider__mainpage-carousel___1ELIr"
+                         th:style="'background: url(/img/img_01.png)'">
 
                     </div>
                 </div>
@@ -119,8 +122,11 @@
                                     <ul class="A75sGA2n">
                                         <li class="_25h7No4L _37hzAnHH" role="tab">Авиабилеты</li>
                                         <li class="_25h7No4L _2-x8fJfd" role="tab">Отели
-                                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" class="rVHnvb8W">
-                                                <path fill-rule="evenodd" clip-rule="evenodd" d="M3.067 2.8a.8.8 0 01.8-.8H9.2a.8.8 0 01.8.8v5.333a.8.8 0 11-1.6 0V4.731L3.366 9.766a.8.8 0 01-1.132-1.132L7.27 3.6H3.867a.8.8 0 01-.8-.8z" fill="currentColor"></path>
+                                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
+                                                 class="rVHnvb8W">
+                                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                                      d="M3.067 2.8a.8.8 0 01.8-.8H9.2a.8.8 0 01.8.8v5.333a.8.8 0 11-1.6 0V4.731L3.366 9.766a.8.8 0 01-1.132-1.132L7.27 3.6H3.867a.8.8 0 01-.8-.8z"
+                                                      fill="currentColor"></path>
                                             </svg>
                                         </li>
                                         <li class="_25h7No4L _2-x8fJfd" role="tab">Трансфер
@@ -158,6 +164,7 @@
                                         <div class="_3tCR_nWI _1f1ryyMK MqCuRL60 _3Dbox2Ke">
                                             <div class="_1VMzEETv">
                                                 <div><label
+                                                        id="from"
                                                         class="_2gBQjtZn TuPk5qeB _31Ft0Yn7 _35jdMK9A _1605ozhZ _2_piJ0Jp _3mh498_u sDZPTMsH _6AUfP-Nk _2VXqKGJZ TrU-Ts4n _3CFEopiy _1yJByOzm _1EeGlJBb _1rfy66XH _2G-XYnL7 _3LhrabYa _3n_DUhtS _3WT6dx7i _28IVP4Uf _1zrlazVu"><input
                                                         class="_1_1Rhm09" placeholder="Откуда" autocomplete="off"
                                                         data-test=""
@@ -187,6 +194,7 @@
                                         <div class="_3tCR_nWI _1f1ryyMK MqCuRL60 _44IHwQM1">
                                             <div class="_1VMzEETv">
                                                 <div><label
+                                                        id="to"
                                                         class="_2gBQjtZn TuPk5qeB _31Ft0Yn7 _3mh498_u sDZPTMsH _1cZkIPW2 _2_ojnm5s _37aZJARW _3CFEopiy _1yJByOzm _1EeGlJBb _1rfy66XH _2G-XYnL7 _3LhrabYa _3n_DUhtS _3WT6dx7i _28IVP4Uf _1zrlazVu"><input
                                                         class="_1_1Rhm09" placeholder="Куда" autocomplete="off"
                                                         data-test=""
@@ -194,13 +202,14 @@
                                             </div>
                                         </div>
                                         <div class="_18TKAEyO _11jhO-VH">
-                                            <div class="_1cD2Iyc6 _1Ta4j6hR _1tACkGx3 _3npr7eNs _24raRyxU"
+                                            <div id="departure-date" class="_1cD2Iyc6 _1Ta4j6hR _1tACkGx3 _3npr7eNs _24raRyxU"
                                                  data-test="input_component"><label class="_2Q1Q3T3Z">
-                                                <div class="_3pBKKUE5"><input class="_1Zankvd6" readonly=""
+                                                <div class="_3pBKKUE5"><input class="_1Zankvd6"
                                                                               aria-required="false"
                                                                               data-test="input_component__input date-range-input "
-                                                                              value=""><span
-                                                        class="AfJS6A5g _1iuoRFXU">Туда</span></div>
+                                                                              value=""
+                                                                              placeholder="Туда"><span
+                                                        class="AfJS6A5g _1iuoRFXU"></span></div>
                                                 <i class="CvcVPWq1" data-test="input_component__icon">
                                                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                                                         <path fill-rule="evenodd" clip-rule="evenodd"
@@ -241,10 +250,11 @@
                                                 <li class="_1JtK5SaH"><span class="_2fjHNiXt">Бизнес</span></li>
                                             </ul>
                                         </label>
-                                        <div class="_3bnnnpzx">
-                                            <button data-test="avia-bot-submit"
+                                        <div class="_3bnnnpzx" id="searchButton">
+                                            <button value="submit"
+                                                    data-test="avia-bot-submit"
                                                     class="DS__Button__root DS__Button__theme_b2c DS__Button__size_medium"
-                                                    type="button"><span class="DS__Button__content"><svg
+                                                    type="submit"><span class="DS__Button__content"><svg
                                                     xmlns="http://www.w3.org/2000/svg" width="1024" height="1024"
                                                     viewBox="0 0 1024 1024" fill="#c4d600"><path
                                                     d="M736.531 689.775l132.583 132.583c19.995 19.995 19.995 52.413 0 72.408s-52.413 19.995-72.408 0l-136.27-136.27C603.383 796.832 534.704 819.2 460.8 819.2c-197.939 0-358.4-160.461-358.4-358.4s160.461-358.4 358.4-358.4c197.939 0 358.4 160.461 358.4 358.4 0 87.065-31.045 166.879-82.669 228.975zM460.8 716.8c141.385 0 256-114.615 256-256s-114.615-256-256-256-256 114.615-256 256 114.615 256 256 256z"></path></svg></span>
@@ -350,7 +360,7 @@
                                                 </div>
                                             </div>
                                             <span href="/ru/offers/luchshie-predlozheniya-nedeli"
-                                               class="card__card-link___3uKnQ">Подробнее</span>
+                                                  class="card__card-link___3uKnQ">Подробнее</span>
                                         </div>
                                     </a></div>
                                     <div class="offers-block-item"><a href="/ru/offers/semeynyy-schet"
@@ -586,5 +596,6 @@
         </footer>
     </div>
 </div>
+<script src="../public/js/SearchByRoute.js"></script>
 </body>
 </html>
