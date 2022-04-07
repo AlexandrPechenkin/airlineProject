@@ -5,6 +5,7 @@ import app.entities.Admin;
 import app.entities.Passenger;
 import app.entities.Passport;
 import app.entities.Role;
+import app.services.interfaces.RoleService;
 import app.services.interfaces.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -36,7 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestPropertySource(locations = "classpath:application-integrationtest.yml")
 @ActiveProfiles("integrationtest")
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@WithMockUser(username = "admin@mai.ru", password = "123", roles = "ADMIN")
+@WithMockUser(username = "admin@mai.ru", password = "123", authorities = "ADMIN")
 public class UserRestControllerTest {
 
     @Autowired
@@ -45,6 +46,9 @@ public class UserRestControllerTest {
     @Autowired @Qualifier("userServiceImpl")
     UserService userService;
 
+    @Autowired
+    RoleService roleService;
+
     final String api = "/api/user";
     final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
@@ -52,7 +56,7 @@ public class UserRestControllerTest {
         return Admin.builder().email("admin_user@mail.com")
                 .password("password_admin_user")
                 .nickname("nickname_admin_user")
-                .roles(Set.of(new Role("ADMIN")))
+                .roles(Set.of(roleService.createOrUpdateRole(new Role(1L,"ADMIN"))))
                 .build();
     }
 
@@ -64,7 +68,7 @@ public class UserRestControllerTest {
                 .dateOfBirth(LocalDate.of(1992, 2, 15))
                 .email("Airlines@test.com")
                 .password("password_airlines")
-                .roles(Set.of(new Role("ADMIN")))
+                .roles(Set.of(roleService.createOrUpdateRole(new Role(1L,"ADMIN"))))
                 .passport(
                         Passport.builder()
                                 .firstName("Dereck")

@@ -36,6 +36,7 @@ public class DataInitializer {
     private final UserService userService;
     private final DestinationService destinationService;
     private final TicketService ticketService;
+    private final RoleService roleService;
 
     @PostConstruct
     public void init() {
@@ -100,7 +101,7 @@ public class DataInitializer {
         passengerService.createOrUpdatePassenger(
                 Passenger.builder()
                         .password("password_passenger")
-                        .roles(Set.of(new Role("ADMIN")))
+                        .roles(Set.of(roleService.createOrUpdateRole(new Role(1L,"ADMIN"))))
                         .firstName("Dereck")
                         .lastName("Storm")
                         .middleName("Totoro")
@@ -232,7 +233,7 @@ public class DataInitializer {
                         .email("admin@mail.com")
                         .password("password_admin")
                         .nickname("admin_nickname")
-                        .roles(Set.of(new Role("ROLE_ADMIN")))
+                        .roles(Set.of(roleService.createOrUpdateRole(new Role(1L,"ADMIN"))))
                         .build());
     }
 
@@ -242,7 +243,7 @@ public class DataInitializer {
                         .email("user@mail.ru")
                         .parkName("park_name")
                         .password("123")
-                        .roles(Set.of(new Role("ROLE_USER")))
+                        .roles(Set.of(roleService.createOrUpdateRole(new Role(2L,"USER"))))
                         .build());
     }
 
@@ -251,7 +252,7 @@ public class DataInitializer {
                 Admin.builder().email("admin@mail.ru")
                         .password("123")
                         .nickname("nickname_admin_user")
-                        .roles(Set.of(new Role("ROLE_ADMIN")))
+                        .roles(Set.of(roleService.createOrUpdateRole(new Role(1L,"ADMIN"))))
                         .build());
     }
 
@@ -276,7 +277,7 @@ public class DataInitializer {
                                         .seriesAndNumber("3333 123456_user")
                                         .build()
                         )
-                        .roles(Set.of(new Role("USER")))
+                        .roles(Set.of(roleService.createOrUpdateRole(new Role(2L,"USER"))))
                         .build()
         );
     }
@@ -286,9 +287,8 @@ public class DataInitializer {
                 AirlineManager.builder()
                         .email("airline_manager_user@mail.com")
                         .password("password_airline_manager_user")
-                        .roles(Set.of(new Role("ADMIN")))
+                        .roles(Set.of(roleService.createOrUpdateRole(new Role(1L,"ADMIN"))))
                         .parkName("park_name_user")
                         .build());
     }
-
 }

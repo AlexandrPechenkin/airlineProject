@@ -26,8 +26,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/api/airlineManager", "/api/category",
                         "/api/destinations",
                         "/api/passenger", "/api/search",
-                        "/api/seat", "/api/ticket/**",
-                        "/api/user").hasRole("ADMIN")
+                        "/api/seat", "/api/ticket",
+                        "/api/user", "/api/role").hasAuthority("ADMIN")
                 .anyRequest().authenticated();
         http.formLogin()
                 .successHandler(successUserHandler)
