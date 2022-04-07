@@ -10,19 +10,10 @@ import java.time.LocalDate;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = "Route")
 @Component
 @Builder
+@Data
 public class Route {
-
-    /**
-     * id
-     */
-    @Id
-    @Column(name = "id", nullable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
     /**
      * дата вылета
@@ -45,16 +36,10 @@ public class Route {
     @NonNull
     private int numberOfSeats;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "search_id", nullable = false)
-    private Search search;
-
 
     /**
      * категория билета
      */
-    @OneToOne
-    @JoinColumn(name = "category_id")
     @NonNull
     private Category category;
 

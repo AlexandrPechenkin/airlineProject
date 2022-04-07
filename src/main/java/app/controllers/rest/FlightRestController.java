@@ -95,6 +95,7 @@ public class FlightRestController {
             @ApiResponse(code = 200, message = "Успешно получен"),
             @ApiResponse(code = 404, message = "Перелет не найден")
     })
+
     @GetMapping("/{from}/{to}/{departureDate}")
     public ResponseEntity<List<FlightDTO>> searchFlights(@ApiParam(value = "место вылета")
                                                          @PathVariable("from") String from,

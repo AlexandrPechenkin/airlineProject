@@ -40,13 +40,13 @@ public class Flight {
 
     /**
      * место вылета
-     * В БУДУЩЕМ УДАЛИТЬ
+     * В БУДУЩЕМ ПОМЕНЯТЬ НА Destination
      */
     private String destinationFrom;
 
     /**
      * место прилета
-     * В БУДУЩЕМ УДАЛИТЬ
+     * В БУДУЩЕМ ПОМЕНЯТЬ НА Destination
      */
     private String destinationTo;
 
