@@ -6,6 +6,7 @@ import app.entities.Passport;
 import app.entities.Role;
 import app.entities.mappers.passenger.PassengerMapper;
 import app.services.interfaces.PassengerService;
+import app.services.interfaces.RoleService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.AccessLevel;
@@ -36,7 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestPropertySource(locations = "classpath:application-integrationtest.yml")
 @ActiveProfiles("integrationtest")
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@WithMockUser(username = "admin@mai.ru", password = "123", roles = "ADMIN")
+@WithMockUser(username = "admin@mai.ru", password = "123", authorities = "ADMIN")
 class PassengerRestControllerTest {
 
     @Autowired
@@ -46,6 +47,9 @@ class PassengerRestControllerTest {
 
     @Autowired
     PassengerMapper passengerMapper;
+
+    @Autowired
+    RoleService roleService;
 
     static final String api = "/api/passenger";
 
@@ -59,7 +63,7 @@ class PassengerRestControllerTest {
                 .dateOfBirth(LocalDate.of(1992, 2, 15))
                 .email("Airlines@test.com")
                 .password("123")
-                .roles(Set.of(new Role("ADMIN")))
+                .roles(Set.of(roleService.createOrUpdateRole(new Role(1L,"ADMIN"))))
                 .passport(
                         Passport.builder()
                                 .firstName("Dereck")
