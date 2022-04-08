@@ -2,10 +2,10 @@ package app.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
-import org.springframework.beans.factory.annotation.Value;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -38,14 +38,6 @@ public class Booking {
     @NonNull
     @OneToOne
     private Ticket departTicket;
-
-    /**
-     * Забронированный пассажиром билет на рейс return/to-from, выбранный из предоставленных SearchResult рейсов.
-     * Может быть не выбран (nullable).
-     */
-    @Nullable
-    @OneToOne
-    private Ticket returnTicket;
 
     /**
      * Метод оплаты билета пассажиром: "оплатить позже" и "оплатить сейчас".
