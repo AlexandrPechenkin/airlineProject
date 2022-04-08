@@ -7,6 +7,7 @@ import app.entities.Search;
 import app.entities.dtos.FlightDTO;
 import app.entities.dtos.SearchResultDTO;
 import app.entities.mappers.flight.FlightListMapper;
+import app.entities.mappers.searchResult.SearchResultMapper;
 import app.exception.NoSuchObjectException;
 import app.services.interfaces.DestinationResourceService;
 import app.services.interfaces.SearchService;
@@ -18,12 +19,14 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
-import org.springframework.util.MultiValueMapAdapter;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 
 @RequiredArgsConstructor
@@ -36,7 +39,7 @@ public class SearchRestController {
     private final JsonParser jsonParser;
     private final DestinationResourceService destinationResourceService;
     private final FlightListMapper flightListMapper;
-
+    private final SearchResultMapper searchResultMapper;
     /**
      * метод для запроса поиска по id
      *
@@ -111,7 +114,7 @@ public class SearchRestController {
                         route.getDepartureDate()),
                 route.getDepartureDate());
         if (!flightFromToList.isEmpty()) {
-            flights.put("From-To", flightsListToFlightDTOsList(flightFromToList));
+            flights.put("From-To", searchResultMapper.flightsListToFlightDTOsList(flightFromToList));
         } else {
             flights.put("From-To", null);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -124,7 +127,7 @@ public class SearchRestController {
                                     destinationResourceService.findByCity(route.getFrom().getCity()),
                                     route.getReturnDate()),
                             route.getReturnDate());
-            flights.put("To-From", flightsListToFlightDTOsList(flightToFromList));
+            flights.put("To-From", searchResultMapper.flightsListToFlightDTOsList(flightToFromList));
         } else {
             flights.put("To-From", null);
         }
@@ -137,24 +140,5 @@ public class SearchRestController {
         } catch (DataIntegrityViolationException e) {
             throw new NoSuchObjectException("Error");
         }
-    }
-
-    private Map<Integer, MultiValueMap<DestinationResource, List<FlightDTO>>> flightsListToFlightDTOsList(
-            Map<Integer, MultiValueMap<DestinationResource, List<Flight>>> map) {
-        Map<Integer, MultiValueMap<DestinationResource, List<FlightDTO>>> dtoFlightsList = new HashMap<>();
-        map.forEach((numberOfStops, multiMap) -> {
-            List<List<FlightDTO>> dtoFlights = new ArrayList<>();
-            multiMap.forEach((res, listOfLists) -> {
-                listOfLists.forEach(list -> {
-                    dtoFlights.add(flightListMapper.toDTOList(list));
-                });
-                Map<DestinationResource, List<List<FlightDTO>>> temp = new HashMap<>();
-                temp.put(res, dtoFlights);
-                MultiValueMap<DestinationResource, List<FlightDTO>> multiValueMapFLightList =
-                        new MultiValueMapAdapter<>(temp);
-                dtoFlightsList.put(numberOfStops, multiValueMapFLightList);
-            });
-        });
-        return dtoFlightsList;
     }
 }
