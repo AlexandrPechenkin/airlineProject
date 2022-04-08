@@ -1,10 +1,12 @@
 package app.controllers.rest;
 
+import app.entities.DestinationResource;
 import app.entities.Flight;
 import app.entities.Route;
 import app.entities.Search;
 import app.entities.dtos.FlightDTO;
 import app.exception.NoSuchObjectException;
+import app.services.interfaces.DestinationResourceService;
 import app.services.interfaces.SearchService;
 import app.util.JsonParser;
 import io.swagger.annotations.*;
@@ -13,11 +15,13 @@ import org.json.simple.parser.ParseException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.MultiValueMap;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 
@@ -29,6 +33,7 @@ import java.util.Optional;
 public class SearchRestController {
     private final SearchService searchService;
     private final JsonParser jsonParser;
+    private final DestinationResourceService destinationResourceService;
 
     /**
      * метод для запроса поиска по id
@@ -92,8 +97,13 @@ public class SearchRestController {
     })
     @PostMapping("/")
     public ResponseEntity<List<FlightDTO>> searchFlightsByRoute(@RequestBody @Valid String jsonRoute) throws ParseException {
-        Route route = jsonParser.getRouteByJSON(jsonRoute);
-        List<Flight> flightList = searchService.findFlightsByRoute(route.getFrom(), route.getTo(), route.getDepartureDate());
+        Route route = jsonParser.getFlightPropertiesByJSONWithCityNames(jsonRoute);
+        Map<Integer, MultiValueMap<DestinationResource, List<Flight>>> flightList = searchService.getFlights(
+                searchService.getRoutes(
+                        destinationResourceService.findByCity(route.getFrom().getCity()),
+                        destinationResourceService.findByCity(route.getTo().getCity()),
+                        route.getDepartureDate()),
+                route.getDepartureDate());
         if (flightList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
