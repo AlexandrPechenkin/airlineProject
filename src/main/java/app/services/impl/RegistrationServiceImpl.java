@@ -32,7 +32,7 @@ public class RegistrationServiceImpl implements RegistrationService {
         if (reg.getStatus().equals("IN_PROGRESS")) {
             // вычисление разницы между датами, чтобы определить, можно ли начинать регистрацию пассажира на рейс
             LocalDateTime now = LocalDateTime.now();
-            LocalDateTime regTime = reg.getLocalDateTime();
+            LocalDateTime regTime = reg.getRegistrationDateTime();
             Period period = Period.between(regTime.toLocalDate(), now.toLocalDate());
             period = period.minusDays(now.toLocalTime().compareTo(regTime.toLocalTime()) >= 0 ? 0 : 1);
             Duration duration = Duration.between(regTime, LocalDateTime.now());

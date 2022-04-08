@@ -17,8 +17,8 @@ public class RegistrationDTO {
 
     private long id;
 
-    @NotEmpty(message = "Пожалуйста, укажите место")
-    private Seat seat;
+    /*@NotEmpty(message = "Пожалуйста, укажите место")
+    private Seat seat;*/
 
     private Ticket ticket;
 

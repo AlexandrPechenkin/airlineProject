@@ -54,5 +54,5 @@ public class Registration {
      */
     @DateTimeFormat(pattern = "dd.MM.yyyy hh:mm")
     @JsonFormat(pattern = "dd.MM.yyyy hh:mm")
-    private LocalDateTime localDateTime;
+    private LocalDateTime registrationDateTime;
 }

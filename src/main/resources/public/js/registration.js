@@ -1,4 +1,4 @@
-//let urlRegistration = 'http://localhost:8888/api/registration/'
+let urlRegistration = 'http://localhost:8888/api/registration'
 //let urlPassenger = 'http://localhost:8888/api/passenger/'
 let urlTicket = 'http://localhost:8888/api/ticket/holdNumber/'
 
@@ -8,7 +8,12 @@ const registrationFetchService = {
         'Content-Type': 'application/json',
         'Referer': null
     },
-    getTicketByHoldNumber: async (holdNumber) => await fetch(`${urlTicket}${holdNumber}`)
+    getTicketByHoldNumber: async (holdNumber) => await fetch(`${urlTicket}${holdNumber}`),
+    createRegistration: async (registration) => await fetch(urlRegistration, {
+        method: 'POST',
+        headers: registrationFetchService.head,
+        body: JSON.stringify(registration)
+    })
 }
 
 let registrationModal = $('#registrationModal');
@@ -34,16 +39,20 @@ registrationModal.on("show.bs.modal", () => {
     registrationModal.find('.modal-footer').html('');
 })
 
+let ticketComplete;
+
 async function getRegistrationInfo(passengerName, bookingId) {
     //Запрос на получение объекта Ticket
     let promiseTicket = await registrationFetchService.getTicketByHoldNumber(bookingId);
 
     if (promiseTicket.ok) {
-        let ticket = await promiseTicket.json();
+        //let ticket = await promiseTicket.json();
+        ticketComplete = await promiseTicket.json();
 
         //Заполнение содержимым модального окна
         await setModalContent(passengerName, bookingId);
-        await showSeatSelectors(ticket);
+        //await showSeatSelectors(ticket);
+        await showSeatSelectors();
 
     } else {
         registrationModal.find('.modal-title').html(`Не найден рейс ${bookingId}`);
@@ -91,8 +100,7 @@ async function showSeatSelectors(ticket) {
                     data-seat-col="${j}"> 
                     <label for="check-${i}${j}" 
                     class="seat-selector btn btn-outline-primary" 
-                    style='min-width: 60px'>
-                    ${String.fromCharCode(64 + j)}</label>`;
+                    style='min-width: 60px'>${i}${String.fromCharCode(64 + j)}</label>`;
                 div.innerHTML += checkboxes;
             } else {
                 div.innerHTML += `<h6 style='min-width: 50px'>ряд ${i}<h6>`;
@@ -105,6 +113,8 @@ async function showSeatSelectors(ticket) {
     }
 }
 
+let setChosenSeats = "";
+
 //Обработчик нажатия на label чекбоксов
 registrationModal.on('click', '.seat-selector', async (event)=> {
     let seatResultContainer = $(".seat-result-container");
@@ -116,7 +126,6 @@ registrationModal.on('click', '.seat-selector', async (event)=> {
 
     //Вывод выбранных мест
     let chosenCheckboxes = document.querySelectorAll('input[class="seat-checkbox"]');
-    let setChosenSeats = "";
 
     for (let i = 0; i < chosenCheckboxes.length; i++) {
         let dataSet = chosenCheckboxes[i].dataset;
@@ -128,15 +137,36 @@ registrationModal.on('click', '.seat-selector', async (event)=> {
             !targetCheckbox.checked &&
             (chosenCheckboxes[i].checked || chosenCheckboxes[i] === targetCheckbox)) {
 
-            setChosenSeats = chosenSeat; //заменить на += при добавлении возможности
-                                         // регистрации нескольких пассажиров
-            seatResultContainer.append('<div>' +
-                chosenSeat + '</div>');
+            setChosenSeats += chosenSeat;
+
+            seatResultContainer.append(`<div>${chosenSeat}</div>`);
         }
     }
+    ticketComplete.seat = setChosenSeats.substr(0,2); //после добавления возможности
+                                //регистрировать несколько пассажиров заменить на массив
 })
 
 //обработчик кнопки "Подтвердить"
 registrationModal.on('click', '#registerCompleteButton', async ()=> {
-    alert('OK');
+    let registration = {
+        id: null,
+        ticket: {
+            id: ticketComplete.id,
+            seat: ticketComplete.seat,
+            price: ticketComplete.price,
+            flight: ticketComplete.flight
+        },
+        status: "IN_PROGRESS",
+        registrationDateTime: null
+    }
+
+    //alert(ticketComplete.id + " | " + ticketComplete.seat + " | " + ticketComplete.price +
+    //    " | " + ticketComplete.flight);
+
+    //Запрос на создание объекта Registration
+    let promiseRegistration = await registrationFetchService.createRegistration(registration);
+
+
+
+    //registrationModal.modal('hide');
 })

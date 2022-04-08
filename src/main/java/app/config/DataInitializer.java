@@ -325,7 +325,7 @@ public class DataInitializer {
                 Registration.builder()
                         .ticket(ticket)
                         .status("IN_PROGRESS")
-                        .localDateTime(LocalDateTime.now())
+                        .registrationDateTime(LocalDateTime.now())
                         .build());
     }
 
