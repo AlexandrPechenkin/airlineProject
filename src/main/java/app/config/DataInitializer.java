@@ -97,7 +97,12 @@ public class DataInitializer {
 
 
         ticketService.createOrUpdateTicket(Ticket.builder()
-                .seat("5A")
+                .seat(seatService.createOrUpdate(Seat.builder()
+                        .seatNumber(1 + "F")
+                        .fare(1)
+                        .isRegistered(false)
+                        .isSold(false)
+                        .build()))
                 .holdNumber(420L)
                 .price(15000L)
                 .flight(Flight.builder()
