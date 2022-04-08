@@ -395,8 +395,6 @@ public class DataInitializer {
                         .build());
     }
 
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
     private Flight createFlightDmeToOvb() {
         return flightService.createOrUpdateFlight(
                 Flight.builder()
