@@ -1,6 +1,5 @@
 package app.config;
 
-
 import app.entities.*;
 import app.services.interfaces.*;
 import app.util.Fleet;
