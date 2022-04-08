@@ -48,21 +48,4 @@ public class Seat {
      */
     @NonNull
     private Boolean isSold;
-
-    /**
-     * Категория места
-     */
-    @NonNull
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category category;
-
-    /**
-     * Рейс
-     */
-    @NonNull
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "flight_id")
-    private Flight flight;
-
 }

@@ -13,8 +13,9 @@ public interface FlightService {
 
     void removeFlight(Flight flight);
 
-    Optional<Flight> getFlightById(Long id);
+    Optional<Flight> findById(Long id);
 
-    List<Flight> findFlights(String destinationFrom, String destinationTo, LocalDate departureDate);
+    List<Flight> findFlights(String cityFrom, String cityTo, LocalDate departureDate);
 
+    List<Flight> findAllWithDepartureDateAfter(String cityFrom, String cityTo, LocalDate date);
 }

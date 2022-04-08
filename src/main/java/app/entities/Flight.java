@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
@@ -32,40 +33,17 @@ public class Flight {
     /**
      * дата вылета
      */
-    @DateTimeFormat(pattern = "dd.MM.yyyy")
-    @JsonFormat(pattern = "dd.MM.yyyy")
     private LocalDate departureDate;
 
     /**
      * время вылета
      */
-    @DateTimeFormat(pattern = "HH:mm")
-    @JsonFormat(pattern = "HH:mm")
     private LocalTime departureTime;
 
     /**
      * дата прилета
      */
-    @DateTimeFormat(pattern = "dd.MM.yyyy HH:mm")
-    @JsonFormat(pattern = "dd.MM.yyyy HH:mm")
     private LocalDateTime arrivalDateTime;
-
-    /**
-     * место вылета
-     * В БУДУЩЕМ УДАЛИТЬ
-     */
-    @NonNull
-    @Column(name = "destinationFrom")
-    private String from;
-
-    /**
-     * место прилета
-     * В БУДУЩЕМ УДАЛИТЬ
-     */
-    @NonNull
-    @Column(name = "destinationTo")
-    private String to;
-
     /**
      * Enum со статусами полета - "По плану", "Задержан", "Отменён".
      */
@@ -76,24 +54,21 @@ public class Flight {
     /**
      * Destination from
      */
-//    @NonNull
-//    private Destination from;
+    @NonNull
+    @OneToOne
+    private Destination from;
 
     /**
      * Destination to
      */
-//    @NonNull
-//    private Destination to;
+    @NonNull
+    @OneToOne
+    private Destination to;
 
     /**
-     * места на рейса
+     * самолёт
      */
-//    @NonNull
-//    private Map<Category, List<Seat>> seatsByCategory;
-
-    /**
-     * самолет
-     */
-//    @NonNull
-//    private Aircraft aircraft;
+    @Nullable
+    @ManyToOne
+    private Aircraft aircraft;
 }

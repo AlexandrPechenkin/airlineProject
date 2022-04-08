@@ -312,6 +312,13 @@
     }
 }
 
+a {
+    text-decoration: none;
+}
+a:hover {
+    color: var(--lt-color-gray-500);
+}
+
 .primitive-popover {
     position: absolute;
     opacity: 1;

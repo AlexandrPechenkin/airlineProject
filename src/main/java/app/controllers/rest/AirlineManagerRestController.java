@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequiredArgsConstructor
 @Api(tags = "AirlineManagerRestController")
-@RequestMapping("/airlineManager")
+@RequestMapping("/api/airlineManager")
 public class AirlineManagerRestController {
     private final AirlineManagerMapper airlineManagerMapper;
     private final AirlineManagerService airlineManagerService;

@@ -1,4 +1,4 @@
-package app.category;
+package app.controllers.rest;
 
 import app.AirlineApplication;
 import app.entities.Category;
@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
@@ -19,7 +20,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @SpringBootTest(
         webEnvironment = SpringBootTest.WebEnvironment.MOCK,
@@ -28,20 +28,24 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestPropertySource(locations = "classpath:application-integrationtest.yml")
 @ActiveProfiles("integrationtest")
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class TestRestControllerCategory {
+@WithMockUser(username = "admin@mai.ru", password = "123", authorities = "ADMIN")
+public class CategoryRestControllerTest {
 
     @Autowired
     MockMvc mvc;
     @Autowired
     CategoryService categoryService;
 
-    final String api = "/category";
+    final String api = "/api/category";
 
     final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
     Category createCategory() {
-        Category category = new Category("testCategory");
-        return category;
+//        Category category = new Category("testCategory");
+//        return category;
+        return categoryService.createOrUpdate(Category.builder()
+                .category("Economy")
+                .build());
     }
 
     @Test

@@ -1,9 +1,10 @@
 package app.controllers.rest;
 
-import app.entities.dtos.TicketDTO;
 import app.entities.Ticket;
-import app.exception.NoSuchObjectException;
+import app.entities.dtos.TicketDTO;
+import app.entities.mappers.ticket.TicketListMapper;
 import app.entities.mappers.ticket.TicketMapper;
+import app.exception.NoSuchObjectException;
 import app.services.interfaces.TicketService;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
@@ -14,18 +15,19 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
 @Api(tags = "TicketController")
-@RequestMapping("api/ticket")
+@RequestMapping("/api/ticket")
 @Validated
 public class TicketRestController {
     private final TicketService ticketService;
     private final TicketMapper ticketMapper;
-
+    private final TicketListMapper ticketListMapper;
 
     /**
      * метод для создания билета
@@ -94,6 +96,22 @@ public class TicketRestController {
             return new ResponseEntity<>(ticketMapper.toDTO(ticketService.createOrUpdateTicket(ticketMapper.toEntity(ticket))), HttpStatus.OK);
         } catch (DataIntegrityViolationException e) {
             throw new NoSuchObjectException("Error");
+        }
+    }
+
+    @ApiOperation(value = "Запрос для получения всех билетов", notes = "Получение всех билетов")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Успешно получены"),
+            @ApiResponse(code = 404, message = "Билеты не найдены")
+    })
+    @GetMapping
+    public ResponseEntity<List<TicketDTO>> getAllTickets() {
+        List<Ticket> ticketList = ticketService.getAllTickets();
+
+        if (ticketList.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<>(ticketListMapper.toDTOList(ticketList), HttpStatus.OK);
         }
     }
 }

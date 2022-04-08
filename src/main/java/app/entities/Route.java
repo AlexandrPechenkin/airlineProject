@@ -3,6 +3,7 @@ package app.entities;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
@@ -14,8 +15,9 @@ import java.time.LocalDate;
 @Table(name = "Route")
 @Component
 @Builder
+@Getter
+@Setter
 public class Route {
-
     /**
      * id
      */
@@ -29,6 +31,7 @@ public class Route {
      */
     @DateTimeFormat(pattern = "dd.MM.yyyy")
     @JsonFormat(pattern = "dd.MM.yyyy")
+    @Nullable
     private LocalDate departureDate;
 
     /**
@@ -36,35 +39,40 @@ public class Route {
      */
     @DateTimeFormat(pattern = "dd.MM.yyyy")
     @JsonFormat(pattern = "dd.MM.yyyy")
+    @Nullable
     private LocalDate arrivalDate;
 
 
     /**
      * количество сидений
      */
-    @NonNull
+    @Nullable
     private int numberOfSeats;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "search_id", nullable = false)
+    @Nullable
     private Search search;
 
 
     /**
      * категория билета
      */
-//    @NonNull
-//    private Category category;
+    @Nullable
+    @OneToOne
+    private Category category;
 
     /**
      * Destination from
      */
-//    @NonNull
-//    private Destination from;
+    @NonNull
+    @OneToOne
+    private Destination from;
 
     /**
      * Destination to
      */
-//    @NonNull
-//    private Destination to;
+    @NonNull
+    @OneToOne
+    private Destination to;
 }

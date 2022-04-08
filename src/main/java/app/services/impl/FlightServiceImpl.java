@@ -48,7 +48,8 @@ public class FlightServiceImpl implements FlightService {
      * получение перелета по id
      */
     @Override
-    public Optional<Flight> getFlightById(Long id) {
+    public Optional<Flight> findById(Long id) {
+
         return flightRepository.findById(id);
     }
 
@@ -65,4 +66,8 @@ public class FlightServiceImpl implements FlightService {
         return flightRepository.findFlights(from, to, departureDate);
     }
 
+    @Override
+    public List<Flight> findAllWithDepartureDateAfter(String cityFrom, String cityTo, LocalDate date) {
+        return flightRepository.findAllWithDepartureDateAfter(cityFrom, cityTo, date);
+    }
 }

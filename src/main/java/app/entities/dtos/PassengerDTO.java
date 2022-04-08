@@ -4,9 +4,9 @@ package app.entities.dtos;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
@@ -18,13 +18,9 @@ import java.time.LocalDate;
  * @version 0.1
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 @ApiModel
-public class PassengerDTO {
-    private Long id;
-
-    @NotEmpty(message = "Поле email не должно быть пустым")
-    @Email(message = "Введите корректный email адрес")
-    private String email;
+public class PassengerDTO extends UserDTO {
 
     @NotEmpty(message = "Поле firstName не должно быть пустым")
     private String firstName;
