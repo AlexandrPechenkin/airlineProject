@@ -96,7 +96,8 @@ public class SearchRestController {
             @ApiResponse(code = 404, message = "Перелет не найден")
     })
     @PostMapping("/")
-    public ResponseEntity<List<FlightDTO>> searchFlightsByRoute(@RequestBody @Valid String jsonRoute) throws ParseException {
+    public ResponseEntity<Map<Integer, MultiValueMap<DestinationResource, List<FlightDTO>>>>
+    searchFlightsByRoute(@RequestBody @Valid String jsonRoute) throws ParseException {
         Route route = jsonParser.getFlightPropertiesByJSONWithCityNames(jsonRoute);
         Map<Integer, MultiValueMap<DestinationResource, List<Flight>>> flightList = searchService.getFlights(
                 searchService.getRoutes(
