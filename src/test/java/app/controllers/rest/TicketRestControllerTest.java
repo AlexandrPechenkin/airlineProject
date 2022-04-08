@@ -51,7 +51,12 @@ public class TicketRestControllerTest {
 
     Ticket createTicket() {
         return ticketService.createOrUpdateTicket(Ticket.builder()
-                .seat("5A")
+                .seat(Seat.builder()
+                        .seatNumber(3 + "F")
+                        .fare(3)
+                        .isRegistered(true)
+                        .isSold(true)
+                        .build())
                 .holdNumber(420l)
                 .price(15000l)
                 .flight(Flight.builder()
@@ -105,7 +110,12 @@ public class TicketRestControllerTest {
     @Test
     void givenTicketExist_whenUpdateTicket_thenStatus200() throws Exception {
         Ticket ticket = ticketService.createOrUpdateTicket(createTicket());
-        ticket.setSeat("55A");
+        ticket.setSeat(Seat.builder()
+                .seatNumber(4 + "F")
+                .fare(4)
+                .isRegistered(true)
+                .isSold(true)
+                .build());
         mvc.perform(put(api)
                         .content(objectMapper.writeValueAsString(ticket))
                         .contentType(MediaType.APPLICATION_JSON))
