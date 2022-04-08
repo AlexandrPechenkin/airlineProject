@@ -184,8 +184,10 @@ public class DataInitializer {
         List<Flight> fl1 = flightService.findFlights("Moscow", "Novosibirsk",
                 LocalDate.of(2022,4,4));
         // получение доступных маршрутов
-        Map<Integer, MultiValueMap<DestinationResource, List<Flight>>> flights = searchService.getFlights(allRoutesDmeToVvo,
-                LocalDate.of(2022,4,4));
+        Map<Integer, MultiValueMap<DestinationResource, List<Flight>>> flights =
+                searchService.getFlights(allRoutesDmeToVvo, LocalDate.of(2022,4,4));
+
+
 
         System.out.println("DataInitializer сработал!");
     }

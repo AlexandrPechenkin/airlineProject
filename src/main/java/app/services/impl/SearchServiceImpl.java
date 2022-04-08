@@ -68,10 +68,9 @@ public class SearchServiceImpl implements SearchService {
                     getRoutes(resourceFrom, resourceTo, departureDate);
             // поиск доступных рейсов по дате-времени среди тех маршрутов выше, что нашлись
             Map<Integer, MultiValueMap<DestinationResource, List<Flight>>> flights = getFlights(routes, departureDate);
-            return searchResultService.createOrUpdateSearchResult(
-                SearchResult.builder()
-//                    .departFlights(flights)
-                    .build());
+            SearchResult searchResult = new SearchResult();
+            searchResult.setDepartFlights(flights);
+            return searchResult;
         }
     }
 

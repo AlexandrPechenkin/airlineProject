@@ -5,6 +5,8 @@ import app.entities.Flight;
 import app.entities.Route;
 import app.entities.Search;
 import app.entities.dtos.FlightDTO;
+import app.entities.dtos.SearchResultDTO;
+import app.entities.mappers.flight.FlightListMapper;
 import app.exception.NoSuchObjectException;
 import app.services.interfaces.DestinationResourceService;
 import app.services.interfaces.SearchService;
@@ -16,13 +18,12 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
+import org.springframework.util.MultiValueMapAdapter;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 
 @RequiredArgsConstructor
@@ -34,6 +35,7 @@ public class SearchRestController {
     private final SearchService searchService;
     private final JsonParser jsonParser;
     private final DestinationResourceService destinationResourceService;
+    private final FlightListMapper flightListMapper;
 
     /**
      * метод для запроса поиска по id
@@ -96,21 +98,63 @@ public class SearchRestController {
             @ApiResponse(code = 404, message = "Перелет не найден")
     })
     @PostMapping("/")
-    public ResponseEntity<List<FlightDTO>> searchFlightsByRoute(@RequestBody @Valid String jsonRoute) throws ParseException {
+    public ResponseEntity<SearchResultDTO> searchFlightsByRoute(@RequestBody @Valid String jsonRoute)
+            throws ParseException {
         Route route = jsonParser.getFlightPropertiesByJSONWithCityNames(jsonRoute);
-        Map<Integer, MultiValueMap<DestinationResource, List<Flight>>> flightList = searchService.getFlights(
-                searchService.getRoutes(
+        Map<String, Map<Integer, MultiValueMap<DestinationResource, List<FlightDTO>>>> flights =
+                new HashMap<>();
+        // поиск рейсов from-to согласно дате вылета
+        Map<Integer, MultiValueMap<DestinationResource, List<Flight>>> flightFromToList =
+                searchService.getFlights(searchService.getRoutes(
                         destinationResourceService.findByCity(route.getFrom().getCity()),
                         destinationResourceService.findByCity(route.getTo().getCity()),
                         route.getDepartureDate()),
                 route.getDepartureDate());
-        if (flightList.isEmpty()) {
+        if (!flightFromToList.isEmpty()) {
+            flights.put("From-To", flightsListToFlightDTOsList(flightFromToList));
+        } else {
+            flights.put("From-To", null);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+        // поиск рейсов to-from согласно дате вылета
+        if (route.getReturnDate() != null) {
+            Map<Integer, MultiValueMap<DestinationResource, List<Flight>>> flightToFromList =
+                    searchService.getFlights(searchService.getRoutes(
+                                    destinationResourceService.findByCity(route.getTo().getCity()),
+                                    destinationResourceService.findByCity(route.getFrom().getCity()),
+                                    route.getReturnDate()),
+                            route.getReturnDate());
+            flights.put("To-From", flightsListToFlightDTOsList(flightToFromList));
+        } else {
+            flights.put("To-From", null);
+        }
+        // сохранение результатов и отправка на фронт
         try {
-            return new ResponseEntity(flightList, HttpStatus.OK);
+            SearchResultDTO searchResultDto = new SearchResultDTO();
+            searchResultDto.setDepartFlights(flights.get("From-To"));
+            searchResultDto.setReturnFlights(flights.get("To-From"));
+            return new ResponseEntity<>(searchResultDto, HttpStatus.OK);
         } catch (DataIntegrityViolationException e) {
             throw new NoSuchObjectException("Error");
         }
+    }
+
+    private Map<Integer, MultiValueMap<DestinationResource, List<FlightDTO>>> flightsListToFlightDTOsList(
+            Map<Integer, MultiValueMap<DestinationResource, List<Flight>>> map) {
+        Map<Integer, MultiValueMap<DestinationResource, List<FlightDTO>>> dtoFlightsList = new HashMap<>();
+        map.forEach((numberOfStops, multiMap) -> {
+            List<List<FlightDTO>> dtoFlights = new ArrayList<>();
+            multiMap.forEach((res, listOfLists) -> {
+                listOfLists.forEach(list -> {
+                    dtoFlights.add(flightListMapper.toDTOList(list));
+                });
+                Map<DestinationResource, List<List<FlightDTO>>> temp = new HashMap<>();
+                temp.put(res, dtoFlights);
+                MultiValueMap<DestinationResource, List<FlightDTO>> multiValueMapFLightList =
+                        new MultiValueMapAdapter<>(temp);
+                dtoFlightsList.put(numberOfStops, multiValueMapFLightList);
+            });
+        });
+        return dtoFlightsList;
     }
 }

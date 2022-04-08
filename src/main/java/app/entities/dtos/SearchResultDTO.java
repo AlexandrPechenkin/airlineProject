@@ -1,7 +1,6 @@
 package app.entities.dtos;
 
 import app.entities.DestinationResource;
-import app.entities.Flight;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import org.springframework.lang.Nullable;
@@ -16,8 +15,11 @@ public class SearchResultDTO {
     private long id;
 
     @Nullable
-    private Map<Integer, MultiValueMap<DestinationResource, List<Flight>>> departFlights;
+    private Map<Integer, MultiValueMap<DestinationResource, List<FlightDTO>>> departFlights;
 
     @Nullable
-    private Map<Integer, MultiValueMap<DestinationResource, List<Flight>>> returnFlights;
+    private Map<Integer, MultiValueMap<DestinationResource, List<FlightDTO>>> returnFlights;
+
+    @Nullable
+    private String message;
 }
