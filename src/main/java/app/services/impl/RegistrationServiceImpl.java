@@ -2,6 +2,7 @@ package app.services.impl;
 
 import app.entities.Registration;
 import app.repositories.RegistrationRepository;
+import app.repositories.TicketRepository;
 import app.services.interfaces.RegistrationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class RegistrationServiceImpl implements RegistrationService {
     private final RegistrationRepository registrationRepository;
+    private final TicketRepository ticketRepository;
 
     /**
      * Создание/обновление записи в БД о регистрации.
@@ -28,7 +30,7 @@ public class RegistrationServiceImpl implements RegistrationService {
      */
     @Override
     public Registration createOrUpdateOrDeleteRegistration(Registration reg) {
-        // если регистрация для пассажира на рейс только началась
+        /*// если регистрация для пассажира на рейс только началась
         if (reg.getStatus().equals("IN_PROGRESS")) {
             // вычисление разницы между датами, чтобы определить, можно ли начинать регистрацию пассажира на рейс
             LocalDateTime now = LocalDateTime.now();
@@ -52,7 +54,10 @@ public class RegistrationServiceImpl implements RegistrationService {
            // логика для занесения в историю отменённых рейсов/регистраций пассажира, если нужна
            return null;
         }
-        return null;
+        return null;*/
+        reg.setRegistrationDateTime(LocalDateTime.now());
+        ticketRepository.save(reg.getTicket());
+        return registrationRepository.save(reg);
     }
 
     /**

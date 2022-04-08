@@ -160,13 +160,8 @@ registrationModal.on('click', '#registerCompleteButton', async ()=> {
         registrationDateTime: null
     }
 
-    //alert(ticketComplete.id + " | " + ticketComplete.seat + " | " + ticketComplete.price +
-    //    " | " + ticketComplete.flight);
-
     //Запрос на создание объекта Registration
     let promiseRegistration = await registrationFetchService.createRegistration(registration);
 
-
-
-    //registrationModal.modal('hide');
+    registrationModal.modal('hide');
 })

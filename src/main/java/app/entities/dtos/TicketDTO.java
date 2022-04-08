@@ -1,6 +1,7 @@
 package app.entities.dtos;
 
 import app.entities.Flight;
+import app.entities.Passenger;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
