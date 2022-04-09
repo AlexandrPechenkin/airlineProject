@@ -1,4 +1,4 @@
-let urlRegistration = 'http://localhost:8888/api/registration'
+let urlRegistration = 'http://localhost:8888/api/registration/'
 //let urlPassenger = 'http://localhost:8888/api/passenger/'
 let urlTicket = 'http://localhost:8888/api/ticket/holdNumber/'
 
@@ -9,10 +9,10 @@ const registrationFetchService = {
         'Referer': null
     },
     getTicketByHoldNumber: async (holdNumber) => await fetch(`${urlTicket}${holdNumber}`),
-    createRegistration: async (registration) => await fetch(urlRegistration, {
+    createRegistration: async (holdNumber, seatId) => await fetch(
+        `${urlRegistration}${holdNumber}/${seatId}`, {
         method: 'POST',
-        headers: registrationFetchService.head,
-        body: JSON.stringify(registration)
+        headers: registrationFetchService.head
     })
 }
 
@@ -168,7 +168,8 @@ registrationModal.on('click', '#registerCompleteButton', async ()=> {
     }
 
     //Запрос на создание объекта Registration
-    let promiseRegistration = await registrationFetchService.createRegistration(registration);
+    let promiseRegistration = await registrationFetchService.createRegistration(
+        document.getElementById("registrationBookingId").value, 3);
 
     registrationModal.modal('hide');
 })

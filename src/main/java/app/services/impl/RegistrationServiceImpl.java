@@ -1,9 +1,12 @@
 package app.services.impl;
 
 import app.entities.Registration;
+import app.entities.Ticket;
 import app.repositories.RegistrationRepository;
 import app.repositories.TicketRepository;
 import app.services.interfaces.RegistrationService;
+import app.services.interfaces.SeatService;
+import app.services.interfaces.TicketService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,16 +23,18 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class RegistrationServiceImpl implements RegistrationService {
     private final RegistrationRepository registrationRepository;
-    private final TicketRepository ticketRepository;
+    private final TicketService ticketService;
+    private final SeatService seatService;
 
     /**
      * Создание/обновление записи в БД о регистрации.
      *
-     * @param reg - регистрация
+     * @param holdNumber - номер брони
+     * @param seatId - идентификатор места
      * @return {@link Registration}
      */
     @Override
-    public Registration createOrUpdateOrDeleteRegistration(Registration reg) {
+    public Registration createRegistrationByHoldNumberAndSeatId(Long holdNumber, Long seatId) {
         /*// если регистрация для пассажира на рейс только началась
         if (reg.getStatus().equals("IN_PROGRESS")) {
             // вычисление разницы между датами, чтобы определить, можно ли начинать регистрацию пассажира на рейс
@@ -55,9 +60,16 @@ public class RegistrationServiceImpl implements RegistrationService {
            return null;
         }
         return null;*/
-        reg.setRegistrationDateTime(LocalDateTime.now());
-        ticketRepository.save(reg.getTicket());
-        return registrationRepository.save(reg);
+        Ticket ticket = ticketService.findTicketByHoldNumber(holdNumber);
+        ticket.setSeat(seatService.getSeatById(seatId).orElse(null));
+        ticketService.createOrUpdateTicket(ticket);
+
+        return registrationRepository.save(
+                Registration.builder()
+                        .ticket(ticket)
+                        .registrationDateTime(LocalDateTime.now())
+                        .build()
+        );
     }
 
     /**

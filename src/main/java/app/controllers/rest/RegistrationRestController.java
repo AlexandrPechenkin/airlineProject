@@ -26,13 +26,7 @@ public class RegistrationRestController {
     private final RegistrationService registrationService;
     private final RegistrationMapper registrationMapper;
 
-    /**
-     * Создание записи о регистрировании пассажира на рейс.
-     *
-     * @param registration - данные новой записи о регистрации.
-     * @return {@link ResponseEntity<RegistrationDTO>}
-     */
-    @ApiOperation(value = "Запрос для создания регистрации пассажира на рейс",
+    /*@ApiOperation(value = "Запрос для создания регистрации пассажира на рейс",
             notes = "Создание регистрации пассажира на рейс")
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Регистрирование рейса успешно завершено"),
@@ -40,20 +34,44 @@ public class RegistrationRestController {
     })
     @PostMapping
     public ResponseEntity<RegistrationDTO> createRegistration(@ApiParam(value = "Registration DTO")
-                                                          @RequestBody @Valid RegistrationDTO registration) {
+                                                              @RequestBody @Valid RegistrationDTO registration) {
         return new ResponseEntity<>
                 (registrationMapper.toDto(
                         registrationService.createOrUpdateOrDeleteRegistration(
                                 registrationMapper.toEntity(registration))), HttpStatus.CREATED);
-    }
+    }*/
 
     /**
-     * Обновление записи о регистрировании пассажира на рейс.
      *
-     * @param registration - данные для обновления о регистрации.
-     * @return {@link ResponseEntity<RegistrationDTO>}
+     * @param holdNumber -номер брони
+     * @param seatId - идентификатор места
+     * @return {@link RegistrationDTO}
      */
-    @ApiOperation(value = "Запрос для обновления регистрации пассажира на рейс",
+    @ApiOperation(value = "Запрос для создания регистрации пассажира на рейс",
+            notes = "Создание регистрации пассажира на рейс")
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "Регистрирование рейса успешно завершено"),
+            @ApiResponse(code = 400, message = "Переданы неверные данные")
+    })
+    @PostMapping("/{holdNumber}/{seatId}")
+    public ResponseEntity<RegistrationDTO>
+        createRegistrationByHoldNumberAndSeatId(@ApiParam(value = "Номер брони")
+                                                @PathVariable("holdNumber") Long holdNumber,
+                                                @ApiParam(value = "Id места")
+                                                @PathVariable("seatId") Long seatId) {
+        return new ResponseEntity<>
+                (registrationMapper.toDto(
+                        registrationService.createRegistrationByHoldNumberAndSeatId(holdNumber, seatId)),
+                        HttpStatus.CREATED);
+    }
+
+     ///**
+     //* Обновление записи о регистрировании пассажира на рейс.
+     //*
+     //* @param registration - данные для обновления о регистрации.
+     //* @return {@link ResponseEntity<RegistrationDTO>}
+     //*/
+    /*@ApiOperation(value = "Запрос для обновления регистрации пассажира на рейс",
             notes = "Обновление регистрации пассажира на рейс")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Обновление данных о регистрации на рейс успешно завершено"),
@@ -64,9 +82,9 @@ public class RegistrationRestController {
                                                               @RequestBody @Valid RegistrationDTO registration) {
         return new ResponseEntity<>
                 (registrationMapper.toDto(
-                        registrationService.createOrUpdateOrDeleteRegistration(
+                        registrationService.createRegistrationByHoldNumberAndSeatId(
                                 registrationMapper.toEntity(registration))), HttpStatus.OK);
-    }
+    }*/
 
     /**
      * Найти регистрацию пассажира по id.

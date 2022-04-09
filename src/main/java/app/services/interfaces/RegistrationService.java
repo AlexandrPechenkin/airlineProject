@@ -12,10 +12,11 @@ public interface RegistrationService {
     /**
      * Создание/обновление/удаление записи в БД о регистрации.
      *
-     * @param registration - регистрация
+     * @param holdNumber - номер брони
+     * @param seatId - идентификатор места
      * @return {@link Registration}
      */
-    Registration createOrUpdateOrDeleteRegistration(Registration registration);
+    Registration createRegistrationByHoldNumberAndSeatId(Long holdNumber, Long seatId);
 
     /**
      * Возвращает запись о регистрации по id.
