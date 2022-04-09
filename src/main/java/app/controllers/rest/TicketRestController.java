@@ -21,7 +21,7 @@ import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
-@Api(tags = "TicketController")
+@Api(tags = "TicketRestController")
 @RequestMapping("/api/ticket")
 @Validated
 public class TicketRestController {

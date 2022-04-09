@@ -1,6 +1,5 @@
 package app.controllers.rest;
 
-import app.entities.Aircraft;
 import app.entities.Flight;
 import app.entities.dtos.FlightDTO;
 import app.entities.mappers.flight.FlightListMapper;
@@ -24,7 +23,7 @@ import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
-@Api(tags = "FlightController")
+@Api(tags = "FlightRestController")
 @RequestMapping("/api/flight")
 @Validated
 public class FlightRestController {

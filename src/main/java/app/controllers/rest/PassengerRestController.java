@@ -19,7 +19,7 @@ import java.util.Optional;
  */
 @RestController
 @RequiredArgsConstructor
-@Api(tags = "PassengerController")
+@Api(tags = "PassengerRestController")
 @RequestMapping("/api/passenger")
 public class PassengerRestController {
     private final PassengerService passengerService;

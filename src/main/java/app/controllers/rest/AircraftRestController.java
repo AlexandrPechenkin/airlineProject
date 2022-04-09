@@ -24,7 +24,7 @@ import java.util.Optional;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-@Api(tags = "AircraftController")
+@Api(tags = "AircraftRestController")
 @RequestMapping("/api/aircraft")
 public class AircraftRestController {
     private final AircraftService aircraftService;
