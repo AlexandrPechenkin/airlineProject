@@ -3,6 +3,7 @@ package app.services.interfaces;
 import app.entities.Seat;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface SeatService {
 //
@@ -19,6 +20,14 @@ public interface SeatService {
      * @param seat - место
      */
     Seat createOrUpdate(Seat seat);
+
+    /**
+     * получить место по id
+     *
+     * @param id - идентификатор места
+     * @return {@link Seat}
+     */
+    Optional<Seat> getSeatById(Long id);
 
 //    /**
 //     * Метод получения количества непроданных мест

@@ -1,7 +1,7 @@
 package app.entities.dtos;
 
 import app.entities.Flight;
-import app.entities.Passenger;
+import app.entities.Seat;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 public class TicketDTO {
     private Long Id;
     @NotNull(message = "место не может быть пустым")
-    private String seat;
+    private Seat seat;
     @NotNull(message = "цена не может быть пустой")
     private Long price;
     @NotNull(message = "перелет не может быть пустым")

@@ -3,7 +3,9 @@ package app.controllers.rest;
 import app.AirlineApplication;
 import app.entities.Flight;
 import app.entities.FlightStatus;
+import app.entities.Seat;
 import app.entities.Ticket;
+import app.services.interfaces.SeatService;
 import app.services.interfaces.TicketService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -42,6 +44,8 @@ public class TicketRestControllerTest {
     MockMvc mvc;
     @Autowired
     TicketService ticketService;
+    @Autowired
+    SeatService seatService;
 
     final String api = "/api/ticket";
 
@@ -49,7 +53,12 @@ public class TicketRestControllerTest {
 
     Ticket createTicket() {
         return ticketService.createOrUpdateTicket(Ticket.builder()
-                .seat("5A")
+                .seat(seatService.createOrUpdate(Seat.builder()
+                        .seatNumber(1 + "F")
+                        .fare(1)
+                        .isRegistered(false)
+                        .isSold(false)
+                        .build()))
                 .holdNumber(420l)
                 .price(15000l)
                 .flight(Flight.builder()
@@ -86,7 +95,12 @@ public class TicketRestControllerTest {
     @Test
     void givenTicketExist_whenUpdateTicket_thenStatus200() throws Exception {
         Ticket ticket = ticketService.createOrUpdateTicket(createTicket());
-        ticket.setSeat("55A");
+        ticket.setSeat(seatService.createOrUpdate(Seat.builder()
+                .seatNumber(2 + "A")
+                .fare(1)
+                .isRegistered(false)
+                .isSold(false)
+                .build()));
         mvc.perform(put(api)
                         .content(objectMapper.writeValueAsString(ticket))
                         .contentType(MediaType.APPLICATION_JSON))

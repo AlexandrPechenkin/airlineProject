@@ -142,7 +142,7 @@ registrationModal.on('click', '.seat-selector', async (event)=> {
             seatResultContainer.append(`<div>${chosenSeat}</div>`);
         }
     }
-    ticketComplete.seat = setChosenSeats.substr(0,2); //после добавления возможности
+    ticketComplete.seat.seatNumber = setChosenSeats.substr(0,2); //после добавления возможности
                                 //регистрировать несколько пассажиров заменить на массив
 })
 
@@ -152,7 +152,14 @@ registrationModal.on('click', '#registerCompleteButton', async ()=> {
         id: null,
         ticket: {
             id: ticketComplete.id,
-            seat: ticketComplete.seat,
+            seat: {
+                id: ticketComplete.seat.id,
+                seatNumber: ticketComplete.seat.seatNumber,
+                fare: ticketComplete.seat.fare,
+                isRegistered: ticketComplete.seat.isRegistered,
+                isSold: ticketComplete.seat.isSold,
+                flight: ticketComplete.seat.flight
+            },
             price: ticketComplete.price,
             flight: ticketComplete.flight
         },

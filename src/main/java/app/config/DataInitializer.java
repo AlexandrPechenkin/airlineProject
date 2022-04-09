@@ -64,9 +64,22 @@ public class DataInitializer {
                 .build();
         passengerService.createOrUpdatePassenger(passenger);
 
+        System.out.println("DataInitializer сработал!");
+
+        aircraftService.createOrUpdateAircraft(Fleet.createMC21200());
+        System.out.println("Самолет МС-21-200 был создан.");
+
+        aircraftService.createOrUpdateAircraft(Fleet.createBoeing777());
+        System.out.println("Самолет Боинг 777 был создан.");
+
         Ticket ticket = ticketService.createOrUpdateTicket(Ticket.builder()
-                .passenger(passenger)
-                .seat("5A")
+                /*.seat(seatService.createOrUpdate(Seat.builder()
+                        .seatNumber(1 + "F")
+                        .fare(1)
+                        .isRegistered(false)
+                        .isSold(false)
+                        .build()))*/
+                .seat(seatService.getSeatById(1L).get())
                 .holdNumber(420L)
                 .price(15000L)
                 .flight(Flight.builder()
@@ -78,14 +91,6 @@ public class DataInitializer {
                         .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
                         .build())
                 .build());
-
-        System.out.println("DataInitializer сработал!");
-
-        aircraftService.createOrUpdateAircraft(Fleet.createMC21200());
-        System.out.println("Самолет МС-21-200 был создан.");
-
-        aircraftService.createOrUpdateAircraft(Fleet.createBoeing777());
-        System.out.println("Самолет Боинг 777 был создан.");
 
         createPassenger();
         System.out.println("Пассажир был создан.");
