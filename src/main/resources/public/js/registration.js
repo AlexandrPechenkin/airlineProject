@@ -15,7 +15,7 @@ const registrationFetchService = {
         method: 'POST',
         headers: registrationFetchService.head
     }),
-    getBookingByHolDNumber: async (holdNumber) => await fetch(`${urlBooking}${holdNumber}`)
+    getBookingByHoldNumber: async (holdNumber) => await fetch(`${urlBooking}${holdNumber}`)
 }
 
 let registrationModal = $('#registrationModal');
@@ -28,7 +28,7 @@ $("#registrationButton").on('click', async () => {
     bookingId = document.getElementById("registrationBookingId").value;
 
     //Запрос на получение объектов Ticket и Passenger
-    await getRegistrationInfo(passengerName, bookingId);
+    await getRegistrationInfo();
 })
 
 //Фиксированное содержимое модального окна и очистка при закрытии
@@ -45,7 +45,7 @@ registrationModal.on("show.bs.modal", () => {
 
 let ticketComplete;
 
-async function getRegistrationInfo(passengerName, bookingId) {
+async function getRegistrationInfo() {
     //Запрос на получение объекта Ticket
     let promiseTicket = await registrationFetchService.getTicketByHoldNumber(bookingId);
 
@@ -55,7 +55,6 @@ async function getRegistrationInfo(passengerName, bookingId) {
 
         //Заполнение содержимым модального окна
         await setModalContent(passengerName, bookingId);
-        //await showSeatSelectors(ticket);
         await showSeatSelectors();
 
     } else {
@@ -63,11 +62,11 @@ async function getRegistrationInfo(passengerName, bookingId) {
     }
 
     //Запрос на получение мест и выбранной категории - вернуть
-    /*let promiseBooking = await registrationFetchService.getBookingByHolDNumber(bookingId);
+    /*let promiseBooking = await registrationFetchService.getBookingByHoldNumber(bookingId);
 
     if (promiseBooking.ok) {
         //let ticket = await promiseTicket.json();
-        ticketComplete = await promiseBooking.json();
+        bookingComplete = await promiseBooking.json();
 
         //Заполнение содержимым модального окна
         await setModalContent(passengerName, bookingId);
@@ -79,7 +78,7 @@ async function getRegistrationInfo(passengerName, bookingId) {
     }*/
 }
 
-async function setModalContent(passengerName, bookingId) {
+async function setModalContent() {
     registrationModal.find('.modal-title').html(`Выбор места на рейс ${bookingId} 
         пассажира ${passengerName}`);
     let registerCompleteButton = `<button  class="btn btn-primary"
@@ -95,37 +94,89 @@ async function setModalContent(passengerName, bookingId) {
                 <div class="seat-result-container">          
                 </div>
             </div>     
-        </div>
-        `;
+        </div>`;
     registrationModal.find('.modal-body').append(regModalBody);
 }
 
-async function showSeatSelectors(ticket) {
-    //Переменные, отвечающие за геометрию мест
-    //в дальнейшем определять исходя из типа самолёта (описание мест внутри категорий)
-    //по умолчанию используется шестиместный ряд с одним проходом
-    let columns = 6;
-    let rows = 20;
+async function showSeatSelectors() {
 
-    for (let i = 1; i <= rows; i++) {
+    let MC_21_200 = true;
+    let boeing_777 = false;
+    let category = "economy";
+    //let category = "business";
+
+
+    if (MC_21_200) {
+        await showSeatSelectorsMC_21_200(category);
+    } else if (boeing_777) {
+        await showSeatSelectorsBoeing_B777(category);
+    }
+
+}
+
+//Схема МС-21-200
+async function showSeatSelectorsMC_21_200(category) {
+    let columns;
+    let rows;
+    let startRow; //отступ для начального ряда
+    let columnPassage; //значение для прохода
+    let columnPassageCategory; //значение для прохода категории
+    let firstIncompleteRow; //первый неполный ряд
+    let secondIncompleteRow; // второй неполный ряд
+    let arrSeatSymbols; //буквенный идентификатор места в ряду
+    let arrSeatSymbolsCategory; //буквенный идентификатор места в ряду для категории
+    let startSeatId; //идентификатор первого места в категории
+
+    if (category === "business") {
+        startRow = 0;
+        columns = 4;
+        rows = 3;
+        columnPassageCategory = 3;
+        firstIncompleteRow = 0;
+        secondIncompleteRow = 0;
+        arrSeatSymbolsCategory = ["A","B","C","D"];
+        startSeatId = 1;
+    } else if (category === "economy") {
+        startRow = 3;
+        columns = 6;
+        rows = 21 + startRow;
+        columnPassageCategory = 4;
+        firstIncompleteRow = 12 + startRow;
+        secondIncompleteRow = 21 + startRow;
+        arrSeatSymbolsCategory = ["A","B","C","D","E","F"];
+        startSeatId = 13;
+    }
+
+    let arrValue = Array.from({length: 132}, (e, i)=> i); //массив Id Seat-ов листа из запроса
+
+    for (let i = startRow + 1; i <= rows; i++) {
         let divRows = document.createElement('div');
-        let rowNumber = 4; //значение для прохода
+        columnPassage = columnPassageCategory;
+        arrSeatSymbols = Array.from(arrSeatSymbolsCategory);
         for (let j = 1; j <= columns; j++) {
             let div = document.createElement('div');
             div.setAttribute('class', 'form-check-inline plane-seat');
-            if (j !== rowNumber) {
-                let checkboxes = `<input type="checkbox" 
-                    id="check-${i}${j}" class='seat-checkbox' 
-                    data-seat-row="${i}" 
-                    data-seat-col="${j}"> 
-                    <label for="check-${i}${j}" 
-                    class="seat-selector btn btn-outline-primary" 
-                    style='min-width: 60px'>${i}${String.fromCharCode(64 + j)}</label>`;
+            if (j !== columnPassage) {
+                let checkboxes;
+                if ((i === firstIncompleteRow) && ((j > 4) || (j < 2)) ||
+                    (i === secondIncompleteRow) && (j < 4)){
+                    checkboxes = `<div style="padding-right: 60px"></div>`;
+                    arrSeatSymbols.splice(0,1);
+                } else {
+                    checkboxes = `<input type="checkbox" 
+                        id="check-${i}${j}" class='seat-checkbox' 
+                        data-seat-row="${i}" 
+                        data-seat-col="${j}"
+                        data-seat-id="${arrValue.splice(startSeatId,1)}"> 
+                        <label for="check-${i}${j}" 
+                        class="seat-selector btn btn-outline-primary" 
+                        style='min-width: 60px'>${i}${arrSeatSymbols.splice(0,1)}</label>`;
+                }
                 div.innerHTML += checkboxes;
             } else {
                 div.innerHTML += `<h6 style='min-width: 50px'>ряд ${i}<h6>`;
                 j--;
-                rowNumber = 0;
+                columnPassage = 0;
             }
             divRows.append(div);
         }
@@ -133,7 +184,12 @@ async function showSeatSelectors(ticket) {
     }
 }
 
-let setChosenSeats = "";
+//Схема Боинг-В777 на 427 мест
+async function showSeatSelectorsBoeing_B777(category) {
+
+}
+
+let setChosenSeats = ""; //контейнер для выбранных мест
 
 //Обработчик нажатия на label чекбоксов
 registrationModal.on('click', '.seat-selector', async (event)=> {
@@ -150,7 +206,7 @@ registrationModal.on('click', '.seat-selector', async (event)=> {
     for (let i = 0; i < chosenCheckboxes.length; i++) {
         let dataSet = chosenCheckboxes[i].dataset;
         let chosenSeat = dataSet.seatRow +
-            String.fromCharCode(64 + Number(dataSet.seatCol));
+            String.fromCharCode(64 + Number(dataSet.seatCol)) + " | " + dataSet.seatId;
 
         if (targetCheckbox.checked &&
             chosenCheckboxes[i].checked && chosenCheckboxes[i] !== targetCheckbox ||
