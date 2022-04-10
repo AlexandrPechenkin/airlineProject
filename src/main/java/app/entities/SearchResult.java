@@ -3,10 +3,8 @@ package app.entities;
 import lombok.*;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
-import org.springframework.util.MultiValueMap;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -34,22 +32,17 @@ public class SearchResult {
      * список рейсов from-to
      */
     @Nullable
-    @OneToMany(targetEntity = Flight.class)
-    private Map<Integer, MultiValueMap<DestinationResource, List<Flight>>> departFlights;
+    @OneToMany(mappedBy = "searchResult", fetch = FetchType.EAGER, orphanRemoval = true)
+    @MapKey(name = "numberOfSteps")
+    private Map<Integer, FlightContainer> departFlights;
 
     /**
      * список рейсов to-from
      */
     @Nullable
-    @OneToMany(targetEntity = Flight.class)
-    private Map<Integer, MultiValueMap<DestinationResource, List<Flight>>> returnFlights;
-//    @Nullable
-//    @OneToMany
-//    private List<Flight> departFlights;
-//
-//    @Nullable
-//    @OneToMany
-//    private List<Flight> returnFlights;
+    @OneToMany(mappedBy = "searchResult", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @MapKey(name = "numberOfSteps")
+    private Map<Integer, FlightContainer> returnFlights;
 
     /**
      * Сообщение, которое возникло вследствие ошибки/дачи дополнительной информации пользователю.

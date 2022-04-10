@@ -6,14 +6,12 @@ import app.services.interfaces.*;
 import app.util.Fleet;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import org.springframework.util.MultiValueMap;
 
 import javax.annotation.PostConstruct;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
 import java.util.stream.Collectors;
@@ -41,6 +39,7 @@ public class DataInitializer {
     private final RoleService roleService;
     private final DestinationResourceService destinationResourceService;
     private final SearchService searchService;
+    private final SearchResultService searchResultService;
 
     @PostConstruct
     public void init() {
@@ -95,7 +94,6 @@ public class DataInitializer {
         createAircraft(moscow, nizhny);
         System.out.println("Самолёт был создан");
 
-
         ticketService.createOrUpdateTicket(Ticket.builder()
                 .seat(seatService.createOrUpdate(Seat.builder()
                         .seatNumber(1 + "F")
@@ -125,35 +123,12 @@ public class DataInitializer {
         DestinationResource resOVB = createDestinationResourceOVB();
         DestinationResource resDirect = createDestinationResourceDirect();
 
-
         List<DestinationResource> listMoscowDestinationResource = destinationResourceService.findByCity("Moscow");
         List<DestinationResource> listFirstCityDestinationResource = destinationResourceService.findByCity("First_city");
         List<DestinationResource> listSecondCityDestinationResource = destinationResourceService.findByCity("Second_city");
         List<DestinationResource> listNotExistedDestinationResource = destinationResourceService.findByCity("adfasdf");
         List<DestinationResource> listDirectDestinationResource = destinationResourceService.findByCity("DIRECT");
         List<DestinationResource> listVladivostokDestinationResource = destinationResourceService.findByCity("Vladivostok");
-
-        Map<Integer, MultiValueMap<DestinationResource, List<Route>>> allRoutesOnlyDirect = searchService.getRoutes(
-                listMoscowDestinationResource,
-                listDirectDestinationResource,
-                LocalDate.of(2022, 4, 28));
-        Map<DestinationResource, List<List<Route>>> route = allRoutesOnlyDirect.get(0);
-        System.out.println(allRoutesOnlyDirect.get(0));
-        System.out.println(allRoutesOnlyDirect.get(1));
-        System.out.println(allRoutesOnlyDirect.get(2));
-
-        Map<Integer, MultiValueMap<DestinationResource, List<Route>>> allRoutesDirectToVvo = searchService.getRoutes(
-                listDirectDestinationResource, listVladivostokDestinationResource,
-                LocalDate.of(2022, 5, 27));
-        Map<DestinationResource, List<List<Route>>> routeOneStop = allRoutesDirectToVvo.get(1);
-        System.out.println(allRoutesDirectToVvo.get(1));
-        allRoutesDirectToVvo.forEach((integer, destinationResourceListMap) -> {
-            System.out.println(integer + ":" + destinationResourceListMap);
-        });
-
-        Map<Integer, MultiValueMap<DestinationResource, List<Route>>> allRoutesDmeToVvo = searchService.getRoutes(
-                listMoscowDestinationResource, listVladivostokDestinationResource,
-                LocalDate.of(2022, 4, 4));
 
         // создаём доступные рейсы
         createFlightDmeToOms();
@@ -180,15 +155,8 @@ public class DataInitializer {
         // ищем рейсы, удовлетворяющие переданным городам
         List<Flight> flightsAfterDepartureDate = flightService.findAllWithDepartureDateAfter("Moscow", "Omsk",
                 LocalDate.of(2022, 4, 4));
-
-        List<Flight> fl1 = flightService.findFlights("Moscow", "Novosibirsk",
-                LocalDate.of(2022,4,4));
-        // получение доступных маршрутов
-        Map<Integer, MultiValueMap<DestinationResource, List<Flight>>> flights =
-                searchService.getFlights(allRoutesDmeToVvo, LocalDate.of(2022,4,4));
-
-
-
+        SearchResult searchResult1 = searchService.getSearchResultByCitiesAndLocalDates("Moscow",
+                "Vladivostok", LocalDate.of(2022,4,4), LocalDate.now());
         System.out.println("DataInitializer сработал!");
     }
 
