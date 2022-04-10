@@ -6,6 +6,7 @@ import app.entities.mappers.registration.RegistrationMapper;
 import app.services.interfaces.RegistrationService;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -19,6 +20,7 @@ import java.util.Optional;
  */
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 @Api(tags = "RegistrationRestController")
 @RequestMapping("/api/registration")
 @Validated
@@ -54,15 +56,20 @@ public class RegistrationRestController {
             @ApiResponse(code = 400, message = "Переданы неверные данные")
     })
     @PostMapping("/{holdNumber}/{seatId}")
-    public ResponseEntity<RegistrationDTO>
+    public ResponseEntity<Void>
         createRegistrationByHoldNumberAndSeatId(@ApiParam(value = "Номер брони")
                                                 @PathVariable("holdNumber") Long holdNumber,
                                                 @ApiParam(value = "Id места")
                                                 @PathVariable("seatId") Long seatId) {
-        return new ResponseEntity<>
-                (registrationMapper.toDto(
-                        registrationService.createRegistrationByHoldNumberAndSeatId(holdNumber, seatId)),
-                        HttpStatus.CREATED);
+        Registration registration = registrationService.createRegistrationByHoldNumberAndSeatId(
+                holdNumber, seatId);
+
+        if (registration == null) {
+            log.error("Ошибка при создании объекта регистрации");
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
     }
 
      ///**

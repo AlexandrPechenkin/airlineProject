@@ -1,6 +1,7 @@
 let urlRegistration = 'http://localhost:8888/api/registration/'
 //let urlPassenger = 'http://localhost:8888/api/passenger/'
 let urlTicket = 'http://localhost:8888/api/ticket/holdNumber/'
+let urlBooking = `http://localhost:8888/api/booking/`;
 
 const registrationFetchService = {
     head: {
@@ -13,15 +14,18 @@ const registrationFetchService = {
         `${urlRegistration}${holdNumber}/${seatId}`, {
         method: 'POST',
         headers: registrationFetchService.head
-    })
+    }),
+    getBookingByHolDNumber: async (holdNumber) => await fetch(`${urlBooking}${holdNumber}`)
 }
 
 let registrationModal = $('#registrationModal');
+let passengerName;
+let bookingId;
 
 //Обработчик кнопки "Зарегистрироваться"
 $("#registrationButton").on('click', async () => {
-    let passengerName = document.getElementById("registrationPassengerSecondName").value;
-    let bookingId = document.getElementById("registrationBookingId").value;
+    passengerName = document.getElementById("registrationPassengerSecondName").value;
+    bookingId = document.getElementById("registrationBookingId").value;
 
     //Запрос на получение объектов Ticket и Passenger
     await getRegistrationInfo(passengerName, bookingId);
@@ -57,6 +61,22 @@ async function getRegistrationInfo(passengerName, bookingId) {
     } else {
         registrationModal.find('.modal-title').html(`Не найден рейс ${bookingId}`);
     }
+
+    //Запрос на получение мест и выбранной категории - вернуть
+    /*let promiseBooking = await registrationFetchService.getBookingByHolDNumber(bookingId);
+
+    if (promiseBooking.ok) {
+        //let ticket = await promiseTicket.json();
+        ticketComplete = await promiseBooking.json();
+
+        //Заполнение содержимым модального окна
+        await setModalContent(passengerName, bookingId);
+        //await showSeatSelectors(ticket);
+        await showSeatSelectors();
+
+    } else {
+        registrationModal.find('.modal-title').html(`Не найден рейс ${bookingId}`);
+    }*/
 }
 
 async function setModalContent(passengerName, bookingId) {
@@ -148,28 +168,13 @@ registrationModal.on('click', '.seat-selector', async (event)=> {
 
 //обработчик кнопки "Подтвердить"
 registrationModal.on('click', '#registerCompleteButton', async ()=> {
-    let registration = {
-        id: null,
-        ticket: {
-            id: ticketComplete.id,
-            seat: {
-                id: ticketComplete.seat.id,
-                seatNumber: ticketComplete.seat.seatNumber,
-                fare: ticketComplete.seat.fare,
-                isRegistered: ticketComplete.seat.isRegistered,
-                isSold: ticketComplete.seat.isSold,
-                flight: ticketComplete.seat.flight
-            },
-            price: ticketComplete.price,
-            flight: ticketComplete.flight
-        },
-        status: "IN_PROGRESS",
-        registrationDateTime: null
-    }
 
     //Запрос на создание объекта Registration
     let promiseRegistration = await registrationFetchService.createRegistration(
-        document.getElementById("registrationBookingId").value, 3);
+        bookingId, 3);
 
-    registrationModal.modal('hide');
+    if (promiseRegistration.ok) {
+        registrationModal.modal('hide');
+    }
+
 })

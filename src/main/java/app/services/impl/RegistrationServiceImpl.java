@@ -8,6 +8,7 @@ import app.services.interfaces.RegistrationService;
 import app.services.interfaces.SeatService;
 import app.services.interfaces.TicketService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
@@ -21,6 +22,7 @@ import java.util.Optional;
  */
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class RegistrationServiceImpl implements RegistrationService {
     private final RegistrationRepository registrationRepository;
     private final TicketService ticketService;
@@ -60,16 +62,29 @@ public class RegistrationServiceImpl implements RegistrationService {
            return null;
         }
         return null;*/
-        Ticket ticket = ticketService.findTicketByHoldNumber(holdNumber);
-        ticket.setSeat(seatService.getSeatById(seatId).orElse(null));
-        ticketService.createOrUpdateTicket(ticket);
 
-        return registrationRepository.save(
-                Registration.builder()
-                        .ticket(ticket)
-                        .registrationDateTime(LocalDateTime.now())
-                        .build()
-        );
+        try {
+            Ticket ticket = ticketService.findTicketByHoldNumber(holdNumber);
+            ticket.setSeat(seatService.getSeatById(seatId).orElse(null));
+            if (ticket.getSeat() == null) {
+                log.error("Ошибка при задании места в билете в процессе регистрации." +
+                        "Объект Seat с заданным id отсутствует в БД");
+                return null;
+            } else {
+                ticketService.createOrUpdateTicket(ticket);
+                return registrationRepository.save(
+                        Registration.builder()
+                                .ticket(ticket)
+                                .registrationDateTime(LocalDateTime.now())
+                                .build()
+                );
+            }
+        } catch (NullPointerException npe) {
+            npe.printStackTrace();
+            log.error("Ошибка при поиске билета в процессе регистрации." +
+                    "Объект Ticket с заданным номером брони отсутствует в БД");
+            return null;
+        }
     }
 
     /**
