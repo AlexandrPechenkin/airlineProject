@@ -1,5 +1,6 @@
 package app.controllers.rest;
 
+import app.entities.Route;
 import app.entities.Search;
 import app.entities.SearchResult;
 import app.entities.dtos.SearchResultDTO;
@@ -62,7 +63,7 @@ public class SearchRestController {
     }
 
     /**
-     * метод для запроса всех поисков
+     * Метод для запроса всех поисков.
      *
      * @return
      */
@@ -86,9 +87,9 @@ public class SearchRestController {
 
 
     /**
-     * поиск перелета по JSON Route месту вылета, месту прилета и дате вылета
-     * Получаем JSON Route с фронта, парсим в объект Route, ищем по from, to, departureDate все перелеты
-     * @return
+     * Поиск перелета по JSON Route месту вылета, месту прилета и дате вылета.
+     * Получаем JSON Route с фронта, парсим в объект Route, ищем по from, to, departureDate все перелеты.
+     * @return {@link ResponseEntity<SearchResultDTO>}
      */
     @ApiOperation(value = "Запрос для получения перелета по месту вылета, месту прилета и дате вылета",
             notes = "Возвращение перелета по from, to, departureDate")
@@ -97,53 +98,18 @@ public class SearchRestController {
             @ApiResponse(code = 404, message = "Перелет не найден")
     })
     @PostMapping("/")
-    public ResponseEntity<SearchResultDTO> searchFlightsByRoute(@RequestBody @Valid String jsonRoute)
+    public ResponseEntity<SearchResultDTO> searchFlightsByRouteFromJSON(@RequestBody @Valid String jsonRoute)
             throws ParseException {
-//        Route route = jsonParser.getFlightPropertiesByJSONWithCityNames(jsonRoute);
-//        Map<String, Map<Integer, MultiValueMap<DestinationResource, List<FlightDTO>>>> flights =
-//                new HashMap<>();
-//        // поиск рейсов from-to согласно дате вылета
-//        Map<Integer, MultiValueMap<DestinationResource, List<Flight>>> flightFromToList =
-//                searchService.getFlights(searchService.getRoutes(
-//                        destinationResourceService.findByCity(route.getFrom().getCity()),
-//                        destinationResourceService.findByCity(route.getTo().getCity()),
-//                        route.getDepartureDate()),
-//                route.getDepartureDate());
-//        if (!flightFromToList.isEmpty()) {
-//            flights.put("From-To", searchResultMapper.flightsListToFlightDTOsList(flightFromToList));
-//        } else {
-//            flights.put("From-To", null);
-//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//        }
-//        // поиск рейсов to-from согласно дате вылета
-//        if (route.getReturnDate() != null) {
-//            Map<Integer, MultiValueMap<DestinationResource, List<Flight>>> flightToFromList =
-//                    searchService.getFlights(searchService.getRoutes(
-//                                    destinationResourceService.findByCity(route.getTo().getCity()),
-//                                    destinationResourceService.findByCity(route.getFrom().getCity()),
-//                                    route.getReturnDate()),
-//                            route.getReturnDate());
-//            flights.put("To-From", searchResultMapper.flightsListToFlightDTOsList(flightToFromList));
-//        } else {
-//            flights.put("To-From", null);
-//        }
-//        // сохранение результатов и отправка на фронт
-//        try {
-//            SearchResultDTO searchResultDto = new SearchResultDTO();
-//            searchResultDto.setDepartFlights(flights.get("From-To"));
-//            searchResultDto.setReturnFlights(flights.get("To-From"));
-//            return new ResponseEntity<>(searchResultDto, HttpStatus.OK);
-//        } catch (DataIntegrityViolationException e) {
-//            throw new NoSuchObjectException("Error");
-//        }
-
-        return new ResponseEntity<>(HttpStatus.OK);
+        Route route = jsonParser.getFlightPropertiesByJSONWithCityNames(jsonRoute);
+        return new ResponseEntity<>(searchResultMapper
+                .toDto(searchService.getSearchResultByCitiesAndLocalDates(
+                                route.getFrom().getCity(), route.getTo().getCity(),
+                                route.getDepartureDate(), route.getReturnDate())), HttpStatus.OK);
     }
 
     /**
-     * поиск перелета по JSON Route месту вылета, месту прилета и дате вылета
-     * Получаем JSON Route с фронта, парсим в объект Route, ищем по from, to, departureDate все перелеты
-     * @return
+     * Поиск перелёта по переданным местам вылета, прилёта и датам вылета и (если указано) дате возвращения.
+     * @return {@link ResponseEntity<SearchResultDTO>}
      */
     @ApiOperation(value = "Запрос для получения перелета по месту вылета, месту прилета и дате вылета из url",
             notes = "Возвращение перелета по from, to, departureDate из url")
