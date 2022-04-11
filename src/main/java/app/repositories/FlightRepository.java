@@ -3,6 +3,7 @@ package app.repositories;
 import app.entities.Flight;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
@@ -14,14 +15,21 @@ public interface FlightRepository extends JpaRepository<Flight, Long> {
     /**
      * поиск по месту вылета, месту прилета и дате вылета
      *
-     * @param destinationFrom место вылета
-     * @param destinationTo   место прилета
-     * @param departureDate   дата вылета
+     * @param from          место вылета
+     * @param to            место прилета
+     * @param departureDate дата вылета
      * @return
      */
-    @Query(value = "select f from Flight f where (f.destinationFrom like concat('%', :destinationFrom, '%')) " +
-            "and f.destinationTo like  concat('%', :destinationTo, '%') " +
-            "and f.departureDate like concat('%', :departureDate, '%')")
-    List<Flight> findFlights(String destinationFrom, String destinationTo, LocalDate departureDate);
+    @Query(value = "select f from Flight f where (f.from.city like concat('%', :cityFrom, '%')) " +
+            "and f.to.city like concat('%', :cityTo, '%') " +
+            "and f.departureDate like concat('%', :date, '%')")
+    List<Flight> findFlights(@Param("cityFrom") String from, @Param("cityTo") String to,
+                             @Param("date") LocalDate departureDate);
 
+    @Query(value = "select f from Flight f where f.departureDate > :date " +
+            "and f.from.city like concat('%',:cityFrom,'%') " +
+            "and f.to.city like concat('%',:cityTo,'%')")
+    List<Flight> findAllWithDepartureDateAfter(@Param("cityFrom") String cityFrom,
+                                               @Param("cityTo") String cityTo,
+                                               @Param("date") LocalDate date);
 }

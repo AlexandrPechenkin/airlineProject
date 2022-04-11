@@ -1,8 +1,6 @@
 package app.controllers.rest;
 
 
-import app.entities.Flight;
-import app.entities.Seat;
 import app.entities.dtos.SeatDTO;
 import app.entities.mappers.seat.SeatMapper;
 import app.services.interfaces.FlightService;
@@ -14,8 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
-import java.util.Optional;
 
 
 /**
@@ -49,7 +45,7 @@ public class SeatRestController {
 //            return new ResponseEntity<>(seat, HttpStatus.OK);
 //        }
 //    }
-
+//
 //    @ApiOperation(value = "Запрос для получения мест конкретного рейса определенной категории")
 //    @ApiResponses(value = {
 //            @ApiResponse(code = 200, message = "Места успешно получены"),
@@ -114,7 +110,7 @@ public class SeatRestController {
 //            return new ResponseEntity<>(seatService.getCountNoSoldSeat(id), HttpStatus.OK);
 //        }
 //    }
-
+//
 //
 //    @ApiOperation(value = "Запрос для получения количества проданных мест")
 //    @ApiResponses(value = {
@@ -131,7 +127,7 @@ public class SeatRestController {
 //            return new ResponseEntity<>(seatService.getCountSoldSeat(id), HttpStatus.OK);
 //        }
 //    }
-
+//
 //
 //    @ApiOperation(value = "Запрос для получения количества зарегистрированных пассажиров")
 //    @ApiResponses(value = {

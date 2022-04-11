@@ -33,4 +33,7 @@ public interface CategoryService {
      */
     Optional<Category> getOne(long id);
 
+
+    Category getByCategoryByString(String category);
+
 }

@@ -1,9 +1,12 @@
 package app.controllers.rest;
 
 import app.AirlineApplication;
-import app.entities.*;
+import app.entities.Aircraft;
+import app.entities.Category;
+import app.entities.Seat;
 import app.entities.mappers.aircraft.AircraftMapper;
 import app.services.interfaces.AircraftService;
+import app.services.interfaces.DestinationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.AccessLevel;
@@ -19,8 +22,6 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -36,7 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestPropertySource(locations = "classpath:application-integrationtest.yml")
 @ActiveProfiles("integrationtest")
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@WithMockUser(username = "admin@mai.ru", password = "123", roles = "ADMIN")
+@WithMockUser(username = "admin@mai.ru", password = "123", authorities = "ADMIN")
 class AircraftRestControllerTest {
 
     @Autowired
@@ -45,6 +46,8 @@ class AircraftRestControllerTest {
     AircraftService aircraftService;
     @Autowired
     AircraftMapper aircraftMapper;
+    @Autowired
+    DestinationService destinationService;
 
     static final String api = "/api/aircraft";
 
@@ -62,8 +65,25 @@ class AircraftRestControllerTest {
                                                 .isRegistered(true)
                                                 .isSold(true)
 //                                                .flight(Flight.builder()
-//                                                        .destinationFrom("Moscow")
-//                                                        .destinationTo("Moon")
+//                                                        .from(destinationService.createOrUpdateDestination(
+//                                                                Destination.builder()
+//                                                                        .countryName("Russia")
+//                                                                        .countryCode(CountryCode.RUS)
+//                                                                        .city("Moscow")
+//                                                                        .airportName("Domodedovo")
+//                                                                        .airportCode("DME")
+//                                                                        .timeZone(TimeZone.getTimeZone("Europe/Moscow"))
+//                                                                        .build()
+//                                                        ))
+//                                                        .to(destinationService.createOrUpdateDestination(
+//                                                                Destination.builder()
+//                                                                        .countryName("Russia")
+//                                                                        .countryCode(CountryCode.RUS)
+//                                                                        .city("Nizhny Novgorod")
+//                                                                        .airportName("Strigino")
+//                                                                        .airportCode("GOJ")
+//                                                                        .timeZone(TimeZone.getTimeZone("Europe/Nizhny Novgorod"))
+//                                                                        .build()))
 //                                                        .departureDate(LocalDate.of(2021, 1, 1))
 //                                                        .departureTime(LocalTime.MAX)
 //                                                        .arrivalDateTime(LocalDateTime.MAX)

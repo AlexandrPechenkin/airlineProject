@@ -2,6 +2,7 @@ package app.controllers.rest;
 
 import app.entities.Flight;
 import app.entities.dtos.FlightDTO;
+import app.entities.mappers.flight.FlightListMapper;
 import app.entities.mappers.flight.FlightMapper;
 import app.exception.NoSuchObjectException;
 import app.services.interfaces.FlightService;
@@ -22,12 +23,13 @@ import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
-@Api(tags = "FlightController")
+@Api(tags = "FlightRestController")
 @RequestMapping("/api/flight")
 @Validated
 public class FlightRestController {
     private final FlightService flightService;
     private final FlightMapper flightMapper;
+    private final FlightListMapper flightListMapper;
 
 
     /**
@@ -44,7 +46,7 @@ public class FlightRestController {
     @PostMapping
     public ResponseEntity<FlightDTO> createFlight(@ApiParam(value = "DTO вылета")
                                                   @Valid @RequestBody FlightDTO flight) {
-        if (Objects.isNull(flight.getId())) {
+        if (Objects.nonNull(flight.getId())) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         try {
@@ -68,6 +70,9 @@ public class FlightRestController {
     @PutMapping
     public ResponseEntity<FlightDTO> updateFlight(@ApiParam(value = "DTO перелета")
                                                   @Valid @RequestBody FlightDTO flight) {
+        if (Objects.isNull(flight.getId())) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
         try {
             return new ResponseEntity<>(flightMapper.toDTO(flightService.createOrUpdateFlight(flightMapper.toEntity(flight))), HttpStatus.OK);
         } catch (DataIntegrityViolationException e) {
@@ -89,6 +94,7 @@ public class FlightRestController {
             @ApiResponse(code = 200, message = "Успешно получен"),
             @ApiResponse(code = 404, message = "Перелет не найден")
     })
+
     @GetMapping("/{from}/{to}/{departureDate}")
     public ResponseEntity<List<FlightDTO>> searchFlights(@ApiParam(value = "место вылета")
                                                          @PathVariable("from") String from,
@@ -119,16 +125,52 @@ public class FlightRestController {
             @ApiResponse(code = 404, message = "Перелет не найден")
     })
     @GetMapping("/{id}")
-    public ResponseEntity<Flight> searchFlightById(@ApiParam(value = "Id перелета", example = "1")
+    public ResponseEntity<FlightDTO> searchFlightById(@ApiParam(value = "Id перелета", example = "1")
                                                    @PathVariable("id") Long id) {
         Optional<Flight> flight = flightService.findById(id);
         if (flight.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         try {
-            return new ResponseEntity(flightService.findById(id), HttpStatus.OK);
+            return new ResponseEntity(flightMapper.toDTO((flightService.findById(id)).get()), HttpStatus.OK);
         } catch (DataIntegrityViolationException e) {
             throw new NoSuchObjectException("Error");
+        }
+    }
+
+    /**
+     * Возвращает список всех рейсов
+     * @return - список всех рейсов
+     */
+    @ApiOperation(value = "Запрос для получения всех рейсов", notes = "Получение всех рейсов")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Успешно получены"),
+            @ApiResponse(code = 404, message = "Рейсы не найдены")
+    })
+    @GetMapping
+    public ResponseEntity<List<FlightDTO>> getAllFlights() {
+        List<Flight> flightList = flightService.getAllFlights();
+
+        if (flightList.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<>(flightListMapper.toDTOList(flightList), HttpStatus.OK);
+        }
+    }
+
+    @ApiOperation(value = "Запрос для удаления рейса по ID", notes = "Удаление рейса по ID")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Успешно удален"),
+            @ApiResponse(code = 404, message = "Рейс не найден")
+    })
+    @DeleteMapping("/{id}")
+    public ResponseEntity<FlightDTO> deleteFlightById(@ApiParam(value = "ID Рейса", example = "1") @PathVariable Long id) {
+        Optional<Flight> flight = flightService.findById(id);
+        if (flight.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else {
+            flightService.removeFlight(flight.get());
+            return new ResponseEntity<>((flightMapper.toDTO((flightService.findById(id)).get())), HttpStatus.OK);
         }
     }
 }

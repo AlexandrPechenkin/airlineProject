@@ -1,8 +1,6 @@
 package app.controllers.rest;
 
 import app.AirlineApplication;
-import app.entities.Flight;
-import app.entities.FlightStatus;
 import app.entities.Seat;
 import app.services.interfaces.SeatService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -30,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestPropertySource(locations = "classpath:application-integrationtest.yml")
 @ActiveProfiles("integrationtest")
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@WithMockUser(username = "admin@mai.ru", password = "123", roles = "ADMIN")
+@WithMockUser(username = "admin@mai.ru", password = "123", authorities = "ADMIN")
 public class SeatRestControllerTest {
 
     @Autowired
@@ -50,7 +48,25 @@ public class SeatRestControllerTest {
                 .fare(800)
                 .isRegistered(true)
                 .isSold(true)
-                        .build();
+//                .flight(Flight.builder()
+//                        .id(1L)
+//                        .flightStatus(FlightStatus.DELAY)
+//                        .from(Destination.builder()
+//                                .airportName("seat1_airport_name")
+//                                .airportCode("seat1_airport_code")
+//                                .city("Moscow")
+//                                .countryName("Russia")
+//                                .countryCode(CountryCode.RUS)
+//                                .build())
+//                        .to(Destination.builder()
+//                                .airportName("Bogashevo")
+//                                .airportCode("TOF")
+//                                .countryName("Russia")
+//                                .countryCode(CountryCode.RUS)
+//                                .city("Tomsk")
+//                                .build())
+//                        .build()
+                .build();
     }
 
     Seat createSeat2() {
@@ -60,6 +76,24 @@ public class SeatRestControllerTest {
                 .fare(1100)
                 .isRegistered(false)
                 .isSold(true)
+//                .flight(Flight.builder()
+//                        .id(1L)
+//                        .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
+//                        .from(Destination.builder()
+//                                .airportName("seat1_airport_name")
+//                                .airportCode("seat1_airport_code")
+//                                .city("Moscow")
+//                                .countryName("Russia")
+//                                .countryCode(CountryCode.RUS)
+//                                .build())
+//                        .to(Destination.builder()
+//                                .airportName("Bogashevo")
+//                                .airportCode("TOF")
+//                                .countryName("Russia")
+//                                .countryCode(CountryCode.RUS)
+//                                .city("Tomsk")
+//                                .build())
+//                        .build()
                 .build();
     }
 

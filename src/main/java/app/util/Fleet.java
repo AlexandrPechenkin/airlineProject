@@ -1,11 +1,12 @@
 package app.util;
 
-import app.entities.*;
+import app.entities.Aircraft;
+import app.entities.Category;
+import app.entities.Seat;
+import app.services.interfaces.DestinationService;
 import lombok.experimental.UtilityClass;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -15,6 +16,7 @@ import java.util.stream.IntStream;
  */
 @UtilityClass
 public class Fleet {
+    DestinationService destinationService;
     public static Aircraft createMC21200() {
         Category businessClass = Category.builder()
                 .category("Бизнес-класс")
@@ -26,8 +28,8 @@ public class Fleet {
                                         .isRegistered(false)
                                         .isSold(false)
 //                                        .flight(Flight.builder()
-//                                                .destinationFrom("Moscow")
-//                                                .destinationTo("Moon")
+//                                                .from(destinationService.getDestinationById(1L).get())
+//                                                .to(destinationService.getDestinationById(2L).get())
 //                                                .departureDate(LocalDate.of(2022, 12, 20))
 //                                                .departureTime(LocalTime.of(10, 20))
 //                                                .arrivalDateTime(LocalDateTime.of(2022, 12, 21, 14, 40))
@@ -38,7 +40,7 @@ public class Fleet {
                 .build();
         Category economyClass = Category.builder()
                 .category("Эконом-класс")
-                .seats(IntStream.rangeClosed(1, 120)
+                .seats(IntStream.rangeClosed(1, 12)
                         .mapToObj(iter ->
                                 Seat.builder()
                                         .seatNumber("ЭК" + iter)
@@ -46,8 +48,8 @@ public class Fleet {
                                         .isRegistered(false)
                                         .isSold(false)
 //                                        .flight(Flight.builder()
-//                                                .destinationFrom("Moscow")
-//                                                .destinationTo("Moon")
+//                                                .from(destinationService.getDestinationById(1L).get())
+//                                                .to(destinationService.getDestinationById(2L).get())
 //                                                .departureDate(LocalDate.of(2022, 12, 20))
 //                                                .departureTime(LocalTime.of(10, 20))
 //                                                .arrivalDateTime(LocalDateTime.of(2022, 12, 21, 14, 40))
@@ -78,8 +80,8 @@ public class Fleet {
                                         .isRegistered(false)
                                         .isSold(false)
 //                                        .flight(Flight.builder()
-//                                                .destinationFrom("Moscow")
-//                                                .destinationTo("Moon")
+//                                                .from(destinationService.getDestinationById(1L).get())
+//                                                .to(destinationService.getDestinationById(2L).get())
 //                                                .departureDate(LocalDate.of(2022, 12, 20))
 //                                                .departureTime(LocalTime.of(10, 20))
 //                                                .arrivalDateTime(LocalDateTime.of(2022, 12, 21, 14, 40))
@@ -98,8 +100,8 @@ public class Fleet {
                                         .isRegistered(false)
                                         .isSold(false)
 //                                        .flight(Flight.builder()
-//                                                .destinationFrom("Moscow")
-//                                                .destinationTo("Moon")
+//                                                .from(destinationService.getDestinationById(1L).get())
+//                                                .to(destinationService.getDestinationById(2L).get())
 //                                                .departureDate(LocalDate.of(2022, 12, 20))
 //                                                .departureTime(LocalTime.of(10, 20))
 //                                                .arrivalDateTime(LocalDateTime.of(2022, 12, 21, 14, 40))
@@ -110,7 +112,7 @@ public class Fleet {
                 .build();
         Category economyClass = Category.builder()
                 .category("Эконом-класс")
-                .seats(IntStream.rangeClosed(1, 375)
+                .seats(IntStream.rangeClosed(1, 37)
                         .mapToObj(iter ->
                                 Seat.builder()
                                         .seatNumber("ЭК" + iter)
@@ -118,8 +120,8 @@ public class Fleet {
                                         .isRegistered(false)
                                         .isSold(false)
 //                                        .flight(Flight.builder()
-//                                                .destinationFrom("Moscow")
-//                                                .destinationTo("Moon")
+//                                                .from(destinationService.getDestinationById(1L).get())
+//                                                .to(destinationService.getDestinationById(2L).get())
 //                                                .departureDate(LocalDate.of(2022, 12, 20))
 //                                                .departureTime(LocalTime.of(10, 20))
 //                                                .arrivalDateTime(LocalDateTime.of(2022, 12, 21, 14, 40))

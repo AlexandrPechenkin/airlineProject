@@ -4,6 +4,7 @@ import app.AirlineApplication;
 import app.entities.Admin;
 import app.entities.Role;
 import app.services.interfaces.AdminService;
+import app.services.interfaces.RoleService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.jayway.jsonpath.JsonPath;
@@ -38,7 +39,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestPropertySource(locations = "classpath:application-integrationtest.yml")
 @ActiveProfiles("integrationtest")
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@WithMockUser(username = "admin@mai.ru", password = "123", roles = "ADMIN")
+@WithMockUser(username = "admin@mai.ru", password = "123", authorities = "ADMIN")
 public class AdminRestControllerTest {
 
     @Autowired
@@ -47,6 +48,8 @@ public class AdminRestControllerTest {
     AdminService adminService;
     @Autowired
     PasswordEncoder passwordEncoder;
+    @Autowired
+    RoleService roleService;
 
     final String api = "/api/admin";
     final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
@@ -54,7 +57,7 @@ public class AdminRestControllerTest {
     Admin createAdmin() {
         return Admin.builder()
                 .email("admin@mail.com")
-                .roles(Set.of(new Role("ADMIN")))
+                .roles(Set.of(roleService.createOrUpdateRole(new Role(1L,"ADMIN"))))
                 .password("nimda")
                 .nickname("admin_nickname")
                 .build();

@@ -11,6 +11,8 @@ public class TicketDTO {
     private Long Id;
     @NotNull(message = "место не может быть пустым")
     private Seat seat;
+    @NotNull(message = "номер бронирования не может быть пустой")
+    private Long holdNumber;
     @NotNull(message = "цена не может быть пустой")
     private Long price;
     @NotNull(message = "перелет не может быть пустым")

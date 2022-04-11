@@ -20,7 +20,7 @@ spring:
   jpa:
     show-sql: false
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: create
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL57Dialect
@@ -29,6 +29,10 @@ spring:
         format_sql: true
         jdbc:
           time_zone: Europe/Moscow
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
 
 logging:
   config: classpath:log4j2.yml

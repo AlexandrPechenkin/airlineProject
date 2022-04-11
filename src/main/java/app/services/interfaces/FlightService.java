@@ -15,6 +15,7 @@ public interface FlightService {
 
     Optional<Flight> findById(Long id);
 
-    List<Flight> findFlights(String destinationFrom, String destinationTo, LocalDate departureDate);
+    List<Flight> findFlights(String cityFrom, String cityTo, LocalDate departureDate);
 
+    List<Flight> findAllWithDepartureDateAfter(String cityFrom, String cityTo, LocalDate date);
 }
