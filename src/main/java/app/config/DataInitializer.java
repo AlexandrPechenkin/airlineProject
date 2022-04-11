@@ -1,18 +1,17 @@
 package app.config;
 
+
 import app.entities.*;
 import app.services.interfaces.*;
 import app.util.Fleet;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import org.springframework.util.MultiValueMap;
 
 import javax.annotation.PostConstruct;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
 import java.util.stream.Collectors;
@@ -40,7 +39,7 @@ public class DataInitializer {
     private final RoleService roleService;
     private final DestinationResourceService destinationResourceService;
     private final SearchService searchService;
-    private final BookingService bookingService;
+    private final SearchResultService searchResultService;
 
     @PostConstruct
     public void init() {
@@ -95,7 +94,6 @@ public class DataInitializer {
         createAircraft(moscow, nizhny);
         System.out.println("Самолёт был создан");
 
-
         ticketService.createOrUpdateTicket(Ticket.builder()
                 .seat(seatService.createOrUpdate(Seat.builder()
                         .seatNumber(1 + "F")
@@ -125,35 +123,12 @@ public class DataInitializer {
         DestinationResource resOVB = createDestinationResourceOVB();
         DestinationResource resDirect = createDestinationResourceDirect();
 
-
         List<DestinationResource> listMoscowDestinationResource = destinationResourceService.findByCity("Moscow");
         List<DestinationResource> listFirstCityDestinationResource = destinationResourceService.findByCity("First_city");
         List<DestinationResource> listSecondCityDestinationResource = destinationResourceService.findByCity("Second_city");
         List<DestinationResource> listNotExistedDestinationResource = destinationResourceService.findByCity("adfasdf");
         List<DestinationResource> listDirectDestinationResource = destinationResourceService.findByCity("DIRECT");
         List<DestinationResource> listVladivostokDestinationResource = destinationResourceService.findByCity("Vladivostok");
-
-        Map<Integer, MultiValueMap<DestinationResource, List<Route>>> allRoutesOnlyDirect = searchService.getRoutes(
-                listMoscowDestinationResource,
-                listDirectDestinationResource,
-                LocalDate.of(2022, 4, 28));
-        Map<DestinationResource, List<List<Route>>> route = allRoutesOnlyDirect.get(0);
-        System.out.println(allRoutesOnlyDirect.get(0));
-        System.out.println(allRoutesOnlyDirect.get(1));
-        System.out.println(allRoutesOnlyDirect.get(2));
-
-        Map<Integer, MultiValueMap<DestinationResource, List<Route>>> allRoutesDirectToVvo = searchService.getRoutes(
-                listDirectDestinationResource, listVladivostokDestinationResource,
-                LocalDate.of(2022, 5, 27));
-        Map<DestinationResource, List<List<Route>>> routeOneStop = allRoutesDirectToVvo.get(1);
-        System.out.println(allRoutesDirectToVvo.get(1));
-        allRoutesDirectToVvo.forEach((integer, destinationResourceListMap) -> {
-            System.out.println(integer + ":" + destinationResourceListMap);
-        });
-
-        Map<Integer, MultiValueMap<DestinationResource, List<Route>>> allRoutesDmeToVvo = searchService.getRoutes(
-                listMoscowDestinationResource, listVladivostokDestinationResource,
-                LocalDate.of(2022, 4, 4));
 
         // создаём доступные рейсы
         createFlightDmeToOms();
@@ -180,66 +155,8 @@ public class DataInitializer {
         // ищем рейсы, удовлетворяющие переданным городам
         List<Flight> flightsAfterDepartureDate = flightService.findAllWithDepartureDateAfter("Moscow", "Omsk",
                 LocalDate.of(2022, 4, 4));
-
-        List<Flight> fl1 = flightService.findFlights("Moscow", "Novosibirsk",
-                LocalDate.of(2022,4,4));
-        // получение доступных маршрутов
-        Map<Integer, MultiValueMap<DestinationResource, List<Flight>>> flights = searchService.getFlights(allRoutesDmeToVvo,
-                LocalDate.of(2022,4,4));
-
-        // создание бронирования
-        bookingService.createOrUpdateBooking(
-                Booking.builder()
-                        .departTicket(
-                                ticketService.createOrUpdateTicket(
-                                        Ticket.builder()
-                                                .flight(
-                                                        Flight.builder()
-                                                                .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
-                                                                .from(moscow)
-                                                                .to(norilsk)
-                                                                .arrivalDateTime(LocalDateTime.now())
-                                                                .departureDate(LocalDate.of(2022, 3, 12))
-                                                                .departureTime(LocalTime.of(12, 6, 0))
-                                                                .build())
-                                                .seat(seatService.createOrUpdate(Seat.builder()
-                                                        .seatNumber(2 + "F")
-                                                        .fare(2)
-                                                        .isRegistered(false)
-                                                        .isSold(false)
-                                                        .build()))
-                                                .holdNumber(420L)
-                                                .price(15000L)
-                                                .build()))
-                        .initialBookingDateTime(LocalDateTime.now())
-                        .paymentMethod("CARD")
-                        .status("PAID")
-                        .passenger(
-                                passengerService.createOrUpdatePassenger(
-                                        Passenger.builder()
-                                                .email("passenger_booking@mail.ru")
-                                                .password("password_passenger_booking")
-                                                .roles(Set.of(roleService.createOrUpdateRole(new Role(2L,"USER"))))
-                                                .firstName("passenger_booking")
-                                                .middleName("passenger_middle_name_passenger_booking")
-                                                .lastName("passenger_last_name_passenger_booking")
-                                                .dateOfBirth(LocalDate.now())
-                                                .passport(
-                                                        Passport.builder()
-                                                                .dateOfBirth(LocalDate.now())
-                                                                .gender("passport_gender_booking")
-                                                                .firstName("passport_first_name_booking")
-                                                                .middleName("passport_middle_name_booking")
-                                                                .lastName("passport_last_name_booking")
-                                                                .birthplace("passport_birthplace_booking")
-                                                                .residenceRegistration("passport_residence_registration_booking")
-                                                                .seriesAndNumber("passport_series_and_number_booking")
-                                                                .build()
-                                                )
-                                                .build()
-                                ))
-                        .build()
-        );
+        SearchResult searchResult1 = searchService.getSearchResultByCitiesAndLocalDates("Moscow",
+                "Vladivostok", LocalDate.of(2022,4,4), LocalDate.now());
         System.out.println("DataInitializer сработал!");
     }
 
@@ -378,8 +295,8 @@ public class DataInitializer {
                 .build());
     }
 
-    private Seat createSeat() {
-        return seatService.createOrUpdate(
+    private void createSeat() {
+        seatService.createOrUpdate(
                 Seat.builder()
                         .seatNumber("1A")
                         .fare(800)
@@ -1110,9 +1027,5 @@ public class DataInitializer {
                         .departureDate(LocalDate.of(2022, 4, 5))
                         .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
                         .build());
-    }
-
-    private void createBooking() {
-
     }
 }

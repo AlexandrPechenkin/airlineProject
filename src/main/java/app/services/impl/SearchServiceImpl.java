@@ -2,10 +2,7 @@ package app.services.impl;
 
 import app.entities.*;
 import app.repositories.SearchRepository;
-import app.services.interfaces.DestinationResourceService;
-import app.services.interfaces.FlightService;
-import app.services.interfaces.SearchResultService;
-import app.services.interfaces.SearchService;
+import app.services.interfaces.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.MultiValueMap;
@@ -23,6 +20,8 @@ public class SearchServiceImpl implements SearchService {
     private final DestinationResourceService desResService;
     private final SearchResultService searchResultService;
     private final FlightService flightService;
+    private final FlightContainerService flightContainerService;
+    private final FlightListWrapperService flightListWrapperService;
 
     @Override
     public List<Search> getAll() {
@@ -33,7 +32,8 @@ public class SearchServiceImpl implements SearchService {
     public Optional<Search> getById(Long id) { return searchRepository.findById(id); }
 
     @Override
-    public SearchResult createSearchResult(String cityFrom, String cityTo, LocalDate departureDate) {
+    public SearchResult getSearchResultByCitiesAndLocalDates(String cityFrom, String cityTo,
+                                                             LocalDate departureDate, LocalDate returnDate) {
         // существуют ли вообще аэропорты в указанных городах
         List<DestinationResource> resourceFrom = desResService.findByCity(cityFrom);
         List<DestinationResource> resourceTo = desResService.findByCity(cityTo);
@@ -62,21 +62,48 @@ public class SearchServiceImpl implements SearchService {
                             .returnFlights(null)
                             .build());
         } else {
-            // ПОИСК В ОДНУ СТОРОНУ
-            // далее идёт составление маршрута согласно доступным аэропортам на пути из from в to
-            Map<Integer, MultiValueMap<DestinationResource, List<Route>>> routes =
-                    getRoutes(resourceFrom, resourceTo, departureDate);
-            // поиск доступных рейсов по дате-времени среди тех маршрутов выше, что нашлись
-            Map<Integer, MultiValueMap<DestinationResource, List<Flight>>> flights = getFlights(routes, departureDate);
-            return searchResultService.createOrUpdateSearchResult(
-                SearchResult.builder()
-//                    .departFlights(flights)
-                    .build());
+            SearchResult searchResult = new SearchResult();
+            searchResult.setDepartFlights(getAvailableFlights(resourceFrom, resourceTo, departureDate));
+            if (returnDate != null) {
+                searchResult.setReturnFlights(getAvailableFlights(resourceTo, resourceFrom, returnDate));
+            }
+            return searchResultService.createOrUpdateSearchResult(searchResult);
         }
     }
 
-    @Override
-    public Map<Integer, MultiValueMap<DestinationResource, List<Flight>>> getFlights(
+    private Map<Integer, FlightContainer> getAvailableFlights(List<DestinationResource> resourceFrom,
+                                                              List<DestinationResource> resourceTo,
+                                                              LocalDate date) {
+        // поиск возможных комбинаций маршрутов из from в to
+        Map<Integer, MultiValueMap<DestinationResource, List<Route>>> routes =
+                getRoutes(resourceFrom, resourceTo);
+        // поиск доступных рейсов по дате-времени среди тех комбинаций маршрутов выше, что нашлись
+        Map<Integer, MultiValueMap<DestinationResource, List<Flight>>> flights = getFlights(routes, date);
+        Map<Integer, FlightContainer> map = new HashMap<>();
+        SearchResult searchResult = new SearchResult();
+        flights.forEach((numberOfSteps, multiValueMap) -> {
+            multiValueMap.keySet().forEach(res -> {
+                List<FlightListWrapper> wrapList = new ArrayList<>();
+                flights.get(numberOfSteps).get(res).forEach(flightList -> {
+                    wrapList.add(flightListWrapperService.createOrUpdateFlightListWrapper(
+                            FlightListWrapper.builder()
+                                    .allFlightsFromToCities(flightList)
+                                    .build()));
+                });
+                FlightContainer flightContainer = FlightContainer.builder()
+                        .numberOfSteps(numberOfSteps)
+                        .destinationResource(res)
+                        .flights(wrapList)
+//                        .searchResult(searchResult)
+                        .build();
+                map.put(numberOfSteps, flightContainer);
+                flightContainerService.createOrUpdateFlightContainer(flightContainer);
+            });
+        });
+        return map;
+    }
+
+    private Map<Integer, MultiValueMap<DestinationResource, List<Flight>>> getFlights(
             Map<Integer, MultiValueMap<DestinationResource, List<Route>>> resourceFlight, LocalDate departureDate) {
         Map<Integer, Map<DestinationResource, List<List<Flight>>>> flights = new HashMap<>();
         Map<DestinationResource, List<List<Flight>>> flightsMap = new HashMap<>();
@@ -118,10 +145,8 @@ public class SearchServiceImpl implements SearchService {
         return mapMultiValueFlightsMap;
     }
 
-    @Override
-    public Map<Integer, MultiValueMap<DestinationResource, List<Route>>> getRoutes(List<DestinationResource> resourceFrom,
-                                                                               List<DestinationResource> resourceTo,
-                                                                               LocalDate departureDate) {
+    private Map<Integer, MultiValueMap<DestinationResource, List<Route>>> getRoutes(List<DestinationResource> resourceFrom,
+                                                                               List<DestinationResource> resourceTo) {
         // DIRECT ROUTES
         Map<DestinationResource, List<Destination>> direct = null;
         if (!resourceFrom.isEmpty() && !resourceTo.isEmpty()) {

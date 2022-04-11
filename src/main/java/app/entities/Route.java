@@ -40,7 +40,7 @@ public class Route {
     @DateTimeFormat(pattern = "dd.MM.yyyy")
     @JsonFormat(pattern = "dd.MM.yyyy")
     @Nullable
-    private LocalDate arrivalDate;
+    private LocalDate returnDate;
 
 
     /**

@@ -44,6 +44,7 @@ public class JsonParser {
         Route routeWithFlightOptions = new Route();
         if (!fromDestList.isEmpty() && !toDestList.isEmpty()) {
             routeWithFlightOptions.setDepartureDate(departureDate);
+            routeWithFlightOptions.setReturnDate(departureDateOfReturn);
             routeWithFlightOptions.setNumberOfSeats(numberOfSeats);
             routeWithFlightOptions.setCategory(category);
             routeWithFlightOptions.setFrom(fromDestList.get(0));

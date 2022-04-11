@@ -52,8 +52,8 @@ public class TicketRestControllerTest {
     Ticket createTicket() {
         return ticketService.createOrUpdateTicket(Ticket.builder()
                 .seat(Seat.builder()
-                        .seatNumber(3 + "F")
-                        .fare(3)
+                        .seatNumber(2 + "F")
+                        .fare(2)
                         .isRegistered(true)
                         .isSold(true)
                         .build())
@@ -111,8 +111,8 @@ public class TicketRestControllerTest {
     void givenTicketExist_whenUpdateTicket_thenStatus200() throws Exception {
         Ticket ticket = ticketService.createOrUpdateTicket(createTicket());
         ticket.setSeat(Seat.builder()
-                .seatNumber(4 + "F")
-                .fare(4)
+                .seatNumber(3 + "F")
+                .fare(3)
                 .isRegistered(true)
                 .isSold(true)
                 .build());
