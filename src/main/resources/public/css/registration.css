@@ -16,3 +16,8 @@
 .seat-checkbox {
     display: none;
 }
+
+.disabled {
+    color: whitesmoke !important;
+    background-color: grey !important;
+}

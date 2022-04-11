@@ -61,7 +61,7 @@ async function getRegistrationInfo() {
         registrationModal.find('.modal-title').html(`Не найден рейс ${bookingId}`);
     }
 
-    //Запрос на получение мест и выбранной категории - вернуть
+    //Запрос на получение мест и выбранной категории - вернуть, выше закомментить
     /*let promiseBooking = await registrationFetchService.getBookingByHoldNumber(bookingId);
 
     if (promiseBooking.ok) {
@@ -70,7 +70,6 @@ async function getRegistrationInfo() {
 
         //Заполнение содержимым модального окна
         await setModalContent(passengerName, bookingId);
-        //await showSeatSelectors(ticket);
         await showSeatSelectors();
 
     } else {
@@ -125,7 +124,6 @@ async function showSeatSelectorsMC_21_200(category) {
     let secondIncompleteRow; // второй неполный ряд
     let arrSeatSymbols; //буквенный идентификатор места в ряду
     let arrSeatSymbolsCategory; //буквенный идентификатор места в ряду для категории
-    let startSeatId; //идентификатор первого места в категории
 
     if (category === "business") {
         startRow = 0;
@@ -135,7 +133,6 @@ async function showSeatSelectorsMC_21_200(category) {
         firstIncompleteRow = 0;
         secondIncompleteRow = 0;
         arrSeatSymbolsCategory = ["A","B","C","D"];
-        startSeatId = 1;
     } else if (category === "economy") {
         startRow = 3;
         columns = 6;
@@ -144,10 +141,35 @@ async function showSeatSelectorsMC_21_200(category) {
         firstIncompleteRow = 12 + startRow;
         secondIncompleteRow = 21 + startRow;
         arrSeatSymbolsCategory = ["A","B","C","D","E","F"];
-        startSeatId = 13;
     }
 
-    let arrValue = Array.from({length: 132}, (e, i)=> i); //массив Id Seat-ов листа из запроса
+    let booking = { //брать из запроса к букингу
+        listSeats: [
+            {
+                id: 17,
+                isRegistered: false
+            },
+            {
+                id: 18,
+                isRegistered: true
+            }
+            ]
+    };
+    let arrValue = [];
+    let arrDisable = [];
+    for (let i in booking.listSeats) {
+        arrValue.push(booking.listSeats[i].id);
+        if (booking.listSeats[i].isRegistered) {
+            arrDisable.push("");
+        } else {
+            arrDisable.push("disabled");
+        }
+    }
+
+    //let arrValue = Array.from({length: 132}, (e, i)=> i); //массив Id Seat-ов листа из запроса - проверка
+    //let arrDisable = ['disabled', '', '', 'disabled', "disabled"]; //массив статусов мест (недоступны) - проверка
+
+    let indexSeatList = 0; //счетчик, используемый для соотношения значений массивов arrValue и arrDisable с параметрами чекбоксов
 
     for (let i = startRow + 1; i <= rows; i++) {
         let divRows = document.createElement('div');
@@ -167,10 +189,12 @@ async function showSeatSelectorsMC_21_200(category) {
                         id="check-${i}${j}" class='seat-checkbox' 
                         data-seat-row="${i}" 
                         data-seat-col="${j}"
-                        data-seat-id="${arrValue.splice(startSeatId,1)}"> 
+                        data-seat-id="${arrValue[indexSeatList]}"  
+                        ${arrDisable[indexSeatList]}> 
                         <label for="check-${i}${j}" 
-                        class="seat-selector btn btn-outline-primary" 
+                        class="seat-selector btn btn-outline-primary ${arrDisable[indexSeatList]}" 
                         style='min-width: 60px'>${i}${arrSeatSymbols.splice(0,1)}</label>`;
+                    indexSeatList++;
                 }
                 div.innerHTML += checkboxes;
             } else {
@@ -179,6 +203,7 @@ async function showSeatSelectorsMC_21_200(category) {
                 columnPassage = 0;
             }
             divRows.append(div);
+
         }
         $("#seats").append(divRows);
     }
@@ -201,25 +226,28 @@ registrationModal.on('click', '.seat-selector', async (event)=> {
     let targetCheckbox = document.getElementById(checkBoxId);
 
     //Вывод выбранных мест
-    let chosenCheckboxes = document.querySelectorAll('input[class="seat-checkbox"]');
+    if (!targetCheckbox.getAttribute('disabled')) {
+        let chosenCheckboxes = document.querySelectorAll('input[class="seat-checkbox"]');
 
-    for (let i = 0; i < chosenCheckboxes.length; i++) {
-        let dataSet = chosenCheckboxes[i].dataset;
-        let chosenSeat = dataSet.seatRow +
-            String.fromCharCode(64 + Number(dataSet.seatCol)) + " | " + dataSet.seatId;
+        for (let i = 0; i < chosenCheckboxes.length; i++) {
+            let dataSet = chosenCheckboxes[i].dataset;
+            let chosenSeat = dataSet.seatRow +
+                String.fromCharCode(64 + Number(dataSet.seatCol)) + " | " + dataSet.seatId;
 
-        if (targetCheckbox.checked &&
-            chosenCheckboxes[i].checked && chosenCheckboxes[i] !== targetCheckbox ||
-            !targetCheckbox.checked &&
-            (chosenCheckboxes[i].checked || chosenCheckboxes[i] === targetCheckbox)) {
+            if (targetCheckbox.checked &&
+                chosenCheckboxes[i].checked && chosenCheckboxes[i] !== targetCheckbox ||
+                !targetCheckbox.checked &&
+                (chosenCheckboxes[i].checked || chosenCheckboxes[i] === targetCheckbox)) {
 
-            setChosenSeats += chosenSeat;
+                setChosenSeats += chosenSeat;
 
-            seatResultContainer.append(`<div>${chosenSeat}</div>`);
+                seatResultContainer.append(`<div>${chosenSeat}</div>`);
+            }
         }
+        ticketComplete.seat.seatNumber = setChosenSeats.substr(0,2); //после добавления возможности
+        //регистрировать несколько пассажиров заменить на массив
     }
-    ticketComplete.seat.seatNumber = setChosenSeats.substr(0,2); //после добавления возможности
-                                //регистрировать несколько пассажиров заменить на массив
+
 })
 
 //обработчик кнопки "Подтвердить"
