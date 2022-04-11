@@ -40,6 +40,7 @@ public class DataInitializer {
     private final DestinationResourceService destinationResourceService;
     private final SearchService searchService;
     private final SearchResultService searchResultService;
+    private final BookingService bookingService;
 
     @PostConstruct
     public void init() {
@@ -157,6 +158,60 @@ public class DataInitializer {
                 LocalDate.of(2022, 4, 4));
         SearchResult searchResult1 = searchService.getSearchResultByCitiesAndLocalDates("Moscow",
                 "Vladivostok", LocalDate.of(2022,4,4), LocalDate.now());
+
+        // создание бронирования
+        bookingService.createOrUpdateBooking(
+                Booking.builder()
+                        .departTicket(
+                                ticketService.createOrUpdateTicket(
+                                        Ticket.builder()
+                                                .flight(
+                                                        Flight.builder()
+                                                                .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
+                                                                .from(moscow)
+                                                                .to(norilsk)
+                                                                .arrivalDateTime(LocalDateTime.now())
+                                                                .departureDate(LocalDate.of(2022, 3, 12))
+                                                                .departureTime(LocalTime.of(12, 6, 0))
+                                                                .build())
+                                                .seat(seatService.createOrUpdate(Seat.builder()
+                                                        .seatNumber(2 + "F")
+                                                        .fare(2)
+                                                        .isRegistered(false)
+                                                        .isSold(false)
+                                                        .build()))
+                                                .holdNumber(420L)
+                                                .price(15000L)
+                                                .build()))
+                        .initialBookingDateTime(LocalDateTime.now())
+                        .paymentMethod("CARD")
+                        .status("PAID")
+                        .passenger(
+                                passengerService.createOrUpdatePassenger(
+                                        Passenger.builder()
+                                                .email("passenger_booking@mail.ru")
+                                                .password("password_passenger_booking")
+                                                .roles(Set.of(roleService.createOrUpdateRole(new Role(2L,"USER"))))
+                                                .firstName("passenger_booking")
+                                                .middleName("passenger_middle_name_passenger_booking")
+                                                .lastName("passenger_last_name_passenger_booking")
+                                                .dateOfBirth(LocalDate.now())
+                                                .passport(
+                                                        Passport.builder()
+                                                                .dateOfBirth(LocalDate.now())
+                                                                .gender("passport_gender_booking")
+                                                                .firstName("passport_first_name_booking")
+                                                                .middleName("passport_middle_name_booking")
+                                                                .lastName("passport_last_name_booking")
+                                                                .birthplace("passport_birthplace_booking")
+                                                                .residenceRegistration("passport_residence_registration_booking")
+                                                                .seriesAndNumber("passport_series_and_number_booking")
+                                                                .build()
+                                                )
+                                                .build()
+                                ))
+                        .build()
+        );
         System.out.println("DataInitializer сработал!");
     }
 
