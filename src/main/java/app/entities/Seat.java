@@ -48,6 +48,4 @@ public class Seat {
      */
     @NonNull
     private Boolean isSold;
-
-
 }

@@ -26,14 +26,16 @@ public class Ticket {
     /**
      * пассажир
      */
-//    @NonNull
-//    private Passenger passenger;
+    @Nullable
+    @OneToOne
+    private Passenger passenger;
 
     /**
      * номер кресла
      */
     @Nullable
-    private String seat;
+    @OneToOne
+    private Seat seat;
 
     /**
      * номер бронирования

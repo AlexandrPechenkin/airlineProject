@@ -24,7 +24,7 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @RestController
-@Api(tags = "CategoryController")
+@Api(tags = "CategoryRestController")
 @RequestMapping("/api/category")
 public class CategoryRestController {
 

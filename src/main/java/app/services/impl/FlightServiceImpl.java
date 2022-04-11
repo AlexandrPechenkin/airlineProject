@@ -66,4 +66,8 @@ public class FlightServiceImpl implements FlightService {
         return flightRepository.findFlights(from, to, departureDate);
     }
 
+    @Override
+    public List<Flight> findAllWithDepartureDateAfter(String cityFrom, String cityTo, LocalDate date) {
+        return flightRepository.findAllWithDepartureDateAfter(cityFrom, cityTo, date);
+    }
 }

@@ -21,7 +21,7 @@ import java.util.Optional;
  */
 @RestController
 @RequiredArgsConstructor
-@Api(tags = "DestinationController")
+@Api(tags = "DestinationRestController")
 @RequestMapping("/api/destinations")
 public class DestinationRestController {
     /**

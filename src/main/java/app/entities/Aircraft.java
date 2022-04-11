@@ -1,10 +1,12 @@
 package app.entities;
 
 import lombok.*;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Класс Aircraft отвечает за состояние воздушного судна
@@ -56,4 +58,11 @@ public class Aircraft {
      */
     @OneToMany(cascade = CascadeType.ALL)
     private List<Category> categories;
+
+    /**
+     * Места самолёта по категориям
+     */
+    @Nullable
+    @OneToMany(targetEntity = Seat.class)
+    private Map<Category, List<Seat>> seatsByCategory;
 }

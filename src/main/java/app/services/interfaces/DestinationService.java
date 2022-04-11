@@ -37,4 +37,6 @@ public interface DestinationService {
      * @return - объект аэропорта, который был создан или обновлен
      */
     Destination createOrUpdateDestination(Destination destination);
+
+    List<Destination> findAll();
 }
