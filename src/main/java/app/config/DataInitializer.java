@@ -44,29 +44,6 @@ public class DataInitializer {
     @PostConstruct
     public void init() {
 
-        Passenger passenger = Passenger.builder()
-                .password("password_first")
-                .roles(Set.of(new Role("ADMIN")))
-                .firstName("Dereck")
-                .lastName("Storm")
-                .middleName("Totoro")
-                .dateOfBirth(LocalDate.of(1992, 2, 15))
-                .email("passanger@test.com")
-                .passport(
-                        Passport.builder()
-                                .firstName("Dereck")
-                                .lastName("Storm")
-                                .middleName("Totoro")
-                                .dateOfBirth(LocalDate.of(1990, 2, 15))
-                                .gender("Male")
-                                .birthplace("US")
-                                .residenceRegistration("New York")
-                                .seriesAndNumber("3333 123457")
-                                .build()
-                )
-                .build();
-        passengerService.createOrUpdatePassenger(passenger);
-
         System.out.println("DataInitializer сработал!");
 
         aircraftService.createOrUpdateAircraft(Fleet.createMC21200());
@@ -74,26 +51,6 @@ public class DataInitializer {
 
         aircraftService.createOrUpdateAircraft(Fleet.createBoeing777());
         System.out.println("Самолет Боинг 777 был создан.");
-
-        ticketService.createOrUpdateTicket(Ticket.builder()
-                /*.seat(seatService.createOrUpdate(Seat.builder()
-                        .seatNumber(1 + "F")
-                        .fare(1)
-                        .isRegistered(false)
-                        .isSold(false)
-                        .build()))*/
-                .seat(seatService.getSeatById(1L).get())
-                .holdNumber(420L)
-                .price(15000L)
-                .flight(Flight.builder()
-                        .destinationFrom("NSK")
-                        .destinationTo("MSK")
-                        .departureDate(LocalDate.of(2022, 12, 20))
-                        .departureTime(LocalTime.of(10, 20))
-                        .arrivalDateTime(LocalDateTime.of(2022, 12, 21, 14, 40))
-                        .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
-                        .build())
-                .build());
 
         createPassenger();
         System.out.println("Пассажир был создан.");
@@ -141,12 +98,12 @@ public class DataInitializer {
         System.out.println("Самолёт был создан");
 
         ticketService.createOrUpdateTicket(Ticket.builder()
-                .seat(seatService.createOrUpdate(Seat.builder()
+                /*.seat(seatService.createOrUpdate(Seat.builder()
                         .seatNumber(1 + "F")
                         .fare(1)
                         .isRegistered(false)
                         .isSold(false)
-                        .build()))
+                        .build()))*/
                 .holdNumber(420L)
                 .price(15000L)
                 .flight(Flight.builder()
