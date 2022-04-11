@@ -121,7 +121,6 @@ async function showSeatSelectorsMC_21_200(category, listSeats) {
     let firstIncompleteRow; //первый неполный ряд
     let secondIncompleteRow; // второй неполный ряд
     let arrSeatSymbols; //буквенный идентификатор места в ряду
-    let arrSeatSymbolsCategory; //буквенный идентификатор места в ряду для категории
 
     if (category === "business") {
         startRow = 0;
@@ -130,7 +129,7 @@ async function showSeatSelectorsMC_21_200(category, listSeats) {
         columnPassageCategory = 3;
         firstIncompleteRow = 0;
         secondIncompleteRow = 0;
-        arrSeatSymbolsCategory = ["A","B","C","D"];
+        arrSeatSymbols = ["A","B","C","D"];
     } else if (category === "economy") {
         startRow = 3;
         columns = 6;
@@ -138,7 +137,7 @@ async function showSeatSelectorsMC_21_200(category, listSeats) {
         columnPassageCategory = 4;
         firstIncompleteRow = 12 + startRow;
         secondIncompleteRow = 21 + startRow;
-        arrSeatSymbolsCategory = ["A","B","C","D","E","F"];
+        arrSeatSymbols = ["A","B","C","D","E","F"];
     }
 
     let arrValue = []; //массив Id Seat-ов листа из запроса
@@ -153,11 +152,11 @@ async function showSeatSelectorsMC_21_200(category, listSeats) {
     }
 
     let indexSeatList = 0; //счетчик, используемый для соотношения значений массивов arrValue и arrDisable с параметрами чекбоксов
+    let indexSeatSymbol = 0; //счётчик для буквенных идентификаторов мест
 
     for (let i = startRow + 1; i <= rows; i++) {
         let divRows = document.createElement('div');
         columnPassage = columnPassageCategory;
-        arrSeatSymbols = Array.from(arrSeatSymbolsCategory);
         for (let j = 1; j <= columns; j++) {
             let div = document.createElement('div');
             div.setAttribute('class', 'form-check-inline plane-seat');
@@ -166,7 +165,6 @@ async function showSeatSelectorsMC_21_200(category, listSeats) {
                 if ((i === firstIncompleteRow) && ((j > 4) || (j < 2)) ||
                     (i === secondIncompleteRow) && (j < 4)){
                     checkboxes = `<div style="padding-right: 60px"></div>`;
-                    arrSeatSymbols.splice(0,1);
                 } else {
                     checkboxes = `<input type="checkbox" 
                         id="check-${i}${j}" class='seat-checkbox' 
@@ -176,8 +174,13 @@ async function showSeatSelectorsMC_21_200(category, listSeats) {
                         ${arrDisable[indexSeatList]}> 
                         <label for="check-${i}${j}" 
                         class="seat-selector btn btn-outline-primary ${arrDisable[indexSeatList]}" 
-                        style='min-width: 60px'>${i}${arrSeatSymbols.splice(0,1)}</label>`;
+                        style='min-width: 60px'>${i}${arrSeatSymbols[indexSeatSymbol]}</label>`;
                     indexSeatList++;
+                }
+                if (indexSeatSymbol < arrSeatSymbols.length - 1) {
+                    indexSeatSymbol++;
+                } else {
+                    indexSeatSymbol = 0;
                 }
                 div.innerHTML += checkboxes;
             } else {
