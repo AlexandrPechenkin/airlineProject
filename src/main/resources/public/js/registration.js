@@ -44,8 +44,8 @@ registrationModal.on("show.bs.modal", () => {
 
 async function getRegistrationInfo() {
     let booking = { //брать из запроса к букингу (образец)
-        category: "economy",
-        aircraft: "MC_21_200",
+        category: "comfort",
+        aircraft: "boeing_777",
         listSeats: [
             {
                 id: 17,
@@ -99,47 +99,8 @@ async function setModalContent() {
 }
 
 async function showSeatSelectors(booking) {
-    //booking.category = "economy";
-    //booking.category = "business";
-    //booking.aircraft = "MC_21_200";
-    //booking.aircraft = "boeing_777";
 
-    if (booking.aircraft === "MC_21_200") {
-        await showSeatSelectorsMC_21_200(booking.category, booking.listSeats);
-    } else if (booking.aircraft === "boeing_777") {
-        await showSeatSelectorsBoeing_B777(booking.category, booking.listSeats);
-    }
-}
-
-//Схема МС-21-200
-async function showSeatSelectorsMC_21_200(category, listSeats) {
-    let columns;
-    let rows;
-    let startRow; //отступ для начального ряда
-    let columnPassage; //значение для прохода
-    let columnPassageCategory; //значение для прохода категории
-    let firstIncompleteRow; //первый неполный ряд
-    let secondIncompleteRow; // второй неполный ряд
-    let arrSeatSymbols; //буквенный идентификатор места в ряду
-
-    if (category === "business") {
-        startRow = 0;
-        columns = 4;
-        rows = 3;
-        columnPassageCategory = 3;
-        firstIncompleteRow = 0;
-        secondIncompleteRow = 0;
-        arrSeatSymbols = ["A","B","C","D"];
-    } else if (category === "economy") {
-        startRow = 3;
-        columns = 6;
-        rows = 21 + startRow;
-        columnPassageCategory = 4;
-        firstIncompleteRow = 12 + startRow;
-        secondIncompleteRow = 21 + startRow;
-        arrSeatSymbols = ["A","B","C","D","E","F"];
-    }
-
+    let listSeats = booking.listSeats;
     let arrValue = []; //массив Id Seat-ов листа из запроса
     let arrDisable = []; //массив статусов мест (недоступны)
     for (let i in listSeats) {
@@ -150,20 +111,87 @@ async function showSeatSelectorsMC_21_200(category, listSeats) {
             arrDisable.push("disabled");
         }
     }
+    let category = booking.category;
+
+    let columns; //мест в ряду
+    let rows; //номер последнего ряда
+    let startRow; //отступ для начального ряда
+    let firstColumnPassage; //значение для первого прохода
+    let firstColumnPassageCategory; //значение для первого прохода категории
+    let secondColumnPassage; //значение для второго прохода
+    let secondColumnPassageCategory; //значение для второго прохода категории
+    let arrSeatSymbols; //буквенный идентификатор места в ряду
+    let incompleteRow; //номер неполного ряда
+    let incompleteRowSpace; //пространство, не занятое местом
+
+    if (booking.aircraft === "MC_21_200") {
+        if (category === "business") {
+            startRow = 0;
+            columns = 4;
+            rows = 3;
+            firstColumnPassageCategory = 3;
+            arrSeatSymbols = ["A","B","C","D"];
+            incompleteRow = [];
+            incompleteRowSpace = [[]];
+        } else if (category === "economy") {
+            startRow = 3;
+            columns = 6;
+            rows = 21 + startRow;
+            firstColumnPassageCategory = 4;
+            arrSeatSymbols = ["A","B","C","D","E","F"];
+            incompleteRow = [15, 24];
+            incompleteRowSpace = [[1,5,6],[1,2,3]];
+        }
+    } else if (booking.aircraft === "boeing_777") {
+        if (category === "business") {
+            startRow = 0;
+            columns = 4;
+            rows = 7;
+            firstColumnPassageCategory = 2;
+            secondColumnPassageCategory = 4;
+            arrSeatSymbols = ["AC","D", "G","HK"];
+            incompleteRow = [];
+            incompleteRowSpace = [[]];
+        } else if (category === "comfort") {
+            startRow = 7;
+            columns = 8;
+            rows = 3 + startRow;
+            firstColumnPassageCategory = 3;
+            secondColumnPassageCategory = 7;
+            arrSeatSymbols = ["A", "C", "D", "E", "F", "G","H", "K"];
+            incompleteRow = [];
+            incompleteRowSpace = [[]];
+        } else if (category === "economy") {
+            startRow = 10;
+            columns = 10;
+            rows = 41 + startRow;
+            firstColumnPassageCategory = 4;
+            secondColumnPassageCategory = 8;
+            arrSeatSymbols = ["A", "B", "C", "D", "E", "F", "G","H", "J", "K"];
+            incompleteRow = [21, 22, 36, 37, 48, 49, 50, 51];
+            incompleteRowSpace = [[1,2,3,8,9,10], [1,2,3,8,9,10],
+                [1,2,3], [4,5,6,7], [2,3,8,9], [2,3,8,9], [1,2,3,8,9,10], [1,2,3,8,9,10]];
+        }
+    }
 
     let indexSeatList = 0; //счетчик, используемый для соотношения значений массивов arrValue и arrDisable с параметрами чекбоксов
     let indexSeatSymbol = 0; //счётчик для буквенных идентификаторов мест
 
     for (let i = startRow + 1; i <= rows; i++) {
         let divRows = document.createElement('div');
-        columnPassage = columnPassageCategory;
+        firstColumnPassage = firstColumnPassageCategory;
+        secondColumnPassage = secondColumnPassageCategory;
         for (let j = 1; j <= columns; j++) {
             let div = document.createElement('div');
             div.setAttribute('class', 'form-check-inline plane-seat');
-            if (j !== columnPassage) {
+            if (j !== firstColumnPassage && j !== secondColumnPassage) {
                 let checkboxes;
-                if ((i === firstIncompleteRow) && ((j > 4) || (j < 2)) ||
-                    (i === secondIncompleteRow) && (j < 4)){
+                if (incompleteRow.includes(i) && incompleteRowSpace[0].includes(j)){
+                    incompleteRowSpace[0].splice(0, 1);
+                    if (incompleteRowSpace[0].length === 0 && incompleteRowSpace.length > 1) {
+                        incompleteRow.splice(0,1);
+                        incompleteRowSpace.splice(0, 1);
+                    }
                     checkboxes = `<div style="padding-right: 60px"></div>`;
                 } else {
                     checkboxes = `<input type="checkbox" 
@@ -185,18 +213,17 @@ async function showSeatSelectorsMC_21_200(category, listSeats) {
                 div.innerHTML += checkboxes;
             } else {
                 div.innerHTML += `<h6 style='min-width: 50px'>ряд ${i}<h6>`;
+                if (j === firstColumnPassage) {
+                    firstColumnPassage = 0;
+                } else if (j === secondColumnPassage) {
+                    secondColumnPassage = 0;
+                }
                 j--;
-                columnPassage = 0;
             }
             divRows.append(div);
         }
         $("#seats").append(divRows);
     }
-}
-
-//Схема Боинг-В777 на 427 мест
-async function showSeatSelectorsBoeing_B777(category) {
-
 }
 
 let setChosenSeats = ""; //контейнер для выбранных мест
