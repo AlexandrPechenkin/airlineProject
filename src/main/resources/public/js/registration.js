@@ -1,6 +1,6 @@
 let urlRegistration = 'http://localhost:8888/api/registration/'
 //let urlPassenger = 'http://localhost:8888/api/passenger/'
-let urlTicket = 'http://localhost:8888/api/ticket/holdNumber/'
+//let urlTicket = 'http://localhost:8888/api/ticket/holdNumber/'
 let urlBooking = `http://localhost:8888/api/booking/`;
 
 const registrationFetchService = {
@@ -9,7 +9,6 @@ const registrationFetchService = {
         'Content-Type': 'application/json',
         'Referer': null
     },
-    getTicketByHoldNumber: async (holdNumber) => await fetch(`${urlTicket}${holdNumber}`),
     createRegistration: async (holdNumber, seatId) => await fetch(
         `${urlRegistration}${holdNumber}/${seatId}`, {
         method: 'POST',
@@ -43,23 +42,21 @@ registrationModal.on("show.bs.modal", () => {
     registrationModal.find('.modal-footer').html('');
 })
 
-let ticketComplete;
-
 async function getRegistrationInfo() {
-    //Запрос на получение объекта Ticket
-    let promiseTicket = await registrationFetchService.getTicketByHoldNumber(bookingId);
-
-    if (promiseTicket.ok) {
-        //let ticket = await promiseTicket.json();
-        ticketComplete = await promiseTicket.json();
-
-        //Заполнение содержимым модального окна
-        await setModalContent(passengerName, bookingId);
-        await showSeatSelectors();
-
-    } else {
-        registrationModal.find('.modal-title').html(`Не найден рейс ${bookingId}`);
-    }
+    let booking = { //брать из запроса к букингу (образец)
+        category: "economy",
+        aircraft: "MC_21_200",
+        listSeats: [
+            {
+                id: 17,
+                isRegistered: false
+            },
+            {
+                id: 18,
+                isRegistered: true
+            }
+        ]
+    };
 
     //Запрос на получение мест и выбранной категории - вернуть, выше закомментить
     /*let promiseBooking = await registrationFetchService.getBookingByHoldNumber(bookingId);
@@ -70,11 +67,15 @@ async function getRegistrationInfo() {
 
         //Заполнение содержимым модального окна
         await setModalContent(passengerName, bookingId);
-        await showSeatSelectors();
+        await showSeatSelectors(booking);
 
     } else {
         registrationModal.find('.modal-title').html(`Не найден рейс ${bookingId}`);
     }*/
+
+    //Заполнение содержимым модального окна
+    await setModalContent(passengerName, bookingId);
+    await showSeatSelectors(booking);
 }
 
 async function setModalContent() {
@@ -97,24 +98,21 @@ async function setModalContent() {
     registrationModal.find('.modal-body').append(regModalBody);
 }
 
-async function showSeatSelectors() {
+async function showSeatSelectors(booking) {
+    //booking.category = "economy";
+    //booking.category = "business";
+    //booking.aircraft = "MC_21_200";
+    //booking.aircraft = "boeing_777";
 
-    let MC_21_200 = true;
-    let boeing_777 = false;
-    let category = "economy";
-    //let category = "business";
-
-
-    if (MC_21_200) {
-        await showSeatSelectorsMC_21_200(category);
-    } else if (boeing_777) {
-        await showSeatSelectorsBoeing_B777(category);
+    if (booking.aircraft === "MC_21_200") {
+        await showSeatSelectorsMC_21_200(booking.category, booking.listSeats);
+    } else if (booking.aircraft === "boeing_777") {
+        await showSeatSelectorsBoeing_B777(booking.category, booking.listSeats);
     }
-
 }
 
 //Схема МС-21-200
-async function showSeatSelectorsMC_21_200(category) {
+async function showSeatSelectorsMC_21_200(category, listSeats) {
     let columns;
     let rows;
     let startRow; //отступ для начального ряда
@@ -143,31 +141,16 @@ async function showSeatSelectorsMC_21_200(category) {
         arrSeatSymbolsCategory = ["A","B","C","D","E","F"];
     }
 
-    let booking = { //брать из запроса к букингу
-        listSeats: [
-            {
-                id: 17,
-                isRegistered: false
-            },
-            {
-                id: 18,
-                isRegistered: true
-            }
-            ]
-    };
-    let arrValue = [];
-    let arrDisable = [];
-    for (let i in booking.listSeats) {
-        arrValue.push(booking.listSeats[i].id);
-        if (booking.listSeats[i].isRegistered) {
+    let arrValue = []; //массив Id Seat-ов листа из запроса
+    let arrDisable = []; //массив статусов мест (недоступны)
+    for (let i in listSeats) {
+        arrValue.push(listSeats[i].id);
+        if (listSeats[i].isRegistered) {
             arrDisable.push("");
         } else {
             arrDisable.push("disabled");
         }
     }
-
-    //let arrValue = Array.from({length: 132}, (e, i)=> i); //массив Id Seat-ов листа из запроса - проверка
-    //let arrDisable = ['disabled', '', '', 'disabled', "disabled"]; //массив статусов мест (недоступны) - проверка
 
     let indexSeatList = 0; //счетчик, используемый для соотношения значений массивов arrValue и arrDisable с параметрами чекбоксов
 
@@ -203,7 +186,6 @@ async function showSeatSelectorsMC_21_200(category) {
                 columnPassage = 0;
             }
             divRows.append(div);
-
         }
         $("#seats").append(divRows);
     }
@@ -239,13 +221,13 @@ registrationModal.on('click', '.seat-selector', async (event)=> {
                 !targetCheckbox.checked &&
                 (chosenCheckboxes[i].checked || chosenCheckboxes[i] === targetCheckbox)) {
 
-                setChosenSeats += chosenSeat;
+                setChosenSeats = dataSet.seatId;
 
                 seatResultContainer.append(`<div>${chosenSeat}</div>`);
             }
         }
-        ticketComplete.seat.seatNumber = setChosenSeats.substr(0,2); //после добавления возможности
-        //регистрировать несколько пассажиров заменить на массив
+        //после добавления возможности регистрировать несколько пассажиров
+        //заменить setChosenSeats на массив и изменить запрос на отправку списка мест
     }
 
 })
@@ -255,10 +237,9 @@ registrationModal.on('click', '#registerCompleteButton', async ()=> {
 
     //Запрос на создание объекта Registration
     let promiseRegistration = await registrationFetchService.createRegistration(
-        bookingId, 3);
+        bookingId, setChosenSeats);
 
     if (promiseRegistration.ok) {
         registrationModal.modal('hide');
     }
-
 })
