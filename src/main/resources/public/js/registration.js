@@ -1,6 +1,4 @@
 let urlRegistration = 'http://localhost:8888/api/registration/'
-//let urlPassenger = 'http://localhost:8888/api/passenger/'
-//let urlTicket = 'http://localhost:8888/api/ticket/holdNumber/'
 let urlBooking = `http://localhost:8888/api/booking/`;
 
 const registrationFetchService = {
@@ -19,14 +17,14 @@ const registrationFetchService = {
 
 let registrationModal = $('#registrationModal');
 let passengerName;
-let bookingId;
+let bookingId; //введённый номер брони для поиска
+let booking; //json с данными из БД о местах в самолёте
 
 //Обработчик кнопки "Зарегистрироваться"
 $("#registrationButton").on('click', async () => {
     passengerName = document.getElementById("registrationPassengerSecondName").value;
     bookingId = document.getElementById("registrationBookingId").value;
 
-    //Запрос на получение объектов Ticket и Passenger
     await getRegistrationInfo();
 })
 
@@ -36,15 +34,17 @@ registrationModal.on("show.bs.modal", () => {
        data-bs-dismiss="modal">Отмена</button>`
     registrationModal.find('.modal-footer').append(closeButton);
 
-}).on("hidden.bs.modal", () => {
+}).on("hide.bs.modal", () => {
+    document.getElementById("registrationPassengerSecondName").value = '';
+    document.getElementById("registrationBookingId").value = '';
     registrationModal.find('.modal-title').html('');
     registrationModal.find('.modal-body').html('');
     registrationModal.find('.modal-footer').html('');
 })
 
 async function getRegistrationInfo() {
-    let booking = { //брать из запроса к букингу (образец)
-        category: "comfort",
+    booking = { //брать из запроса к букингу (образец)
+        category: "economy",
         aircraft: "boeing_777",
         listSeats: [
             {
@@ -63,19 +63,28 @@ async function getRegistrationInfo() {
 
     if (promiseBooking.ok) {
         //let ticket = await promiseTicket.json();
-        bookingComplete = await promiseBooking.json();
+        booking = await promiseBooking.json();
 
         //Заполнение содержимым модального окна
-        await setModalContent(passengerName, bookingId);
-        await showSeatSelectors(booking);
+        await setModalContent();
+        await showSeatSelectors();
 
     } else {
         registrationModal.find('.modal-title').html(`Не найден рейс ${bookingId}`);
     }*/
 
-    //Заполнение содержимым модального окна
-    await setModalContent(passengerName, bookingId);
-    await showSeatSelectors(booking);
+    let registrationInfo = document.getElementById('registrationInfo');
+
+    if (bookingId !== '420') { //содержимое переместить в блок выше
+        registrationInfo.innerText = 'Бронирование не найдено';
+        registrationInfo.setAttribute('class', 'text-danger');
+    } else {
+        registrationInfo.innerText = '';
+        registrationModal.modal('show');
+        //Заполнение содержимым модального окна
+        await setModalContent();
+        await showSeatSelectors();
+    }
 }
 
 async function setModalContent() {
@@ -98,7 +107,7 @@ async function setModalContent() {
     registrationModal.find('.modal-body').append(regModalBody);
 }
 
-async function showSeatSelectors(booking) {
+async function showSeatSelectors() {
 
     let listSeats = booking.listSeats;
     let arrValue = []; //массив Id Seat-ов листа из запроса
@@ -226,7 +235,7 @@ async function showSeatSelectors(booking) {
     }
 }
 
-let setChosenSeats = ""; //контейнер для выбранных мест
+let chosenSeatId = ''; //идентификатор выбранного места согласно БД
 
 //Обработчик нажатия на label чекбоксов
 registrationModal.on('click', '.seat-selector', async (event)=> {
@@ -236,40 +245,52 @@ registrationModal.on('click', '.seat-selector', async (event)=> {
     let targetLabel = event.currentTarget;
     let checkBoxId = targetLabel.getAttribute('for');
     let targetCheckbox = document.getElementById(checkBoxId);
+    chosenSeatId = targetCheckbox.dataset.seatId;
+
+    let allCheckboxes = document.querySelectorAll('input[class="seat-checkbox"]');
+    let allCheckboxesLabel = document.querySelectorAll('.seat-selector');
 
     //Вывод выбранных мест
     if (!targetCheckbox.getAttribute('disabled')) {
-        let chosenCheckboxes = document.querySelectorAll('input[class="seat-checkbox"]');
-
-        for (let i = 0; i < chosenCheckboxes.length; i++) {
-            let dataSet = chosenCheckboxes[i].dataset;
-            let chosenSeat = dataSet.seatRow +
-                String.fromCharCode(64 + Number(dataSet.seatCol)) + " | " + dataSet.seatId;
-
-            if (targetCheckbox.checked &&
-                chosenCheckboxes[i].checked && chosenCheckboxes[i] !== targetCheckbox ||
-                !targetCheckbox.checked &&
-                (chosenCheckboxes[i].checked || chosenCheckboxes[i] === targetCheckbox)) {
-
-                setChosenSeats = dataSet.seatId;
-
-                seatResultContainer.append(`<div>${chosenSeat}</div>`);
+        if (!targetCheckbox.checked) {
+            for (let i = 0; i < allCheckboxes.length; i++) {
+                if (allCheckboxes[i] !== targetCheckbox) {
+                    allCheckboxes[i].setAttribute('disabled', 'true');
+                    allCheckboxesLabel[i].setAttribute('class', 'seat-selector btn btn-outline-primary disabled');
+                }
             }
+            seatResultContainer.append(`<div id="chosenSeat">${targetLabel.textContent} | ${chosenSeatId}</div>`);
+        } else {
+            chosenSeatId = '';
+            document.getElementById('seats').innerHTML = '';
+            await showSeatSelectors();
         }
-        //после добавления возможности регистрировать несколько пассажиров
-        //заменить setChosenSeats на массив и изменить запрос на отправку списка мест
     }
-
 })
 
 //обработчик кнопки "Подтвердить"
 registrationModal.on('click', '#registerCompleteButton', async ()=> {
 
-    //Запрос на создание объекта Registration
-    let promiseRegistration = await registrationFetchService.createRegistration(
-        bookingId, setChosenSeats);
+    let seatResultContainer = $(".seat-result-container");
+    seatResultContainer.empty();
 
-    if (promiseRegistration.ok) {
+    if (chosenSeatId === '') {
+        seatResultContainer.append(`<div>Место не выбрано!</div>`);
+    } else {
+
+        let registrationInfo = document.getElementById('registrationInfo');
+        //Запрос на создание объекта Registration
+        let promiseRegistration = await registrationFetchService.createRegistration(
+            bookingId, chosenSeatId);
+
+        if (!promiseRegistration.ok) {
+            console.log("Ошибка запроса к RegistrationRestController");
+            registrationInfo.innerText = 'Ошибка при создании регистрации';
+            registrationInfo.setAttribute('class', 'text-danger');
+        } else {
+            registrationInfo.innerText = 'Успешная регистрация';
+            registrationInfo.setAttribute('class', 'text-success');
+        }
         registrationModal.modal('hide');
     }
 })
