@@ -1,5 +1,6 @@
 package app.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
 import javax.persistence.*;
@@ -19,6 +20,7 @@ public class FlightListWrapper {
     private Long id;
 
     @ManyToOne
+    @JsonIgnoreProperties("flights")
     private FlightContainer flightContainer;
 
     @ManyToMany

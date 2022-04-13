@@ -1,5 +1,7 @@
 package app.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
 import javax.persistence.*;
@@ -18,6 +20,7 @@ public class FlightContainer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @JsonIgnoreProperties(value = {"departFlights", "returnFlights"})
     @ManyToOne
     SearchResult searchResult;
 
@@ -28,6 +31,10 @@ public class FlightContainer {
     @NonNull
     private DestinationResource destinationResource;
 
+    @Column(name = "category")
+    private String category;
+
     @ManyToMany
+    @JsonIgnoreProperties("flightContainer")
     private List<FlightListWrapper> flights;
 }
