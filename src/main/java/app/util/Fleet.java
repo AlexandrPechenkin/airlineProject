@@ -19,7 +19,7 @@ public class Fleet {
     DestinationService destinationService;
     public static Aircraft createMC21200() {
         Category businessClass = Category.builder()
-                .category("Бизнес-класс")
+                .category("Business")
                 .seats(IntStream.rangeClosed(1, 12)
                         .mapToObj(iter ->
                                 Seat.builder()
@@ -39,8 +39,8 @@ public class Fleet {
                         ).collect(Collectors.toList()))
                 .build();
         Category economyClass = Category.builder()
-                .category("Эконом-класс")
-                .seats(IntStream.rangeClosed(1, 12)
+                .category("Economy")
+                .seats(IntStream.rangeClosed(1, 120)
                         .mapToObj(iter ->
                                 Seat.builder()
                                         .seatNumber("ЭК" + iter)
@@ -60,7 +60,7 @@ public class Fleet {
                 .build();
 
         return Aircraft.builder()
-                .model("МС-21-200")
+                .model("МС-21-200") //к модели привязан функционал registration.js, менять согласованно
                 .brand("Иркут")
                 .boardNumber("73000")
                 .flyingRange(6400)
@@ -71,7 +71,7 @@ public class Fleet {
 
     public static Aircraft createBoeing777() {
         Category businessClass = Category.builder()
-                .category("Бизнес-класс")
+                .category("Business")
                 .seats(IntStream.rangeClosed(1, 28)
                         .mapToObj(iter ->
                                 Seat.builder()
@@ -91,7 +91,7 @@ public class Fleet {
                         ).collect(Collectors.toList()))
                 .build();
         Category comfortClass = Category.builder()
-                .category("Комфорт-класс")
+                .category("Comfort")
                 .seats(IntStream.rangeClosed(1, 24)
                         .mapToObj(iter ->
                                 Seat.builder()
@@ -111,8 +111,8 @@ public class Fleet {
                         ).collect(Collectors.toList()))
                 .build();
         Category economyClass = Category.builder()
-                .category("Эконом-класс")
-                .seats(IntStream.rangeClosed(1, 37)
+                .category("Economy")
+                .seats(IntStream.rangeClosed(1, 375)
                         .mapToObj(iter ->
                                 Seat.builder()
                                         .seatNumber("ЭК" + iter)
@@ -132,7 +132,7 @@ public class Fleet {
                 .build();
 
         return Aircraft.builder()
-                .model("Боинг B777")
+                .model("Боинг B777") //к модели привязан функционал registration.js, менять согласованно
                 .brand("Аэрофлот")
                 .boardNumber("73100")
                 .flyingRange(11200)

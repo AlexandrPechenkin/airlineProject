@@ -40,8 +40,8 @@ public class RegistrationServiceImpl implements RegistrationService {
             //получение даты отправления для сравнения с временем запроса регистрации
             LocalDateTime nowTime = LocalDateTime.now();
 
-            //LocalDate regDate = nowTime.toLocalDate().plusDays(1L); //для проверки
-            LocalDate regDate = ticket.getFlight().getDepartureDate();
+            LocalDate regDate = nowTime.toLocalDate(); //для проверки
+            //LocalDate regDate = ticket.getFlight().getDepartureDate();
             LocalDateTime regDateTime = LocalDateTime.of(regDate, ticket.getFlight().getDepartureTime()); //дата отправления
 
             // вычисление разницы между датами, чтобы определить, можно ли начинать регистрацию пассажира на рейс

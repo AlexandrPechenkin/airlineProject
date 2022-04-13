@@ -12,7 +12,7 @@ const registrationFetchService = {
         method: 'POST',
         headers: registrationFetchService.head
     }),
-    getBookingByHoldNumber: async (holdNumber) => await fetch(`${urlBooking}${holdNumber}`)
+    getBookingByHoldNumber: async (holdNumber) => await fetch(`${urlBooking}holdNumber/${holdNumber}`)
 }
 
 let registrationModal = $('#registrationModal');
@@ -43,47 +43,23 @@ registrationModal.on("show.bs.modal", () => {
 })
 
 async function getRegistrationInfo() {
-    booking = { //брать из запроса к букингу (образец)
-        category: "economy",
-        aircraft: "boeing_777",
-        listSeats: [
-            {
-                id: 17,
-                isRegistered: false
-            },
-            {
-                id: 18,
-                isRegistered: true
-            }
-        ]
-    };
-
-    //Запрос на получение мест и выбранной категории - вернуть, выше закомментить
-    /*let promiseBooking = await registrationFetchService.getBookingByHoldNumber(bookingId);
-
-    if (promiseBooking.ok) {
-        //let ticket = await promiseTicket.json();
-        booking = await promiseBooking.json();
-
-        //Заполнение содержимым модального окна
-        await setModalContent();
-        await showSeatSelectors();
-
-    } else {
-        registrationModal.find('.modal-title').html(`Не найден рейс ${bookingId}`);
-    }*/
 
     let registrationInfo = document.getElementById('registrationInfo');
 
-    if (bookingId !== '420') { //содержимое переместить в блок выше
-        registrationInfo.innerText = 'Бронирование не найдено';
-        registrationInfo.setAttribute('class', 'text-danger');
-    } else {
+    //Запрос на получение букинга
+    let promiseBooking = await registrationFetchService.getBookingByHoldNumber(bookingId);
+    if (promiseBooking.ok) {
+        booking = await promiseBooking.json();
+
         registrationInfo.innerText = '';
         registrationModal.modal('show');
+
         //Заполнение содержимым модального окна
         await setModalContent();
         await showSeatSelectors();
+    } else {
+        registrationInfo.innerText = 'Бронирование не найдено';
+        registrationInfo.setAttribute('class', 'text-danger');
     }
 }
 
@@ -108,19 +84,27 @@ async function setModalContent() {
 }
 
 async function showSeatSelectors() {
+    let categoryName = booking.category;
+    let aircraft = booking.departTicket.flight.aircraft.model;
+    let categories = booking.departTicket.flight.aircraft.categories;
+    let listSeats;
 
-    let listSeats = booking.listSeats;
+    for (let i in categories) {
+        if (categories[i].category === categoryName) {
+            listSeats = categories[i].seats;
+        }
+    }
+
     let arrValue = []; //массив Id Seat-ов листа из запроса
     let arrDisable = []; //массив статусов мест (недоступны)
     for (let i in listSeats) {
         arrValue.push(listSeats[i].id);
         if (listSeats[i].isRegistered) {
-            arrDisable.push("");
-        } else {
             arrDisable.push("disabled");
+        } else {
+            arrDisable.push("");
         }
     }
-    let category = booking.category;
 
     let columns; //мест в ряду
     let rows; //номер последнего ряда
@@ -133,8 +117,8 @@ async function showSeatSelectors() {
     let incompleteRow; //номер неполного ряда
     let incompleteRowSpace; //пространство, не занятое местом
 
-    if (booking.aircraft === "MC_21_200") {
-        if (category === "business") {
+    if (aircraft === "МС-21-200") {
+        if (categoryName === "Business") {
             startRow = 0;
             columns = 4;
             rows = 3;
@@ -142,7 +126,7 @@ async function showSeatSelectors() {
             arrSeatSymbols = ["A","B","C","D"];
             incompleteRow = [];
             incompleteRowSpace = [[]];
-        } else if (category === "economy") {
+        } else if (categoryName === "Economy") {
             startRow = 3;
             columns = 6;
             rows = 21 + startRow;
@@ -151,8 +135,8 @@ async function showSeatSelectors() {
             incompleteRow = [15, 24];
             incompleteRowSpace = [[1,5,6],[1,2,3]];
         }
-    } else if (booking.aircraft === "boeing_777") {
-        if (category === "business") {
+    } else if (aircraft === "Боинг B777") {
+        if (categoryName === "Business") {
             startRow = 0;
             columns = 4;
             rows = 7;
@@ -161,7 +145,7 @@ async function showSeatSelectors() {
             arrSeatSymbols = ["AC","D", "G","HK"];
             incompleteRow = [];
             incompleteRowSpace = [[]];
-        } else if (category === "comfort") {
+        } else if (categoryName === "Comfort") {
             startRow = 7;
             columns = 8;
             rows = 3 + startRow;
@@ -170,7 +154,7 @@ async function showSeatSelectors() {
             arrSeatSymbols = ["A", "C", "D", "E", "F", "G","H", "K"];
             incompleteRow = [];
             incompleteRowSpace = [[]];
-        } else if (category === "economy") {
+        } else if (categoryName === "Economy") {
             startRow = 10;
             columns = 10;
             rows = 41 + startRow;

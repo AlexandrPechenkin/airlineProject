@@ -99,13 +99,13 @@ public class DataInitializer {
         createAircraft(moscow, nizhny);
         System.out.println("Самолёт был создан");
 
-        ticketService.createOrUpdateTicket(Ticket.builder()
-                /*.seat(seatService.createOrUpdate(Seat.builder()
+        /*ticketService.createOrUpdateTicket(Ticket.builder()
+                *//*.seat(seatService.createOrUpdate(Seat.builder()
                         .seatNumber(1 + "F")
                         .fare(1)
                         .isRegistered(false)
                         .isSold(false)
-                        .build()))*/
+                        .build()))*//*
                 .holdNumber(420L)
                 .price(15000L)
                 .flight(Flight.builder()
@@ -116,7 +116,7 @@ public class DataInitializer {
                         .arrivalDateTime(LocalDateTime.of(2022, 12, 21, 14, 40))
                         .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
                         .build())
-                .build());
+                .build());*/
 
         DestinationResource resDME = createDestinationResourceMoscowDME();
         DestinationResource resOneStop = createDestinationResourceFirst();
@@ -164,7 +164,8 @@ public class DataInitializer {
                 "Vladivostok", LocalDate.of(2022,4,4), LocalDate.now());
 
         // создание бронирования
-        Long holdNumber = Long.parseLong(("" + (UUID.randomUUID() + "").hashCode()).replaceAll("-", ""));
+        //Long holdNumber = Long.parseLong(("" + (UUID.randomUUID() + "").hashCode()).replaceAll("-", ""));
+        Long holdNumber = 1L;
         bookingService.createOrUpdateBooking(
                 Booking.builder()
                         .departTicket(
@@ -178,13 +179,14 @@ public class DataInitializer {
                                                                 .arrivalDateTime(LocalDateTime.now())
                                                                 .departureDate(LocalDate.of(2022, 3, 12))
                                                                 .departureTime(LocalTime.of(12, 6, 0))
+                                                                .aircraft(aircraftService.getAircraftById(1L).get())
                                                                 .build())
-                                                .seat(seatService.createOrUpdate(Seat.builder()
+                                                /*.seat(seatService.createOrUpdate(Seat.builder()
                                                         .seatNumber(2 + "F")
                                                         .fare(2)
                                                         .isRegistered(false)
                                                         .isSold(false)
-                                                        .build()))
+                                                        .build()))*/
                                                 .holdNumber(holdNumber)
                                                 .price(15000L)
                                                 .build()))
@@ -215,7 +217,7 @@ public class DataInitializer {
                                                 )
                                                 .build()
                                 ))
-                        .category("ECONOMY")
+                        .category("Economy")
                         .holdNumber(holdNumber)
                         .build()
         );
@@ -275,10 +277,12 @@ public class DataInitializer {
 
     }
 
+    String[] categoryClasses = {"Business", "Comfort", "Economy"};
+
     private void createAircraft() {
         List<Category> categories = IntStream.rangeClosed(1, 3)
                 .mapToObj(it -> Category.builder()
-                        .category("K" + it * 5)
+                        .category(categoryClasses[it - 1])
                         .seats(IntStream.rangeClosed(0, 10)
                                 .mapToObj(it1 ->
                                         Seat.builder()
@@ -1032,7 +1036,7 @@ public class DataInitializer {
     private void createAircraft(Destination from, Destination to) {
         List<Category> categories = IntStream.rangeClosed(1, 3)
                 .mapToObj(it -> Category.builder()
-                        .category("K" + it * 5)
+                        .category(categoryClasses[it - 1])
                         .seats(IntStream.rangeClosed(0, 10)
                                 .mapToObj(it1 ->
                                         Seat.builder()

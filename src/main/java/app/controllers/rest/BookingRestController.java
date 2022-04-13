@@ -92,7 +92,7 @@ public class BookingRestController {
             @ApiResponse(code = 200, message = "Успешно получено"),
             @ApiResponse(code = 404, message = "Бронирование пассажира не найдено")
     })
-    @GetMapping("/{holdNumber}")
+    @GetMapping("/holdNumber/{holdNumber}")
     public ResponseEntity<BookingDTO> getByHoldNumber(@ApiParam(value = "номер бронирования пассажира")
                                                           @PathVariable Long holdNumber) {
         List<Booking> booking = bookingService.findByHoldNumber(holdNumber);
