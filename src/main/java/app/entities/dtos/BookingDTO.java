@@ -20,11 +20,13 @@ public class BookingDTO {
     @NotEmpty(message = "Пожалуйста, укажите билет.")
     private Ticket departTicket;
 
-    private Ticket returnTicket;
-
     private Passenger passenger;
 
     private String paymentMethod;
+
+    private String category;
+
+    private Long holdNumber;
 
     private String status;
 

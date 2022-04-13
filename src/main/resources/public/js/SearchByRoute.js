@@ -20,7 +20,7 @@ async function getFlightsByRoutes() {
         "category": inp_category
     }
     await fetch(urlReq, {
-        method: "POST",
+        method: "GET",
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'

@@ -14,6 +14,7 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.Set;
 import java.util.TimeZone;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -160,6 +161,7 @@ public class DataInitializer {
                 "Vladivostok", LocalDate.of(2022,4,4), LocalDate.now());
 
         // создание бронирования
+        Long holdNumber = Long.parseLong(("" + (UUID.randomUUID() + "").hashCode()).replaceAll("-", ""));
         bookingService.createOrUpdateBooking(
                 Booking.builder()
                         .departTicket(
@@ -180,7 +182,7 @@ public class DataInitializer {
                                                         .isRegistered(false)
                                                         .isSold(false)
                                                         .build()))
-                                                .holdNumber(420L)
+                                                .holdNumber(holdNumber)
                                                 .price(15000L)
                                                 .build()))
                         .initialBookingDateTime(LocalDateTime.now())
@@ -210,6 +212,8 @@ public class DataInitializer {
                                                 )
                                                 .build()
                                 ))
+                        .category("ECONOMY")
+                        .holdNumber(holdNumber)
                         .build()
         );
         System.out.println("DataInitializer сработал!");
@@ -445,6 +449,7 @@ public class DataInitializer {
                                         .airportCode("OVB")
                                         .build()))
                         .departureDate(LocalDate.of(2022, 4, 4))
+                        .aircraft(aircraftService.getAircraftById(2L).get())
                         .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
                         .build());
     }
@@ -469,6 +474,7 @@ public class DataInitializer {
                                         .airportCode("VVO")
                                         .build()))
                         .departureDate(LocalDate.of(2022, 4, 4))
+                        .aircraft(aircraftService.getAircraftById(2L).get())
                         .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
                         .build());
     }
@@ -493,6 +499,7 @@ public class DataInitializer {
                                         .airportCode("SECOND")
                                         .build()))
                         .departureDate(LocalDate.of(2022, 4, 4))
+                        .aircraft(aircraftService.getAircraftById(2L).get())
                         .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
                         .build());
     }
@@ -517,6 +524,7 @@ public class DataInitializer {
                                         .airportCode("VVO")
                                         .build()))
                         .departureDate(LocalDate.of(2022, 4, 4))
+                        .aircraft(aircraftService.getAircraftById(2L).get())
                         .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
                         .build());
     }
@@ -541,6 +549,7 @@ public class DataInitializer {
                                         .airportCode("VVO")
                                         .build()))
                         .departureDate(LocalDate.of(2022, 4, 4))
+                        .aircraft(aircraftService.getAircraftById(2L).get())
                         .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
                         .build());
     }
@@ -565,6 +574,7 @@ public class DataInitializer {
                                         .airportCode("DIRECT")
                                         .build()))
                         .departureDate(LocalDate.of(2022, 4, 4))
+                        .aircraft(aircraftService.getAircraftById(2L).get())
                         .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
                         .build());
     }
@@ -590,6 +600,7 @@ public class DataInitializer {
                                         .build()
                         ))
                         .departureDate(LocalDate.of(2022, 4, 4))
+                        .aircraft(aircraftService.getAircraftById(2L).get())
                         .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
                         .build());
     }
@@ -615,6 +626,7 @@ public class DataInitializer {
                                         .build()
                         ))
                         .departureDate(LocalDate.of(2022, 4, 4))
+                        .aircraft(aircraftService.getAircraftById(2L).get())
                         .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
                         .build());
     }
@@ -640,6 +652,7 @@ public class DataInitializer {
                                         .build()
                         ))
                         .departureDate(LocalDate.of(2022, 4, 4))
+                        .aircraft(aircraftService.getAircraftById(2L).get())
                         .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
                         .build());
     }
@@ -665,6 +678,7 @@ public class DataInitializer {
                                         .build()
                         ))
                         .departureDate(LocalDate.of(2022, 4, 4))
+                        .aircraft(aircraftService.getAircraftById(2L).get())
                         .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
                         .build());
     }
@@ -690,6 +704,7 @@ public class DataInitializer {
                                         .build()
                         ))
                         .departureDate(LocalDate.of(2022, 4, 4))
+                        .aircraft(aircraftService.getAircraftById(2L).get())
                         .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
                         .build());
 
@@ -716,6 +731,7 @@ public class DataInitializer {
                                         .build()
                         ))
                         .departureDate(LocalDate.of(2022, 4, 4))
+                        .aircraft(aircraftService.getAircraftById(2L).get())
                         .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
                         .build());
     }
@@ -741,6 +757,7 @@ public class DataInitializer {
                                         .build()
                         ))
                         .departureDate(LocalDate.of(2022, 4, 4))
+                        .aircraft(aircraftService.getAircraftById(2L).get())
                         .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
                         .build());
     }
@@ -766,6 +783,7 @@ public class DataInitializer {
                                         .build()
                         ))
                         .departureDate(LocalDate.of(2022, 4, 4))
+                        .aircraft(aircraftService.getAircraftById(2L).get())
                         .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
                         .build());
     }
@@ -791,6 +809,7 @@ public class DataInitializer {
                                         .build()
                         ))
                         .departureDate(LocalDate.of(2022, 4, 4))
+                        .aircraft(aircraftService.getAircraftById(2L).get())
                         .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
                         .build());
     }
@@ -1055,6 +1074,7 @@ public class DataInitializer {
                                         .build()
                         ))
                         .departureDate(LocalDate.of(2022, 4, 4))
+                        .aircraft(aircraftService.getAircraftById(2L).get())
                         .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
                         .build());
     }
@@ -1080,6 +1100,7 @@ public class DataInitializer {
                                         .build()
                         ))
                         .departureDate(LocalDate.of(2022, 4, 5))
+                        .aircraft(aircraftService.getAircraftById(2L).get())
                         .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
                         .build());
     }

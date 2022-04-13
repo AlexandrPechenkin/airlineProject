@@ -1,5 +1,6 @@
 package app.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
@@ -32,7 +33,9 @@ public class SearchResult {
      * список рейсов from-to
      */
     @Nullable
-    @OneToMany(mappedBy = "searchResult", fetch = FetchType.EAGER, orphanRemoval = true)
+    @JsonIgnoreProperties("searchResult")
+    @OneToMany(mappedBy = "searchResult", targetEntity = FlightContainer.class, fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL, orphanRemoval = true)
     @MapKey(name = "numberOfSteps")
     private Map<Integer, FlightContainer> departFlights;
 
@@ -40,7 +43,9 @@ public class SearchResult {
      * список рейсов to-from
      */
     @Nullable
-    @OneToMany(mappedBy = "searchResult", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties("searchResult")
+    @OneToMany(mappedBy = "searchResult", targetEntity = FlightContainer.class, fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL, orphanRemoval = true)
     @MapKey(name = "numberOfSteps")
     private Map<Integer, FlightContainer> returnFlights;
 

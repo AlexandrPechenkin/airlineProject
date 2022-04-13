@@ -52,7 +52,7 @@ public class Booking {
     /**
      * Пассажир, забронировавший рейс.
      */
-    @NonNull
+    @Nullable
     @OneToOne
     private Passenger passenger;
 
@@ -72,6 +72,21 @@ public class Booking {
     @Column(name = "status")
     @Value("IN_PROGRESS")
     private String status;
+
+
+    /**
+     * Категория рейса.
+     */
+    @NonNull
+    @Column(name = "category")
+    private String category;
+
+    /**
+     * Уникальный номер бронирования.
+     */
+    @Nullable
+    @Column(name = "hold_number", unique = true)
+    private Long holdNumber;
 
     /**
      * Время начала процесса покупки бронирования рейса пользователем
