@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <script defer src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script defer src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
+          integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.19.1/dist/bootstrap-table.min.css">
+
+    <!-- Table Filter -->
+    <link href="https://unpkg.com/bootstrap-table@1.19.1/dist/bootstrap-table.min.css" rel="stylesheet">
+
+    <!-- Datepicker -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css"
+          integrity="sha512-mSYUmp1HYZDFaVKK//63EcZq4iFWFjxSL+Z3T/aCt4IO9Cejm03q3NKKYN6pFQzY0SBOr8h+eCIAZHPXcpZaNw=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+
+    <!-- Main script -->
+    <script defer type="text/javascript" src="/adminPanel.js"></script>
+
+    <title>Admin Panel</title>
+</head>
+
+<body>
+<header class="p-3 mb-2 bg-success text-white">
+    <h1>Admin Panel</h1>
+</header>
+
+<!-- Content -->
+<div class="row">
+    <!-- Left -->
+    <div class="col-2">
+        <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+            <a class="nav-link active" id="v-pills-admins-tab" data-toggle="pill" href="#v-pills-admins" role="tab"
+               aria-controls="v-pills-admins" aria-selected="true">Admins</a>
+            <a class="nav-link" id="v-pills-managers-tab" data-toggle="pill" href="#v-pills-managers" role="tab"
+               aria-controls="v-pills-managers" aria-selected="false">Managers</a>
+            <a class="nav-link" id="v-pills-passengers-tab" data-toggle="pill" href="#v-pills-passengers" role="tab"
+               aria-controls="v-pills-passengers" aria-selected="false">Passengers</a>
+            <a class="nav-link" id="v-pills-roles-tab" data-toggle="pill" href="#v-pills-roles" role="tab"
+               aria-controls="v-pills-roles" aria-selected="false">Roles</a>
+        </div>
+    </div>
+    <!-- Right -->
+    <div class="col-10 bg-light text-dark">
+        <div class="tab-content" id="v-pills-tabContent">
+
+            <!-- Admins -->
+            <div class="tab-pane fade show active" id="v-pills-admins" role="tabpanel"
+                 aria-labelledby="v-pills-admins-tab">
+                <!-- Title -->
+                <h1>Admins</h1>
+                <ul class="nav nav-tabs" id="adminsTabs" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="adminstable-tab" data-toggle="tab" href="#adminstable" role="tab"
+                           aria-controls="adminstable" aria-selected="true">Admins Table</a>
+                    </li>
+
+
+                    <li class="nav-item">
+                        <a class="nav-link" id="newadmin-tab" data-toggle="tab" href="#newadmin" role="tab"
+                           aria-controls="newadmin" aria-selected="false">New Admin</a>
+                    </li>
+                </ul>
+
+
+                <!-- Admin table or new admin -->
+                <div class="tab-content" id="adminTabContent">
+                    <!-- Admin table -->
+                    <div class="tab-pane fade show active" id="adminstable" role="tabpanel"
+                         aria-labelledby="adminstable-tab">
+                        <!-- Title -->
+                        <h5> All Admins </h5>
+                        <!-- Table -->
+                        <div class="container-fluid bg-white text-dark">
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th scope="col"> ID</th>
+                                    <th scope="col"> NickName</th>
+                                    <th scope="col"> Email</th>
+                                    <th scope="col"> Role</th>
+                                    <th scope="col"></th>
+                                    <th scope="col"></th>
+                                </tr>
+                                </thead>
+                                <tbody id="tableAdmins">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+
+                    <!-- New Admin -->
+                    <div class="tab-pane fade" id="newadmin" role="tabpanel" aria-labelledby="newadmin-tab">
+                        <!-- Title -->
+                        <h5>Add new Admin</h5>
+                        <!-- Form -->
+                        <div class="container bg-white text-dark">
+                            <form id="addAdminForm">
+
+                                <div class="form-group">
+                                    <label for="addNicknameAdmin" class="col-form-label"> Nickname </label>
+                                    <input type="text" class="form-control"
+                                           id="addNicknameAdmin" placeholder="Nickname" name="nickname"
+                                           value=""/>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="addEmailAdmin" class="col-form-label"> Email </label>
+                                    <input type="text" class="form-control"
+                                           id="addEmailAdmin" placeholder="Email" name="email"
+                                           value=""/>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="addPasswordAdmin" class="col-form-label"> Password </label>
+                                    <input type="text" class="form-control"
+                                           id="addPasswordAdmin" placeholder="Password" name="password"
+                                           value=""/>
+                                </div>
+
+                                <div class="overflow-scroll" id="select">
+                                    <label for="selector">Role: </label>
+                                    <select class="form-control roles" multiple id="selector"
+                                            name="roleHTML" size="2">
+                                    </select>
+                                </div>
+
+                                <button type="button" class="btn btn-success" id="addAdmin"
+                                        onclick="addAdminData()">Add new Admin
+                                </button>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!--Managers -->
+            <div class="tab-pane fade" id="v-pills-managers" role="tabpanel" aria-labelledby="v-pills-managers-tab">
+                <!-- Title -->
+                <h1>Managers</h1>
+                <!-- Managers table or new Managers select -->
+                <ul class="nav nav-tabs" id="managersTabs" role="tablist">
+                    <!-- Managers table -->
+                    <li class="nav-item">
+                        <a class="nav-link active" id="managerstable-tab" data-toggle="tab" href="#managerstable"
+                           role="tab" aria-controls="managerstable" aria-selected="true">Managers Table</a>
+                    </li>
+                    <!-- New Managers -->
+                    <li class="nav-item">
+                        <a class="nav-link" id="newmanager-tab" data-toggle="tab" href="#newmanager" role="tab"
+                           aria-controls="newmanager" aria-selected="false">New Manager</a>
+                    </li>
+                </ul>
+                <!-- Managers table or new Managers -->
+                <div class="tab-content" id="managerTabContent">
+                    <!-- Managers table -->
+                    <div class="tab-pane fade show active" id="managerstable" role="tabpanel"
+                         aria-labelledby="managerstable-tab">
+                        <!-- Title -->
+                        <h5>All Manager</h5>
+                        <!-- Table -->
+                        <div class="container-fluid bg-white text-dark">
+                            <table class="table table-striped"
+                                   data-toggle="table">
+                                <thead>
+                                <tr>
+                                    <th scope="col"> ID</th>
+                                    <th scope="col"> Email</th>
+                                    <th scope="col"> Park Name</th>
+                                    <th scope="col"> Role</th>
+                                    <th scope="col"></th>
+                                    <th scope="col"></th>
+                                </tr>
+                                </thead>
+                                <tbody id="tableManagers">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- New Manager -->
+                    <div class="tab-pane fade" id="newmanager" role="tabpanel" aria-labelledby="newmanager-tab">
+                        <!-- Title -->
+                        <h5>Add new Manager</h5>
+                        <!-- Form -->
+                        <div class="container bg-white text-dark">
+                            <form id="addManagerForm">
+
+
+                                <div class="form-group">
+                                    <label for="addEmailManager" class="col-form-label"> Email </label>
+                                    <input type="text" class="form-control"
+                                           id="addEmailManager" placeholder="Email" name="email"
+                                           value=""/>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="addParkName" class="col-form-label"> Park Name </label>
+                                    <input type="text" class="form-control"
+                                           id="addParkName" placeholder="Park Name" name="addParkName"
+                                           value=""/>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="addPasswordManager" class="col-form-label"> Password </label>
+                                    <input type="text" class="form-control"
+                                           id="addPasswordManager" placeholder="Password" name="passwordManager"
+                                           value=""/>
+                                </div>
+
+                                <div class="overflow-scroll" id="selectManager">
+                                    <label for="selectorManager">Role: </label>
+                                    <select class="form-control roles" multiple id="selectorManager"
+                                            name="roleHTML" size="2">
+                                    </select>
+                                </div>
+
+
+                                <button type="button" class="btn btn-success" id="addManager"
+                                        onclick="addManagerData()">Add new Manager
+                                </button>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!--Roles -->
+            <div class="tab-pane fade" id="v-pills-roles" role="tabpanel" aria-labelledby="v-pills-roles-tab">
+                <!-- Title -->
+                <h1>Roles</h1>
+                <!-- Roles table or new roles select -->
+                <ul class="nav nav-tabs" id="rolesTabs" role="tablist">
+                    <!-- Roles table -->
+                    <li class="nav-item">
+                        <a class="nav-link active" id="rolestable-tab" data-toggle="tab" href="#rolestable"
+                           role="tab" aria-controls="rolestable" aria-selected="true">Roles Table</a>
+                    </li>
+                    <!-- New Role -->
+                    <li class="nav-item">
+                        <a class="nav-link" id="newrole-tab" data-toggle="tab" href="#newrole" role="tab"
+                           aria-controls="newrole" aria-selected="false">New Role</a>
+                    </li>
+                </ul>
+                <!-- Role table or new Role -->
+                <div class="tab-content" id="roleTabContent">
+                    <!-- Role table -->
+                    <div class="tab-pane fade show active" id="rolestable" role="tabpanel"
+                         aria-labelledby="rolestable-tab">
+                        <!-- Title -->
+                        <h5>All Roles</h5>
+                        <!-- Table -->
+                        <div class="container-fluid bg-white text-dark">
+                            <table class="table table-striped"
+                                   data-toggle="table">
+                                <thead>
+                                <tr>
+                                    <th scope="col"> ID</th>
+                                    <th scope="col"> Name</th>
+                                    <th scope="col"></th>
+                                    <th scope="col"></th>
+                                </tr>
+                                </thead>
+                                <tbody id="tableRoles">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- New Role -->
+                    <div class="tab-pane fade" id="newrole" role="tabpanel" aria-labelledby="newrole-tab">
+                        <!-- Title -->
+                        <h5>Add new Role</h5>
+                        <!-- Form -->
+                        <div class="container bg-white text-dark">
+                            <form id="addRoleForm">
+
+
+                                <div class="form-group">
+                                    <label for="roleName" class="col-form-label"> Name </label>
+                                    <input type="text" class="form-control"
+                                           id="roleName" placeholder="Name" name="name"
+                                           value=""/>
+                                </div>
+
+
+                                <button type="button" class="btn btn-success" id="addRole"
+                                        onclick="addRoleData()">Add new Role
+                                </button>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!--Passengers-->
+            <div class="tab-pane fade" id="v-pills-passengers" role="tabpanel" aria-labelledby="v-pills-passengers-tab">
+                <!-- Title -->
+                <h1>Passengers</h1>
+                <!-- Passengers table or new Passengers select -->
+                <ul class="nav nav-tabs" id="passengersTabs" role="tablist">
+                    <!-- Passengers table -->
+                    <li class="nav-item">
+                        <a class="nav-link active" id="passengerstable-tab" data-toggle="tab" href="#passengerstable"
+                           role="tab" aria-controls="passengerstable" aria-selected="true">Passengers Table</a>
+                    </li>
+                    <!-- New Passenger -->
+                    <li class="nav-item">
+                        <a class="nav-link" id="newpassenger-tab" data-toggle="tab" href="#newpassenger" role="tab"
+                           aria-controls="newpassenger" aria-selected="false">New Passenger</a>
+                    </li>
+                </ul>
+                <!-- Passengers table or new Passengers -->
+                <div class="tab-content" id="passengerTabContent">
+                    <!-- Passengers table -->
+                    <div class="tab-pane fade show active" id="passengerstable" role="tabpanel"
+                         aria-labelledby="passengerstable-tab">
+                        <!-- Title -->
+                        <h5>All Passenger</h5>
+                        <!-- Table -->
+                        <div class="table-responsive container-fluid">
+                            <table class="table table-striped"
+                                   data-toggle="table"
+                                   table table-bordered>
+                                <thead>
+                                <tr>
+                                    <th scope="col"> ID</th>
+                                    <th scope="col"> Email</th>
+                                    <th scope="col"> FirstName</th>
+                                    <th scope="col"> LastName</th>
+                                    <th scope="col"> MiddleName</th>
+                                    <th scope="col"> DateOfBirth</th>
+                                    <th scope="col"> Gender</th>
+                                    <th scope="col"> Birthplace</th>
+                                    <th scope="col"> ResidenceRegistration</th>
+                                    <th scope="col"> SeriesAndNumber</th>
+                                    <th scope="col"> Role</th>
+                                    <th scope="col"></th>
+                                    <th scope="col"></th>
+                                </tr>
+                                </thead>
+                                <tbody id="tablePassengers">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- New Passenger -->
+                    <div class="tab-pane fade" id="newpassenger" role="tabpanel" aria-labelledby="newpassenger-tab">
+                        <!-- Title -->
+                        <h5>Add new Passenger</h5>
+                        <!-- Form -->
+                        <div class="container bg-white text-dark">
+                            <form id="addPassengerForm">
+
+
+                                <div class="form-group">
+                                    <label for="addEmailPassenger" class="col-form-label"> Email </label>
+                                    <input type="text" class="form-control"
+                                           id="addEmailPassenger" placeholder="Email" name="email"
+                                           value=""/>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="addPasswordPassenger" class="col-form-label"> Password </label>
+                                    <input type="text" class="form-control"
+                                           id="addPasswordPassenger" placeholder="Password" name="password"
+                                           value=""/>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="firstName" class="col-form-label"> First Name </label>
+                                    <input type="text" class="form-control"
+                                           id="firstName" placeholder="First Name" name="firstName"
+                                           value=""/>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="lastName" class="col-form-label"> Last Name </label>
+                                    <input type="text" class="form-control"
+                                           id="lastName" placeholder="Last Name" name="lastName"
+                                           value=""/>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="middleName" class="col-form-label"> Meddle Name </label>
+                                    <input type="text" class="form-control"
+                                           id="middleName" placeholder="Middle Name" name="middleName"
+                                           value=""/>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="dateOfBirth" class="col-form-label"> Date Of Birth </label>
+                                    <input type="date" class="form-control"
+                                           id="dateOfBirth" placeholder="Date Of Birth" name="dateOfBirth"
+                                           value=""/>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label for="gender" class="col-form-label"> Gender </label>
+                                    <input type="text" class="form-control"
+                                           id="gender" placeholder="Gender" name="gender"
+                                           value=""/>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label for="birthplace" class="col-form-label"> Birthplace </label>
+                                    <input type="text" class="form-control"
+                                           id="birthplace" placeholder="Birthplace" name="birthplace"
+                                           value=""/>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label for="residenceRegistration" class="col-form-label"> Residence
+                                        Registration </label>
+                                    <input type="text" class="form-control"
+                                           id="residenceRegistration" placeholder="Residence Registration"
+                                           name="residenceRegistration"
+                                           value=""/>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label for="seriesAndNumber" class="col-form-label"> Series And Number </label>
+                                    <input type="text" class="form-control"
+                                           id="seriesAndNumber" placeholder="Series And Number" name="seriesAndNumber"
+                                           value=""/>
+                                </div>
+
+                                <div class="overflow-scroll" id="selectPassenger">
+                                    <label for="selectorPassenger">Role: </label>
+                                    <select class="form-control roles" multiple id="selectorPassenger"
+                                            name="roleHTML" size="2">
+                                    </select>
+                                </div>
+
+                                <button type="button" class="btn btn-success" id="addPassenger"
+                                        onclick="addPassengerData()">Add new Passenger
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Edit Admin Modal -->
+<div class="editAdminDiv">
+    <div class="modal fade" id="editAdmin" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="adminModalLabel">Edit Admin</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="editAdminForm">
+
+                        <div class="form-group">
+                            <label for="editId" class="col-form-label"> ID </label>
+                            <input type="text" readonly="readonly" class="form-control"
+                                   id="editId" name="id" value=""/>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="editNickname" class="col-form-label"> Nickname </label>
+                            <input type="text" class="form-control"
+                                   id="editNickname" placeholder="Nickname" name="email" value=""/>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="editEmail" class="col-form-label"> Email </label>
+                            <input type="text" class="form-control"
+                                   id="editEmail" placeholder="Email" name="email" value=""/>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="editPassword" class="col-form-label"> Password </label>
+                            <input type="text" class="form-control"
+                                   id="editPassword" placeholder="Password" name="password" value=""/>
+                        </div>
+
+                        <div class="overflow-scroll" id="editSelect">
+                            <label for="editSelector">Role: </label>
+                            <select class="form-control roles" multiple id="editSelector"
+                                    name="roleHTML" size="2">
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary"
+                            onclick="updateAdmin()">Edit
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Admin Modal -->
+<div class="deleteAdminDiv">
+    <div class="modal fade" id="deleteAdmin" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="delAdminModalLabel">Delete Admin</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="deleteAdminForm">
+
+                        <div class="form-group">
+                            <label for="deleteId" class="col-form-label"> ID </label>
+                            <input type="text" readonly="readonly" class="form-control"
+                                   id="deleteId" name="id" value=""/>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="deleteNickname" class="col-form-label"> Nickname </label>
+                            <input type="text" readonly="readonly" class="form-control"
+                                   id="deleteNickname" name="nickname" value=""/>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="deleteEmail" class="col-form-label"> Email </label>
+                            <input type="text" readonly="readonly" class="form-control"
+                                   id="deleteEmail" name="email" value=""/>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="deletePassword" class="col-form-label"> Password </label>
+                            <input type="text" readonly="readonly" class="form-control"
+                                   id="deletePassword" name="password" value=""/>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-danger" onclick="deleteAdminById()">
+                        Delete
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Delete Manager Modal -->
+<div class="deleteManagerDiv">
+    <div class="modal fade" id="deleteManager" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="delManagerModalLabel">Delete Manager</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="deleteManagerForm">
+
+                        <div class="form-group">
+                            <label for="deleteIdManager" class="col-form-label"> ID </label>
+                            <input type="text" readonly="readonly" class="form-control"
+                                   id="deleteIdManager" name="id" value=""/>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="deleteEmailManager" class="col-form-label"> Email </label>
+                            <input type="text" readonly="readonly" class="form-control"
+                                   id="deleteEmailManager" name="email" value=""/>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="deleteParkName" class="col-form-label"> Park Name </label>
+                            <input type="text" readonly="readonly" class="form-control"
+                                   id="deleteParkName" name="parkName" value=""/>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-danger" onclick="deleteManagerById()">
+                        Delete
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Edit Manager Modal -->
+<div class="editManagerDiv">
+    <div class="modal fade" id="editManager" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="managerModalLabel">Edit manager</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"></span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="editManagerForm">
+
+                        <div class="form-group">
+                            <label for="editManagerId" class="col-form-label"> ID </label>
+                            <input type="text" readonly="readonly" class="form-control"
+                                   id="editManagerId" name="id" value=""/>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="editEmailManager" class="col-form-label"> Email </label>
+                            <input type="text" class="form-control"
+                                   id="editEmailManager" placeholder="Email" name="email" value=""/>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="editParkName" class="col-form-label"> Park Name </label>
+                            <input type="text" class="form-control"
+                                   id="editParkName" placeholder="Park Name" name="editParkName" value=""/>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="editPasswordManager" class="col-form-label"> Password </label>
+                            <input type="text" class="form-control"
+                                   id="editPasswordManager" placeholder="Password" name="editPasswordManager"
+                                   value=""/>
+                        </div>
+
+                        <div class="overflow-scroll" id="editSelectManager">
+                            <label for="editSelectorManager">Role: </label>
+                            <select class="form-control roles" multiple id="editSelectorManager"
+                                    name="roleHTML" size="2">
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary"
+                            onclick="updateManager()">Edit
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Edit Role Modal -->
+<div class="editRoleDiv">
+    <div class="modal fade" id="editRole" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="roleModalLabel">Edit Role</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"></span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="editRoleForm">
+
+                        <div class="form-group">
+                            <label for="editRoleId" class="col-form-label"> ID </label>
+                            <input type="text" readonly="readonly" class="form-control"
+                                   id="editRoleId" name="id" value=""/>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="editRoleName" class="col-form-label"> Name </label>
+                            <input type="text" class="form-control"
+                                   id="editRoleName" placeholder="Name" name="name" value=""/>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary"
+                            onclick="updateRole()">Edit
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Role Modal -->
+<div class="deleteRoleDiv">
+    <div class="modal fade" id="deleteRole" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="delRoleModalLabel">Delete Role</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="deleteRoleForm">
+
+                        <div class="form-group">
+                            <label for="deleteIdRole" class="col-form-label"> ID </label>
+                            <input type="text" readonly="readonly" class="form-control"
+                                   id="deleteIdRole" name="id" value=""/>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="deleteRoleName" class="col-form-label"> Name </label>
+                            <input type="text" readonly="readonly" class="form-control"
+                                   id="deleteRoleName" name="name" value=""/>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-danger" onclick="deleteRoleById()">
+                        Delete
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--Edit Passenger-->
+<div class="editPassengerDiv">
+    <div class="modal fade" id="editPassenger" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="passengerModalLabel">Edit passenger</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"></span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="editPassengerForm">
+
+                        <div class="form-group">
+                            <label for="editPassengerId" class="col-form-label"> ID </label>
+                            <input type="text" readonly="readonly" class="form-control"
+                                   id="editPassengerId" name="id" value=""/>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="editPassportId" class="col-form-label"> Passport ID </label>
+                            <input type="text" readonly="readonly" class="form-control"
+                                   id="editPassportId" placeholder="PassportId" name="passportId"
+                                   value=""/>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="editEmailPassenger" class="col-form-label"> email </label>
+                            <input type="text" class="form-control"
+                                   id="editEmailPassenger" placeholder="email" name="email" value=""/>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="editPasswordPassenger" class="col-form-label"> Password </label>
+                            <input type="text" class="form-control"
+                                   id="editPasswordPassenger" placeholder="Password" name="password" value=""/>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="editFirstName" class="col-form-label"> First Name </label>
+                            <input type="text" class="form-control"
+                                   id="editFirstName" placeholder="First Name" name="firstName" value=""/>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="editLastName" class="col-form-label"> Last Name </label>
+                            <input type="text" class="form-control"
+                                   id="editLastName" placeholder="Last Name" name="lastName"
+                                   value=""/>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="editMiddleName" class="col-form-label"> Middle Name </label>
+                            <input type="text" class="form-control"
+                                   id="editMiddleName" placeholder="Middle Name" name="middleName"
+                                   value=""/>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="editDateOfBirth" class="col-form-label"> Date Of Birth </label>
+                            <input type="date" class="form-control"
+                                   id="editDateOfBirth" placeholder="Date Of Birth" name="dateOfBirth"
+                                   value=""/>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="editGender" class="col-form-label"> Gender </label>
+                            <input type="text" class="form-control"
+                                   id="editGender" placeholder="Gender" name="gender"
+                                   value=""/>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="editBirthplace" class="col-form-label"> Birthplace </label>
+                            <input type="text" class="form-control"
+                                   id="editBirthplace" placeholder="Birthplace" name="birthplace"
+                                   value=""/>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="editResidenceRegistration" class="col-form-label"> Residence
+                                Registration </label>
+                            <input type="text" class="form-control"
+                                   id="editResidenceRegistration" placeholder="Residence Registration"
+                                   name="residenceRegistration"
+                                   value=""/>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="editSeriesAndNumber" class="col-form-label"> Series And Number </label>
+                            <input type="text" class="form-control"
+                                   id="editSeriesAndNumber" placeholder="Series And Number" name="seriesAndNumber"
+                                   value=""/>
+                        </div>
+
+                        <div class="overflow-scroll" id="editSelectPassenger">
+                            <label for="editSelectorPassenger">Role: </label>
+                            <select class="form-control roles" multiple id="editSelectorPassenger"
+                                    name="roleHTML" size="2">
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary"
+                            onclick="updatePassenger()">Edit
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Delete Passenger Modal -->
+<div class="deletePassengerDiv">
+    <div class="modal fade" id="deletePassenger" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="delPassengerModalLabel">Delete Passenger</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="deletePassengerForm">
+
+                        <div class="form-group">
+                            <label for="deleteIdPassenger" class="col-form-label"> ID </label>
+                            <input type="text" readonly="readonly" class="form-control"
+                                   id="deleteIdPassenger" name="id" value=""/>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="deleteEmailPassenger" class="col-form-label"> Email </label>
+                            <input type="text" readonly="readonly" class="form-control"
+                                   id="deleteEmailPassenger" name="email" value=""/>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="deletePasswordPassenger" class="col-form-label"> Password </label>
+                            <input type="text" readonly="readonly" class="form-control"
+                                   id="deletePasswordPassenger" name="password" value=""/>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="deleteFirstName" class="col-form-label"> First Name </label>
+                            <input type="text" readonly="readonly" class="form-control"
+                                   id="deleteFirstName" name="firstName" value=""/>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="deleteLastName" class="col-form-label"> Last Name </label>
+                            <input type="text" readonly="readonly" class="form-control"
+                                   id="deleteLastName" name="lastName" value=""/>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="deleteMiddleName" class="col-form-label"> Middle Name </label>
+                            <input type="text" readonly="readonly" class="form-control"
+                                   id="deleteMiddleName" name="middleName" value=""/>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="deleteDateOfBirth" class="col-form-label"> Date Of Birth </label>
+                            <input type="text" readonly="readonly" class="form-control"
+                                   id="deleteDateOfBirth" name="dateOfBirth" value=""/>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="deleteGender" class="col-form-label"> Gender </label>
+                            <input type="text" readonly="readonly" class="form-control"
+                                   id="deleteGender" name="gender" value=""/>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="deleteBirthplace" class="col-form-label"> Birthplace </label>
+                            <input type="text" readonly="readonly" class="form-control"
+                                   id="deleteBirthplace" name="birthplace" value=""/>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="deleteResidenceRegistration" class="col-form-label"> Residence
+                                Registration </label>
+                            <input type="text" readonly="readonly" class="form-control"
+                                   id="deleteResidenceRegistration" name="residenceRegistration" value=""/>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="deleteSeriesAndNumber" class="col-form-label"> Series And Number </label>
+                            <input type="text" readonly="readonly" class="form-control"
+                                   id="deleteSeriesAndNumber" name="seriesAndNumber" value=""/>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-danger" onclick="deletePassengerById()">
+                        Delete
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+
