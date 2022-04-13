@@ -1,7 +1,9 @@
 package app.services.interfaces;
 
+import app.entities.Admin;
 import app.entities.Passenger;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -23,4 +25,11 @@ public interface PassengerService {
      * @return {@link Passenger}
      */
     Optional<Passenger> findById(Long id);
+
+
+    List<Passenger> findAll();
+
+    void deletePassengerById(long id);
+
+
 }

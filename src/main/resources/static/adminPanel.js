@@ -382,7 +382,6 @@ function addPassengerData() {
             dateOfBirth: dateOfBirth,
             seriesAndNumber: seriesAndNumber
         }
-
     }
 
     passengersFetch.addPassenger(passenger).then(() => {
@@ -466,7 +465,6 @@ function updatePassenger() {
     passengersFetch.updatePassenger(passenger).then(() => {
         document.getElementById('editPassengerId').value = ``
         document.getElementById('editEmailPassenger').value = ``
-        document.getElementById('editPasswordPassenger').value = ``
         document.getElementById('editFirstName').value = ``
         document.getElementById('editLastName').value = ``
         document.getElementById('editMiddleName').value = ``
