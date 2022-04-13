@@ -11,9 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.time.Period;
+import java.time.*;
 import java.util.List;
 import java.util.Optional;
 
@@ -65,20 +63,42 @@ public class RegistrationServiceImpl implements RegistrationService {
 
         try {
             Ticket ticket = ticketService.findTicketByHoldNumber(holdNumber);
-            ticket.setSeat(seatService.getSeatById(seatId).orElse(null));
-            if (ticket.getSeat() == null) {
-                log.error("Ошибка при задании места в билете в процессе регистрации." +
-                        "Объект Seat с заданным id отсутствует в БД");
-                return null;
+
+            // вычисление разницы между датами, чтобы определить, можно ли начинать регистрацию пассажира на рейс
+            LocalDateTime nowTime = LocalDateTime.now();
+
+            //LocalDate regDate = ticket.getFlight().getDepartureDate();
+            LocalDate regDate = nowTime.toLocalDate().plusDays(1L);
+            LocalTime regTime = ticket.getFlight().getDepartureTime();
+            LocalDateTime regDateTime = LocalDateTime.of(regDate, regTime);
+
+            Period period = Period.between(regDate, nowTime.toLocalDate());
+            period = period.minusDays(nowTime.toLocalTime().compareTo(regTime) >= 0 ? 0 : 1);
+            //Duration duration = Duration.between(regTime, LocalDateTime.now());
+            //duration = duration.minusDays(duration.toDaysPart());
+            // если до рейса осталось <= 30 часов И билет не просрочен, то регистрация разрешена и создаётся
+            // иначе, регистрация происходит либо раньше, либо позже времени вылета и не сохраняется
+            if (period.getYears() == 0 && period.getMonths() == 0 && (period.getDays() <= 1 && period.getDays() >= 0)) {
+                ticket.setSeat(seatService.getSeatById(seatId).orElse(null));
+                if (ticket.getSeat() == null) {
+                    log.error("Ошибка при задании места в билете в процессе регистрации." +
+                            "Объект Seat с заданным id отсутствует в БД");
+                    return null;
+                } else {
+                    ticketService.createOrUpdateTicket(ticket);
+                    return registrationRepository.save(
+                            Registration.builder()
+                                    .ticket(ticket)
+                                    .status("OK")
+                                    .registrationDateTime(LocalDateTime.now())
+                                    .build()
+                    );
+                }
             } else {
-                ticketService.createOrUpdateTicket(ticket);
-                return registrationRepository.save(
-                        Registration.builder()
-                                .ticket(ticket)
-                                .registrationDateTime(LocalDateTime.now())
-                                .build()
-                );
+                return null;
             }
+
+
         } catch (NullPointerException npe) {
             npe.printStackTrace();
             log.error("Ошибка при поиске билета в процессе регистрации." +
