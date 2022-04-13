@@ -3,7 +3,6 @@ package app.services.impl;
 import app.entities.Registration;
 import app.entities.Ticket;
 import app.repositories.RegistrationRepository;
-import app.repositories.TicketRepository;
 import app.services.interfaces.RegistrationService;
 import app.services.interfaces.SeatService;
 import app.services.interfaces.TicketService;
@@ -35,50 +34,23 @@ public class RegistrationServiceImpl implements RegistrationService {
      */
     @Override
     public Registration createRegistrationByHoldNumberAndSeatId(Long holdNumber, Long seatId) {
-        /*// если регистрация для пассажира на рейс только началась
-        if (reg.getStatus().equals("IN_PROGRESS")) {
-            // вычисление разницы между датами, чтобы определить, можно ли начинать регистрацию пассажира на рейс
-            LocalDateTime now = LocalDateTime.now();
-            LocalDateTime regTime = reg.getRegistrationDateTime();
-            Period period = Period.between(regTime.toLocalDate(), now.toLocalDate());
-            period = period.minusDays(now.toLocalTime().compareTo(regTime.toLocalTime()) >= 0 ? 0 : 1);
-            Duration duration = Duration.between(regTime, LocalDateTime.now());
-            duration = duration.minusDays(duration.toDaysPart());
-            // если до рейса осталось <= 30 часов И билет не просрочен, то регистрация разрешена и создаётся
-            // иначе, регистрация происходит либо раньше, либо позже времени вылета и не сохраняется
-            if (period.getYears() == 0 && period.getMonths() == 0 && (period.getDays() <= 1 && period.getDays() >= 0)) {
-                reg.setStatus("OK");
-                return registrationRepository.save(reg);
-            } else {
-                return null;
-            }
-        }
-        // если регистрация отменена
-        if (reg.getStatus().equals("CANCELLED")) {
-            deleteRegistrationById(reg.getId());
-           // логика для занесения в историю отменённых рейсов/регистраций пассажира, если нужна
-           return null;
-        }
-        return null;*/
-
         try {
             Ticket ticket = ticketService.findTicketByHoldNumber(holdNumber);
 
-            // вычисление разницы между датами, чтобы определить, можно ли начинать регистрацию пассажира на рейс
+            //получение даты отправления для сравнения с временем запроса регистрации
             LocalDateTime nowTime = LocalDateTime.now();
 
-            //LocalDate regDate = ticket.getFlight().getDepartureDate();
-            LocalDate regDate = nowTime.toLocalDate().plusDays(1L);
-            LocalTime regTime = ticket.getFlight().getDepartureTime();
-            LocalDateTime regDateTime = LocalDateTime.of(regDate, regTime);
+            //LocalDate regDate = nowTime.toLocalDate().plusDays(1L); //для проверки
+            LocalDate regDate = ticket.getFlight().getDepartureDate();
+            LocalDateTime regDateTime = LocalDateTime.of(regDate, ticket.getFlight().getDepartureTime()); //дата отправления
 
-            Period period = Period.between(regDate, nowTime.toLocalDate());
-            period = period.minusDays(nowTime.toLocalTime().compareTo(regTime) >= 0 ? 0 : 1);
-            //Duration duration = Duration.between(regTime, LocalDateTime.now());
-            //duration = duration.minusDays(duration.toDaysPart());
-            // если до рейса осталось <= 30 часов И билет не просрочен, то регистрация разрешена и создаётся
-            // иначе, регистрация происходит либо раньше, либо позже времени вылета и не сохраняется
-            if (period.getYears() == 0 && period.getMonths() == 0 && (period.getDays() <= 1 && period.getDays() >= 0)) {
+            // вычисление разницы между датами, чтобы определить, можно ли начинать регистрацию пассажира на рейс
+            Period period = Period.between(nowTime.toLocalDate(), regDate);
+            Duration duration = Duration.between(nowTime, regDateTime);
+
+            // если до рейса осталось <= 30 часов и => 50 минут, то регистрация разрешена и создаётся
+            if (period.getYears() == 0 && period.getMonths() == 0 &&
+                    duration.toMinutes() >= 59 && duration.toMinutes() <= 1800) {
                 ticket.setSeat(seatService.getSeatById(seatId).orElse(null));
                 if (ticket.getSeat() == null) {
                     log.error("Ошибка при задании места в билете в процессе регистрации." +

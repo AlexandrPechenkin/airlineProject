@@ -283,13 +283,16 @@ registrationModal.on('click', '#registerCompleteButton', async ()=> {
         let promiseRegistration = await registrationFetchService.createRegistration(
             bookingId, chosenSeatId);
 
-        if (!promiseRegistration.ok) {
+        if (promiseRegistration.ok) {
+            registrationInfo.innerText = 'Успешная регистрация';
+            registrationInfo.setAttribute('class', 'text-success');
+        } else if (promiseRegistration.status === 404) {
+            registrationInfo.innerText = 'Регистрация недоступна';
+            registrationInfo.setAttribute('class', 'text-danger');
+        } else {
             console.log("Ошибка запроса к RegistrationRestController");
             registrationInfo.innerText = 'Ошибка при создании регистрации';
             registrationInfo.setAttribute('class', 'text-danger');
-        } else {
-            registrationInfo.innerText = 'Успешная регистрация';
-            registrationInfo.setAttribute('class', 'text-success');
         }
         registrationModal.modal('hide');
     }
