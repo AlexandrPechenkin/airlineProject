@@ -102,7 +102,7 @@ public class FlightRestController {
                                                          @PathVariable("to") String to,
                                                          @ApiParam(value = "дата вылета")
                                                          @PathVariable("departureDate") LocalDate departureDate) {
-        List<Flight> flightList = flightService.findFlights(from, to, departureDate);
+        List<Flight> flightList = flightService.findFlightsByDestination(from, to, departureDate);
         if (flightList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

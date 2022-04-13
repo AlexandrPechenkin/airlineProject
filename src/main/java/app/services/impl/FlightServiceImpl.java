@@ -66,6 +66,20 @@ public class FlightServiceImpl implements FlightService {
         return flightRepository.findFlights(from, to, departureDate);
     }
 
+    /**
+     * поиск перелета с пересадками по маршруту дате вылета
+     *
+     * @param from          аэропорт вылета
+     * @param to            аэропорт прилета
+     * @param departureDate дата вылета
+     * @return
+     */
+    @Override
+    public List<Flight> findFlightsByDestination(String from, String to, LocalDate departureDate) {
+        return flightRepository.findFlightsByDestination(from, to, departureDate);
+    }
+
+
     @Override
     public List<Flight> findAllWithDepartureDateAfter(String cityFrom, String cityTo, LocalDate date) {
         return flightRepository.findAllWithDepartureDateAfter(cityFrom, cityTo, date);
