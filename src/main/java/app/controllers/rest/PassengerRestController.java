@@ -1,8 +1,6 @@
 package app.controllers.rest;
 
-import app.entities.Admin;
 import app.entities.Passenger;
-import app.entities.dtos.AdminDTO;
 import app.entities.dtos.PassengerDTO;
 import app.entities.mappers.passenger.PassengerMapper;
 import app.services.interfaces.PassengerService;
