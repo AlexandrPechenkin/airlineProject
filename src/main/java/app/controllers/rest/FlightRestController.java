@@ -102,14 +102,26 @@ public class FlightRestController {
                                                          @PathVariable("to") String to,
                                                          @ApiParam(value = "дата вылета")
                                                          @PathVariable("departureDate") LocalDate departureDate) {
-        List<Flight> flightList = flightService.findFlightsByDestination(from, to, departureDate);
-        if (flightList.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        try {
-            return new ResponseEntity(flightList, HttpStatus.OK);
-        } catch (DataIntegrityViolationException e) {
-            throw new NoSuchObjectException("Error");
+        if (from.length() == 3 && to.length() == 3) {
+            List<Flight> flightList = flightService.findFlightsByDestination(from, to, departureDate);
+            if (flightList.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            try {
+                return new ResponseEntity(flightList, HttpStatus.OK);
+            } catch (DataIntegrityViolationException e) {
+                throw new NoSuchObjectException("Error");
+            }
+        } else {
+            List<Flight> flightList = flightService.findFlights(from, to, departureDate);
+            if (flightList.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            try {
+                return new ResponseEntity(flightList, HttpStatus.OK);
+            } catch (DataIntegrityViolationException e) {
+                throw new NoSuchObjectException("Error");
+            }
         }
     }
 

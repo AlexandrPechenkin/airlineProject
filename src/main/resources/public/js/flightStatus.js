@@ -21,6 +21,7 @@ async function getFlightStatusByFromToDepartureDate() {
         })
         .then(json => {
             for (let iter in json) {
+                status_info.innerHTML ="";
                 status_info.innerHTML += `
                 <div class="card-body">
                     <h5>Статус вашего рейса | ID: ${json[iter].id}</h5>
@@ -29,7 +30,16 @@ async function getFlightStatusByFromToDepartureDate() {
                 `;
             }
         })
-        .catch(error => console.log(error));
+        .catch(error => {
+                console.log(error);
+                status_info.innerHTML ="";
+                status_info.innerHTML += `
+                <div class="card-body">
+                    <p>К сожалению, нам не удалось найти рейсы по вашему запросу. Пожалуйста, проверьте введенные параметры и попробуйте снова.</p>
+                </div>
+                `;
+            }
+        );
 }
 
 // TODO: Поиск рейса "По номеру рейса" сделан через ID, позже в Flight добавить поле "Номера рейса" и на основе его переделать.
@@ -51,6 +61,7 @@ async function getFlightStatusById() {
             throw new Error()
         })
         .then(json => {
+                status_info.innerHTML ="";
                 status_info.innerHTML += `
                 <div class="card-body">
                     <h5>Статус вашего рейса | ID: ${json.id}</h5>
@@ -58,5 +69,14 @@ async function getFlightStatusById() {
                 </div>
                 `;
         })
-        .catch(error => console.log(error));
+        .catch(error => {
+            console.log(error);
+                status_info.innerHTML ="";
+                status_info.innerHTML += `
+                <div class="card-body">
+                    <p>К сожалению, нам не удалось найти рейсы по вашему запросу. Пожалуйста, проверьте введенные параметры и попробуйте снова.</p>
+                </div>
+                `;
+            }
+        );
 }
