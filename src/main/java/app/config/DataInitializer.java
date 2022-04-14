@@ -187,6 +187,7 @@ public class DataInitializer {
                                                         .isRegistered(false)
                                                         .isSold(false)
                                                         .build()))*/
+                                                .passenger(passengerService.findById(1L).get())
                                                 .holdNumber(holdNumber)
                                                 .price(15000L)
                                                 .build()))

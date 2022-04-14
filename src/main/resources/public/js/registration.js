@@ -49,14 +49,21 @@ async function getRegistrationInfo() {
     //Запрос на получение букинга
     let promiseBooking = await registrationFetchService.getBookingByHoldNumber(bookingId);
     if (promiseBooking.ok) {
+        registrationInfo.innerText = '';
+
         booking = await promiseBooking.json();
 
-        registrationInfo.innerText = '';
-        registrationModal.modal('show');
-
-        //Заполнение содержимым модального окна
-        await setModalContent();
-        await showSeatSelectors();
+        if (booking.departTicket.passenger.lastName === passengerName) {
+            registrationModal.modal('show');
+            //Заполнение содержимым модального окна
+            await setModalContent();
+            await showBoardInfo(booking.departTicket.flight.aircraft.model, booking.category);
+            await showSeatSelectors(booking.category, booking.departTicket.flight.aircraft.model,
+                booking.departTicket.flight.aircraft.categories);
+        } else {
+            registrationInfo.innerText = 'Отсутствует бронирование для указанного пассажира';
+            registrationInfo.setAttribute('class', 'text-danger');
+        }
     } else {
         registrationInfo.innerText = 'Бронирование не найдено';
         registrationInfo.setAttribute('class', 'text-danger');
@@ -64,15 +71,21 @@ async function getRegistrationInfo() {
 }
 
 async function setModalContent() {
-    registrationModal.find('.modal-title').html(`Выбор места на рейс ${bookingId} 
-        пассажира ${passengerName}`);
+    registrationModal.find('.modal-title').html(`Выбор места на рейс 
+        ${booking.departTicket.flight.from.city} - ${booking.departTicket.flight.to.city} 
+        отправлением ${booking.departTicket.flight.departureDate} 
+        ${booking.departTicket.flight.departureTime} 
+        пассажира ${booking.departTicket.passenger.firstName} ${passengerName}`);
+
     let registerCompleteButton = `<button  class="btn btn-primary"
         id="registerCompleteButton">Подтвердить</button>`;
     registrationModal.find('.modal-footer').append(registerCompleteButton);
 
     let regModalBody = `
-        <div class="row seat-container">
+        <div class="row seat-container container-fluid">
             <div class="col-md-10" id="seats">
+                <div id="boardInfo">
+                </div>
             </div>    
             <div class="col-md-2">
                 Selected seat:
@@ -83,15 +96,28 @@ async function setModalContent() {
     registrationModal.find('.modal-body').append(regModalBody);
 }
 
-async function showSeatSelectors() {
-    let categoryName = booking.category;
-    let aircraft = booking.departTicket.flight.aircraft.model;
-    let categories = booking.departTicket.flight.aircraft.categories;
-    let listSeats;
+async function showBoardInfo(aircraftModel, categoryName) {
+    let boardInfo = document.getElementById('boardInfo');
+    boardInfo.append(`Борт ${aircraftModel}, `);
+    if (categoryName === 'Business') {
+        boardInfo.append(`класс обслуживания - бизнес`);
+    } else if (categoryName === 'Comfort') {
+        boardInfo.append(`класс обслуживания - комфорт`);
+    } else if (categoryName === 'First class') {
+        boardInfo.append(`класс обслуживания - первый класс`);
+    } else if (categoryName === 'Economy') {
+        boardInfo.append(`класс обслуживания - эконом`);
+    } else {
+        boardInfo.append(`Не выбран класс обслуживания`);
+    }
+}
 
-    for (let i in categories) {
-        if (categories[i].category === categoryName) {
-            listSeats = categories[i].seats;
+async function showSeatSelectors(categoryName, aircraftModel, listCategories) {
+
+    let listSeats;
+    for (let i in listCategories) {
+        if (listCategories[i].category === categoryName) {
+            listSeats = listCategories[i].seats;
         }
     }
 
@@ -117,7 +143,7 @@ async function showSeatSelectors() {
     let incompleteRow; //номер неполного ряда
     let incompleteRowSpace; //пространство, не занятое местом
 
-    if (aircraft === "МС-21-200") {
+    if (aircraftModel === "МС-21-200") {
         if (categoryName === "Business") {
             startRow = 0;
             columns = 4;
@@ -135,7 +161,7 @@ async function showSeatSelectors() {
             incompleteRow = [15, 24];
             incompleteRowSpace = [[1,5,6],[1,2,3]];
         }
-    } else if (aircraft === "Боинг B777") {
+    } else if (aircraftModel === "Боинг B777") {
         if (categoryName === "Business") {
             startRow = 0;
             columns = 4;
@@ -247,7 +273,8 @@ registrationModal.on('click', '.seat-selector', async (event)=> {
         } else {
             chosenSeatId = '';
             document.getElementById('seats').innerHTML = '';
-            await showSeatSelectors();
+            await showSeatSelectors(booking.category, booking.departTicket.flight.aircraft.model,
+                booking.departTicket.flight.aircraft.categories);
         }
     }
 })

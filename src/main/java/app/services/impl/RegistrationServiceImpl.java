@@ -40,9 +40,11 @@ public class RegistrationServiceImpl implements RegistrationService {
             //получение даты отправления для сравнения с временем запроса регистрации
             LocalDateTime nowTime = LocalDateTime.now();
 
-            LocalDate regDate = nowTime.toLocalDate(); //для проверки
+            LocalTime regTime = nowTime.toLocalTime().plusHours(2L); //для проверки
+            //LocalTime regTime = ticket.getFlight().getDepartureTime();
+            LocalDate regDate = nowTime.plusHours(1L).toLocalDate(); //для проверки
             //LocalDate regDate = ticket.getFlight().getDepartureDate();
-            LocalDateTime regDateTime = LocalDateTime.of(regDate, ticket.getFlight().getDepartureTime()); //дата отправления
+            LocalDateTime regDateTime = LocalDateTime.of(regDate, regTime); //дата отправления
 
             // вычисление разницы между датами, чтобы определить, можно ли начинать регистрацию пассажира на рейс
             Period period = Period.between(nowTime.toLocalDate(), regDate);
@@ -50,13 +52,14 @@ public class RegistrationServiceImpl implements RegistrationService {
 
             // если до рейса осталось <= 30 часов и => 50 минут, то регистрация разрешена и создаётся
             if (period.getYears() == 0 && period.getMonths() == 0 &&
-                    duration.toMinutes() >= 59 && duration.toMinutes() <= 1800) {
+                    duration.toMinutes() >= 50 && duration.toMinutes() <= 1800) {
                 ticket.setSeat(seatService.getSeatById(seatId).orElse(null));
                 if (ticket.getSeat() == null) {
                     log.error("Ошибка при задании места в билете в процессе регистрации." +
                             "Объект Seat с заданным id отсутствует в БД");
                     return null;
                 } else {
+                    ticket.getSeat().setIsRegistered(true);
                     ticketService.createOrUpdateTicket(ticket);
                     return registrationRepository.save(
                             Registration.builder()
