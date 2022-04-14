@@ -10,6 +10,13 @@ import java.util.Optional;
  */
 public interface RegistrationService {
     /**
+     * получение регистрации
+     *
+     * @param holdNumber - номер брони
+     * @return {@link String}
+     */
+    String getRegistrationStatusByHoldNumber(Long holdNumber);
+    /**
      * Создание/обновление/удаление записи в БД о регистрации.
      *
      * @param holdNumber - номер брони

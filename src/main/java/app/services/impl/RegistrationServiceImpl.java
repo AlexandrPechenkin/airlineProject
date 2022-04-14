@@ -26,6 +26,21 @@ public class RegistrationServiceImpl implements RegistrationService {
     private final SeatService seatService;
 
     /**
+     * получение регистрации по номеру брони
+     *
+     * @param holdNumber - номер брони
+     * @return {@link String}
+     */
+    @Override
+    public String getRegistrationStatusByHoldNumber(Long holdNumber) {
+        try {
+            return registrationRepository.getRegistrationStatusByHoldNumber(holdNumber).getStatus();
+        } catch (NullPointerException npe) {
+            return null;
+        }
+    }
+
+    /**
      * Создание/обновление записи в БД о регистрации.
      *
      * @param holdNumber - номер брони
@@ -81,7 +96,6 @@ public class RegistrationServiceImpl implements RegistrationService {
             return null;
         }
     }
-
     /**
      * Возвращает запись о регистрации по id.
      *

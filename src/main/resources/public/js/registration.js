@@ -42,15 +42,31 @@ registrationModal.on("show.bs.modal", () => {
     registrationModal.find('.modal-footer').html('');
 })
 
+let registrationInfo = document.getElementById('registrationInfo');
+
 async function getRegistrationInfo() {
+    registrationInfo.innerText = '';
 
-    let registrationInfo = document.getElementById('registrationInfo');
+    //Запрос на поиск регистрации - если не найдена, то разрешить регистрацию
+    let promiseRegistration = await fetch(`${urlRegistration}holdNumber/${bookingId}`);
+    let registrationStatus = await promiseRegistration.text();
 
+    if (promiseRegistration.status === 404) {
+        await getBookingInfo();
+
+    } else if (promiseRegistration.ok && (registrationStatus === "OK")) {
+        registrationInfo.innerText = 'Регистрация уже выполнена';
+        registrationInfo.setAttribute('class', 'text-primary');
+    } else {
+        registrationInfo.innerText = 'Регистрация не доступна';
+        registrationInfo.setAttribute('class', 'text-danger');
+    }
+}
+
+async function getBookingInfo() {
     //Запрос на получение букинга
     let promiseBooking = await registrationFetchService.getBookingByHoldNumber(bookingId);
     if (promiseBooking.ok) {
-        registrationInfo.innerText = '';
-
         booking = await promiseBooking.json();
 
         if (booking.departTicket.passenger.lastName === passengerName) {

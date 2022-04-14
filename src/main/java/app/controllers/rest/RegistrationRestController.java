@@ -47,7 +47,7 @@ public class RegistrationRestController {
      *
      * @param holdNumber -номер брони
      * @param seatId - идентификатор места
-     * @return {@link RegistrationDTO}
+     * @return {@link Void}
      */
     @ApiOperation(value = "Запрос для создания регистрации пассажира на рейс",
             notes = "Создание регистрации пассажира на рейс")
@@ -69,6 +69,23 @@ public class RegistrationRestController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
             return new ResponseEntity<>(HttpStatus.OK);
+        }
+    }
+
+    @ApiOperation(value = "Запрос на получение регистрации по номеру бронирования",
+        notes = "Получение регистрации по holdNumber")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Успешно получено"),
+            @ApiResponse(code = 404, message = "Регистрация не найдена")
+    })
+    @GetMapping("/holdNumber/{holdNumber}")
+    public ResponseEntity<String> getRegistrationByHoldNumber(@ApiParam(value = "Номер бронирования")
+                                                                       @PathVariable("holdNumber") Long holdNumber) {
+        String registrationStatus = registrationService.getRegistrationStatusByHoldNumber(holdNumber);
+        if (registrationStatus == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<>(registrationStatus, HttpStatus.OK);
         }
     }
 
