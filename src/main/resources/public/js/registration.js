@@ -99,9 +99,9 @@ async function setModalContent() {
 
     let regModalBody = `
         <div class="row seat-container container-fluid">
-            <div class="col-md-10" id="seats">
-                <div id="boardInfo">
-                </div>
+            <div id="boardInfo">
+            </div>
+            <div class="col-md-10" id="seats">              
             </div>    
             <div class="col-md-2">
                 Selected seat:
@@ -285,10 +285,13 @@ registrationModal.on('click', '.seat-selector', async (event)=> {
                     allCheckboxesLabel[i].setAttribute('class', 'seat-selector btn btn-outline-primary disabled');
                 }
             }
-            seatResultContainer.append(`<div id="chosenSeat">${targetLabel.textContent} | ${chosenSeatId}</div>`);
+            //seatResultContainer.append(`<div id="chosenSeat">${targetLabel.textContent} | ${chosenSeatId}</div>`); //проверка
+            seatResultContainer.append(`<div id="chosenSeat">${targetLabel.textContent}</div>`);
         } else {
             chosenSeatId = '';
             document.getElementById('seats').innerHTML = '';
+            document.getElementById('boardInfo').innerHTML = '';
+            await showBoardInfo(booking.departTicket.flight.aircraft.model, booking.category);
             await showSeatSelectors(booking.category, booking.departTicket.flight.aircraft.model,
                 booking.departTicket.flight.aircraft.categories);
         }
