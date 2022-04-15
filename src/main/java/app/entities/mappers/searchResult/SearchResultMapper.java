@@ -16,7 +16,6 @@ import org.springframework.stereotype.Component;
         injectionStrategy = InjectionStrategy.CONSTRUCTOR,
         uses = {FlightContainerMapper.class, FlightListMapper.class, FlightMapper.class, FlightListWrapperMapper.class})
 public interface SearchResultMapper {
-    FlightListMapper MAPPER = Mappers.getMapper(FlightListMapper.class);
     SearchResultDTO toDto(SearchResult searchResult);
     SearchResult toEntity(SearchResultDTO searchResultDTO);
 }

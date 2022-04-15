@@ -37,37 +37,41 @@ public class SearchServiceImpl implements SearchService {
         // существуют ли вообще аэропорты в указанных городах
         List<DestinationResource> resourceFrom = desResService.findByCity(cityFrom);
         List<DestinationResource> resourceTo = desResService.findByCity(cityTo);
+        String message = "";
+        boolean isEmpty = false;
         if (resourceFrom.isEmpty() && resourceTo.isEmpty()) {
-            return searchResultService.createOrUpdateSearchResult(
-                    SearchResult.builder()
-                            .message("К сожалению, рейсов 'из' и 'в' указанные места нет. " +
-                                    "Пожалуйста, выберите другие пункты назначения.")
-                            .departFlights(null)
-                            .returnFlights(null)
-                            .build());
+            isEmpty = true;
+            message = "К сожалению, рейсов 'из' и 'в' указанные места нет. " +
+                    "Пожалуйста, выберите другие пункты назначения.";
         } else if (resourceFrom.isEmpty()) {
-            return searchResultService.createOrUpdateSearchResult(
-                    SearchResult.builder()
-                            .message("К сожалению, рейсов из указанного места нет. " +
-                                    "Пожалуйста, выберите другой пункт назначения.")
-                            .departFlights(null)
-                            .returnFlights(null)
-                    .build());
+            isEmpty = true;
+            message = "К сожалению, рейсов из указанного места нет. " +
+                    "Пожалуйста, выберите другой пункт назначения.";
         } else if (resourceTo.isEmpty()) {
-            return searchResultService.createOrUpdateSearchResult(
-                    SearchResult.builder()
-                            .message("К сожалению, рейсов в указанное место нет. " +
-                                    "Пожалуйста, выберите другой пункт назначения.")
-                            .departFlights(null)
-                            .returnFlights(null)
-                            .build());
-        } else {
-            SearchResult searchResult = new SearchResult();
+            isEmpty = true;
+            message = "К сожалению, рейсов в указанное место нет. " +
+                    "Пожалуйста, выберите другой пункт назначения.";
+        }
+        if (!isEmpty) {
+            SearchResult searchResult = searchResultService.createOrUpdateSearchResult(new SearchResult());
             searchResult.setDepartFlights(getAvailableFlights(resourceFrom, resourceTo, departureDate));
+            searchResult.getDepartFlights().forEach((numberOfStops, container) -> {
+                container.setSearchResult(searchResult);
+            });
             if (returnDate != null) {
                 searchResult.setReturnFlights(getAvailableFlights(resourceTo, resourceFrom, returnDate));
+                searchResult.getReturnFlights().forEach((numberOfStops, container) -> {
+                    container.setSearchResult(searchResult);
+                });
             }
             return searchResultService.createOrUpdateSearchResult(searchResult);
+        } else {
+            return searchResultService.createOrUpdateSearchResult(
+                    SearchResult.builder()
+                            .message(message)
+                            .departFlights(null)
+                            .returnFlights(null)
+                            .build());
         }
     }
 
@@ -80,22 +84,28 @@ public class SearchServiceImpl implements SearchService {
         // поиск доступных рейсов по дате-времени среди тех комбинаций маршрутов выше, что нашлись
         Map<Integer, MultiValueMap<DestinationResource, List<Flight>>> flights = getFlights(routes, date);
         Map<Integer, FlightContainer> map = new HashMap<>();
-        SearchResult searchResult = new SearchResult();
         flights.forEach((numberOfSteps, multiValueMap) -> {
             multiValueMap.keySet().forEach(res -> {
                 List<FlightListWrapper> wrapList = new ArrayList<>();
+                FlightContainer flightContainer = flightContainerService.createOrUpdateFlightContainer(
+                    FlightContainer.builder()
+                        .numberOfSteps(numberOfSteps)
+                        .destinationResource(res)
+                        .build());
                 flights.get(numberOfSteps).get(res).forEach(flightList -> {
                     wrapList.add(flightListWrapperService.createOrUpdateFlightListWrapper(
                             FlightListWrapper.builder()
+                                    .flightContainer(flightContainer)
                                     .allFlightsFromToCities(flightList)
                                     .build()));
                 });
-                FlightContainer flightContainer = FlightContainer.builder()
-                        .numberOfSteps(numberOfSteps)
-                        .destinationResource(res)
-                        .flights(wrapList)
-//                        .searchResult(searchResult)
-                        .build();
+                flightContainer.setFlights(wrapList);
+
+//                FlightContainer flightContainer = FlightContainer.builder()
+//                        .numberOfSteps(numberOfSteps)
+//                        .destinationResource(res)
+//                        .flights(wrapList)
+//                        .build();
                 map.put(numberOfSteps, flightContainer);
                 flightContainerService.createOrUpdateFlightContainer(flightContainer);
             });
@@ -261,7 +271,6 @@ public class SearchServiceImpl implements SearchService {
                     getDestinationsByAvailableAirportCodes(resourceFrom, new ArrayList<>(firstStop.keySet()));
             // одному аэропорту м.б. доступно несколько аэропортов в одном городе
             List<List<Route>> sharedListForRoutesByCodeOfSecondStopOfTwo = new ArrayList<>();
-//            twoStopsRoutesMap = new HashMap<>();
             for (DestinationResource zeroRes : initFromOfTwoStops.keySet()) {
                 initFromOfTwoStops.get(zeroRes).forEach(zeroDest -> {
                     for (DestinationResource firstRes : firstStop.keySet()) {
@@ -275,12 +284,10 @@ public class SearchServiceImpl implements SearchService {
                                             if (firstDest.getAirportCode().equals(secondRes.getBaseCode())) {
                                                 Route route1 = Route.builder()
                                                         .from(constructDestinationByResource(zeroRes))
-//                                                        .departureDate(departureDate)
                                                         .to(constructDestinationByAnotherDestination(zeroDest))
                                                         .build();
                                                 Route route2 = Route.builder()
                                                         .from(constructDestinationByAnotherDestination(zeroDest))
-//                                                        .departureDate(LocalDate.now())
                                                         .to(constructDestinationByAnotherDestination(firstDest))
                                                         .build();
                                                 Route route3 = Route.builder()

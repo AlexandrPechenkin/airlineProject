@@ -123,8 +123,9 @@ public class SearchRestController {
                             @RequestParam(value = "departDate")
                             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate departureDate,
                             @RequestParam(value = "returnDate", required = false)
-                            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate returnDate) throws ParseException {
-        SearchResult searchResult = searchService.getSearchResultByCitiesAndLocalDates(from, to, departureDate, returnDate);
+                            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate returnDate) {
+        SearchResult searchResult = searchService.getSearchResultByCitiesAndLocalDates(from, to,
+                departureDate, returnDate);
         return new ResponseEntity<>(searchResultMapper.toDto(searchResult), HttpStatus.OK);
     }
 }
