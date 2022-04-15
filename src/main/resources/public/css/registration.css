@@ -1,0 +1,23 @@
+.seat-container {
+
+}
+
+.plane-seat input[type=checkbox]:checked + label{
+    background-color: #4d90fe;
+}
+
+.seat-selector {
+}
+
+.seat-result-container {
+    background-color: #21a795;
+}
+
+.seat-checkbox {
+    display: none;
+}
+
+.disabled {
+    color: whitesmoke !important;
+    background-color: grey !important;
+}

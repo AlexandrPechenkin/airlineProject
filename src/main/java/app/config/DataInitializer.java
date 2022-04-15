@@ -14,6 +14,7 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.Set;
 import java.util.TimeZone;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -40,9 +41,13 @@ public class DataInitializer {
     private final DestinationResourceService destinationResourceService;
     private final SearchService searchService;
     private final SearchResultService searchResultService;
+    private final BookingService bookingService;
 
     @PostConstruct
     public void init() {
+
+        System.out.println("DataInitializer сработал!");
+
         aircraftService.createOrUpdateAircraft(Fleet.createMC21200());
         System.out.println("Самолет МС-21-200 был создан.");
 
@@ -94,25 +99,6 @@ public class DataInitializer {
         createAircraft(moscow, nizhny);
         System.out.println("Самолёт был создан");
 
-        ticketService.createOrUpdateTicket(Ticket.builder()
-                .seat(seatService.createOrUpdate(Seat.builder()
-                        .seatNumber(1 + "F")
-                        .fare(1)
-                        .isRegistered(false)
-                        .isSold(false)
-                        .build()))
-                .holdNumber(420L)
-                .price(15000L)
-                .flight(Flight.builder()
-                        .from(norilsk)
-                        .to(moscow)
-                        .departureDate(LocalDate.of(2022, 12, 20))
-                        .departureTime(LocalTime.of(10, 20))
-                        .arrivalDateTime(LocalDateTime.of(2022, 12, 21, 14, 40))
-                        .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
-                        .build())
-                .build());
-
         DestinationResource resDME = createDestinationResourceMoscowDME();
         DestinationResource resOneStop = createDestinationResourceFirst();
         DestinationResource resTwoStops = createDestinationResourceSecond();
@@ -157,6 +143,135 @@ public class DataInitializer {
                 LocalDate.of(2022, 4, 4));
         SearchResult searchResult1 = searchService.getSearchResultByCitiesAndLocalDates("Moscow",
                 "Vladivostok", LocalDate.of(2022,4,4), LocalDate.now());
+
+        // создание бронирования
+        Passenger testBookingPassenger1 = passengerService.createOrUpdatePassenger(
+                Passenger.builder()
+                        .email("passenger_booking@mail.ru")
+                        .password("password_passenger_booking")
+                        .roles(Set.of(roleService.createOrUpdateRole(new Role(2L,"USER"))))
+                        .firstName("passenger_booking")
+                        .middleName("passenger_middle_name_passenger_booking")
+                        .lastName("passenger_last_name_passenger_booking")
+                        .dateOfBirth(LocalDate.now())
+                        .passport(
+                                Passport.builder()
+                                        .dateOfBirth(LocalDate.now())
+                                        .gender("passport_gender_booking")
+                                        .firstName("passport_first_name_booking")
+                                        .middleName("passport_middle_name_booking")
+                                        .lastName("passport_last_name_booking")
+                                        .birthplace("passport_birthplace_booking")
+                                        .residenceRegistration("passport_residence_registration_booking")
+                                        .seriesAndNumber("passport_series_and_number_booking")
+                                        .build()
+                        )
+                        .build()
+        );
+        Passenger testBookingPassenger2 = passengerService.createOrUpdatePassenger(
+                Passenger.builder()
+                        .email("so@mail.ru")
+                        .password("password_so")
+                        .roles(Set.of(roleService.createOrUpdateRole(new Role(2L,"USER"))))
+                        .firstName("Wesley")
+                        .middleName("so_middle_name_passenger_booking")
+                        .lastName("So")
+                        .dateOfBirth(LocalDate.now())
+                        .passport(
+                                Passport.builder()
+                                        .dateOfBirth(LocalDate.now())
+                                        .gender("so_passport_gender_booking")
+                                        .firstName("so_passport_first_name_booking")
+                                        .middleName("so_passport_middle_name_booking")
+                                        .lastName("so_passport_last_name_booking")
+                                        .birthplace("so_passport_birthplace_booking")
+                                        .residenceRegistration("so_passport_residence_registration_booking")
+                                        .seriesAndNumber("so_passport_series_and_number_booking")
+                                        .build()
+                        )
+                        .build()
+        );
+        Passenger testBookingPassenger3 = passengerService.createOrUpdatePassenger(
+                Passenger.builder()
+                        .email("lee@mail.ru")
+                        .password("password_lee")
+                        .roles(Set.of(roleService.createOrUpdateRole(new Role(2L,"USER"))))
+                        .firstName("Nikolas")
+                        .middleName("lee_middle_name_passenger_booking")
+                        .lastName("Lee")
+                        .dateOfBirth(LocalDate.now())
+                        .passport(
+                                Passport.builder()
+                                        .dateOfBirth(LocalDate.now())
+                                        .gender("lee_passport_gender_booking")
+                                        .firstName("lee_passport_first_name_booking")
+                                        .middleName("lee_passport_middle_name_booking")
+                                        .lastName("lee_passport_last_name_booking")
+                                        .birthplace("lee_passport_birthplace_booking")
+                                        .residenceRegistration("lee_passport_residence_registration_booking")
+                                        .seriesAndNumber("lee_passport_series_and_number_booking")
+                                        .build()
+                        )
+                        .build()
+        );
+        Long holdNumber = Long.parseLong(("" + (UUID.randomUUID() + "").hashCode()).replaceAll("-", ""));
+        //Long holdNumber = 1L;
+        bookingService.createOrUpdateBooking(
+                Booking.builder()
+                        .departTicket(
+                                ticketService.createOrUpdateTicket(
+                                        Ticket.builder()
+                                                .flight(
+                                                        Flight.builder()
+                                                                .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
+                                                                .from(moscow)
+                                                                .to(norilsk)
+                                                                .arrivalDateTime(LocalDateTime.now())
+                                                                .departureDate(LocalDate.of(2022, 4, 12))
+                                                                .departureTime(LocalTime.of(12, 6, 0))
+                                                                .aircraft(aircraftService.getAircraftById(1L).get())
+                                                                .build())
+                                                .passenger(testBookingPassenger2)
+                                                .holdNumber(holdNumber)
+                                                .price(15000L)
+                                                .build()))
+                        .initialBookingDateTime(LocalDateTime.now())
+                        .paymentMethod("CARD")
+                        .status("PAID")
+                        .passenger(testBookingPassenger2)
+                        .category("Economy")
+                        .holdNumber(holdNumber)
+                        .build()
+        );
+        holdNumber = Long.parseLong(("" + (UUID.randomUUID() + "").hashCode()).replaceAll("-", ""));
+        //holdNumber = 2L;
+        bookingService.createOrUpdateBooking(
+                Booking.builder()
+                        .departTicket(
+                                ticketService.createOrUpdateTicket(
+                                        Ticket.builder()
+                                                .flight(
+                                                        Flight.builder()
+                                                                .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
+                                                                .from(moscow)
+                                                                .to(norilsk)
+                                                                .arrivalDateTime(LocalDateTime.now())
+                                                                .departureDate(LocalDate.of(2022, 5, 12))
+                                                                .departureTime(LocalTime.of(12, 6, 0))
+                                                                .aircraft(aircraftService.getAircraftById(2L).get())
+                                                                .build())
+                                                .passenger(testBookingPassenger3)
+                                                .holdNumber(holdNumber)
+                                                .price(15000L)
+                                                .build()))
+                        .initialBookingDateTime(LocalDateTime.now())
+                        .paymentMethod("CARD")
+                        .status("PAID")
+                        .passenger(testBookingPassenger3)
+                        .category("Business")
+                        .holdNumber(holdNumber)
+                        .build()
+        );
         System.out.println("DataInitializer сработал!");
     }
 
@@ -213,10 +328,12 @@ public class DataInitializer {
 
     }
 
+    String[] categoryClasses = {"Business", "Comfort", "Economy"};
+
     private void createAircraft() {
         List<Category> categories = IntStream.rangeClosed(1, 3)
                 .mapToObj(it -> Category.builder()
-                        .category("K" + it * 5)
+                        .category(categoryClasses[it - 1])
                         .seats(IntStream.rangeClosed(0, 10)
                                 .mapToObj(it1 ->
                                         Seat.builder()
@@ -390,6 +507,7 @@ public class DataInitializer {
                                         .airportCode("OVB")
                                         .build()))
                         .departureDate(LocalDate.of(2022, 4, 4))
+                        .aircraft(aircraftService.getAircraftById(2L).get())
                         .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
                         .build());
     }
@@ -414,6 +532,7 @@ public class DataInitializer {
                                         .airportCode("VVO")
                                         .build()))
                         .departureDate(LocalDate.of(2022, 4, 4))
+                        .aircraft(aircraftService.getAircraftById(2L).get())
                         .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
                         .build());
     }
@@ -438,6 +557,7 @@ public class DataInitializer {
                                         .airportCode("SECOND")
                                         .build()))
                         .departureDate(LocalDate.of(2022, 4, 4))
+                        .aircraft(aircraftService.getAircraftById(2L).get())
                         .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
                         .build());
     }
@@ -462,6 +582,7 @@ public class DataInitializer {
                                         .airportCode("VVO")
                                         .build()))
                         .departureDate(LocalDate.of(2022, 4, 4))
+                        .aircraft(aircraftService.getAircraftById(2L).get())
                         .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
                         .build());
     }
@@ -486,6 +607,7 @@ public class DataInitializer {
                                         .airportCode("VVO")
                                         .build()))
                         .departureDate(LocalDate.of(2022, 4, 4))
+                        .aircraft(aircraftService.getAircraftById(2L).get())
                         .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
                         .build());
     }
@@ -510,6 +632,7 @@ public class DataInitializer {
                                         .airportCode("DIRECT")
                                         .build()))
                         .departureDate(LocalDate.of(2022, 4, 4))
+                        .aircraft(aircraftService.getAircraftById(2L).get())
                         .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
                         .build());
     }
@@ -535,6 +658,7 @@ public class DataInitializer {
                                         .build()
                         ))
                         .departureDate(LocalDate.of(2022, 4, 4))
+                        .aircraft(aircraftService.getAircraftById(2L).get())
                         .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
                         .build());
     }
@@ -560,6 +684,7 @@ public class DataInitializer {
                                         .build()
                         ))
                         .departureDate(LocalDate.of(2022, 4, 4))
+                        .aircraft(aircraftService.getAircraftById(2L).get())
                         .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
                         .build());
     }
@@ -585,6 +710,7 @@ public class DataInitializer {
                                         .build()
                         ))
                         .departureDate(LocalDate.of(2022, 4, 4))
+                        .aircraft(aircraftService.getAircraftById(2L).get())
                         .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
                         .build());
     }
@@ -610,6 +736,7 @@ public class DataInitializer {
                                         .build()
                         ))
                         .departureDate(LocalDate.of(2022, 4, 4))
+                        .aircraft(aircraftService.getAircraftById(2L).get())
                         .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
                         .build());
     }
@@ -635,6 +762,7 @@ public class DataInitializer {
                                         .build()
                         ))
                         .departureDate(LocalDate.of(2022, 4, 4))
+                        .aircraft(aircraftService.getAircraftById(2L).get())
                         .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
                         .build());
 
@@ -661,6 +789,7 @@ public class DataInitializer {
                                         .build()
                         ))
                         .departureDate(LocalDate.of(2022, 4, 4))
+                        .aircraft(aircraftService.getAircraftById(2L).get())
                         .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
                         .build());
     }
@@ -686,6 +815,7 @@ public class DataInitializer {
                                         .build()
                         ))
                         .departureDate(LocalDate.of(2022, 4, 4))
+                        .aircraft(aircraftService.getAircraftById(2L).get())
                         .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
                         .build());
     }
@@ -711,6 +841,7 @@ public class DataInitializer {
                                         .build()
                         ))
                         .departureDate(LocalDate.of(2022, 4, 4))
+                        .aircraft(aircraftService.getAircraftById(2L).get())
                         .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
                         .build());
     }
@@ -736,6 +867,7 @@ public class DataInitializer {
                                         .build()
                         ))
                         .departureDate(LocalDate.of(2022, 4, 4))
+                        .aircraft(aircraftService.getAircraftById(2L).get())
                         .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
                         .build());
     }
@@ -955,7 +1087,7 @@ public class DataInitializer {
     private void createAircraft(Destination from, Destination to) {
         List<Category> categories = IntStream.rangeClosed(1, 3)
                 .mapToObj(it -> Category.builder()
-                        .category("K" + it * 5)
+                        .category(categoryClasses[it - 1])
                         .seats(IntStream.rangeClosed(0, 10)
                                 .mapToObj(it1 ->
                                         Seat.builder()
@@ -1000,6 +1132,7 @@ public class DataInitializer {
                                         .build()
                         ))
                         .departureDate(LocalDate.of(2022, 4, 4))
+                        .aircraft(aircraftService.getAircraftById(2L).get())
                         .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
                         .build());
     }
@@ -1025,6 +1158,7 @@ public class DataInitializer {
                                         .build()
                         ))
                         .departureDate(LocalDate.of(2022, 4, 5))
+                        .aircraft(aircraftService.getAircraftById(2L).get())
                         .flightStatus(FlightStatus.ACCORDING_TO_PLAN)
                         .build());
     }

@@ -33,7 +33,7 @@ public class PassengerDTO extends UserDTO {
     @NotNull(message = "Поле dateOfBirth не должно быть пустым")
     @PastOrPresent
     @DateTimeFormat(pattern = "dd.MM.yyyy")
-    @JsonFormat(pattern = "dd.MM.yyyy")
+//    @JsonFormat(pattern = "dd.MM.yyyy")
     private LocalDate dateOfBirth;
 
     private PassportDTO passport;

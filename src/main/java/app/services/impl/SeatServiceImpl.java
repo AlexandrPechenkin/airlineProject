@@ -7,6 +7,8 @@ import app.services.interfaces.SeatService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 /**
  * Сервис для работы с {@link Seat}
  *
@@ -38,11 +40,11 @@ public class SeatServiceImpl implements SeatService {
     }
 
 
-    /**
-     * Метод для получения количества непроданных мест на рейсе
-     *
-     * @param fligthId - Уникальный идентификатор Flight
-     */
+//    /**
+//     * Метод для получения количества непроданных мест на рейсе
+//     *
+//     * @param fligthId - Уникальный идентификатор Flight
+//     */
 
 //    @Override
 //    public Long getCountNoSoldSeat(long fligthId) {
@@ -96,4 +98,15 @@ public class SeatServiceImpl implements SeatService {
 //                .filter(seat -> seat.getCategory().getId() == categoryId)
 //                .collect(Collectors.toList());
 //    }
+    /**
+     * получить место по id
+     *
+     * @param id - идентификатор места
+     * @return {@link Seat}
+     */
+    @Transactional
+    @Override
+    public Optional<Seat> getSeatById(Long id) {
+        return seatRepository.findById(id);
+    }
 }

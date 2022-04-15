@@ -3,9 +3,7 @@ package app.entities.dtos;
 import app.entities.Aircraft;
 import app.entities.Destination;
 import app.entities.FlightStatus;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;

@@ -41,7 +41,7 @@ public class PassportDTO {
     @NotNull(message = "Поле паспортных данных: dateOfBirth не должно быть пустым")
     @PastOrPresent
     @DateTimeFormat(pattern = "dd.MM.yyyy")
-    @JsonFormat(pattern = "dd.MM.yyyy")
+//    @JsonFormat(pattern = "dd.MM.yyyy")
     private LocalDate dateOfBirth;
 
     @NotEmpty(message = "Поле паспортных данных: seriesAndNumber не должно быть пустым")

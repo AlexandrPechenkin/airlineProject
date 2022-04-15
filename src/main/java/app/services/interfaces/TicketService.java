@@ -13,4 +13,6 @@ public interface TicketService {
     Ticket createOrUpdateTicket(Ticket ticket);
 
     Optional<Ticket> getTicketById(Long id);
+
+    Ticket findTicketByHoldNumber(Long holdNumber);
 }

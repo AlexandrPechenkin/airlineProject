@@ -32,8 +32,8 @@ public class TicketRestController {
     /**
      * метод для создания билета
      *
-     * @param ticket
-     * @return
+     * @param ticket - билет
+     * @return {@link TicketDTO}
      */
     @ApiOperation(value = "Запрос для создания билета", notes = "Создание билета")
     @ApiResponses(value = {
@@ -56,8 +56,8 @@ public class TicketRestController {
     /**
      * метод для поиска билета по id
      *
-     * @param id
-     * @return
+     * @param id - идентификатор билета
+     * @return {@link Ticket}
      */
     @ApiOperation(value = "Запрос для получения билета по id", notes = "Возвращение билета по id")
     @ApiResponses(value = {
@@ -72,7 +72,7 @@ public class TicketRestController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         try {
-            return new ResponseEntity(ticketService.getTicketById(id), HttpStatus.OK);
+            return new ResponseEntity<>(ticket.get(), HttpStatus.OK);
         } catch (DataIntegrityViolationException e) {
             throw new NoSuchObjectException("Error");
         }
@@ -81,8 +81,8 @@ public class TicketRestController {
     /**
      * обновление билета по id
      *
-     * @param ticket
-     * @return
+     * @param ticket - билет
+     * @return {@link TicketDTO}
      */
     @ApiOperation(value = "Запрос для обновления билета", notes = "Обновление билета")
     @ApiResponses(value = {

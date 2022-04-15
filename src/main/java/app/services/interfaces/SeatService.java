@@ -2,6 +2,9 @@ package app.services.interfaces;
 
 import app.entities.Seat;
 
+import java.util.List;
+import java.util.Optional;
+
 public interface SeatService {
     /**
      * Метод создания и обновления места
@@ -16,6 +19,20 @@ public interface SeatService {
      * @param fligthId - уникальный идентификатор рейса
      */
 
+    /**
+     * получить место по id
+     *
+     * @param id - идентификатор места
+     * @return {@link Seat}
+     */
+    Optional<Seat> getSeatById(Long id);
+
+//    /**
+//     * Метод получения количества непроданных мест
+//     *
+//     * @param fligthId - уникальный идентификатор рейса
+//     */
+//
 //    Long getCountNoSoldSeat(long fligthId);
 
     /**
