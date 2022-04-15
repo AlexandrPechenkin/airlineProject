@@ -69,7 +69,7 @@ async function getBookingInfo() {
     if (promiseBooking.ok) {
         booking = await promiseBooking.json();
 
-        if (booking.departTicket.passenger.lastName === passengerName) {
+        if (booking.passenger.lastName === passengerName) {
             registrationModal.modal('show');
             //Заполнение содержимым модального окна
             await setModalContent();
@@ -91,7 +91,7 @@ async function setModalContent() {
         ${booking.departTicket.flight.from.city} - ${booking.departTicket.flight.to.city} 
         отправлением ${booking.departTicket.flight.departureDate} 
         ${booking.departTicket.flight.departureTime} 
-        пассажира ${booking.departTicket.passenger.firstName} ${passengerName}`);
+        пассажира ${booking.passenger.firstName} ${passengerName}`);
 
     let registerCompleteButton = `<button  class="btn btn-primary"
         id="registerCompleteButton">Подтвердить</button>`;
