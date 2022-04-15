@@ -1,6 +1,8 @@
 package app.services.interfaces;
 
 import app.entities.Role;
+import app.entities.User;
+import app.entities.dtos.AdminDTO;
 
 import java.util.List;
 import java.util.Optional;
@@ -31,7 +33,7 @@ public interface RoleService {
 
     /**
      * Удалить роль
-     * @param role роль
+     * @param id идентификатор роли
      */
-    void deleteRole(Role role);
+    void deleteRoleById(long id);
 }

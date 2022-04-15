@@ -2,14 +2,15 @@ package app.services.impl;
 
 
 import app.entities.Role;
+import app.entities.User;
+import app.entities.dtos.AdminDTO;
 import app.repositories.RoleRepository;
 import app.services.interfaces.RoleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * Сервис для работы с классом {@link Role}
@@ -52,10 +53,10 @@ public class RoleServiceImpl implements RoleService {
 
     /**
      * Удалить роль
-     * @param role роль
+     * @param id идентификатор роли
      */
     @Override
-    public void deleteRole(Role role) {
-        roleRepository.delete(role);
+    public void deleteRoleById(long id) {
+        roleRepository.deleteById(id);
     }
 }
